@@ -353,21 +353,21 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         getTypeRegistry().getDescriptorForTypeUrl(typeUrl).findFieldByName("o_int");
     FieldScope partialScope = FieldScopes.ignoringFieldDescriptors(fieldDescriptor);
     expectThat(diffMessage1)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .withPartialScope(partialScope)
         .isNotEqualTo(message);
     expectThat(diffMessage2)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .withPartialScope(partialScope)
         .isNotEqualTo(message);
     expectThat(eqMessage)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .withPartialScope(partialScope)
         .isEqualTo(message);
 
     expectFailureWhenTesting()
         .that(diffMessage1)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .withPartialScope(partialScope)
         .isEqualTo(message);
     expectIsEqualToFailed();
@@ -375,7 +375,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     expectFailureWhenTesting()
         .that(diffMessage2)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .withPartialScope(partialScope)
         .isEqualTo(message);
     expectIsEqualToFailed();

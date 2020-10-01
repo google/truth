@@ -16,6 +16,7 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -455,10 +456,11 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion reportingMismatchesOnly();
 
   /**
-   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
+   * Specifies the {@link TypeRegistry} and {@link ExtensionRegistry} to use for {@link
+   * com.google.protobuf.Any Any} messages.
    *
-   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
-   * descriptor for the message's type URL.
+   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given type registry
+   * for a descriptor for the message's type URL:
    *
    * <ul>
    *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
@@ -467,9 +469,14 @@ public interface ProtoFluentAssertion {
    *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
    * </ul>
    *
+   * <p>When ProtoTruth unpacks a value, it is parsing a serialized proto. That proto may contain
+   * extensions. To look up those extensions, ProtoTruth uses the provided {@link
+   * ExtensionRegistry}.
+   *
    * @since 1.1
    */
-  ProtoFluentAssertion usingTypeRegistry(TypeRegistry typeRegistry);
+  ProtoFluentAssertion unpackingAnyUsing(
+      TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry);
 
   /**
    * Compares the subject of the assertion to {@code expected}, using all of the rules specified by

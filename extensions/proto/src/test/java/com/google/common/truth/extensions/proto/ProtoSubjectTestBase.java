@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
+import static com.google.protobuf.ExtensionRegistry.getEmptyRegistry;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -32,6 +33,7 @@ import com.google.common.truth.ExpectFailure;
 import com.google.common.truth.Subject;
 import com.google.common.truth.TruthFailureSubject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
@@ -82,6 +84,8 @@ public class ProtoSubjectTestBase {
           .setTypeRegistry(typeRegistry)
           .build();
 
+  private static final ExtensionRegistry extensionRegistry = getEmptyRegistry();
+
   // For Parameterized testing.
   protected static Collection<Object[]> parameters() {
     ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
@@ -131,6 +135,10 @@ public class ProtoSubjectTestBase {
 
   protected final TypeRegistry getTypeRegistry() {
     return typeRegistry;
+  }
+
+  protected final ExtensionRegistry getExtensionRegistry() {
+    return extensionRegistry;
   }
 
   protected Message parse(String textProto) {

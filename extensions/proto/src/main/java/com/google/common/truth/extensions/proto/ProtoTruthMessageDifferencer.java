@@ -233,8 +233,9 @@ final class ProtoTruthMessageDifferencer {
     FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown =
         FieldDescriptorOrUnknown.fromFieldDescriptor(valueFieldDescriptor);
     TypeRegistry typeRegistry = config.useTypeRegistry();
-    Optional<Message> unpackedActual = unpackAny(actual, typeRegistry);
-    Optional<Message> unpackedExpected = unpackAny(expected, typeRegistry);
+    ExtensionRegistry extensionRegistry = config.useExtensionRegistry();
+    Optional<Message> unpackedActual = unpackAny(actual, typeRegistry, extensionRegistry);
+    Optional<Message> unpackedExpected = unpackAny(expected, typeRegistry, extensionRegistry);
     FieldScopeResult shouldCompareValue =
         config.compareFieldsScope().policyFor(rootDescriptor, valueFieldDescriptorOrUnknown);
     SingularField valueDiffResult;
@@ -280,7 +281,8 @@ final class ProtoTruthMessageDifferencer {
     return actual.getDescriptorForType().equals(expected.getDescriptorForType());
   }
 
-  private static Optional<Message> unpackAny(Message any, TypeRegistry typeRegistry) {
+  private static Optional<Message> unpackAny(
+      Message any, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     String typeUrl =
         (String) any.getField(Any.getDescriptor().findFieldByNumber(Any.TYPE_URL_FIELD_NUMBER));
     ByteString value =
@@ -290,8 +292,7 @@ final class ProtoTruthMessageDifferencer {
       if (descriptor == null) {
         return Optional.absent();
       }
-      Message defaultMessage =
-          DynamicMessage.parseFrom(descriptor, value, ExtensionRegistry.getEmptyRegistry());
+      Message defaultMessage = DynamicMessage.parseFrom(descriptor, value, extensionRegistry);
       return Optional.of(defaultMessage);
     } catch (InvalidProtocolBufferException e) {
       return Optional.absent();

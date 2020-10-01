@@ -799,11 +799,13 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message message = parse("o_any_message: { [" + typeUrl + "]: {r_string: \"foo\"} }");
     Message diffMessage = parse("o_any_message: { [" + diffTypeUrl + "]: {r_string: \"bar\"} }");
 
-    expectThat(message).usingTypeRegistry(getTypeRegistry()).isNotEqualTo(diffMessage);
+    expectThat(message)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .isNotEqualTo(diffMessage);
 
     expectFailureWhenTesting()
         .that(message)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .isEqualTo(diffMessage);
     expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure()
@@ -822,22 +824,22 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message messageWithEmptyAny = parse("o_any_message: { }");
 
     expectThat(messageWithAny)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .isNotEqualTo(messageWithEmptyAny);
     expectThat(messageWithEmptyAny)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .isNotEqualTo(messageWithAny);
 
     expectFailureWhenTesting()
         .that(messageWithAny)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .isEqualTo(messageWithEmptyAny);
     expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure().hasMessageThat().contains("modified: o_any_message.value");
 
     expectFailureWhenTesting()
         .that(messageWithEmptyAny)
-        .usingTypeRegistry(getTypeRegistry())
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
         .isEqualTo(messageWithAny);
     expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure().hasMessageThat().contains("modified: o_any_message.value");
@@ -857,8 +859,12 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         DynamicMessage.parseFrom(
             Any.getDescriptor(), message.toByteString(), ExtensionRegistry.getEmptyRegistry());
 
-    expectThat(dynamicMessage).usingTypeRegistry(getTypeRegistry()).isEqualTo(message);
-    expectThat(message).usingTypeRegistry(getTypeRegistry()).isEqualTo(dynamicMessage);
+    expectThat(dynamicMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .isEqualTo(message);
+    expectThat(message)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .isEqualTo(dynamicMessage);
   }
 
   @Test

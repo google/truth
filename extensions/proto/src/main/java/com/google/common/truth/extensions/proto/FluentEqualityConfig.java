@@ -33,6 +33,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -57,7 +58,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
           .setCompareExpectedFieldsOnly(false)
           .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
-          .setUseTypeRegistry(TypeRegistry.getEmptyTypeRegistry())
+          .setUnpackingAnyUsing(TypeRegistry.getEmptyTypeRegistry(), ExtensionRegistry.getEmptyRegistry())
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
 
@@ -105,6 +106,8 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   abstract boolean reportMismatchesOnly();
 
   abstract TypeRegistry useTypeRegistry();
+
+  abstract ExtensionRegistry useExtensionRegistry();
 
   // For pretty-printing, does not affect behavior.
   abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
@@ -322,10 +325,12 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
         .build();
   }
 
-  final FluentEqualityConfig usingTypeRegistry(TypeRegistry typeRegistry) {
+  final FluentEqualityConfig unpackingAnyUsing(
+      TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     return toBuilder()
-        .setUseTypeRegistry(typeRegistry)
-        .addUsingCorrespondenceString(".usingTypeRegistry(" + typeRegistry + ")")
+        .setUnpackingAnyUsing(typeRegistry, extensionRegistry)
+        .addUsingCorrespondenceString(
+            ".unpackingAnyUsing(" + typeRegistry + ", " + extensionRegistry + ")")
         .build();
   }
 
@@ -443,7 +448,16 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
+    final Builder setUnpackingAnyUsing(
+        TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
+      setUseTypeRegistry(typeRegistry);
+      setUseExtensionRegistry(extensionRegistry);
+      return this;
+    }
+
     abstract Builder setUseTypeRegistry(TypeRegistry typeRegistry);
+
+    abstract Builder setUseExtensionRegistry(ExtensionRegistry extensionRegistry);
 
     @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();

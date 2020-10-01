@@ -27,6 +27,7 @@ import com.google.common.truth.IterableSubject;
 import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import java.util.Arrays;
@@ -631,10 +632,11 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
   }
 
   /**
-   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
+   * Specifies the {@link TypeRegistry} and {@link ExtensionRegistry} to use for {@link
+   * com.google.protobuf.Any Any} messages.
    *
-   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
-   * descriptor for the message's type URL.
+   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given type registry
+   * for a descriptor for the message's type URL:
    *
    * <ul>
    *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
@@ -643,10 +645,15 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
    *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
    * </ul>
    *
+   * <p>When ProtoTruth unpacks a value, it is parsing a serialized proto. That proto may contain
+   * extensions. To look up those extensions, ProtoTruth uses the provided {@link
+   * ExtensionRegistry}.
+   *
    * @since 1.1
    */
-  public IterableOfProtosFluentAssertion<M> usingTypeRegistry(TypeRegistry typeRegistry) {
-    return usingConfig(config.usingTypeRegistry(typeRegistry));
+  public IterableOfProtosFluentAssertion<M> unpackingAnyUsing(
+      TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
+    return usingConfig(config.unpackingAnyUsing(typeRegistry, extensionRegistry));
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1000,8 +1007,9 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     }
 
     @Override
-    public IterableOfProtosFluentAssertion<M> usingTypeRegistry(TypeRegistry typeRegistry) {
-      return subject.usingTypeRegistry(typeRegistry);
+    public IterableOfProtosFluentAssertion<M> unpackingAnyUsing(
+        TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
+      return subject.unpackingAnyUsing(typeRegistry, extensionRegistry);
     }
 
     @Override
