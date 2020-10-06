@@ -31,7 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <h3>For people extending Truth</h3>
  *
  * <p>When you write a custom subject, see <a href="https://truth.dev/extension">our doc on
- * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder} is necessary.
+ * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder} is necessary, and it
+ * links to further instructions.
  */
 public abstract class CustomSubjectBuilder {
   /**
