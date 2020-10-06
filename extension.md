@@ -125,9 +125,9 @@ There are four parts to the example:
         make it extensible if you find that useful.
 
         Tip: What if your `Subject` class has a type parameter, like
-        [`ComparableSubject`]? Follow our instructions for
-        [`CustomSubjectBuilder`](custom_subject_builder) instead of step 2
-        below, and then return to the instructions at step 3.
+        [`ComparableSubject`]? Follow
+        [our instructions for `CustomSubjectBuilder`](custom_subject_builder)
+        instead of step 2 below, and then return to the instructions at step 3.
 
     2.  A subject also needs to define a [`Subject.Factory`], exposed through a
         static method. The definition is usually boilerplate:
