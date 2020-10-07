@@ -100,7 +100,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- TODO(user): Replace this with Gwt annotation processing plugin. -->
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
