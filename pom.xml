@@ -28,9 +28,8 @@
     <gwt.version>2.9.0</gwt.version>
     <protobuf.version>3.13.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
+    <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
-    <!-- Property for protobuf-java protocArtifact, which ought to be the same as protobuf.version but can't be internally at the moment. -->
-    <protobuf.protoc.version>3.7.1</protobuf.protoc.version>
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
     <os-maven-plugin.version>1.6.2</os-maven-plugin.version>
