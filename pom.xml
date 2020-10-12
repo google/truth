@@ -151,7 +151,7 @@
       <dependency>
         <groupId>com.google.re2j</groupId>
         <artifactId>re2j</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
       </dependency>
       <dependency>
         <groupId>org.ow2.asm</groupId>
