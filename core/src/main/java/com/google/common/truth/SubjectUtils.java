@@ -299,9 +299,11 @@ final class SubjectUtils {
       return "null type";
     } else if (item instanceof Map.Entry) {
       Map.Entry<?, ?> entry = (Map.Entry<?, ?>) item;
-      return lenientFormat(
-          "Map.Entry<%s, %s>",
-          objectToTypeName(entry.getKey()), objectToTypeName(entry.getValue()));
+      // Fix for interesting bug when entry.getValue() returns itself b/170390717
+      String valueTypeName =
+          entry.getValue() == entry ? "Map.Entry" : objectToTypeName(entry.getValue());
+
+      return lenientFormat("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
     } else {
       return item.getClass().getName();
     }
