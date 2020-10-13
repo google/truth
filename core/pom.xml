@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <optional>true</optional>
+      <!-- Truth works fine without ASM: It just produces slightly less useful failure messages. Thus, users can exclude ASM if they prefer to reduce dependencies. (For example, ASM will not benefit anyone whose tests run in an Android VM.) Still, we have made it a dependency by default (non-<optional>), both because it provides useful functionality and because we have heard of problems with R8 when it is absent. -->
     </dependency>
   </dependencies>
   <build>
