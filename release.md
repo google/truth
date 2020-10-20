@@ -62,9 +62,6 @@ cd truth_release
 git checkout ${SPECIFIC_COMMIT_VERSION} # optional if not HEAD of master branch.
 git checkout -b release_truth_version_branch
 # cherry-pick anything needed
-################################################################################
-### WE STILL NEED TO MAKE THE CHANGES TO THE `ANY` PARSING BEFORE A RELEASE! ###
-################################################################################
 mvn verify
 ```
 
