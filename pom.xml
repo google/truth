@@ -24,7 +24,8 @@
 
     <!-- Properties for multiple-artifact deps. -->
     <auto-value.version>1.7.4</auto-value.version>
-    <guava.version>28.1</guava.version>
+    <guava.android.version>30.0-android</guava.android.version>
+    <guava.jre.version>30.0-jre</guava.jre.version>
     <gwt.version>2.9.0</gwt.version>
     <protobuf.version>3.13.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
@@ -61,7 +62,7 @@
           -->
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>${guava.version}-android</version>
+        <version>${guava.android.version}</version>
       </dependency>
       <dependency>
         <groupId>org.checkerframework</groupId>
@@ -91,12 +92,12 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava-gwt</artifactId>
-        <version>${guava.version}-jre</version>
+        <version>${guava.jre.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava-testlib</artifactId>
-        <version>${guava.version}-android</version>
+        <version>${guava.android.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.testing.compile</groupId>
@@ -157,6 +158,11 @@
         <groupId>org.ow2.asm</groupId>
         <artifactId>asm</artifactId>
         <version>9.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.jsinterop</groupId>
+        <artifactId>jsinterop-annotations</artifactId>
+        <version>2.0.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
