@@ -94,16 +94,23 @@ final class Platform {
     }
     StackTraceElement top = stack.getStackTrace()[0];
     try {
-      // Invoke reflectively so that Truth can be compiled and run without ASM on the classpath.
       /*
-       * TODO(cpovirk): Consider always compiling with ASM present but then omitting it (and
-       * ActualValueInference itself) at runtime. Then we could use a trick more like Guava's
-       * UnsignedBytes.lexicographicalComparator() (being sure to eagerly load ASM classes at the
-       * same time as we load ActualValueInference). But the reference to a missing class is likely
-       * to confuse tools like Proguard (and thus require suppressions).
+       * Invoke ActualValueInference reflectively so that Truth can be compiled and run without its
+       * dependency, ASM, on the classpath.
+       *
+       * Also, mildly obfuscate the class name that we're looking up. The obfuscation prevents R8
+       * from detecting the usage of ActualValueInference. That in turn lets users exclude it from
+       * the compile-time classpath if they want. (And then *that* probably makes it easier and/or
+       * safer for R8 users (i.e., Android users) to exclude it from the *runtime* classpath. It
+       * would do no good there, anyway, since ASM won't find any .class files to load under
+       * Android. Perhaps R8 will even omit ASM automatically once it detects that it's "unused?")
+       *
+       * TODO(cpovirk): Add a test that runs R8 without ASM present.
        */
+      String clazz =
+          Joiner.on('.').join("com", "google", "common", "truth", "ActualValueInference");
       return (String)
-          Class.forName("com.google.common.truth.ActualValueInference")
+          Class.forName(clazz)
               .getDeclaredMethod("describeActualValue", String.class, String.class, int.class)
               .invoke(null, top.getClassName(), top.getMethodName(), top.getLineNumber());
     } catch (IllegalAccessException
