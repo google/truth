@@ -212,14 +212,6 @@ the release will now be nicely documented.
 > since this release"* will take you to a handy filtered list of commits which
 > can be used as a basis for figuring out the release notes.
 
-And, for release 1.1:
-
-```
-- b50d878b:
-  - `ProtoTruthMessageDifferencer`: Unpacks Any messages before comparing the unpacked message. Using a user supplied TypeRegister in the FluentEqualityConfig. If the message descriptors can not be found in the TypeRegister that it reverts to the original behaviour of comparing the Any messages value ByteString.
-  - `ProtoSubject`: added `usingTypeRegistry(TypeRegistry)` method to allow the user to provide a TypeRegistry for processing the Any fields it encounters.
-```
-
 ## Post-release
 
 ### Update version numbers in docs
