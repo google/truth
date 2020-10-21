@@ -424,7 +424,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
               newCompareMethodName,
               state.getSourceForNode(compareMethod.getParameters().get(0)),
               state.getSourceForNode(compareMethod.getParameters().get(1)),
-              compareMethod.getBody());
+              state.getSourceForNode(compareMethod.getBody()));
       return ImmutableList.of(
           BinaryPredicateCode.create(
               newCompareMethodOwner + "::" + newCompareMethodName, supportingMethodDefinition));
