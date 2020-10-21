@@ -102,35 +102,11 @@
       <dependency>
         <groupId>com.google.testing.compile</groupId>
         <artifactId>compile-testing</artifactId>
-        <version>0.18</version>
+        <version>0.19</version>
         <exclusions>
           <exclusion>
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
-          </exclusion>
-          <!-- TODO(cpovirk): Remove after a Compile-Testing release moves this to test scope. -->
-          <exclusion>
-            <groupId>com.google.truth.extensions</groupId>
-            <artifactId>truth-java8-extension</artifactId>
-          </exclusion>
-          <!--
-            Possibly dangerous hack: Exclude a system dependency that Maven
-            tries to download when we run copy-dependencies, despite our
-            various attempts to make it not do that.
-
-            I'm surprised that Truth's Compile-Testing-based tests still work
-            with this exclusion in place. But they seem to, so... yay?
-
-            TODO(b/28340920): Remove this exclusion after we move off the
-            internal Maven mirror for which we run copy-dependencies.
-
-            (Or we could consider copying Compile-Testing's system dependency
-            into Truth in test scope, and *maybe* we can get copy-dependencies
-            to exclude it once it's part of the Truth pom??)
-          -->
-          <exclusion>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
