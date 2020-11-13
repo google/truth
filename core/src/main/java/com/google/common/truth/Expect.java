@@ -78,6 +78,8 @@ import org.junit.runners.model.Statement;
  *
  * <p>To record failures for the purpose of testing that an assertion fails when it should, see
  * {@link ExpectFailure}.
+ *
+ * <p>For more on this class, see <a href="https://truth.dev/expect">the documentation page</a>.
  */
 @GwtIncompatible("JUnit4")
 public final class Expect extends StandardSubjectBuilder implements TestRule {
