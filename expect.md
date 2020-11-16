@@ -12,7 +12,7 @@ over the course of a test method, rather than failing fast.
 
 ## Why you should use Expect
 
-Suppose the [assert phase] of your test method has the lines
+Suppose the assert phase of your test method has the lines
 
 ```java
     assertThat(result.getFoo()).isEqualTo(3);
@@ -47,8 +47,8 @@ Sometimes, if an expectation is not met, test execution should stop.
     rest will fail as well, and their error messages won't tell you anything
     more.
 
-*   When testing [sequential behavior], a failure might mean that the system
-    under test didn't advance to the next step. Further error messages would be
+*   When testing sequential behavior, a failure might mean that the system under
+    test didn't advance to the next step. Further error messages would be
     misleading.
 
 In either case, the "terminal" check should be coded with Truth in the usual
@@ -61,7 +61,7 @@ Expect rule.
 If you use [Truth extensions] such as [`ProtoTruth`] and [`Truth8`],
 `expect.that()` needs to know about the subject to provide the same methods:
 
-```java {highlight="content:about\(.*?\)\)"}
+```java
 import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
