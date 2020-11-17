@@ -118,7 +118,7 @@ but could not find the following elements:
 But note a few differences:
 
 -   The Truth message has fewer quotes and brackets, plus no
-    `java.lang.AssertionEror:` or `internal calls`.
+    `java.lang.AssertionError:` or `internal calls`.
 -   The Truth message includes a `value of` line describing the value under
     test.
 -   The Truth message includes the contents of the full multimap.
