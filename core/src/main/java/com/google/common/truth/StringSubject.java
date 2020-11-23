@@ -142,7 +142,7 @@ public class StringSubject extends ComparableSubject<String> {
         failWithoutActual(
                 fact("expected to match", regex),
                 fact("but was", actual),
-                simpleFact("Looks like you want to use .isEqualTo() for an exact equality assertion."));
+                simpleFact("If you want an exact equality assertion you can escape your regex with Pattern.quote()."));
       } else {
         failWithActual("expected to match", regex);
       }

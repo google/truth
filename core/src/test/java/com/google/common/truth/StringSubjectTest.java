@@ -239,7 +239,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat("$abc").matches(Pattern.compile("$abc"));
     assertFailureValue("expected to match", "$abc");
     assertFailureValue("but was", "$abc");
-    assertThat(expectFailure.getFailure()).factKeys().contains("Looks like you want to use .isEqualTo() for an exact equality assertion.");
+    assertThat(expectFailure.getFailure()).factKeys().contains("If you want an exact equality assertion you can escape your regex with Pattern.quote().");
   }
 
   @Test
