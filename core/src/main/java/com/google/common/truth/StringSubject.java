@@ -120,7 +120,14 @@ public class StringSubject extends ComparableSubject<String> {
     if (actual == null) {
       failWithActual("expected a string that matches", regex);
     } else if (!actual.matches(regex)) {
-      failWithActual("expected to match", regex);
+      if (regex.equals(actual)) {
+        failWithoutActual(
+            fact("expected to match", regex),
+            fact("but was", actual),
+            simpleFact("Looks like you want to use .isEqualTo() for an exact equality assertion."));
+      } else {
+        failWithActual("expected to match", regex);
+      }
     }
   }
 
@@ -131,7 +138,16 @@ public class StringSubject extends ComparableSubject<String> {
     if (actual == null) {
       failWithActual("expected a string that matches", regex);
     } else if (!regex.matcher(actual).matches()) {
-      failWithActual("expected to match", regex);
+      if (regex.toString().equals(actual)) {
+        failWithoutActual(
+            fact("expected to match", regex),
+            fact("but was", actual),
+            simpleFact(
+                "If you want an exact equality assertion you can escape your regex with"
+                    + " Pattern.quote()."));
+      } else {
+        failWithActual("expected to match", regex);
+      }
     }
   }
 
