@@ -206,7 +206,7 @@ final class Platform {
 
   /** Tests if current platform is Android. */
   static boolean isAndroid() {
-    return System.getProperties().getProperty("java.runtime.name").contains("Android");
+    return System.getProperty("java.runtime.name").contains("Android");
   }
 
   /**
