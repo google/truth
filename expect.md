@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Truth: Expect
+title: "Truth: Expect"
 ---
 
 1. auto-gen TOC:
