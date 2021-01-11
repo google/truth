@@ -151,7 +151,7 @@ One warning: Truth depends on the "Android" version of [Guava], a subset of the
 "JRE" version. If your project uses the JRE version, be aware that your build
 system might select the Android version instead. If so, you may see "missing
 symbol" errors. The easiest fix is usually to add a direct dependency on the
-newest JRE version of Guava.
+[**newest**](https://stackoverflow.com/a/65669626/28465) JRE version of Guava.
 
 Finally, consider [configuring your build to use Error Prone]. [Error Prone]
 checks for many kinds of bugs, including some we've seen in usages of Truth.
