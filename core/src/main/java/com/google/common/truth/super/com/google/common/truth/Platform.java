@@ -50,6 +50,10 @@ final class Platform {
     return false;
   }
 
+  static boolean isLinkageError(Error e) {
+    return false;
+  }
+
   abstract static class PlatformComparisonFailure extends AssertionError {
     PlatformComparisonFailure(
         String message,

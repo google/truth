@@ -179,7 +179,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   }
 
   private AssertionErrorWithFacts failure(Fact... facts) {
-    return AssertionErrorWithFacts.create(
+    return new AssertionErrorWithFacts(
         ImmutableList.<String>of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }
 }

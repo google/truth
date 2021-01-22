@@ -18,10 +18,12 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
+import static com.google.common.truth.ComparisonFailures.makeComparisonFailureFacts;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
 import static com.google.common.truth.Platform.inferDescription;
+import static com.google.common.truth.Platform.isLinkageError;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
@@ -169,19 +171,36 @@ public final class FailureMetadata {
       ImmutableList<Fact> tailFacts,
       String expected,
       String actual) {
-    doFail(
-        ComparisonFailureWithFacts.create(
-            evaluateAll(messages),
+    ImmutableList<String> messages = evaluateAll(this.messages);
+    ImmutableList<Fact> facts =
+        makeComparisonFailureFacts(
             concat(description(), headFacts),
             concat(tailFacts, rootUnlessThrowable()),
             expected,
-            actual,
-            rootCause()));
+            actual);
+    Throwable cause = rootCause();
+
+    /*
+     * We perform as much work as possible outside the `try`. That way, we minimize the chance that
+     * we'll catch and swallow a LinkageError from any problem except the specific problem that
+     * JUnit is not on the classpath.
+     */
+    AssertionError failure;
+    try {
+      failure = new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
+    } catch (Error probablyJunitNotOnClasspath) {
+      // We can't catch LinkageError directly because of GWT/j2cl.
+      if (!isLinkageError(probablyJunitNotOnClasspath)) {
+        throw probablyJunitNotOnClasspath;
+      }
+      failure = new AssertionErrorWithFacts(messages, concat(headFacts, tailFacts), cause);
+    }
+    doFail(failure);
   }
 
   void fail(ImmutableList<Fact> facts) {
     doFail(
-        AssertionErrorWithFacts.create(
+        new AssertionErrorWithFacts(
             evaluateAll(messages),
             concat(description(), facts, rootUnlessThrowable()),
             rootCause()));

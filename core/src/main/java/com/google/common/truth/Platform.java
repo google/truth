@@ -230,4 +230,8 @@ final class Platform {
       return false;
     }
   }
+
+  static boolean isLinkageError(Error e) {
+    return e instanceof LinkageError;
+  }
 }

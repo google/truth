@@ -18,7 +18,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Strings.repeat;
 import static com.google.common.testing.SerializableTester.reserialize;
-import static com.google.common.truth.ComparisonFailureWithFacts.formatExpectedAndActual;
+import static com.google.common.truth.ComparisonFailures.formatExpectedAndActual;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
@@ -269,20 +269,19 @@ public class ComparisonFailureWithFactsTest {
   @Test
   public void testSerialization_ComparisonFailureWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
-    ImmutableList<Fact> headFacts = ImmutableList.of(fact("head", "value"));
-    ImmutableList<Fact> tailFacts = ImmutableList.of(simpleFact("tail"));
+    ImmutableList<Fact> facts = ImmutableList.of(fact("first", "value"), simpleFact("second"));
     String expected = "expected";
     String actual = "actual";
     Throwable cause = new Throwable("cause");
     ComparisonFailureWithFacts original =
-        ComparisonFailureWithFacts.create(messages, headFacts, tailFacts, expected, actual, cause);
+        new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
 
     ComparisonFailureWithFacts reserialized = reserialize(original);
     assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
     assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
-    assertThat(reserialized.facts().get(0).key).isEqualTo("head");
+    assertThat(reserialized.facts().get(0).key).isEqualTo("first");
     assertThat(reserialized.facts().get(0).value).isEqualTo("value");
-    assertThat(reserialized.facts().get(3).key).isEqualTo("tail");
+    assertThat(reserialized.facts().get(1).key).isEqualTo("second");
     assertThat(reserialized.getExpected()).isEqualTo("expected");
     assertThat(reserialized.getActual()).isEqualTo("actual");
   }
@@ -291,27 +290,27 @@ public class ComparisonFailureWithFactsTest {
   @Test
   public void testSerialization_AssertionErrorWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
-    ImmutableList<Fact> facts = ImmutableList.of(fact("head", "value"), simpleFact("tail"));
+    ImmutableList<Fact> facts = ImmutableList.of(fact("first", "value"), simpleFact("second"));
     Throwable cause = new Throwable("cause");
-    AssertionErrorWithFacts original = AssertionErrorWithFacts.create(messages, facts, cause);
+    AssertionErrorWithFacts original = new AssertionErrorWithFacts(messages, facts, cause);
 
     AssertionErrorWithFacts reserialized = reserialize(original);
     assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
     assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
-    assertThat(reserialized.facts().get(0).key).isEqualTo("head");
+    assertThat(reserialized.facts().get(0).key).isEqualTo("first");
     assertThat(reserialized.facts().get(0).value).isEqualTo("value");
-    assertThat(reserialized.facts().get(1).key).isEqualTo("tail");
+    assertThat(reserialized.facts().get(1).key).isEqualTo("second");
   }
 
   @GwtIncompatible
   @Test
   public void testSerialization_Fact() {
-    Fact original = fact("head", "value");
+    Fact original = fact("first", "value");
     Fact reserialized = reserialize(original);
     assertThat(reserialized.key).isEqualTo(original.key);
     assertThat(reserialized.value).isEqualTo(original.value);
 
-    original = simpleFact("tail");
+    original = simpleFact("second");
     reserialized = reserialize(original);
     assertThat(reserialized.key).isEqualTo(original.key);
     assertThat(reserialized.value).isEqualTo(original.value);

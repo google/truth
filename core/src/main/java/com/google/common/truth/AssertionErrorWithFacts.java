@@ -27,17 +27,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @SuppressWarnings("OverrideThrowableToString") // We intentionally hide the class name.
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
-  static AssertionErrorWithFacts create(
-      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
-    return new AssertionErrorWithFacts(messages, facts, cause);
-  }
-
-  final ImmutableList<Fact> facts;
+  private final ImmutableList<Fact> facts;
 
   /** Separate cause field, in case initCause() fails. */
   private final @Nullable Throwable cause;
 
-  private AssertionErrorWithFacts(
+  AssertionErrorWithFacts(
       ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
     super(makeMessage(messages, facts));
     this.facts = checkNotNull(facts);

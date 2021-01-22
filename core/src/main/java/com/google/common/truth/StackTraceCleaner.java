@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import org.junit.runner.Runner;
-import org.junit.runners.model.Statement;
 
 /** Utility that cleans stack traces to remove noise from common frameworks. */
 @GwtIncompatible
@@ -191,11 +189,11 @@ final class StackTraceCleaner {
     currentStreakLength = 0;
   }
 
-  private static final ImmutableSet<Class<?>> SUBJECT_CLASS =
-      ImmutableSet.<Class<?>>of(Subject.class);
+  private static final ImmutableSet<String> SUBJECT_CLASS =
+      ImmutableSet.of(Subject.class.getCanonicalName());
 
-  private static final ImmutableSet<Class<?>> STANDARD_SUBJECT_BUILDER_CLASS =
-      ImmutableSet.<Class<?>>of(StandardSubjectBuilder.class);
+  private static final ImmutableSet<String> STANDARD_SUBJECT_BUILDER_CLASS =
+      ImmutableSet.of(StandardSubjectBuilder.class.getCanonicalName());
 
   private static boolean isTruthEntrance(StackTraceElement stackTraceElement) {
     return isFromClassOrClassNestedInside(stackTraceElement, SUBJECT_CLASS)
@@ -210,8 +208,8 @@ final class StackTraceCleaner {
         || isFromClassDirectly(stackTraceElement, STANDARD_SUBJECT_BUILDER_CLASS);
   }
 
-  private static final ImmutableSet<Class<?>> JUNIT_INFRASTRUCTURE_CLASSES =
-      ImmutableSet.<Class<?>>of(Runner.class, Statement.class);
+  private static final ImmutableSet<String> JUNIT_INFRASTRUCTURE_CLASSES =
+      ImmutableSet.of("org.junit.runner.Runner", "org.junit.runners.model.Statement");
 
   private static boolean isJUnitIntrastructure(StackTraceElement stackTraceElement) {
     // It's not clear whether looking at nested classes here is useful, harmful, or neutral.
@@ -219,7 +217,7 @@ final class StackTraceCleaner {
   }
 
   private static boolean isFromClassOrClassNestedInside(
-      StackTraceElement stackTraceElement, ImmutableSet<Class<?>> recognizedClasses) {
+      StackTraceElement stackTraceElement, ImmutableSet<String> recognizedClasses) {
     Class<?> stackClass;
     try {
       stackClass = loadClass(stackTraceElement.getClassName());
@@ -228,8 +226,8 @@ final class StackTraceCleaner {
     }
     try {
       for (; stackClass != null; stackClass = stackClass.getEnclosingClass()) {
-        for (Class<?> recognizedClass : recognizedClasses) {
-          if (recognizedClass.isAssignableFrom(stackClass)) {
+        for (String recognizedClass : recognizedClasses) {
+          if (isSubtypeOf(stackClass, recognizedClass)) {
             return true;
           }
         }
@@ -254,16 +252,25 @@ final class StackTraceCleaner {
     return false;
   }
 
+  private static boolean isSubtypeOf(Class<?> subclass, String superclass) {
+    for (; subclass != null; subclass = subclass.getSuperclass()) {
+      if (subclass.getCanonicalName() != null && subclass.getCanonicalName().equals(superclass)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private static boolean isFromClassDirectly(
-      StackTraceElement stackTraceElement, ImmutableSet<Class<?>> recognizedClasses) {
+      StackTraceElement stackTraceElement, ImmutableSet<String> recognizedClasses) {
     Class<?> stackClass;
     try {
       stackClass = loadClass(stackTraceElement.getClassName());
     } catch (ClassNotFoundException e) {
       return false;
     }
-    for (Class<?> recognizedClass : recognizedClasses) {
-      if (recognizedClass.isAssignableFrom(stackClass)) {
+    for (String recognizedClass : recognizedClasses) {
+      if (isSubtypeOf(stackClass, recognizedClass)) {
         return true;
       }
     }
