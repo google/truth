@@ -193,7 +193,7 @@ public final class FailureMetadata {
       if (!isLinkageError(probablyJunitNotOnClasspath)) {
         throw probablyJunitNotOnClasspath;
       }
-      failure = new AssertionErrorWithFacts(messages, concat(headFacts, tailFacts), cause);
+      failure = new AssertionErrorWithFacts(messages, facts, cause);
     }
     doFail(failure);
   }

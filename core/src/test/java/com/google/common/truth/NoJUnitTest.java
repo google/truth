@@ -18,6 +18,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableList;
+
 /** Truth-using binary to be run without JUnit on the classpath to verify that it still works. */
 public final class NoJUnitTest {
   public static void main(String[] args) {
@@ -25,6 +27,11 @@ public final class NoJUnitTest {
       assertThat("a").isEqualTo("b");
       throw new Error("assertion should have failed");
     } catch (AssertionError expected) {
+      ImmutableList<Fact> facts = ((AssertionErrorWithFacts) expected).facts();
+      assertThat(facts.get(0).key).isEqualTo("expected");
+      assertThat(facts.get(0).value).isEqualTo("b");
+      assertThat(facts.get(1).key).isEqualTo("but was");
+      assertThat(facts.get(1).value).isEqualTo("a");
     }
   }
 
