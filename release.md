@@ -87,11 +87,10 @@ git commit -am "[release] Release Truth ${NEW_VERSION}"
 
 ### Tag the release
 
-The release tags simply follow the format `release_MAJ_MIN[_PATCH]` so simply do
-this, for instance:
+The release tags simply follow the format `release_MAJ_MIN[_PATCH]`:
 
 ```shell
-git tag release_9_45 # fake numbers, change them to the correct ones.
+git tag release_${NEW_VERSION//./_}
 ```
 
 ### Build and deploy the release to sonatype
@@ -180,16 +179,16 @@ state used to generate that should be marked.  To push the above-mentioned
 tag to github, just do the standard git command:
 
 ```shell
-git push origin release_9_45 # fake numbers, change them to the correct ones.
+git push origin release_${NEW_VERSION//./_}
 ```
 
 ### Publish the release's javadocs.
 
 Run the generate release docs script from the project root setting the
-RELEASE_VERSION variable first, e.g.:
+RELEASE_VERSION variable first:
 
 ```
-RELEASE_VERSION=0.29 ./util/generate-latest-docs.sh
+RELEASE_VERSION=$NEW_VERSION ./util/generate-latest-docs.sh
 ```
 
 This will check out the gh-pages branch into a new subfolder, run the
