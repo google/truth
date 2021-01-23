@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Throwables.throwIfUnchecked;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
 
@@ -22,6 +23,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -231,7 +233,65 @@ final class Platform {
     }
   }
 
-  static boolean isLinkageError(Error e) {
-    return e instanceof LinkageError;
+  static AssertionError makeComparisonFailure(
+      ImmutableList<String> messages,
+      ImmutableList<Fact> facts,
+      String expected,
+      String actual,
+      @Nullable Throwable cause) {
+    Class<?> comparisonFailureClass;
+    try {
+      comparisonFailureClass = Class.forName("com.google.common.truth.ComparisonFailureWithFacts");
+    } catch (LinkageError | ClassNotFoundException probablyJunitNotOnClasspath) {
+      /*
+       * LinkageError makes sense, but ClassNotFoundException shouldn't happen:
+       * ComparisonFailureWithFacts should be there, even if its JUnit 4 dependency is not. But it's
+       * harmless to catch an "impossible" exception, and if someone decides to strip the class out
+       * (perhaps along with Platform.PlatformComparisonFailure, to satisfy a tool that is unhappy
+       * because it can't find the latter's superclass because JUnit 4 is also missing?), presumably
+       * we should still fall back to a plain AssertionError.
+       *
+       * TODO(cpovirk): Consider creating and using yet another class like AssertionErrorWithFacts,
+       * not actually extending ComparisonFailure but still exposing getExpected() and getActual()
+       * methods.
+       */
+      return new AssertionErrorWithFacts(messages, facts, cause);
+    }
+    Class<? extends AssertionError> asAssertionErrorSubclass =
+        comparisonFailureClass.asSubclass(AssertionError.class);
+
+    Constructor<? extends AssertionError> constructor;
+    try {
+      constructor =
+          asAssertionErrorSubclass.getDeclaredConstructor(
+              ImmutableList.class,
+              ImmutableList.class,
+              String.class,
+              String.class,
+              Throwable.class);
+    } catch (NoSuchMethodException e) {
+      // That constructor exists.
+      throw newLinkageError(e);
+    }
+
+    try {
+      return constructor.newInstance(messages, facts, expected, actual, cause);
+    } catch (InvocationTargetException e) {
+      throwIfUnchecked(e.getCause());
+      // That constructor has no `throws` clause.
+      throw newLinkageError(e);
+    } catch (InstantiationException e) {
+      // The class is a concrete class.
+      throw newLinkageError(e);
+    } catch (IllegalAccessException e) {
+      // We're accessing a class from within its package.
+      throw newLinkageError(e);
+    }
+  }
+
+  private static LinkageError newLinkageError(Throwable cause) {
+    LinkageError error = new LinkageError(cause.toString());
+    error.initCause(cause);
+    return error;
   }
 }

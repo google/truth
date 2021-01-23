@@ -50,10 +50,6 @@ final class Platform {
     return false;
   }
 
-  static boolean isLinkageError(Error e) {
-    return false;
-  }
-
   abstract static class PlatformComparisonFailure extends AssertionError {
     PlatformComparisonFailure(
         String message,
@@ -213,5 +209,28 @@ final class Platform {
     public boolean getUseGrouping() {
       return false;
     }
+  }
+
+  static AssertionError makeComparisonFailure(
+      ImmutableList<String> messages,
+      ImmutableList<Fact> facts,
+      String expected,
+      String actual,
+      @Nullable Throwable cause) {
+    /*
+     * Despite the name, the class we're creating extends AssertionError but not ComparisonFailure
+     * under GWT: See its supertype, PlatformComparisonFailure, above.
+     *
+     * We're actually creating the same class as the non-GWT version of this method does. So why do
+     * we have supersource for this method? It's because we can't run (and, fortunately, don't need
+     * to run) the reflective code we have for non-GWT users, who might or might not choose to
+     * exclude JUnit 4 from their classpath.
+     *
+     * TODO(cpovirk): Remove ComparisonFailureWithFacts and PlatformComparisonFailure entirely under
+     * GWT? That would let us merge them into a single class on the server. And as noted in the
+     * non-GWT copy of Platform, we could consider another custom type that exposes getExpected()
+     * and getActual(), even in the absence of ComparisonFailure. That type would work under GWT.
+     */
+    return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
   }
 }
