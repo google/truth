@@ -117,6 +117,17 @@ Note that this is just a guideline, not a hard and fast rule. If you're
 including a failure message or configuring parameters on a subject (e.g.
 `ProtoSubject`), then this may be an acceptable pattern.
 
+Still, there are advantages to direct assertions over methods that return a
+`Subject` -- and over helper methods that create a `Subject` and perform
+assertions _without_ returning it. Here are some advantages of direct assertions
+over various kinds of wrapping:
+
+-   Truth can more often generate a useful "value of" line.
+-   The components of the assertion (e.g., `contains`, `button.getText()`, and
+    `OK`) are likely to appear near one other in code (and in the usual order).
+-   Existing static analysis is more likely to detect bugs.
+-   The "act" and "assert" phases of a test are easier to keep separate.
+
 ## When writing my own Truth extension, how should I name my assertion methods? {#assertion-naming}
 
 *   If you're checking a property (e.g., `name`), use a `has` prefix (e.g.,
