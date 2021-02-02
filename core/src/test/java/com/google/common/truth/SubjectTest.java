@@ -707,20 +707,24 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings("EqualsIncompatibleType")
+  @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall"})
   public void equalsThrowsUSOE() {
     try {
       boolean unused = assertThat(5).equals(5);
     } catch (UnsupportedOperationException expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("If you meant to test object equality, use .isEqualTo(other) instead.");
+          .isEqualTo(
+              "Subject.equals() is not supported. Did you mean to call"
+                  + " assertThat(actual).isEqualTo(expected) instead of"
+                  + " assertThat(actual).equals(expected)?");
       return;
     }
     fail("Should have thrown.");
   }
 
   @Test
+  @SuppressWarnings("DoNotCall")
   public void hashCodeThrowsUSOE() {
     try {
       int unused = assertThat(5).hashCode();

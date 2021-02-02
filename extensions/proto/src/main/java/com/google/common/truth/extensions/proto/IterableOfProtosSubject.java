@@ -1089,12 +1089,14 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
       usingCorrespondence().containsNoneIn(excluded);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public boolean equals(Object o) {
       return subject.equals(o);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public int hashCode() {

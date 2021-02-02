@@ -43,6 +43,7 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
+import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.ForOverride;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -1087,21 +1088,27 @@ public class Subject {
 
   /**
    * @throws UnsupportedOperationException always
-   * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
-   *     test object equality between an expected and the actual value, use {@link
-   *     #isEqualTo(Object)} instead.
+   * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you are
+   *     writing a test assertion (actual vs. expected), use {@link #isEqualTo(Object)} instead.
    */
+  @DoNotCall(
+      "Subject.equals() is not supported. Did you mean to call"
+          + " assertThat(actual).isEqualTo(expected) instead of"
+          + " assertThat(actual).equals(expected)?")
   @Deprecated
   @Override
   public final boolean equals(@Nullable Object o) {
     throw new UnsupportedOperationException(
-        "If you meant to test object equality, use .isEqualTo(other) instead.");
+        "Subject.equals() is not supported. Did you mean to call"
+            + " assertThat(actual).isEqualTo(expected) instead of"
+            + " assertThat(actual).equals(expected)?");
   }
 
   /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#hashCode()} is not supported on Truth subjects.
    */
+  @DoNotCall("Subject.hashCode() is not supported.")
   @Deprecated
   @Override
   public final int hashCode() {

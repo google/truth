@@ -888,12 +888,14 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
           .containsExactlyEntriesIn(expectedMap);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public boolean equals(Object o) {
       return subject.equals(o);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public int hashCode() {

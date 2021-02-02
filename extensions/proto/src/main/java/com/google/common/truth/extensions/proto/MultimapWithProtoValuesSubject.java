@@ -926,12 +926,14 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
       return subject.usingCorrespondence(expectedValues).containsExactly(k0, v0, rest);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public boolean equals(Object o) {
       return subject.equals(o);
     }
 
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public int hashCode() {
