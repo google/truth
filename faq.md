@@ -123,7 +123,7 @@ assertions _without_ returning it. Here are some advantages of direct assertions
 over various kinds of wrapping:
 
 -   Truth can more often generate a useful "value of" line.
--   The components of the assertion (e.g., `contains`, `button.getText()`, and
+-   The components of the assertion (e.g., `button.getText()`, `contains`, and
     `OK`) are likely to appear near one other in code (and in the usual order).
 -   Existing static analysis is more likely to detect bugs.
 -   The "act" and "assert" phases of a test are easier to keep separate.
