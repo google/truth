@@ -39,8 +39,8 @@ points:
 -   Hamcrest is a more general "matching" library, used not only for making
     assertions but also for setting expections on mocking frameworks, with
     matchers composed together in arbitrary ways. But this flexibility requires
-    complex generics and makes it hard for Hamcrest to produce readable failure
-    messages.
+    [complex generics](https://dev.to/mpeng3/matt-s-tidbits-64-digging-into-some-ham-crest-assertions-47o7)
+    and makes it hard for Hamcrest to produce readable failure messages.
 
 ## Truth vs. AssertJ {#vs-assertj}
 
