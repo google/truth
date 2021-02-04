@@ -378,14 +378,29 @@ some cases in which AssertJ offers advantages:
 -   In order to support Android by default, Truth
     [makes it a little harder](faq#java8) to use assertions specific to Java 8
     types, like `Optional`.
--   Truth has a few puzzlers of its own. For example,
-    `assertThat(listOfStrings).doesNotContain(integer)` passes, even though your
-    test is probably buggy. Under AssertJ, it doesn't compile. (Truth's looser
-    types are [occasionally useful][pull-575-thread], but they may be more
-    [trouble][`CollectionIncompatibleType`] than they're worth.) We plan to add
-    static analysis to [Error Prone] to catch such bugs.
+-   Truth has a few puzzlers of its own. For example:
+
+    -   `assertThat(listOfStrings).doesNotContain(integer)` passes, even though
+        your test is probably buggy. Under AssertJ, it doesn't compile. (Truth's
+        looser types are [occasionally useful][pull-575-thread], but they may be
+        more [trouble][`CollectionIncompatibleType`] than they're worth.)
+    -   `assertThat(list).containsExactly(a, b, c)` does not check ordering in
+        Truth. To checker ordering, you must add `.inOrder()`. AssertJ's
+        `containsExactly` checks order (and AssertJ offers
+        `containsExactlyInAnyOrder` to ignore order). Both approaches have
+        advantages: With Truth, it is easier to accidentally write a test that
+        is weaker than intended, but it's harder to accidentally write one that
+        is brittle.
+
+    To catch some of these bugs, we have added
+    [runtime checks](https://github.com/google/truth/blob/219c0b13d52b0331ab65a781a3891e22c896d4a0/core/src/main/java/com/google/common/truth/Subject.java#L1103)
+    and [static analysis](https://errorprone.info/bugpattern/TruthIncompatibleType). For
+    static analysis, we recommend running [Error Prone], whether you use Truth,
+    AssertJ, or neither.
+
 -   If you're writing an extension, AssertJ offers [a tool][AssertJ-generator]
     to generate it for you.
+
 -   AssertJ supports multiple assertion calls on the same object in the same
     statement: `assertThat(list).contains(x, y).doesNotContain(z);`. Truth does
     not. Both libraries support "chaining" in the sense of a method that returns
@@ -397,6 +412,7 @@ some cases in which AssertJ offers advantages:
     convenient. Kotlin users of Truth can emulate AssertJ-style chaining by
     using [`apply`]: `assertThat(list).apply { contains(x, y) doesNotContain(z);
     }`
+
 -   AssertJ provides [a tool][AssertJ-migrator] to automatically migrate from
     JUnit and other libraries to AssertJ. Truth has one, but it's only for
     JUnit, and it's currently only available inside Google.
