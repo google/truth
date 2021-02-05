@@ -1115,9 +1115,16 @@ public class Subject {
     throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
   }
 
+  /**
+   * @throws UnsupportedOperationException always
+   * @deprecated {@link Object#toString()} is not supported on Truth subjects.
+   */
+  @Deprecated
   @Override
   public String toString() {
-    return getClass().getName() + "(" + actualCustomStringRepresentation() + ")";
+    throw new UnsupportedOperationException(
+        "Subject.toString() is not supported. Did you mean to call assertThat(foo.toString())"
+            + " instead of assertThat(foo).toString()?");
   }
 
   /**
