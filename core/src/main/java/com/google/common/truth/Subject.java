@@ -1121,7 +1121,8 @@ public class Subject {
    */
   @Deprecated
   @Override
-  public String toString() {
+  public
+  String toString() {
     throw new UnsupportedOperationException(
         "Subject.toString() is not supported. Did you mean to call assertThat(foo.toString())"
             + " instead of assertThat(foo).toString()?");
