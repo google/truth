@@ -40,6 +40,11 @@ message TestMessage2 {
   map<string, TestMessage2> test_message_map = 17;
   optional .google.protobuf.Any o_any_message = 18;
   repeated .google.protobuf.Any r_any_message = 19;
+
+  oneof oneof_field {
+    TestMessage2 oneof_message1 = 20;
+    TestMessage2 oneof_message2 = 21;
+  }
 }
 
 message RequiredStringMessage2 {

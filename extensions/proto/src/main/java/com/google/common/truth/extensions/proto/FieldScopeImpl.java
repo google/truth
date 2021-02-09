@@ -81,22 +81,8 @@ abstract class FieldScopeImpl extends FieldScope {
         "Cannot create scope from messages with different descriptors: %s",
         getDescriptors(messages));
 
-    Message.Builder builder = null;
-    for (Message message : messages) {
-      if (message == null) {
-        continue;
-      }
-
-      if (builder != null) {
-        builder.mergeFrom(message);
-      } else {
-        builder = message.toBuilder();
-      }
-    }
-
-    Message aggregateMessage = builder.build();
     return create(
-        FieldScopeLogic.partialScope(aggregateMessage),
+        FieldScopeLogic.partialScope(messages, optDescriptor.get()),
         Functions.constant(String.format("FieldScopes.fromSetFields(%s)", formatList(messages))));
   }
 

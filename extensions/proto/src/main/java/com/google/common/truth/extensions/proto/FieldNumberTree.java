@@ -117,6 +117,16 @@ final class FieldNumberTree {
     return tree;
   }
 
+  static FieldNumberTree fromMessages(Iterable<? extends Message> messages) {
+    FieldNumberTree tree = new FieldNumberTree();
+    for (Message message : messages) {
+      if (message != null) {
+        tree.merge(fromMessage(message));
+      }
+    }
+    return tree;
+  }
+
   private static FieldNumberTree fromUnknownFieldSet(UnknownFieldSet unknownFieldSet) {
     FieldNumberTree tree = new FieldNumberTree();
     for (int fieldNumber : unknownFieldSet.asMap().keySet()) {

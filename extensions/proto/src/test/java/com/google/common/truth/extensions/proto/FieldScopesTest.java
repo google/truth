@@ -508,15 +508,45 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testFromSetFields_comparingExpectedFieldsOnly()
+      throws InvalidProtocolBufferException {
+
+    Message message1 = parse("o_int: 1 o_double: 333 oneof_message1: { o_int: 3 o_double: 333 }");
+    Message message2 =
+        parse("o_int: 333 o_double: 1.2 oneof_message2: { o_int: 333 o_double: 3.14 }");
+    Message diffMessage1 = parse("o_int: 1 oneof_message1: { o_int: 4 }");
+    Message diffMessage2 = parse("o_double: 1.2 oneof_message2: { o_double: 4.14 }");
+    Message eqMessage1 = parse("o_int: 1 oneof_message1: { o_int: 3 }");
+    Message eqMessage2 = parse("o_double: 1.2 oneof_message2: { o_double: 3.14 }");
+
+    expectThat(message1).comparingExpectedFieldsOnly().isEqualTo(eqMessage1);
+    expectThat(message2).comparingExpectedFieldsOnly().isEqualTo(eqMessage2);
+    expectFailureWhenTesting().that(message1).comparingExpectedFieldsOnly().isEqualTo(diffMessage1);
+    expectFailureWhenTesting().that(message2).comparingExpectedFieldsOnly().isEqualTo(diffMessage2);
+
+    expectThat(listOf(message1, message2))
+        .comparingExpectedFieldsOnly()
+        .containsExactly(eqMessage1, eqMessage2);
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .comparingExpectedFieldsOnly()
+        .containsExactly(diffMessage1, eqMessage2);
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .comparingExpectedFieldsOnly()
+        .containsExactly(eqMessage1, diffMessage2);
+  }
+
+  @Test
   public void testFromSetFields_unknownFields() throws InvalidProtocolBufferException {
     // Make sure that merging of repeated fields, separation by tag number, and separation by
     // unknown field type all work.
     Message scopeMessage =
         fromUnknownFields(
             UnknownFieldSet.newBuilder()
-                .addField(20, Field.newBuilder().addFixed32(1).addFixed64(1).build())
+                .addField(333, Field.newBuilder().addFixed32(1).addFixed64(1).build())
                 .addField(
-                    21,
+                    444,
                     Field.newBuilder()
                         .addVarint(1)
                         .addLengthDelimited(ByteString.copyFrom("1", UTF_8))
@@ -535,9 +565,9 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message message =
         fromUnknownFields(
             UnknownFieldSet.newBuilder()
-                .addField(19, Field.newBuilder().addFixed32(2).addFixed64(2).build())
+                .addField(222, Field.newBuilder().addFixed32(2).addFixed64(2).build())
                 .addField(
-                    20,
+                    333,
                     Field.newBuilder()
                         .addFixed32(1)
                         .addFixed64(1)
@@ -549,7 +579,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                                 .build())
                         .build())
                 .addField(
-                    21,
+                    444,
                     Field.newBuilder()
                         .addFixed32(2)
                         .addFixed64(2)
@@ -566,9 +596,9 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message diffMessage =
         fromUnknownFields(
             UnknownFieldSet.newBuilder()
-                .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                .addField(222, Field.newBuilder().addFixed32(3).addFixed64(3).build())
                 .addField(
-                    20,
+                    333,
                     Field.newBuilder()
                         .addFixed32(4)
                         .addFixed64(4)
@@ -580,7 +610,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                                 .build())
                         .build())
                 .addField(
-                    21,
+                    444,
                     Field.newBuilder()
                         .addFixed32(3)
                         .addFixed64(3)
@@ -597,9 +627,9 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message eqMessage =
         fromUnknownFields(
             UnknownFieldSet.newBuilder()
-                .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                .addField(222, Field.newBuilder().addFixed32(3).addFixed64(3).build())
                 .addField(
-                    20,
+                    333,
                     Field.newBuilder()
                         .addFixed32(1)
                         .addFixed64(1)
@@ -611,7 +641,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                                 .build())
                         .build())
                 .addField(
-                    21,
+                    444,
                     Field.newBuilder()
                         .addFixed32(3)
                         .addFixed64(3)

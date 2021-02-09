@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableList;
@@ -244,13 +245,13 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
   }
 
   private static final class RootPartialScopeLogic extends PartialScopeLogic {
-    private final Message message;
+    private final String repr;
     private final Descriptor expectedDescriptor;
 
-    RootPartialScopeLogic(Message message) {
-      super(FieldNumberTree.fromMessage(message));
-      this.message = message;
-      this.expectedDescriptor = message.getDescriptorForType();
+    RootPartialScopeLogic(FieldNumberTree fieldNumberTree, String repr, Descriptor descriptor) {
+      super(fieldNumberTree);
+      this.repr = repr;
+      this.expectedDescriptor = descriptor;
     }
 
     @Override
@@ -270,12 +271,20 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
 
     @Override
     public String toString() {
-      return String.format("FieldScopes.fromSetFields(%s)", message);
+      return String.format("FieldScopes.fromSetFields(%s)", repr);
     }
   }
 
   static FieldScopeLogic partialScope(Message message) {
-    return new RootPartialScopeLogic(message);
+    return new RootPartialScopeLogic(
+        FieldNumberTree.fromMessage(message), message.toString(), message.getDescriptorForType());
+  }
+
+  static FieldScopeLogic partialScope(Iterable<? extends Message> messages, Descriptor descriptor) {
+    return new RootPartialScopeLogic(
+        FieldNumberTree.fromMessages(messages),
+        Joiner.on(", ").useForNull("null").join(messages),
+        descriptor);
   }
 
   // TODO(user): Performance: Optimize FieldNumbersLogic and FieldDescriptorsLogic for
