@@ -27,7 +27,6 @@ import com.google.common.base.Verify;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Correspondence;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
@@ -56,6 +55,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
           .setDoubleCorrespondenceMap(FieldScopeLogicMap.<Correspondence<Number, Number>>empty())
           .setFloatCorrespondenceMap(FieldScopeLogicMap.<Correspondence<Number, Number>>empty())
           .setCompareExpectedFieldsOnly(false)
+          .setHasExpectedMessages(false)
           .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
           .setUnpackingAnyUsing(TypeRegistry.getEmptyTypeRegistry(), ExtensionRegistry.getEmptyRegistry())
@@ -93,13 +93,10 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   abstract boolean compareExpectedFieldsOnly();
 
-  // The full list of non-null Messages in the 'expected' part of the assertion.  When set, the
-  // FieldScopeLogic should be narrowed appropriately if 'compareExpectedFieldsOnly()' is true.
-  //
-  // This field will be absent while the assertion is being composed, but *must* be set before
-  // passed to a message differencer.  We check this to ensure no assertion path forgets to pass
-  // along the expected protos.
-  abstract Optional<ImmutableList<Message>> expectedMessages();
+  // Whether 'withExpectedMessages()' has been invoked. This is a book-keeping boolean to ensure
+  // that 'compareExpectedFieldsOnly()' functions properly; we check that the expected messages are
+  // provided before we do any diffing, as an internal sanity check.
+  abstract boolean hasExpectedMessages();
 
   abstract FieldScopeLogic compareFieldsScope();
 
@@ -274,13 +271,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   }
 
   final FluentEqualityConfig withExpectedMessages(Iterable<? extends Message> messages) {
-    ImmutableList.Builder<Message> listBuilder = ImmutableList.builder();
-    for (Message message : messages) {
-      if (message != null) {
-        listBuilder.add(message);
-      }
-    }
-    Builder builder = toBuilder().setExpectedMessages(listBuilder.build());
+    Builder builder = toBuilder().setHasExpectedMessages(true);
     if (compareExpectedFieldsOnly()) {
       builder.setCompareFieldsScope(
           FieldScopeLogic.and(compareFieldsScope(), FieldScopes.fromSetFields(messages).logic()));
@@ -376,13 +367,13 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   final ProtoTruthMessageDifferencer toMessageDifferencer(Descriptor descriptor) {
-    checkState(expectedMessages().isPresent(), "expectedMessages() not set");
+    checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return messageDifferencers.getUnchecked(descriptor);
   }
 
   final <M extends Message> Correspondence<M, M> toCorrespondence(
       final Optional<Descriptor> optDescriptor) {
-    checkState(expectedMessages().isPresent(), "expectedMessages() not set");
+    checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return Correspondence.from(
             // If we were allowed lambdas, this would be:
             // (M a, M e) ->
@@ -442,7 +433,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
     abstract Builder setCompareExpectedFieldsOnly(boolean compare);
 
-    abstract Builder setExpectedMessages(ImmutableList<Message> messages);
+    abstract Builder setHasExpectedMessages(boolean hasExpectedMessages);
 
     abstract Builder setCompareFieldsScope(FieldScopeLogic fieldScopeLogic);
 
