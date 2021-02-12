@@ -2,7 +2,7 @@ source "https://rubygems.org"
 ruby RUBY_VERSION
 
 gem "github-pages", group: :jekyll_plugins
-gem 'nokogiri', '~> 1.10.8'
+gem 'nokogiri', '~> 1.11.0'
 
 # If you have any plugins, put them here!
 # group :jekyll_plugins do
