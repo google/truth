@@ -97,11 +97,6 @@
         <version>${auto-value.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.auto.value</groupId>
-        <artifactId>auto-value</artifactId>
-        <version>${auto-value.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava-gwt</artifactId>
         <version>${guava.jre.version}</version>
