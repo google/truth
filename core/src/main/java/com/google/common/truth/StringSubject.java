@@ -125,6 +125,11 @@ public class StringSubject extends ComparableSubject<String> {
             fact("expected to match", regex),
             fact("but was", actual),
             simpleFact("Looks like you want to use .isEqualTo() for an exact equality assertion."));
+      } else if (Platform.containsMatch(actual, regex)) {
+        failWithoutActual(
+            fact("expected to match", regex),
+            fact("but was", actual),
+            simpleFact("Did you mean to call containsMatch() instead of match()?"));
       } else {
         failWithActual("expected to match", regex);
       }
@@ -145,6 +150,11 @@ public class StringSubject extends ComparableSubject<String> {
             simpleFact(
                 "If you want an exact equality assertion you can escape your regex with"
                     + " Pattern.quote()."));
+      } else if (regex.matcher(actual).find()) {
+        failWithoutActual(
+                fact("expected to match", regex),
+                fact("but was", actual),
+                simpleFact("Did you mean to call containsMatch() instead of match()?"));
       } else {
         failWithActual("expected to match", regex);
       }

@@ -216,6 +216,16 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringMatchesStringLiteralFailButContainsMatchSuccess() {
+    expectFailureWhenTestingThat("aba").matches("[b]");
+    assertFailureValue("expected to match", "[b]");
+    assertFailureValue("but was", "aba");
+    assertThat(expectFailure.getFailure())
+            .factKeys()
+            .contains("Did you mean to call containsMatch() instead of match()?");
+  }
+
+  @Test
   @GwtIncompatible("Pattern")
   public void stringMatchesPattern() {
     assertThat("abcaaadev").matches(Pattern.compile(".*aaa.*"));
@@ -246,6 +256,17 @@ public class StringSubjectTest extends BaseSubjectTestCase {
         .contains(
             "If you want an exact equality assertion you can escape your regex with"
                 + " Pattern.quote().");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringMatchesPatternLiteralFailButContainsMatchSuccess() {
+    expectFailureWhenTestingThat("aba").matches(Pattern.compile("[b]"));
+    assertFailureValue("expected to match", "[b]");
+    assertFailureValue("but was", "aba");
+    assertThat(expectFailure.getFailure())
+            .factKeys()
+            .contains("Did you mean to call containsMatch() instead of match()?");
   }
 
   @Test
