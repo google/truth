@@ -35,7 +35,7 @@ public class CorrespondenceSubclassToFactoryCallTest {
         CompilationTestHelper.newInstance(CorrespondenceSubclassToFactoryCall.class, getClass());
     refactoringHelper =
         BugCheckerRefactoringTestHelper.newInstance(
-            new CorrespondenceSubclassToFactoryCall(), getClass());
+            CorrespondenceSubclassToFactoryCall.class, getClass());
   }
 
   @Test
