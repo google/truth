@@ -1,5 +1,5 @@
 [![Main Site][gh-pages-shield]][gh-pages-link]
-[![Build Status][travis-shield]][travis-link]
+[![Build Status][ci-shield]][ci-link]
 [![Maven Release][maven-shield]][maven-link]
 [![Stackoverflow][stackoverflow-shield]][stackoverflow-link]
 
@@ -25,8 +25,8 @@ Read more at [the main website](https://truth.dev).
 [Guava]: https://github.com/google/guava
 [gh-pages-shield]: https://img.shields.io/badge/main%20site-truth.dev-ff55ff.png?style=flat
 [gh-pages-link]: https://truth.dev/
-[travis-shield]: https://img.shields.io/travis/google/truth.png
-[travis-link]: https://travis-ci.org/google/truth
+[ci-shield]: https://github.com/google/truth/workflows/CI/badge.svg?branch=master
+[ci-link]: https://github.com/google/truth/actions
 [maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png
 [maven-link]: https://search.maven.org/artifact/com.google.truth/truth
 [stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-google‐truth-5555ff.png?style=flat
