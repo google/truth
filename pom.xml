@@ -23,7 +23,7 @@
     <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
 
     <!-- Properties for multiple-artifact deps. -->
-    <auto-value.version>1.7.4</auto-value.version>
+    <auto-value.version>1.7.5</auto-value.version>
     <!--
       We have a separate property for each flavor of Guava (instead of a shared
       version without the -android and -jre suffixes) because that lets
