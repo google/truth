@@ -3,6 +3,6 @@
   <inherits name="com.google.common.collect.Collect"/>
   <inherits name="com.google.common.primitives.Primitives"/>
   <inherits name="com.google.common.truth.Truth"/>
-   <!-- TODO(cpovirk): Test Truth8 separately. -->
+  <!-- TODO(cpovirk): Test Truth8. -->
   <inherits name="com.google.gwt.junit.JUnit"/>
 </module>
