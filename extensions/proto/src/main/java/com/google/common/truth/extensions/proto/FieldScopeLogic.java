@@ -313,11 +313,12 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     @Override
     final FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      if (fieldDescriptorOrUnknown.unknownFieldDescriptor().isPresent()) {
+      if (fieldDescriptorOrUnknown.kind()
+          == FieldDescriptorOrUnknown.Kind.UNKNOWN_FIELD_DESCRIPTOR) {
         return FieldScopeResult.EXCLUDED_RECURSIVELY;
       }
 
-      FieldDescriptor fieldDescriptor = fieldDescriptorOrUnknown.fieldDescriptor().get();
+      FieldDescriptor fieldDescriptor = fieldDescriptorOrUnknown.fieldDescriptor();
       if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
         return FieldScopeResult.of(/* included = */ true, isRecursive);
       }

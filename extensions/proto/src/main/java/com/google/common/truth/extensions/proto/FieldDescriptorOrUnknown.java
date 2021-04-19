@@ -16,35 +16,40 @@
 
 package com.google.common.truth.extensions.proto;
 
-import com.google.auto.value.AutoValue;
-import com.google.common.base.Optional;
+import com.google.auto.value.AutoOneOf;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
-/** An 'Either' of a {@link FieldDescriptor} or {@link UnknownFieldDescriptor}. */
-@AutoValue
+@AutoOneOf(FieldDescriptorOrUnknown.Kind.class)
 abstract class FieldDescriptorOrUnknown {
-  static FieldDescriptorOrUnknown fromFieldDescriptor(FieldDescriptor fieldDescriptor) {
-    return new AutoValue_FieldDescriptorOrUnknown(
-        Optional.of(fieldDescriptor), Optional.<UnknownFieldDescriptor>absent());
+  enum Kind {
+    FIELD_DESCRIPTOR,
+    UNKNOWN_FIELD_DESCRIPTOR;
   }
 
-  static FieldDescriptorOrUnknown fromUnknown(UnknownFieldDescriptor unknownFieldDescriptor) {
-    return new AutoValue_FieldDescriptorOrUnknown(
-        Optional.<FieldDescriptor>absent(), Optional.of(unknownFieldDescriptor));
-  }
+  abstract Kind kind();
 
-  abstract Optional<FieldDescriptor> fieldDescriptor();
+  abstract FieldDescriptor fieldDescriptor();
 
-  abstract Optional<UnknownFieldDescriptor> unknownFieldDescriptor();
+  abstract UnknownFieldDescriptor unknownFieldDescriptor();
 
   /** Returns a short, human-readable version of this identifier. */
   final String shortName() {
-    if (fieldDescriptor().isPresent()) {
-      return fieldDescriptor().get().isExtension()
-          ? "[" + fieldDescriptor().get() + "]"
-          : fieldDescriptor().get().getName();
-    } else {
-      return String.valueOf(unknownFieldDescriptor().get().fieldNumber());
+    switch (kind()) {
+      case FIELD_DESCRIPTOR:
+        return fieldDescriptor().isExtension()
+            ? "[" + fieldDescriptor() + "]"
+            : fieldDescriptor().getName();
+      case UNKNOWN_FIELD_DESCRIPTOR:
+        return String.valueOf(unknownFieldDescriptor().fieldNumber());
     }
+    throw new AssertionError(kind());
+  }
+
+  static FieldDescriptorOrUnknown of(FieldDescriptor fieldDescriptor) {
+    return AutoOneOf_FieldDescriptorOrUnknown.fieldDescriptor(fieldDescriptor);
+  }
+
+  static FieldDescriptorOrUnknown of(UnknownFieldDescriptor unknownFieldDescriptor) {
+    return AutoOneOf_FieldDescriptorOrUnknown.unknownFieldDescriptor(unknownFieldDescriptor);
   }
 }

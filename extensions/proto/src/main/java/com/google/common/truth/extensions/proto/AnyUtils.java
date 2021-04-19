@@ -36,7 +36,7 @@ class AnyUtils {
   }
 
   private static final FieldDescriptorOrUnknown TYPE_URL_FIELD_DESCRIPTOR_OR_UNKNOWN =
-      FieldDescriptorOrUnknown.fromFieldDescriptor(TYPE_URL_FIELD_DESCRIPTOR);
+      FieldDescriptorOrUnknown.of(TYPE_URL_FIELD_DESCRIPTOR);
 
   static FieldDescriptorOrUnknown typeUrlFieldDescriptorOrUnknown() {
     return TYPE_URL_FIELD_DESCRIPTOR_OR_UNKNOWN;
@@ -50,7 +50,7 @@ class AnyUtils {
   }
 
   private static final FieldDescriptorOrUnknown VALUE_FIELD_DESCRIPTOR_OR_UNKNOWN =
-      FieldDescriptorOrUnknown.fromFieldDescriptor(VALUE_FIELD_DESCRIPTOR);
+      FieldDescriptorOrUnknown.of(VALUE_FIELD_DESCRIPTOR);
 
   static FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown() {
     return VALUE_FIELD_DESCRIPTOR_OR_UNKNOWN;

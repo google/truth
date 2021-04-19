@@ -601,11 +601,13 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
   }
 
   private static String valueString(FieldDescriptorOrUnknown fieldDescriptorOrUnknown, Object o) {
-    if (fieldDescriptorOrUnknown.fieldDescriptor().isPresent()) {
-      return valueString(fieldDescriptorOrUnknown.fieldDescriptor().get(), o);
-    } else {
-      return valueString(fieldDescriptorOrUnknown.unknownFieldDescriptor().get(), o);
+    switch (fieldDescriptorOrUnknown.kind()) {
+      case FIELD_DESCRIPTOR:
+        return valueString(fieldDescriptorOrUnknown.fieldDescriptor(), o);
+      case UNKNOWN_FIELD_DESCRIPTOR:
+        return valueString(fieldDescriptorOrUnknown.unknownFieldDescriptor(), o);
     }
+    throw new AssertionError(fieldDescriptorOrUnknown.kind());
   }
 
   private static String valueString(FieldDescriptor fieldDescriptor, Object o) {

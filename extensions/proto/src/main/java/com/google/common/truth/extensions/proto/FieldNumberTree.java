@@ -16,8 +16,6 @@
 
 package com.google.common.truth.extensions.proto;
 
-import com.google.auto.value.AutoValue;
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -41,31 +39,8 @@ final class FieldNumberTree {
     return EMPTY;
   }
 
-  @AutoValue
-  abstract static class Key {
-    abstract Optional<Integer> knownFieldNumber();
-
-    abstract Optional<UnknownFieldDescriptor> unknownFieldDescriptor();
-
-    static Key fromFieldDescriptorOrUnknown(FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      return fieldDescriptorOrUnknown.fieldDescriptor().isPresent()
-          ? known(fieldDescriptorOrUnknown.fieldDescriptor().get().getNumber())
-          : unknown(fieldDescriptorOrUnknown.unknownFieldDescriptor().get());
-    }
-
-    static Key known(int fieldNumber) {
-      return new AutoValue_FieldNumberTree_Key(
-          Optional.of(fieldNumber), Optional.<UnknownFieldDescriptor>absent());
-    }
-
-    static Key unknown(UnknownFieldDescriptor unknownFieldDescriptor) {
-      return new AutoValue_FieldNumberTree_Key(
-          Optional.<Integer>absent(), Optional.of(unknownFieldDescriptor));
-    }
-  }
-
   // Modified only during [factory] construction, never changed afterwards.
-  private final Map<Key, FieldNumberTree> children = Maps.newHashMap();
+  private final Map<FieldDescriptorOrUnknown, FieldNumberTree> children = Maps.newHashMap();
 
   /** Returns whether this {@code FieldNumberTree} has no children. */
   boolean isEmpty() {
@@ -78,14 +53,13 @@ final class FieldNumberTree {
    * <p>{@code empty()} if there is none.
    */
   FieldNumberTree child(FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    FieldNumberTree child =
-        children.get(Key.fromFieldDescriptorOrUnknown(fieldDescriptorOrUnknown));
+    FieldNumberTree child = children.get(fieldDescriptorOrUnknown);
     return child == null ? EMPTY : child;
   }
 
   /** Returns whether this tree has a child for this node. */
   boolean hasChild(FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    return children.containsKey(Key.fromFieldDescriptorOrUnknown(fieldDescriptorOrUnknown));
+    return children.containsKey(fieldDescriptorOrUnknown);
   }
 
   static FieldNumberTree fromMessage(Message message) {
@@ -94,9 +68,9 @@ final class FieldNumberTree {
     // Known fields.
     Map<FieldDescriptor, Object> knownFieldValues = message.getAllFields();
     for (FieldDescriptor field : knownFieldValues.keySet()) {
-      Key key = Key.known(field.getNumber());
+      FieldDescriptorOrUnknown fieldDescriptorOrUnknown = FieldDescriptorOrUnknown.of(field);
       FieldNumberTree childTree = new FieldNumberTree();
-      tree.children.put(key, childTree);
+      tree.children.put(fieldDescriptorOrUnknown, childTree);
 
       Object fieldValue = knownFieldValues.get(field);
       if (field.getJavaType() == FieldDescriptor.JavaType.MESSAGE) {
@@ -133,9 +107,10 @@ final class FieldNumberTree {
       UnknownFieldSet.Field unknownField = unknownFieldSet.asMap().get(fieldNumber);
       for (UnknownFieldDescriptor unknownFieldDescriptor :
           UnknownFieldDescriptor.descriptors(fieldNumber, unknownField)) {
-        Key key = Key.unknown(unknownFieldDescriptor);
+        FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
+            FieldDescriptorOrUnknown.of(unknownFieldDescriptor);
         FieldNumberTree childTree = new FieldNumberTree();
-        tree.children.put(key, childTree);
+        tree.children.put(fieldDescriptorOrUnknown, childTree);
 
         if (unknownFieldDescriptor.type() == UnknownFieldDescriptor.Type.GROUP) {
           for (Object group : unknownFieldDescriptor.type().getValues(unknownField)) {
@@ -150,12 +125,12 @@ final class FieldNumberTree {
 
   /** Adds the other tree onto this one. May destroy {@code other} in the process. */
   private void merge(FieldNumberTree other) {
-    for (Key key : other.children.keySet()) {
-      FieldNumberTree value = other.children.get(key);
-      if (!this.children.containsKey(key)) {
-        this.children.put(key, value);
+    for (FieldDescriptorOrUnknown fieldDescriptorOrUnknown : other.children.keySet()) {
+      FieldNumberTree value = other.children.get(fieldDescriptorOrUnknown);
+      if (!this.children.containsKey(fieldDescriptorOrUnknown)) {
+        this.children.put(fieldDescriptorOrUnknown, value);
       } else {
-        this.children.get(key).merge(value);
+        this.children.get(fieldDescriptorOrUnknown).merge(value);
       }
     }
   }
