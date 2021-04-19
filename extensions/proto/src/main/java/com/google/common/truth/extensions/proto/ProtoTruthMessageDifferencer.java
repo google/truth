@@ -104,10 +104,9 @@ final class ProtoTruthMessageDifferencer {
       // the field will be considered ignored in the final diff report if no sub-fields get compared
       // (i.e., the sub-DiffResult winds up empty). This allows us support FieldScopeLogic
       // disjunctions without repeating recursive work.
-      FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-          FieldDescriptorOrUnknown.of(fieldDescriptor);
+      SubScopeId subScopeId = SubScopeId.of(fieldDescriptor);
       FieldScopeResult shouldCompare =
-          config.compareFieldsScope().policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+          config.compareFieldsScope().policyFor(rootDescriptor, subScopeId);
       if (shouldCompare == FieldScopeResult.EXCLUDED_RECURSIVELY) {
         builder.addSingularField(
             fieldDescriptor.getNumber(), SingularField.ignored(name(fieldDescriptor)));
@@ -128,19 +127,15 @@ final class ProtoTruthMessageDifferencer {
                   expectedMap,
                   actualAndExpectedKeys,
                   fieldDescriptor,
-                  config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                  config.subScope(rootDescriptor, subScopeId)));
         } else {
           List<?> actualList = toProtoList(actualFields.get(fieldDescriptor));
           List<?> expectedList = toProtoList(expectedFields.get(fieldDescriptor));
 
           boolean ignoreRepeatedFieldOrder =
-              config
-                  .ignoreRepeatedFieldOrderScope()
-                  .contains(rootDescriptor, fieldDescriptorOrUnknown);
+              config.ignoreRepeatedFieldOrderScope().contains(rootDescriptor, subScopeId);
           boolean ignoreExtraRepeatedFieldElements =
-              config
-                  .ignoreExtraRepeatedFieldElementsScope()
-                  .contains(rootDescriptor, fieldDescriptorOrUnknown);
+              config.ignoreExtraRepeatedFieldElementsScope().contains(rootDescriptor, subScopeId);
           if (ignoreRepeatedFieldOrder) {
             builder.addRepeatedField(
                 fieldDescriptor.getNumber(),
@@ -150,7 +145,7 @@ final class ProtoTruthMessageDifferencer {
                     shouldCompare == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                     fieldDescriptor,
                     ignoreExtraRepeatedFieldElements,
-                    config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                    config.subScope(rootDescriptor, subScopeId)));
           } else if (ignoreExtraRepeatedFieldElements && !expectedList.isEmpty()) {
             builder.addRepeatedField(
                 fieldDescriptor.getNumber(),
@@ -159,7 +154,7 @@ final class ProtoTruthMessageDifferencer {
                     expectedList,
                     shouldCompare == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                     fieldDescriptor,
-                    config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                    config.subScope(rootDescriptor, subScopeId)));
           } else {
             builder.addAllSingularFields(
                 fieldDescriptor.getNumber(),
@@ -168,7 +163,7 @@ final class ProtoTruthMessageDifferencer {
                     expectedList,
                     shouldCompare == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                     fieldDescriptor,
-                    config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                    config.subScope(rootDescriptor, subScopeId)));
           }
         }
       } else {
@@ -181,7 +176,7 @@ final class ProtoTruthMessageDifferencer {
                 shouldCompare == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 fieldDescriptor,
                 name(fieldDescriptor),
-                config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                config.subScope(rootDescriptor, subScopeId)));
       }
     }
 
@@ -201,9 +196,7 @@ final class ProtoTruthMessageDifferencer {
 
     // Compare the TypeUrl fields.
     FieldScopeResult shouldCompareTypeUrl =
-        config
-            .compareFieldsScope()
-            .policyFor(rootDescriptor, AnyUtils.typeUrlFieldDescriptorOrUnknown());
+        config.compareFieldsScope().policyFor(rootDescriptor, AnyUtils.typeUrlSubScopeId());
     SingularField typeUrlDiffResult;
     if (!shouldCompareTypeUrl.included()) {
       typeUrlDiffResult = SingularField.ignored(name(AnyUtils.typeUrlFieldDescriptor()));
@@ -215,16 +208,14 @@ final class ProtoTruthMessageDifferencer {
               /* defaultValue= */ "",
               AnyUtils.typeUrlFieldDescriptor(),
               name(AnyUtils.typeUrlFieldDescriptor()),
-              config.subScope(rootDescriptor, AnyUtils.typeUrlFieldDescriptorOrUnknown()));
+              config.subScope(rootDescriptor, AnyUtils.typeUrlSubScopeId()));
     }
     builder.addSingularField(Any.TYPE_URL_FIELD_NUMBER, typeUrlDiffResult);
 
     // Try to unpack the value fields using the TypeRegister and url from the type_url field. If
     // that does not work then we revert to the original behaviour compare the bytes strings.
     FieldScopeResult shouldCompareValue =
-        config
-            .compareFieldsScope()
-            .policyFor(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown());
+        config.compareFieldsScope().policyFor(rootDescriptor, AnyUtils.valueSubScopeId());
     SingularField valueDiffResult;
     if (shouldCompareValue == FieldScopeResult.EXCLUDED_RECURSIVELY) {
       valueDiffResult = SingularField.ignored(name(AnyUtils.valueFieldDescriptor()));
@@ -243,7 +234,7 @@ final class ProtoTruthMessageDifferencer {
                 shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 AnyUtils.valueFieldDescriptor(),
                 name(AnyUtils.valueFieldDescriptor()),
-                config.subScope(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown()));
+                config.subScope(rootDescriptor, AnyUtils.valueSubScopeId()));
       } else {
         valueDiffResult =
             compareSingularValue(
@@ -253,7 +244,7 @@ final class ProtoTruthMessageDifferencer {
                 shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 AnyUtils.valueFieldDescriptor(),
                 name(AnyUtils.valueFieldDescriptor()),
-                config.subScope(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown()));
+                config.subScope(rootDescriptor, AnyUtils.valueSubScopeId()));
       }
     }
     builder.addSingularField(Any.VALUE_FIELD_NUMBER, valueDiffResult);
@@ -314,12 +305,11 @@ final class ProtoTruthMessageDifferencer {
       FluentEqualityConfig mapConfig) {
     FieldDescriptor keyFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(1);
     FieldDescriptor valueFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(2);
-    FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown =
-        FieldDescriptorOrUnknown.of(valueFieldDescriptor);
+    SubScopeId valueSubScopeId = SubScopeId.of(valueFieldDescriptor);
 
     // We never ignore the key, no matter what the logic dictates.
     FieldScopeResult compareValues =
-        mapConfig.compareFieldsScope().policyFor(rootDescriptor, valueFieldDescriptorOrUnknown);
+        mapConfig.compareFieldsScope().policyFor(rootDescriptor, valueSubScopeId);
     if (compareValues == FieldScopeResult.EXCLUDED_RECURSIVELY) {
       return ImmutableList.of(SingularField.ignored(name(mapFieldDescriptor)));
     }
@@ -327,10 +317,9 @@ final class ProtoTruthMessageDifferencer {
     boolean ignoreExtraRepeatedFieldElements =
         mapConfig
             .ignoreExtraRepeatedFieldElementsScope()
-            .contains(rootDescriptor, FieldDescriptorOrUnknown.of(mapFieldDescriptor));
+            .contains(rootDescriptor, SubScopeId.of(mapFieldDescriptor));
 
-    FluentEqualityConfig valuesConfig =
-        mapConfig.subScope(rootDescriptor, valueFieldDescriptorOrUnknown);
+    FluentEqualityConfig valuesConfig = mapConfig.subScope(rootDescriptor, valueSubScopeId);
 
     ImmutableList.Builder<SingularField> builder =
         ImmutableList.builderWithExpectedSize(actualAndExpectedKeys.size());
@@ -670,9 +659,7 @@ final class ProtoTruthMessageDifferencer {
 
     // Use the default if it's set and we're ignoring field absence.
     boolean ignoreFieldAbsence =
-        config
-            .ignoreFieldAbsenceScope()
-            .contains(rootDescriptor, FieldDescriptorOrUnknown.of(fieldDescriptor));
+        config.ignoreFieldAbsenceScope().contains(rootDescriptor, SubScopeId.of(fieldDescriptor));
     actual = orIfIgnoringFieldAbsence(actual, defaultValue, ignoreFieldAbsence);
     expected = orIfIgnoringFieldAbsence(expected, defaultValue, ignoreFieldAbsence);
 
@@ -698,7 +685,7 @@ final class ProtoTruthMessageDifferencer {
     // Report the full breakdown.
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()
-            .setFieldDescriptorOrUnknown(FieldDescriptorOrUnknown.of(fieldDescriptor))
+            .setSubScopeId(SubScopeId.of(fieldDescriptor))
             .setFieldName(fieldName)
             .setResult(result.build());
     if (actual != null) {
@@ -724,15 +711,14 @@ final class ProtoTruthMessageDifferencer {
 
     // Use the default if it's set and we're ignoring field absence, or if it's a Proto3 primitive
     // for which default is indistinguishable from unset.
-    FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-        FieldDescriptorOrUnknown.of(fieldDescriptor);
+    SubScopeId subScopeId = SubScopeId.of(fieldDescriptor);
     boolean isNonRepeatedProto3 =
         !fieldDescriptor.isRepeated()
             && fieldDescriptor.getContainingOneof() == null
             && fieldDescriptor.getFile().getSyntax() == Syntax.PROTO3;
     boolean ignoreFieldAbsence =
         isNonRepeatedProto3
-            || config.ignoreFieldAbsenceScope().contains(rootDescriptor, fieldDescriptorOrUnknown);
+            || config.ignoreFieldAbsenceScope().contains(rootDescriptor, subScopeId);
     actual = orIfIgnoringFieldAbsence(actual, defaultValue, ignoreFieldAbsence);
     expected = orIfIgnoringFieldAbsence(expected, defaultValue, ignoreFieldAbsence);
 
@@ -746,14 +732,14 @@ final class ProtoTruthMessageDifferencer {
             !doublesEqual(
                 (double) actual,
                 (double) expected,
-                config.doubleCorrespondenceMap().get(rootDescriptor, fieldDescriptorOrUnknown)
+                config.doubleCorrespondenceMap().get(rootDescriptor, subScopeId)
                 ));
       } else if (actual instanceof Float) {
         result.markModifiedIf(
             !floatsEqual(
                 (float) actual,
                 (float) expected,
-                config.floatCorrespondenceMap().get(rootDescriptor, fieldDescriptorOrUnknown)
+                config.floatCorrespondenceMap().get(rootDescriptor, subScopeId)
                 ));
       } else {
         result.markModifiedIf(!Objects.equal(actual, expected));
@@ -762,7 +748,7 @@ final class ProtoTruthMessageDifferencer {
 
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()
-            .setFieldDescriptorOrUnknown(FieldDescriptorOrUnknown.of(fieldDescriptor))
+            .setSubScopeId(SubScopeId.of(fieldDescriptor))
             .setFieldName(fieldName)
             .setResult(result.build());
     if (actual != null) {
@@ -818,10 +804,9 @@ final class ProtoTruthMessageDifferencer {
 
         UnknownFieldDescriptor unknownFieldDescriptor =
             UnknownFieldDescriptor.create(fieldNumber, type);
-        FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-            FieldDescriptorOrUnknown.of(unknownFieldDescriptor);
+        SubScopeId subScopeId = SubScopeId.of(unknownFieldDescriptor);
         FieldScopeResult compareFields =
-            config.compareFieldsScope().policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+            config.compareFieldsScope().policyFor(rootDescriptor, subScopeId);
         if (compareFields == FieldScopeResult.EXCLUDED_RECURSIVELY) {
           builder.addSingularField(
               fieldNumber, SingularField.ignored(name(unknownFieldDescriptor)));
@@ -835,7 +820,7 @@ final class ProtoTruthMessageDifferencer {
                 expectedValues,
                 compareFields == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 unknownFieldDescriptor,
-                config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
+                config.subScope(rootDescriptor, subScopeId)));
       }
     }
 
@@ -917,7 +902,7 @@ final class ProtoTruthMessageDifferencer {
     // Report the full breakdown.
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()
-            .setFieldDescriptorOrUnknown(FieldDescriptorOrUnknown.of(unknownFieldDescriptor))
+            .setSubScopeId(SubScopeId.of(unknownFieldDescriptor))
             .setFieldName(fieldName)
             .setResult(result.build());
     if (actual != null) {
@@ -945,7 +930,7 @@ final class ProtoTruthMessageDifferencer {
 
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()
-            .setFieldDescriptorOrUnknown(FieldDescriptorOrUnknown.of(unknownFieldDescriptor))
+            .setSubScopeId(SubScopeId.of(unknownFieldDescriptor))
             .setFieldName(fieldName)
             .setResult(result.build());
     if (actual != null) {

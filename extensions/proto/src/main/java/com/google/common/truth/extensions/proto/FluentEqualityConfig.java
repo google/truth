@@ -326,22 +326,16 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   }
 
   @Override
-  public final FluentEqualityConfig subScope(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+  public final FluentEqualityConfig subScope(Descriptor rootDescriptor, SubScopeId subScopeId) {
     return toBuilder()
-        .setIgnoreFieldAbsenceScope(
-            ignoreFieldAbsenceScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .setIgnoreFieldAbsenceScope(ignoreFieldAbsenceScope().subScope(rootDescriptor, subScopeId))
         .setIgnoreRepeatedFieldOrderScope(
-            ignoreRepeatedFieldOrderScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+            ignoreRepeatedFieldOrderScope().subScope(rootDescriptor, subScopeId))
         .setIgnoreExtraRepeatedFieldElementsScope(
-            ignoreExtraRepeatedFieldElementsScope()
-                .subScope(rootDescriptor, fieldDescriptorOrUnknown))
-        .setDoubleCorrespondenceMap(
-            doubleCorrespondenceMap().subScope(rootDescriptor, fieldDescriptorOrUnknown))
-        .setFloatCorrespondenceMap(
-            floatCorrespondenceMap().subScope(rootDescriptor, fieldDescriptorOrUnknown))
-        .setCompareFieldsScope(
-            compareFieldsScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+            ignoreExtraRepeatedFieldElementsScope().subScope(rootDescriptor, subScopeId))
+        .setDoubleCorrespondenceMap(doubleCorrespondenceMap().subScope(rootDescriptor, subScopeId))
+        .setFloatCorrespondenceMap(floatCorrespondenceMap().subScope(rootDescriptor, subScopeId))
+        .setCompareFieldsScope(compareFieldsScope().subScope(rootDescriptor, subScopeId))
         .build();
   }
 

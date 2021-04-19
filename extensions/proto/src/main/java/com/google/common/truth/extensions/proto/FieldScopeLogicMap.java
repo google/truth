@@ -61,11 +61,10 @@ class FieldScopeLogicMap<V> implements FieldScopeLogicContainer<FieldScopeLogicM
     return entries.isEmpty();
   }
 
-  public Optional<V> get(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+  public Optional<V> get(Descriptor rootDescriptor, SubScopeId subScopeId) {
     // Earlier entries override later ones, so we don't need to iterate backwards.
     for (Entry<V> entry : entries) {
-      if (entry.fieldScopeLogic().contains(rootDescriptor, fieldDescriptorOrUnknown)) {
+      if (entry.fieldScopeLogic().contains(rootDescriptor, subScopeId)) {
         return Optional.of(entry.value());
       }
     }
@@ -82,15 +81,12 @@ class FieldScopeLogicMap<V> implements FieldScopeLogicContainer<FieldScopeLogicM
   }
 
   @Override
-  public FieldScopeLogicMap<V> subScope(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+  public FieldScopeLogicMap<V> subScope(Descriptor rootDescriptor, SubScopeId subScopeId) {
     ImmutableList.Builder<Entry<V>> newEntries =
         ImmutableList.builderWithExpectedSize(entries.size());
     for (Entry<V> entry : entries) {
       newEntries.add(
-          Entry.of(
-              entry.fieldScopeLogic().subScope(rootDescriptor, fieldDescriptorOrUnknown),
-              entry.value()));
+          Entry.of(entry.fieldScopeLogic().subScope(rootDescriptor, subScopeId), entry.value()));
     }
     return new FieldScopeLogicMap<>(newEntries.build());
   }

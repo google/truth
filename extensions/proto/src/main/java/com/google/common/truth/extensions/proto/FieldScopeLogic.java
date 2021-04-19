@@ -49,13 +49,11 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
    * Returns whether the given field is included in this FieldScopeLogic, along with whether it's
    * included recursively or not.
    */
-  abstract FieldScopeResult policyFor(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
+  abstract FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId);
 
   /** Returns whether the given field is included in this FieldScopeLogic. */
-  final boolean contains(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    return policyFor(rootDescriptor, fieldDescriptorOrUnknown).included();
+  final boolean contains(Descriptor rootDescriptor, SubScopeId subScopeId) {
+    return policyFor(rootDescriptor, subScopeId).included();
   }
 
   /**
@@ -65,13 +63,12 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
    * #subScopeImpl} to implement those cases.
    */
   @Override
-  public final FieldScopeLogic subScope(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    FieldScopeResult result = policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+  public final FieldScopeLogic subScope(Descriptor rootDescriptor, SubScopeId subScopeId) {
+    FieldScopeResult result = policyFor(rootDescriptor, subScopeId);
     if (result.recursive()) {
       return result.included() ? all() : none();
     } else {
-      return subScopeImpl(rootDescriptor, fieldDescriptorOrUnknown);
+      return subScopeImpl(rootDescriptor, subScopeId);
     }
   }
 
@@ -82,8 +79,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
    * {@code NONRECURSIVE} results must override this method.
    */
   @ForOverride
-  FieldScopeLogic subScopeImpl(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+  FieldScopeLogic subScopeImpl(Descriptor rootDescriptor, SubScopeId subScopeId) {
     throw new UnsupportedOperationException("subScopeImpl not implemented for " + getClass());
   }
 
@@ -178,8 +174,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
         }
 
         @Override
-        final FieldScopeResult policyFor(
-            Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+        final FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
           return FieldScopeResult.INCLUDED_RECURSIVELY;
         }
 
@@ -197,8 +192,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
         }
 
         @Override
-        final FieldScopeResult policyFor(
-            Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+        final FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
           return FieldScopeResult.EXCLUDED_RECURSIVELY;
         }
       };
@@ -226,17 +220,15 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    final FieldScopeResult policyFor(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      return fieldNumberTree.hasChild(fieldDescriptorOrUnknown)
+    final FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
+      return fieldNumberTree.hasChild(subScopeId)
           ? FieldScopeResult.INCLUDED_NONRECURSIVELY
           : FieldScopeResult.EXCLUDED_RECURSIVELY;
     }
 
     @Override
-    final FieldScopeLogic subScopeImpl(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      return newPartialScopeLogic(fieldNumberTree.child(fieldDescriptorOrUnknown));
+    final FieldScopeLogic subScopeImpl(Descriptor rootDescriptor, SubScopeId subScopeId) {
+      return newPartialScopeLogic(fieldNumberTree.child(subScopeId));
     }
 
     private static PartialScopeLogic newPartialScopeLogic(FieldNumberTree fieldNumberTree) {
@@ -311,14 +303,12 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     abstract boolean matchesFieldDescriptor(Descriptor descriptor, FieldDescriptor fieldDescriptor);
 
     @Override
-    final FieldScopeResult policyFor(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      if (fieldDescriptorOrUnknown.kind()
-          == FieldDescriptorOrUnknown.Kind.UNKNOWN_FIELD_DESCRIPTOR) {
+    final FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
+      if (subScopeId.kind() == SubScopeId.Kind.UNKNOWN_FIELD_DESCRIPTOR) {
         return FieldScopeResult.EXCLUDED_RECURSIVELY;
       }
 
-      FieldDescriptor fieldDescriptor = fieldDescriptorOrUnknown.fieldDescriptor();
+      FieldDescriptor fieldDescriptor = subScopeId.fieldDescriptor();
       if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
         return FieldScopeResult.of(/* included = */ true, isRecursive);
       }
@@ -332,8 +322,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    final FieldScopeLogic subScopeImpl(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    final FieldScopeLogic subScopeImpl(Descriptor rootDescriptor, SubScopeId subScopeId) {
       return this;
     }
 
@@ -443,12 +432,11 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     abstract T newLogicOfSameType(List<FieldScopeLogic> newElements);
 
     @Override
-    final FieldScopeLogic subScopeImpl(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    final FieldScopeLogic subScopeImpl(Descriptor rootDescriptor, SubScopeId subScopeId) {
       ImmutableList.Builder<FieldScopeLogic> builder =
           ImmutableList.builderWithExpectedSize(elements.size());
       for (FieldScopeLogic elem : elements) {
-        builder.add(elem.subScope(rootDescriptor, fieldDescriptorOrUnknown));
+        builder.add(elem.subScope(rootDescriptor, subScopeId));
       }
       return newLogicOfSameType(builder.build());
     }
@@ -467,12 +455,11 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    FieldScopeResult policyFor(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
       // The intersection of two scopes is ignorable if either scope is itself ignorable.
       return intersection(
-          elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown),
-          elements.get(1).policyFor(rootDescriptor, fieldDescriptorOrUnknown));
+          elements.get(0).policyFor(rootDescriptor, subScopeId),
+          elements.get(1).policyFor(rootDescriptor, subScopeId));
     }
 
     private static FieldScopeResult intersection(
@@ -512,12 +499,11 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    FieldScopeResult policyFor(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
       // The union of two scopes is ignorable only if both scopes are themselves ignorable.
       return union(
-          elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown),
-          elements.get(1).policyFor(rootDescriptor, fieldDescriptorOrUnknown));
+          elements.get(0).policyFor(rootDescriptor, subScopeId),
+          elements.get(1).policyFor(rootDescriptor, subScopeId));
     }
 
     private static FieldScopeResult union(FieldScopeResult result1, FieldScopeResult result2) {
@@ -556,9 +542,8 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    FieldScopeResult policyFor(
-        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      FieldScopeResult result = elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+    FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
+      FieldScopeResult result = elements.get(0).policyFor(rootDescriptor, subScopeId);
       return FieldScopeResult.of(!result.included(), result.recursive());
     }
 

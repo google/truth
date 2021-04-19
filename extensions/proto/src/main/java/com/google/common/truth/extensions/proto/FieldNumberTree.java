@@ -40,7 +40,7 @@ final class FieldNumberTree {
   }
 
   // Modified only during [factory] construction, never changed afterwards.
-  private final Map<FieldDescriptorOrUnknown, FieldNumberTree> children = Maps.newHashMap();
+  private final Map<SubScopeId, FieldNumberTree> children = Maps.newHashMap();
 
   /** Returns whether this {@code FieldNumberTree} has no children. */
   boolean isEmpty() {
@@ -52,14 +52,14 @@ final class FieldNumberTree {
    *
    * <p>{@code empty()} if there is none.
    */
-  FieldNumberTree child(FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    FieldNumberTree child = children.get(fieldDescriptorOrUnknown);
+  FieldNumberTree child(SubScopeId subScopeId) {
+    FieldNumberTree child = children.get(subScopeId);
     return child == null ? EMPTY : child;
   }
 
   /** Returns whether this tree has a child for this node. */
-  boolean hasChild(FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    return children.containsKey(fieldDescriptorOrUnknown);
+  boolean hasChild(SubScopeId subScopeId) {
+    return children.containsKey(subScopeId);
   }
 
   static FieldNumberTree fromMessage(Message message) {
@@ -68,9 +68,9 @@ final class FieldNumberTree {
     // Known fields.
     Map<FieldDescriptor, Object> knownFieldValues = message.getAllFields();
     for (FieldDescriptor field : knownFieldValues.keySet()) {
-      FieldDescriptorOrUnknown fieldDescriptorOrUnknown = FieldDescriptorOrUnknown.of(field);
+      SubScopeId subScopeId = SubScopeId.of(field);
       FieldNumberTree childTree = new FieldNumberTree();
-      tree.children.put(fieldDescriptorOrUnknown, childTree);
+      tree.children.put(subScopeId, childTree);
 
       Object fieldValue = knownFieldValues.get(field);
       if (field.getJavaType() == FieldDescriptor.JavaType.MESSAGE) {
@@ -107,10 +107,9 @@ final class FieldNumberTree {
       UnknownFieldSet.Field unknownField = unknownFieldSet.asMap().get(fieldNumber);
       for (UnknownFieldDescriptor unknownFieldDescriptor :
           UnknownFieldDescriptor.descriptors(fieldNumber, unknownField)) {
-        FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-            FieldDescriptorOrUnknown.of(unknownFieldDescriptor);
+        SubScopeId subScopeId = SubScopeId.of(unknownFieldDescriptor);
         FieldNumberTree childTree = new FieldNumberTree();
-        tree.children.put(fieldDescriptorOrUnknown, childTree);
+        tree.children.put(subScopeId, childTree);
 
         if (unknownFieldDescriptor.type() == UnknownFieldDescriptor.Type.GROUP) {
           for (Object group : unknownFieldDescriptor.type().getValues(unknownField)) {
@@ -125,12 +124,12 @@ final class FieldNumberTree {
 
   /** Adds the other tree onto this one. May destroy {@code other} in the process. */
   private void merge(FieldNumberTree other) {
-    for (FieldDescriptorOrUnknown fieldDescriptorOrUnknown : other.children.keySet()) {
-      FieldNumberTree value = other.children.get(fieldDescriptorOrUnknown);
-      if (!this.children.containsKey(fieldDescriptorOrUnknown)) {
-        this.children.put(fieldDescriptorOrUnknown, value);
+    for (SubScopeId subScopeId : other.children.keySet()) {
+      FieldNumberTree value = other.children.get(subScopeId);
+      if (!this.children.containsKey(subScopeId)) {
+        this.children.put(subScopeId, value);
       } else {
-        this.children.get(fieldDescriptorOrUnknown).merge(value);
+        this.children.get(subScopeId).merge(value);
       }
     }
   }

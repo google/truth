@@ -19,8 +19,8 @@ package com.google.common.truth.extensions.proto;
 import com.google.auto.value.AutoOneOf;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
-@AutoOneOf(FieldDescriptorOrUnknown.Kind.class)
-abstract class FieldDescriptorOrUnknown {
+@AutoOneOf(SubScopeId.Kind.class)
+abstract class SubScopeId {
   enum Kind {
     FIELD_DESCRIPTOR,
     UNKNOWN_FIELD_DESCRIPTOR;
@@ -45,11 +45,11 @@ abstract class FieldDescriptorOrUnknown {
     throw new AssertionError(kind());
   }
 
-  static FieldDescriptorOrUnknown of(FieldDescriptor fieldDescriptor) {
-    return AutoOneOf_FieldDescriptorOrUnknown.fieldDescriptor(fieldDescriptor);
+  static SubScopeId of(FieldDescriptor fieldDescriptor) {
+    return AutoOneOf_SubScopeId.fieldDescriptor(fieldDescriptor);
   }
 
-  static FieldDescriptorOrUnknown of(UnknownFieldDescriptor unknownFieldDescriptor) {
-    return AutoOneOf_FieldDescriptorOrUnknown.unknownFieldDescriptor(unknownFieldDescriptor);
+  static SubScopeId of(UnknownFieldDescriptor unknownFieldDescriptor) {
+    return AutoOneOf_SubScopeId.unknownFieldDescriptor(unknownFieldDescriptor);
   }
 }

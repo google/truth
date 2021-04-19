@@ -35,11 +35,10 @@ class AnyUtils {
     return TYPE_URL_FIELD_DESCRIPTOR;
   }
 
-  private static final FieldDescriptorOrUnknown TYPE_URL_FIELD_DESCRIPTOR_OR_UNKNOWN =
-      FieldDescriptorOrUnknown.of(TYPE_URL_FIELD_DESCRIPTOR);
+  private static final SubScopeId TYPE_URL_SUB_SCOPE_ID = SubScopeId.of(TYPE_URL_FIELD_DESCRIPTOR);
 
-  static FieldDescriptorOrUnknown typeUrlFieldDescriptorOrUnknown() {
-    return TYPE_URL_FIELD_DESCRIPTOR_OR_UNKNOWN;
+  static SubScopeId typeUrlSubScopeId() {
+    return TYPE_URL_SUB_SCOPE_ID;
   }
 
   private static final FieldDescriptor VALUE_FIELD_DESCRIPTOR =
@@ -49,11 +48,10 @@ class AnyUtils {
     return VALUE_FIELD_DESCRIPTOR;
   }
 
-  private static final FieldDescriptorOrUnknown VALUE_FIELD_DESCRIPTOR_OR_UNKNOWN =
-      FieldDescriptorOrUnknown.of(VALUE_FIELD_DESCRIPTOR);
+  private static final SubScopeId VALUE_SUB_SCOPE_ID = SubScopeId.of(VALUE_FIELD_DESCRIPTOR);
 
-  static FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown() {
-    return VALUE_FIELD_DESCRIPTOR_OR_UNKNOWN;
+  static SubScopeId valueSubScopeId() {
+    return VALUE_SUB_SCOPE_ID;
   }
 
   /** Unpack an `Any` proto using the TypeRegistry and ExtensionRegistry on `config`. */

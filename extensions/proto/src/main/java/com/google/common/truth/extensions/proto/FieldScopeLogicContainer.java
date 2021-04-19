@@ -27,7 +27,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 interface FieldScopeLogicContainer<T extends FieldScopeLogicContainer<T>> {
 
   /** Returns the analog of {@link FieldScopeLogic#subScope} for this container. */
-  T subScope(Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
+  T subScope(Descriptor rootDescriptor, SubScopeId subScopeId);
 
   /** Validates explicitly specified fields for this container. */
   void validate(Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator);

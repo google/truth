@@ -56,7 +56,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
   @AutoValue
   abstract static class SingularField extends RecursableDiffEntity.WithResultCode {
     /** The type information for this field. May be absent if result code is {@code IGNORED}. */
-    abstract Optional<FieldDescriptorOrUnknown> fieldDescriptorOrUnknown();
+    abstract Optional<SubScopeId> subScopeId();
 
     /** The display name for this field. May include an array-index specifier. */
     abstract String fieldName();
@@ -110,7 +110,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           if (actual().get() instanceof Message) {
             sb.append("\n").append(actual().get());
           } else {
-            sb.append(valueString(fieldDescriptorOrUnknown().get(), actual().get())).append("\n");
+            sb.append(valueString(subScopeId().get(), actual().get())).append("\n");
           }
           return;
         case IGNORED:
@@ -123,7 +123,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
             sb.append(": ")
-                .append(valueString(fieldDescriptorOrUnknown().get(), actualOrExpected()))
+                .append(valueString(subScopeId().get(), actualOrExpected()))
                 .append("\n");
           }
           return;
@@ -134,9 +134,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
             sb.append(": ")
-                .append(valueString(fieldDescriptorOrUnknown().get(), expected().get()))
+                .append(valueString(subScopeId().get(), expected().get()))
                 .append(" -> ")
-                .append(valueString(fieldDescriptorOrUnknown().get(), actual().get()))
+                .append(valueString(subScopeId().get(), actual().get()))
                 .append("\n");
           }
           return;
@@ -145,7 +145,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           if (expected().get() instanceof Message) {
             sb.append("\n").append(expected().get());
           } else {
-            sb.append(valueString(fieldDescriptorOrUnknown().get(), expected().get())).append("\n");
+            sb.append(valueString(subScopeId().get(), expected().get())).append("\n");
           }
           return;
         default:
@@ -172,8 +172,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     abstract static class Builder {
       abstract Builder setResult(Result result);
 
-      abstract Builder setFieldDescriptorOrUnknown(
-          FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
+      abstract Builder setSubScopeId(SubScopeId subScopeId);
 
       abstract Builder setFieldName(String fieldName);
 
@@ -600,14 +599,14 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     return rootFieldPrefix.isEmpty() ? toAdd : (rootFieldPrefix + "." + toAdd);
   }
 
-  private static String valueString(FieldDescriptorOrUnknown fieldDescriptorOrUnknown, Object o) {
-    switch (fieldDescriptorOrUnknown.kind()) {
+  private static String valueString(SubScopeId subScopeId, Object o) {
+    switch (subScopeId.kind()) {
       case FIELD_DESCRIPTOR:
-        return valueString(fieldDescriptorOrUnknown.fieldDescriptor(), o);
+        return valueString(subScopeId.fieldDescriptor(), o);
       case UNKNOWN_FIELD_DESCRIPTOR:
-        return valueString(fieldDescriptorOrUnknown.unknownFieldDescriptor(), o);
+        return valueString(subScopeId.unknownFieldDescriptor(), o);
     }
-    throw new AssertionError(fieldDescriptorOrUnknown.kind());
+    throw new AssertionError(subScopeId.kind());
   }
 
   private static String valueString(FieldDescriptor fieldDescriptor, Object o) {
