@@ -34,17 +34,12 @@ import com.google.common.truth.extensions.proto.DiffResult.SingularField;
 import com.google.common.truth.extensions.proto.DiffResult.UnknownFieldSetDiff;
 import com.google.common.truth.extensions.proto.RecursableDiffEntity.WithResultCode.Result;
 import com.google.protobuf.Any;
-import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
-import com.google.protobuf.DynamicMessage;
-import com.google.protobuf.ExtensionRegistry;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
-import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.UnknownFieldSet;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -205,65 +200,61 @@ final class ProtoTruthMessageDifferencer {
     DiffResult.Builder builder = DiffResult.newBuilder().setActual(actual).setExpected(expected);
 
     // Compare the TypeUrl fields.
-    FieldDescriptor typeUrlField =
-        actual.getDescriptorForType().findFieldByNumber(Any.TYPE_URL_FIELD_NUMBER);
-    FieldDescriptorOrUnknown typeUrlFieldDescriptorOrUnknown =
-        FieldDescriptorOrUnknown.fromFieldDescriptor(typeUrlField);
     FieldScopeResult shouldCompareTypeUrl =
-        config.compareFieldsScope().policyFor(rootDescriptor, typeUrlFieldDescriptorOrUnknown);
+        config
+            .compareFieldsScope()
+            .policyFor(rootDescriptor, AnyUtils.typeUrlFieldDescriptorOrUnknown());
     SingularField typeUrlDiffResult;
     if (!shouldCompareTypeUrl.included()) {
-      typeUrlDiffResult = SingularField.ignored(name(typeUrlField));
+      typeUrlDiffResult = SingularField.ignored(name(AnyUtils.typeUrlFieldDescriptor()));
     } else {
       typeUrlDiffResult =
           compareSingularPrimitive(
-              actual.getField(typeUrlField),
-              expected.getField(typeUrlField),
+              actual.getField(AnyUtils.typeUrlFieldDescriptor()),
+              expected.getField(AnyUtils.typeUrlFieldDescriptor()),
               /* defaultValue= */ "",
-              typeUrlField,
-              name(typeUrlField),
-              config.subScope(rootDescriptor, typeUrlFieldDescriptorOrUnknown));
+              AnyUtils.typeUrlFieldDescriptor(),
+              name(AnyUtils.typeUrlFieldDescriptor()),
+              config.subScope(rootDescriptor, AnyUtils.typeUrlFieldDescriptorOrUnknown()));
     }
     builder.addSingularField(Any.TYPE_URL_FIELD_NUMBER, typeUrlDiffResult);
 
     // Try to unpack the value fields using the TypeRegister and url from the type_url field. If
     // that does not work then we revert to the original behaviour compare the bytes strings.
-    FieldDescriptor valueFieldDescriptor =
-        actual.getDescriptorForType().findFieldByNumber(Any.VALUE_FIELD_NUMBER);
-    FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown =
-        FieldDescriptorOrUnknown.fromFieldDescriptor(valueFieldDescriptor);
-    TypeRegistry typeRegistry = config.useTypeRegistry();
-    ExtensionRegistry extensionRegistry = config.useExtensionRegistry();
-    Optional<Message> unpackedActual = unpackAny(actual, typeRegistry, extensionRegistry);
-    Optional<Message> unpackedExpected = unpackAny(expected, typeRegistry, extensionRegistry);
     FieldScopeResult shouldCompareValue =
-        config.compareFieldsScope().policyFor(rootDescriptor, valueFieldDescriptorOrUnknown);
+        config
+            .compareFieldsScope()
+            .policyFor(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown());
     SingularField valueDiffResult;
     if (shouldCompareValue == FieldScopeResult.EXCLUDED_RECURSIVELY) {
-      valueDiffResult = SingularField.ignored(name(valueFieldDescriptor));
-    } else if (unpackedActual.isPresent()
-        && unpackedExpected.isPresent()
-        && descriptorsMatch(unpackedActual.get(), unpackedExpected.get())) {
-      Message defaultMessage = unpackedActual.get().getDefaultInstanceForType();
-      valueDiffResult =
-          compareSingularMessage(
-              unpackedActual.get(),
-              unpackedExpected.get(),
-              defaultMessage,
-              shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
-              valueFieldDescriptor,
-              name(valueFieldDescriptor),
-              config.subScope(rootDescriptor, valueFieldDescriptorOrUnknown));
+      valueDiffResult = SingularField.ignored(name(AnyUtils.valueFieldDescriptor()));
     } else {
-      valueDiffResult =
-          compareSingularValue(
-              actual.getField(valueFieldDescriptor),
-              expected.getField(valueFieldDescriptor),
-              valueFieldDescriptor.getDefaultValue(),
-              shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
-              valueFieldDescriptor,
-              name(valueFieldDescriptor),
-              config.subScope(rootDescriptor, valueFieldDescriptorOrUnknown));
+      Optional<Message> unpackedActual = AnyUtils.unpack(actual, config);
+      Optional<Message> unpackedExpected = AnyUtils.unpack(expected, config);
+      if (unpackedActual.isPresent()
+          && unpackedExpected.isPresent()
+          && descriptorsMatch(unpackedActual.get(), unpackedExpected.get())) {
+        Message defaultMessage = unpackedActual.get().getDefaultInstanceForType();
+        valueDiffResult =
+            compareSingularMessage(
+                unpackedActual.get(),
+                unpackedExpected.get(),
+                defaultMessage,
+                shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
+                AnyUtils.valueFieldDescriptor(),
+                name(AnyUtils.valueFieldDescriptor()),
+                config.subScope(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown()));
+      } else {
+        valueDiffResult =
+            compareSingularValue(
+                actual.getField(AnyUtils.valueFieldDescriptor()),
+                expected.getField(AnyUtils.valueFieldDescriptor()),
+                AnyUtils.valueFieldDescriptor().getDefaultValue(),
+                shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
+                AnyUtils.valueFieldDescriptor(),
+                name(AnyUtils.valueFieldDescriptor()),
+                config.subScope(rootDescriptor, AnyUtils.valueFieldDescriptorOrUnknown()));
+      }
     }
     builder.addSingularField(Any.VALUE_FIELD_NUMBER, valueDiffResult);
 
@@ -279,24 +270,6 @@ final class ProtoTruthMessageDifferencer {
 
   private static boolean descriptorsMatch(Message actual, Message expected) {
     return actual.getDescriptorForType().equals(expected.getDescriptorForType());
-  }
-
-  private static Optional<Message> unpackAny(
-      Message any, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
-    String typeUrl =
-        (String) any.getField(Any.getDescriptor().findFieldByNumber(Any.TYPE_URL_FIELD_NUMBER));
-    ByteString value =
-        (ByteString) any.getField(Any.getDescriptor().findFieldByNumber(Any.VALUE_FIELD_NUMBER));
-    try {
-      Descriptor descriptor = typeRegistry.getDescriptorForTypeUrl(typeUrl);
-      if (descriptor == null) {
-        return Optional.absent();
-      }
-      Message defaultMessage = DynamicMessage.parseFrom(descriptor, value, extensionRegistry);
-      return Optional.of(defaultMessage);
-    } catch (InvalidProtocolBufferException e) {
-      return Optional.absent();
-    }
   }
 
   // Helper which takes a proto map in List<Message> form, and converts it to a Map<Object, Object>
