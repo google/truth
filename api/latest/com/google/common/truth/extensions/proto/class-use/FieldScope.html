@@ -227,7 +227,27 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>static <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
+<th class="colSecond" scope="row"><span class="typeNameLabel">FieldScopes.</span><code><span class="memberNameLink"><a href="../FieldScopes.html#fromSetFields(com.google.protobuf.Message,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">fromSetFields</a></span>&#8203;(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message,
+             <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+             <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</code></th>
+<td class="colLast">
+<div class="block">Returns a <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which is constrained to precisely those specific field paths that
+ are explicitly set in the message.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">FieldScopes.</span><code><span class="memberNameLink"><a href="../FieldScopes.html#fromSetFields(java.lang.Iterable)">fromSetFields</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</code></th>
+<td class="colLast">
+<div class="block">Creates a <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
+ messages, with the same semantics as in <a href="../FieldScopes.html#fromSetFields(com.google.protobuf.Message)"><code>FieldScopes.fromSetFields(Message)</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
+<th class="colSecond" scope="row"><span class="typeNameLabel">FieldScopes.</span><code><span class="memberNameLink"><a href="../FieldScopes.html#fromSetFields(java.lang.Iterable,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">fromSetFields</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages,
+             <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+             <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</code></th>
 <td class="colLast">
 <div class="block">Creates a <a href="../FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
  messages, with the same semantics as in <a href="../FieldScopes.html#fromSetFields(com.google.protobuf.Message)"><code>FieldScopes.fromSetFields(Message)</code></a>.</div>
