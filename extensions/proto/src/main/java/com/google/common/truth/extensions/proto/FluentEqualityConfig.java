@@ -58,7 +58,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
           .setHasExpectedMessages(false)
           .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
-          .setUnpackingAnyUsing(TypeRegistry.getEmptyTypeRegistry(), ExtensionRegistry.getEmptyRegistry())
+          .setUnpackingAnyUsing(AnyUtils.defaultTypeRegistry(), AnyUtils.defaultExtensionRegistry())
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
 

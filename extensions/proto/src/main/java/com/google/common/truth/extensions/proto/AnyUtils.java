@@ -23,8 +23,10 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.DynamicMessage;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
+import com.google.protobuf.TypeRegistry;
 
 /** Helper methods for working with Any protos. */
 class AnyUtils {
@@ -52,6 +54,19 @@ class AnyUtils {
 
   static SubScopeId valueSubScopeId() {
     return VALUE_SUB_SCOPE_ID;
+  }
+
+  private static final TypeRegistry DEFAULT_TYPE_REGISTRY = TypeRegistry.getEmptyTypeRegistry();
+
+  static TypeRegistry defaultTypeRegistry() {
+    return DEFAULT_TYPE_REGISTRY;
+  }
+
+  private static final ExtensionRegistry DEFAULT_EXTENSION_REGISTRY =
+      ExtensionRegistry.getEmptyRegistry();
+
+  static ExtensionRegistry defaultExtensionRegistry() {
+    return DEFAULT_EXTENSION_REGISTRY;
   }
 
   /** Unpack an `Any` proto using the TypeRegistry and ExtensionRegistry on `config`. */
