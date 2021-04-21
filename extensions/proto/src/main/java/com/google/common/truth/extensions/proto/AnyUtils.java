@@ -69,8 +69,9 @@ class AnyUtils {
     return DEFAULT_EXTENSION_REGISTRY;
   }
 
-  /** Unpack an `Any` proto using the TypeRegistry and ExtensionRegistry on `config`. */
-  static Optional<Message> unpack(Message any, FluentEqualityConfig config) {
+  /** Unpack an `Any` proto using the given TypeRegistry and ExtensionRegistry. */
+  static Optional<Message> unpack(
+      Message any, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     Preconditions.checkArgument(
         any.getDescriptorForType().equals(Any.getDescriptor()),
         "Expected type google.protobuf.Any, but was: %s",
@@ -80,13 +81,12 @@ class AnyUtils {
     ByteString value = (ByteString) any.getField(valueFieldDescriptor());
 
     try {
-      Descriptor descriptor = config.useTypeRegistry().getDescriptorForTypeUrl(typeUrl);
+      Descriptor descriptor = typeRegistry.getDescriptorForTypeUrl(typeUrl);
       if (descriptor == null) {
         return Optional.absent();
       }
 
-      Message defaultMessage =
-          DynamicMessage.parseFrom(descriptor, value, config.useExtensionRegistry());
+      Message defaultMessage = DynamicMessage.parseFrom(descriptor, value, extensionRegistry);
       return Optional.of(defaultMessage);
     } catch (InvalidProtocolBufferException e) {
       return Optional.absent();
