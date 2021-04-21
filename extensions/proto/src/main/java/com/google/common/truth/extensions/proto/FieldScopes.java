@@ -19,9 +19,7 @@ import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
-import com.google.protobuf.TypeRegistry;
 
 /** Factory class for {@link FieldScope} instances. */
 public final class FieldScopes {
@@ -68,58 +66,7 @@ public final class FieldScopes {
   // Alternatively II, add Scope.PARTIAL support to ProtoFluentEquals, but with a different name and
   // explicit documentation that it may cause issues with Proto 3.
   public static FieldScope fromSetFields(Message message) {
-    return fromSetFields(
-        message, AnyUtils.defaultTypeRegistry(), AnyUtils.defaultExtensionRegistry());
-  }
-
-  /**
-   * Returns a {@link FieldScope} which is constrained to precisely those specific field paths that
-   * are explicitly set in the message. Note that, for version 3 protobufs, such a {@link
-   * FieldScope} will omit fields in the provided message which are set to default values.
-   *
-   * <p>This can be used limit the scope of a comparison to a complex set of fields in a very brief
-   * statement. Often, {@code message} is the expected half of a comparison about to be performed.
-   *
-   * <p>Example usage:
-   *
-   * <pre>{@code
-   * Foo actual = Foo.newBuilder().setBar(3).setBaz(4).build();
-   * Foo expected = Foo.newBuilder().setBar(3).setBaz(5).build();
-   * // Fails, because actual.getBaz() != expected.getBaz().
-   * assertThat(actual).isEqualTo(expected);
-   *
-   * Foo scope = Foo.newBuilder().setBar(2).build();
-   * // Succeeds, because only the field 'bar' is compared.
-   * assertThat(actual).withPartialScope(FieldScopes.fromSetFields(scope)).isEqualTo(expected);
-   *
-   * }</pre>
-   *
-   * <p>The returned {@link FieldScope} does not respect repeated field indices nor map keys. For
-   * example, if the provided message sets different field values for different elements of a
-   * repeated field, like so:
-   *
-   * <pre>{@code
-   * sub_message: {
-   *   foo: "foo"
-   * }
-   * sub_message: {
-   *   bar: "bar"
-   * }
-   * }</pre>
-   *
-   * <p>The {@link FieldScope} will contain {@code sub_message.foo} and {@code sub_message.bar} for
-   * *all* repeated {@code sub_messages}, including those beyond index 1.
-   *
-   * <p>If there are {@code google.protobuf.Any} protos anywhere within these messages, they will be
-   * unpacked using the provided {@link TypeRegistry} and {@link ExtensionRegistry} to determine
-   * which fields within them should be compared.
-   *
-   * @see ProtoFluentAssertion#unpackingAnyUsing
-   * @since 1.2
-   */
-  public static FieldScope fromSetFields(
-      Message message, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
-    return FieldScopeImpl.createFromSetFields(message, typeRegistry, extensionRegistry);
+    return FieldScopeImpl.createFromSetFields(message);
   }
 
   /**
@@ -142,29 +89,7 @@ public final class FieldScopes {
    * or the {@link FieldScope} for the merge of all the messages. These are equivalent.
    */
   public static FieldScope fromSetFields(Iterable<? extends Message> messages) {
-    return fromSetFields(
-        messages, AnyUtils.defaultTypeRegistry(), AnyUtils.defaultExtensionRegistry());
-  }
-
-  /**
-   * Creates a {@link FieldScope} covering the fields set in every message in the provided list of
-   * messages, with the same semantics as in {@link #fromSetFields(Message)}.
-   *
-   * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
-   * or the {@link FieldScope} for the merge of all the messages. These are equivalent.
-   *
-   * <p>If there are {@code google.protobuf.Any} protos anywhere within these messages, they will be
-   * unpacked using the provided {@link TypeRegistry} and {@link ExtensionRegistry} to determine
-   * which fields within them should be compared.
-   *
-   * @see ProtoFluentAssertion#unpackingAnyUsing
-   * @since 1.2
-   */
-  public static FieldScope fromSetFields(
-      Iterable<? extends Message> messages,
-      TypeRegistry typeRegistry,
-      ExtensionRegistry extensionRegistry) {
-    return FieldScopeImpl.createFromSetFields(messages, typeRegistry, extensionRegistry);
+    return FieldScopeImpl.createFromSetFields(messages);
   }
 
   /**

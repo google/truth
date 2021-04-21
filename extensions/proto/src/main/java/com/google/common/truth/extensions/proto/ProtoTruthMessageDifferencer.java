@@ -220,10 +220,8 @@ final class ProtoTruthMessageDifferencer {
     if (shouldCompareValue == FieldScopeResult.EXCLUDED_RECURSIVELY) {
       valueDiffResult = SingularField.ignored(name(AnyUtils.valueFieldDescriptor()));
     } else {
-      Optional<Message> unpackedActual =
-          AnyUtils.unpack(actual, config.useTypeRegistry(), config.useExtensionRegistry());
-      Optional<Message> unpackedExpected =
-          AnyUtils.unpack(expected, config.useTypeRegistry(), config.useExtensionRegistry());
+      Optional<Message> unpackedActual = AnyUtils.unpack(actual, config);
+      Optional<Message> unpackedExpected = AnyUtils.unpack(expected, config);
       if (unpackedActual.isPresent()
           && unpackedExpected.isPresent()
           && descriptorsMatch(unpackedActual.get(), unpackedExpected.get())) {
@@ -236,10 +234,7 @@ final class ProtoTruthMessageDifferencer {
                 shouldCompareValue == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 AnyUtils.valueFieldDescriptor(),
                 name(AnyUtils.valueFieldDescriptor()),
-                config.subScope(
-                    rootDescriptor,
-                    SubScopeId.ofUnpackedAnyValueType(
-                        unpackedActual.get().getDescriptorForType())));
+                config.subScope(rootDescriptor, AnyUtils.valueSubScopeId()));
       } else {
         valueDiffResult =
             compareSingularValue(

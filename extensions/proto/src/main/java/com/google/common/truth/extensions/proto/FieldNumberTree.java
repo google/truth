@@ -16,12 +16,9 @@
 
 package com.google.common.truth.extensions.proto;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
-import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.UnknownFieldSet;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +62,7 @@ final class FieldNumberTree {
     return children.containsKey(subScopeId);
   }
 
-  static FieldNumberTree fromMessage(
-      Message message, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
+  static FieldNumberTree fromMessage(Message message) {
     FieldNumberTree tree = new FieldNumberTree();
 
     // Known fields.
@@ -76,25 +72,15 @@ final class FieldNumberTree {
       FieldNumberTree childTree = new FieldNumberTree();
       tree.children.put(subScopeId, childTree);
 
-      if (field.equals(AnyUtils.valueFieldDescriptor())) {
-        // Handle Any protos specially.
-        Optional<Message> unpackedAny = AnyUtils.unpack(message, typeRegistry, extensionRegistry);
-        if (unpackedAny.isPresent()) {
-          tree.children.put(
-              SubScopeId.ofUnpackedAnyValueType(unpackedAny.get().getDescriptorForType()),
-              fromMessage(unpackedAny.get(), typeRegistry, extensionRegistry));
-        }
-      } else {
-        Object fieldValue = knownFieldValues.get(field);
-        if (field.getJavaType() == FieldDescriptor.JavaType.MESSAGE) {
-          if (field.isRepeated()) {
-            List<?> valueList = (List<?>) fieldValue;
-            for (Object value : valueList) {
-              childTree.merge(fromMessage((Message) value, typeRegistry, extensionRegistry));
-            }
-          } else {
-            childTree.merge(fromMessage((Message) fieldValue, typeRegistry, extensionRegistry));
+      Object fieldValue = knownFieldValues.get(field);
+      if (field.getJavaType() == FieldDescriptor.JavaType.MESSAGE) {
+        if (field.isRepeated()) {
+          List<?> valueList = (List<?>) fieldValue;
+          for (Object value : valueList) {
+            childTree.merge(fromMessage((Message) value));
           }
+        } else {
+          childTree.merge(fromMessage((Message) fieldValue));
         }
       }
     }
@@ -105,14 +91,11 @@ final class FieldNumberTree {
     return tree;
   }
 
-  static FieldNumberTree fromMessages(
-      Iterable<? extends Message> messages,
-      TypeRegistry typeRegistry,
-      ExtensionRegistry extensionRegistry) {
+  static FieldNumberTree fromMessages(Iterable<? extends Message> messages) {
     FieldNumberTree tree = new FieldNumberTree();
     for (Message message : messages) {
       if (message != null) {
-        tree.merge(fromMessage(message, typeRegistry, extensionRegistry));
+        tree.merge(fromMessage(message));
       }
     }
     return tree;

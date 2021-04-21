@@ -17,15 +17,13 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.auto.value.AutoOneOf;
-import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
 @AutoOneOf(SubScopeId.Kind.class)
 abstract class SubScopeId {
   enum Kind {
     FIELD_DESCRIPTOR,
-    UNKNOWN_FIELD_DESCRIPTOR,
-    UNPACKED_ANY_VALUE_TYPE;
+    UNKNOWN_FIELD_DESCRIPTOR;
   }
 
   abstract Kind kind();
@@ -33,8 +31,6 @@ abstract class SubScopeId {
   abstract FieldDescriptor fieldDescriptor();
 
   abstract UnknownFieldDescriptor unknownFieldDescriptor();
-
-  abstract Descriptor unpackedAnyValueType();
 
   /** Returns a short, human-readable version of this identifier. */
   final String shortName() {
@@ -45,8 +41,6 @@ abstract class SubScopeId {
             : fieldDescriptor().getName();
       case UNKNOWN_FIELD_DESCRIPTOR:
         return String.valueOf(unknownFieldDescriptor().fieldNumber());
-      case UNPACKED_ANY_VALUE_TYPE:
-        return AnyUtils.valueFieldDescriptor().getName();
     }
     throw new AssertionError(kind());
   }
@@ -57,9 +51,5 @@ abstract class SubScopeId {
 
   static SubScopeId of(UnknownFieldDescriptor unknownFieldDescriptor) {
     return AutoOneOf_SubScopeId.unknownFieldDescriptor(unknownFieldDescriptor);
-  }
-
-  static SubScopeId ofUnpackedAnyValueType(Descriptor unpackedAnyValueType) {
-    return AutoOneOf_SubScopeId.unpackedAnyValueType(unpackedAnyValueType);
   }
 }
