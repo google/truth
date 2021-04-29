@@ -29,6 +29,7 @@ import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.j2objc.annotations.Weak;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -80,7 +81,7 @@ public final class FailureMetadata {
      * time we receive it. We *might* be able to make it safe to call if it looks only at actual(),
      * but it might try to look at facts initialized by a subclass, which aren't ready yet.
      */
-    final @Nullable Subject subject;
+    final @Nullable @Weak Subject subject;
 
     final @Nullable Function<String, String> descriptionUpdate;
 
