@@ -254,6 +254,7 @@ public final class Truth {
    * and (b) omits "java.lang.AssertionError:" from the beginning of its toString() representation.
    */
   // TODO(cpovirk): Consider eliminating this, adding its functionality to AssertionErrorWithFacts?
+  @SuppressWarnings("OverrideThrowableToString") // We intentionally replace the normal format.
   static final class SimpleAssertionError extends AssertionError {
     /** Separate cause field, in case initCause() fails. */
     private final @Nullable Throwable cause;
@@ -265,10 +266,22 @@ public final class Truth {
       try {
         initCause(cause);
       } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        // https://code.google.com/p/android/issues/detail?id=29378
-        // We fall back to overriding getCause(). Well, we *always* override getCause(), so even
-        // when initCause() works, it isn't doing much for us here other than forcing future
-        // initCause() attempts to fail loudly rather than be silently ignored.
+        /*
+         * initCause() throws under old versions of Android:
+         * https://issuetracker.google.com/issues/36945167
+         *
+         * Yes, it's *nice* if initCause() works:
+         *
+         * - It ensures that, if someone tries to call initCause() later, the call will fail loudly
+         *   rather than be silently ignored.
+         *
+         * - It populates the usual `Throwable.cause` field, where users of debuggers and other
+         *   tools are likely to look first.
+         *
+         * But if it doesn't work, that's fine: Most consumers of the cause should be retrieving it
+         * through getCause(), which we've overridden to return *our* `cause` field, which we've
+         * populated with the correct value.
+         */
       }
     }
 
