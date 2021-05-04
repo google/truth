@@ -37,10 +37,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
  * {@code E} for the purposes of a test assertion. For example, the implementation returned by the
  * {@link #tolerance(double)} factory method implements approximate equality between numeric values,
- * with values being said to correspond if the difference between them is does not exceed some fixed
- * tolerance. The instances of type {@code A} are typically actual values from a collection returned
- * by the code under test; the instances of type {@code E} are typically expected values with which
- * the actual values are compared by the test.
+ * with values being said to correspond if the difference between them does not exceed the given
+ * fixed tolerance. The instances of type {@code A} are typically actual values from a collection
+ * returned by the code under test; the instances of type {@code E} are typically expected values
+ * with which the actual values are compared by the test.
  *
  * <p>The correspondence is required to be consistent: for any given values {@code actual} and
  * {@code expected}, multiple invocations of {@code compare(actual, expected)} must consistently
