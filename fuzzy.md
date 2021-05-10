@@ -212,5 +212,7 @@ concisely.
 [correspondence-from]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#from-com.google.common.truth.Correspondence.BinaryPredicate-java.lang.String-
 [correspondence-transforming]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java-lang-String-
 [correspondence-formatting-diffs]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#formattingDiffsUsing-com.google.common.truth.Correspondence.DiffFormatter-
+[iterablesubject-comparingelementsusing]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html#comparingElementsUsing(com.google.common.truth.Correspondence)
 [iterable-displaying-diffs]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-
+[iterablesubject-formattingdiffsusing]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)
 [value types]: https://github.com/google/auto/blob/master/value/userguide/index.md
