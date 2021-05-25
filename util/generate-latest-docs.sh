@@ -20,10 +20,12 @@ if [ -n "${RELEASE_VERSION:-}" ]; then
   # Release
   version_subdir=api/${RELEASE_VERSION}
   commit_message="Release $RELEASE_VERSION javadoc pushed to gh-pages."
+  github_url="git@github.com:google/truth.git"
 else
   # CI
   version_subdir=api/latest
   commit_message="Latest javadoc on successful CI build auto-pushed to gh-pages."
+  github_url="https://x-access-token:${GITHUB_TOKEN}@github.com/google/truth.git"
 fi
 
 mvn javadoc:aggregate
@@ -32,7 +34,7 @@ find target/site/apidocs -name '*.html' | xargs perl -077pi -e 's#<li class="blo
 target_dir="$(pwd)/target"
 cd ${target_dir}
 rm -rf gh-pages
-git clone --quiet --branch=gh-pages "https://x-access-token:${GITHUB_TOKEN}@github.com/google/truth.git" gh-pages > /dev/null
+git clone --quiet --branch=gh-pages "${github_url}" gh-pages > /dev/null
 cd gh-pages
 
 if [[ -z "${RELEASE_VERSION:-}" ]]; then
