@@ -271,11 +271,11 @@ public final class StoreActualValueInField extends BugChecker
           instanceMethod()
               .onDescendantOf("com.google.common.truth.Subject")
               .named("actual")
-              .withParameters(),
+              .withNoParameters(),
           instanceMethod()
               .onDescendantOf("com.google.common.truth.Subject")
               .named("getSubject")
-              .withParameters());
+              .withNoParameters());
   private static final Matcher<ExpressionTree> CHECK_NOT_NULL =
       staticMethod().onClass("com.google.common.base.Preconditions").named("checkNotNull");
 }
