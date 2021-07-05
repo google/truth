@@ -24,7 +24,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link ExpectFailure} used as JUnit {@link Rule).*/
+/** Tests for {@link ExpectFailure} used as JUnit {@link Rule}. */
 @RunWith(JUnit4.class)
 @GwtIncompatible("org.junit.Rule")
 public class ExpectFailureRuleTest {
