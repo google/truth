@@ -13,7 +13,7 @@
     <artifactId>truth-generator-extension</artifactId>
 
     <properties>
-        <version.roaster>2.23.1-SNAPSHOT</version.roaster>
+        <version.roaster>2.23.0.Final</version.roaster>
     </properties>
 
     <dependencies>
@@ -35,7 +35,6 @@
         <dependency>
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
-            <classifier>test</classifier>
             <type>test-jar</type>
             <version>HEAD-SNAPSHOT</version>
             <scope>test</scope>
