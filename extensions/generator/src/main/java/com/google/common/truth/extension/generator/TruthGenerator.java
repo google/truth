@@ -47,13 +47,21 @@ public class TruthGenerator {
         // AnnotationSource<JavaClassSource> generated = javaClass.addAnnotation("javax.annotation.processing.Generated");
         // generated.addAnnotationValue("truth-generator"); https://github.com/forge/roaster/issues/201
 
+        // actual field
+        javaClass.addField()
+                .setPrivate()
+                .setType(source)
+                .setName("actual")
+                .setFinal(true);
+
         // constructor
         MethodSource<JavaClassSource> constructor = javaClass.addMethod()
                 .setConstructor(true)
                 .setProtected();
         constructor.addParameter(FailureMetadata.class, "failureMetadata");
         constructor.addParameter(source, "actual");
-        constructor.setBody("super(failureMetadata, actual);");
+        constructor.setBody("super(failureMetadata, actual);\n" +
+                "this.actual = actual;");
 
 
         // factory accessor

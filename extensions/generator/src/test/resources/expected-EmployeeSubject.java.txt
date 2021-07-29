@@ -15,8 +15,11 @@ import com.google.common.truth.Truth;
  */
 public class EmployeeSubject extends Subject {
 
+	private final Employee actual;
+
 	protected EmployeeSubject(FailureMetadata failureMetadata, com.google.common.truth.extension.Employee actual) {
 		super(failureMetadata, actual);
+		this.actual = actual;
 	}
 
 	/**
