@@ -55,7 +55,7 @@ public class TruthGenerator {
      * per source. While still allowing the user to leverage the full code generation system but maintaining their own extensions
      * with clear separation from the code generation.
      */
-    public <T> void threeLayerSystem(Class<T> source, Class<T> usersMiddleClass) throws FileNotFoundException {
+    public void threeLayerSystem(Class<?> source, Class<?> usersMiddleClass) throws FileNotFoundException {
         // make parent - boiler plate access
         ParentClass parent = createParent(source);
 
@@ -73,6 +73,7 @@ public class TruthGenerator {
     public void threeLayerSystem(Class source) throws FileNotFoundException {
         ParentClass parent = createParent(source);
 
+        // todo try to see if class already exists first, user may already have a written one and not know
         MiddleClass middle = createMiddlePlaceHolder(parent.generated, source);
 
         createChild(parent, middle.generated.getQualifiedName(), source, middle.factoryMethod.getName());
@@ -146,6 +147,7 @@ public class TruthGenerator {
             }
         }
 
+        writeToDisk(overallAccess);
     }
 
     private String getManagedClassesBasePackage() {
@@ -166,8 +168,10 @@ public class TruthGenerator {
 
         addConstructor(source, parent, true);
 
-        writeToDisk(parent);
+        TestCreator testCreator = new TestCreator();
+        testCreator.addTests(parent, source);
 
+        writeToDisk(parent);
         return new ParentClass(parent);
     }
 

@@ -1,12 +1,12 @@
-package com.google.common.truth;
+package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
 import com.google.common.truth.extension.Employee;
-import com.google.common.truth.extension.generator.TruthGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -28,6 +28,14 @@ public class TruthGeneratorTest {
 
     private String trim(String in) {
         return in.replaceAll("(?m)^(\\s)*|(\\s)*$", "");
+    }
+
+    @Test
+    public void employee() throws FileNotFoundException {
+        TruthGenerator truthGenerator = new TruthGenerator(getClass().getPackage().getName());
+        String generate = truthGenerator.generate(MyEmployee.class);
+
+        assertThat(trim("")).isEqualTo(trim(generate));
 
     }
 
