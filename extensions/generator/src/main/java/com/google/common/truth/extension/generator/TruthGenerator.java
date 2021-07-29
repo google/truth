@@ -49,7 +49,7 @@ public class TruthGenerator {
 
         // actual field
         javaClass.addField()
-                .setPrivate()
+                .setProtected()
                 .setType(source)
                 .setName("actual")
                 .setFinal(true);
@@ -76,7 +76,6 @@ public class TruthGenerator {
         JavaDocSource<MethodSource<JavaClassSource>> factoryDocs = factory.getJavaDoc();
         factoryDocs.setText("Returns an assertion builder for a {@link " + sourceName + "} class.");
 
-
         // entry point
         MethodSource<JavaClassSource> assertThat = javaClass.addMethod()
                 .setName("assertThat")
@@ -90,6 +89,18 @@ public class TruthGenerator {
         assertThat.setBody(entryPointBody);
         javaClass.addImport(Truth.class);
         assertThat.getJavaDoc().setText("Entry point for {@link " + sourceName + "} assertions.");
+
+        // convenience entry point when being mixed with other "assertThat" assertion libraries
+        MethodSource<JavaClassSource> assertTruth = javaClass.addMethod()
+                .setName("assertTruth")
+                .setPublic()
+                .setStatic(true)
+                .setReturnType(javaClass.getEnclosingType());
+        assertTruth.addParameter(source, "actual");
+        assertTruth.setBody("return " + assertThat.getName() + "(actual);");
+        assertTruth.getJavaDoc().setText("Convenience entry point for {@link " + sourceName + "} assertions when being " +
+                "mixed with other \"assertThat\" assertion libraries.")
+                .addTagValue("@see", "#assertThat");
 
 
         // todo add static import for Truth.assertAbout somehow?
