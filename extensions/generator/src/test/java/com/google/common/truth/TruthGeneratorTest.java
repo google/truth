@@ -17,12 +17,11 @@ public class TruthGeneratorTest {
 
     @Test
     public void poc() throws IOException {
-        TruthGenerator truthGenerator = new TruthGenerator();
+        TruthGenerator truthGenerator = new TruthGenerator(getClass().getPackage().getName());
         String generated = truthGenerator.generate(Employee.class);
 
         String expectedFileName = "expected-EmployeeSubject.java.txt";
         String expecting = Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
-
 
         assertThat(trim(generated)).isEqualTo(trim(expecting));
     }
