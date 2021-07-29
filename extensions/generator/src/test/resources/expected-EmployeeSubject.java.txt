@@ -1,0 +1,35 @@
+package com.google.common.truth.extension;
+
+import com.google.common.truth.Subject;
+import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.Truth;
+
+/**
+ * Truth Subject for the {@link Employee} - extend this class, with your own
+ * custom assertions.
+ *
+ * Note that the generated class will change over time, so your edits will be
+ * overwritten. Or, you can copy the generated code into your project.
+ *
+ * @see Employee
+ */
+public class EmployeeSubject extends Subject {
+
+	protected EmployeeSubject(FailureMetadata failureMetadata, com.google.common.truth.extension.Employee actual) {
+		super(failureMetadata, actual);
+	}
+
+	/**
+	 * Returns an assertion builder for a {@link Employee} class.
+	 */
+	public static Factory<EmployeeSubject, Employee> employees() {
+		return EmployeeSubject::new;
+	}
+
+	/**
+	 * Entry point for {@link Employee} assertions.
+	 */
+	public static EmployeeSubject assertThat(com.google.common.truth.extension.Employee actual) {
+		return Truth.assertAbout(employees()).that(actual);
+	}
+}

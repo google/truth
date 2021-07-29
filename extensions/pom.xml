@@ -22,5 +22,6 @@
     <module>re2j</module>
     <module>liteproto</module>
     <module>proto</module>
+    <module>generator</module>
   </modules>
 </project>
