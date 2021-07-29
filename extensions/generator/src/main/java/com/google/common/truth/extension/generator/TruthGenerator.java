@@ -145,15 +145,7 @@ public class TruthGenerator {
                 overallAccess.addImport(i);
             }
         }
-//
-//        for (ManagedClassSet managed : managedSubjects) {
-//            addAssertThat(managed.sourceClass, managed.generatedClass, null, null);
-//            addAssertTruth(managed.sourceClass, managed.generatedClass, null);
-//
-//            addAccessPoints(managed.sourceClass, );
-//        }
 
-        writeToDisk(overallAccess);
     }
 
     private String getManagedClassesBasePackage() {
