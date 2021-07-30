@@ -3,6 +3,7 @@ package com.google.common.truth.extension.generator;
 import com.google.common.collect.Lists;
 import com.google.common.truth.Subject;
 import org.apache.commons.lang3.ClassUtils;
+import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.reflections.ReflectionUtils;
@@ -13,7 +14,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Stream;
 
+import static java.lang.String.format;
 import static org.reflections.ReflectionUtils.*;
 
 public class TestGenerator {
@@ -53,7 +56,7 @@ public class TestGenerator {
         }
     }
 
-    private void addPrimitiveTest(Method f, JavaClassSource parent, Class<?> classUnderTest) {
+    private void addPrimitiveTest(Method f, JavaClassSource generated, Class<?> classUnderTest) {
         Class<?> type = f.getReturnType();
         Class<?> aClass1 = ClassUtils.primitiveToWrapper(type);
 
@@ -72,7 +75,7 @@ public class TestGenerator {
 
         // todo add versions with and with the get
         String prefix = (type.getSimpleName().contains("boolean")) ? "is" : "";
-        MethodSource<JavaClassSource> has = parent.addMethod()
+        MethodSource<JavaClassSource> has = generated.addMethod()
                 .setName(prefix + f.getName())
                 .setPublic();
 
@@ -84,7 +87,7 @@ public class TestGenerator {
         // todo add support truth8 extensions - optional etc
         // todo try generatin classes for DateTime pakages, like Instant and Duration
         // todo this is of course too aggresive
-        List<String> specials = Lists.newArrayList("String", "BigDecimal", "Iterable", "Optional", "List");
+        List<String> specials = Lists.newArrayList("String", "BigDecimal", "Iterable", "List");
 
         boolean isCoveredByNonPrimitiveStandardSubjects = specials.contains(type.getSimpleName());
         boolean notPrimitive = !type.isPrimitive();
@@ -92,26 +95,41 @@ public class TestGenerator {
             // need to get the Subject instance using about
             // return check("hasCommittedToPartition(%s)", tp).about(commitHistories()).that(commitHistory);
             String aboutName;
-            Set<Method> factoryPotentials = getMethods(subjectClass, x ->
-                    !x.getName().startsWith("assert")
-            );
-            if (factoryPotentials.isEmpty()) {
-                aboutName = TruthGenerator.getFactoryName(type); // take a guess
-            } else {
-                Method method = factoryPotentials.stream().findFirst().get();
-                aboutName = method.getName();
-            }
-            body.append(String.format(".about(%s())", aboutName));
+//            Set<Method> factoryPotentials = getMethods(subjectClass, x ->
+//                    !x.getName().startsWith("assert") // the factory method won't be the assert methods
+//                    && !x.getName().startsWith("lambda") // the factory method won't be the assert methods
+//            );
+//            if (factoryPotentials.isEmpty()) {
+            aboutName = TruthGenerator.getFactoryName(type); // take a guess
+//            } else {
+//                Method method = factoryPotentials.stream().findFirst().get();
+//                aboutName = method.getName();
+//            }
+            body.append(format(".about(%s())", aboutName));
+
+            // import
+            Optional<Class> factoryContainer = this.subjects.values().parallelStream()
+                    .filter(classes -> Arrays.stream(classes.getMethods())
+                            .anyMatch(methods -> methods.getName().equals(aboutName)))
+                    .findFirst();
+            if (factoryContainer.isPresent()) {
+                Class container = factoryContainer.get();
+                Import anImport = generated.addImport(container);
+                String name = container.getCanonicalName() + "." + aboutName;
+                anImport.setName(name) // todo better way to do static method import?
+                        .setStatic(true);
+            } else
+                System.err.println(format("Can't find container for method %s", aboutName));
         }
 
 //        String methodPrefix = (type.getSimpleName().contains("boolean")) ? "is" : "get";
 //        body.append(".that(actual." + methodPrefix + capitalize(f.getName()) + "());");
-        body.append(".that(actual." + f.getName() + "());");
+        body.append(format(".that(actual.%s());", f.getName()));
 
         has.setBody(body.toString());
 
         has.setReturnType(subjectClass);
-        parent.addImport(subjectClass);
+        generated.addImport(subjectClass);
     }
 
     private Optional<? extends Class> getSubjectForType(final Class<?> type) {
