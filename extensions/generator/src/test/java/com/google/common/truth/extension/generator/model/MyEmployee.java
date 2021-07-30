@@ -1,4 +1,4 @@
-package com.google.common.truth.extension.generator;
+package com.google.common.truth.extension.generator.model;
 
 import java.util.List;
 
@@ -9,6 +9,31 @@ public class MyEmployee {
     private int birthYear;
     private char id;
     private String name;
+
+    //todo private enum
+    //todo optional
+    //todo ZonedDateTime
+
+    private MyEmployee boss;
+
+    private IdCard card;
+
+    private List<Project> projectList;
+
+    @Override
+    public String toString() {
+        return "MyEmployee{" +
+                "birthSeconds=" + birthSeconds +
+                ", employed=" + employed +
+                ", weighting=" + weighting +
+                ", birthYear=" + birthYear +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", boss=" + boss +
+                ", card=" + card +
+                ", slipUpList=" + projectList +
+                '}';
+    }
 
     public long getBirthSeconds() {
         return birthSeconds;
@@ -34,9 +59,6 @@ public class MyEmployee {
         this.weighting = weighting;
     }
 
-    public void setBirthYear(final int birthYear) {
-        this.birthYear = birthYear;
-    }
 
     public char getId() {
         return id;
@@ -62,19 +84,13 @@ public class MyEmployee {
         this.card = card;
     }
 
-    public List<SlipUp> getSlipUpList() {
-        return slipUpList;
+    public List<Project> getSlipUpList() {
+        return projectList;
     }
 
-    public void setSlipUpList(final List<SlipUp> slipUpList) {
-        this.slipUpList = slipUpList;
+    public void setSlipUpList(final List<Project> slipUpList) {
+        this.projectList = slipUpList;
     }
-
-    private MyEmployee boss;
-
-    private IdCard card;
-
-    private List<SlipUp> slipUpList;
 
     public MyEmployee(final String name) {
         this.name = name;
@@ -88,11 +104,11 @@ public class MyEmployee {
         this.name = name;
     }
 
-    public long getBirthYear() {
+    public int getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(final long birthYear) {
-        this.birthYear = (int) birthYear;
+    public void setBirthYear(final int birthYear) {
+        this.birthYear = birthYear;
     }
 }

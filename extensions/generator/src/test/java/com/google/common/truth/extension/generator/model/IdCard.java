@@ -1,4 +1,4 @@
-package com.google.common.truth.extension.generator;
+package com.google.common.truth.extension.generator.model;
 
 import java.util.UUID;
 
@@ -6,6 +6,15 @@ public class IdCard {
     private UUID id = UUID.randomUUID();
     private String name;
     private int epoch;
+
+    @Override
+    public String toString() {
+        return "IdCard{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", epoch=" + epoch +
+                '}';
+    }
 
     public IdCard(final UUID id, final String name, final int epoch) {
         this.id = id;
