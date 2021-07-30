@@ -68,15 +68,32 @@ public class TruthGenerator {
     /**
      * Create the place holder middle class, for optional copying into source code
      *
+     * @return
      * @see #threeLayerSystem(Class, Class)
      */
-    public void threeLayerSystem(Class source) throws FileNotFoundException {
+    public ThreeSystem threeLayerSystem(Class source) throws FileNotFoundException {
         ParentClass parent = createParent(source);
 
         // todo try to see if class already exists first, user may already have a written one and not know
         MiddleClass middle = createMiddlePlaceHolder(parent.generated, source);
 
-        createChild(parent, middle.generated.getQualifiedName(), source, middle.factoryMethod.getName());
+        JavaClassSource child = createChild(parent, middle.generated.getQualifiedName(), source, middle.factoryMethod.getName());
+
+        return new ThreeSystem(source, parent, middle, child);
+    }
+
+    public class ThreeSystem {
+        public ThreeSystem(final Class classUnderTest, final ParentClass parent, final MiddleClass middle, final JavaClassSource child) {
+            this.classUnderTest = classUnderTest;
+            this.parent = parent;
+            this.middle = middle;
+            this.child = child;
+        }
+
+        public final Class classUnderTest;
+        public final ParentClass parent;
+        public final MiddleClass middle;
+        public final JavaClassSource child;
     }
 
     private MiddleClass createMiddlePlaceHolder(JavaClassSource parent, Class source) throws FileNotFoundException {
@@ -96,21 +113,21 @@ public class TruthGenerator {
         return new MiddleClass(middle, factory);
     }
 
-    class AClass {
-        final JavaClassSource generated;
+    public static class AClass {
+        public final JavaClassSource generated;
 
         AClass(final JavaClassSource generated) {
             this.generated = generated;
         }
     }
 
-    class ParentClass extends AClass {
+    public static class ParentClass extends AClass {
         ParentClass(JavaClassSource generated) {
             super(generated);
         }
     }
 
-    class MiddleClass extends AClass {
+    public static class MiddleClass extends AClass {
         final MethodSource<JavaClassSource> factoryMethod;
 
         MiddleClass(JavaClassSource generated, MethodSource<JavaClassSource> factoryMethod) {
@@ -168,9 +185,6 @@ public class TruthGenerator {
 
         addConstructor(source, parent, true);
 
-        TestCreator testCreator = new TestCreator();
-        testCreator.addTests(parent, source);
-
         writeToDisk(parent);
         return new ParentClass(parent);
     }
@@ -219,11 +233,11 @@ public class TruthGenerator {
     public <T> String generate(Class<T> source) throws FileNotFoundException {
         JavaClassSource javaClass = Roaster.create(JavaClassSource.class);
 
-        JavaClassSource handWrittenExampleCode = Roaster.parse(JavaClassSource.class, handWritten);
+//        JavaClassSource handWrittenExampleCode = Roaster.parse(JavaClassSource.class, handWritten);
 
-        registerManagedClass(source, handWrittenExampleCode);
+//        registerManagedClass(source, handWrittenExampleCode);
 
-        javaClass = handWrittenExampleCode;
+//        javaClass = handWrittenExampleCode;
 
         String packageName = source.getPackage().getName();
         String sourceName = source.getSimpleName();
@@ -294,7 +308,7 @@ public class TruthGenerator {
         }
     }
 
-    private String writeToDisk(JavaClassSource javaClass) throws FileNotFoundException {
+    public static String writeToDisk(JavaClassSource javaClass) throws FileNotFoundException {
         String classSource = javaClass.toString();
         try (PrintWriter out = new PrintWriter(getFileName(javaClass))) {
             out.println(classSource);
@@ -407,7 +421,7 @@ public class TruthGenerator {
         return factoryClass.getSimpleName() + generics;
     }
 
-    private String getFileName(JavaClassSource javaClass) {
+    private static String getFileName(JavaClassSource javaClass) {
         String directoryName = getDirectoryName(javaClass);
         File dir = new File(directoryName);
         if (!dir.exists()) {
@@ -416,98 +430,22 @@ public class TruthGenerator {
         return directoryName + javaClass.getName() + ".java";
     }
 
-    private String getDirectoryName(JavaClassSource javaClass) {
+    private static String getDirectoryName(JavaClassSource javaClass) {
         String parent = Paths.get("").toAbsolutePath().toString();
         String packageName = javaClass.getPackage();
         String packageNameDir = packageName.replace(".", "/");
         return parent + "/target/generated-test-sources/" + packageNameDir + "/";
     }
 
-    private <T> String getFactoryName(Class<T> source) {
+    public static <T> String getFactoryName(Class<T> source) {
         String simpleName = source.getSimpleName();
         String plural = English.plural(simpleName);
         String normal = toLowerCaseFirstLetter(plural);
         return normal;
     }
 
-    private String toLowerCaseFirstLetter(String plural) {
+    private static String toLowerCaseFirstLetter(String plural) {
         return plural.substring(0, 1).toLowerCase() + plural.substring(1);
     }
-
-    String handWritten = "package io.confluent.csid.utils;\n" +
-            "\n" +
-            "import com.google.common.truth.Subject;\n" +
-            "import com.google.common.truth.FailureMetadata;\n" +
-            "import com.google.common.truth.Truth;\n" +
-            "import io.confluent.parallelconsumer.model.CommitHistory;\n" +
-            "import io.confluent.parallelconsumer.truth.CommitHistorySubject;\n" +
-            "import org.apache.kafka.clients.consumer.OffsetAndMetadata;\n" +
-            "import org.apache.kafka.common.TopicPartition;\n" +
-            "\n" +
-            "import java.util.List;\n" +
-            "import java.util.Map;\n" +
-            "import java.util.concurrent.CopyOnWriteArrayList;\n" +
-            "import java.util.stream.Collectors;\n" +
-            "\n" +
-            "import static io.confluent.parallelconsumer.truth.CommitHistorySubject.commitHistories;\n" +
-            "\n" +
-//            "/**\n" +
-//            " * Truth Subject for the {@link LongPollingMockConsumer} - extend this class,\n" +
-//            " * with your own custom assertions.\n" +
-//            " * \n" +
-//            " * Note that the generated class will change over time, so your edits will be\n" +
-//            " * overwritten. Or, you can copy the generated code into your project.\n" +
-//            " * \n" +
-//            " * @see LongPollingMockConsumer\n" +
-            "/** my own docs\n" +
-            " */\n" +
-            "public class LongPollingMockConsumerSubject extends Subject {\n" +
-            "\n" +
-//            "\tprotected LongPollingMockConsumer actual;\n" +
-//            "\n" +
-//            "\tprotected LongPollingMockConsumerSubject(FailureMetadata failureMetadata,\n" +
-//            "\t\t\tio.confluent.csid.utils.LongPollingMockConsumer actual) {\n" +
-//            "\t\tsuper(failureMetadata, actual);\n" +
-//            "\t\tthis.actual = actual;\n" +
-//            "\t}\n" +
-//            "\n" +
-//            "\t/**\n" +
-//            "\t * Returns an assertion builder for a {@link LongPollingMockConsumer} class.\n" +
-//            "\t */\n" +
-//            "\tpublic static Factory<LongPollingMockConsumerSubject, LongPollingMockConsumer> longPollingMockConsumers() {\n" +
-//            "\t\treturn LongPollingMockConsumerSubject::new;\n" +
-//            "\t}\n" +
-//            "\n" +
-//            "\t/**\n" +
-//            "\t * Entry point for {@link LongPollingMockConsumer} assertions.\n" +
-//            "\t */\n" +
-//            "\tpublic static LongPollingMockConsumerSubject assertThat(io.confluent.csid.utils.LongPollingMockConsumer actual) {\n" +
-//            "\t\treturn Truth.assertAbout(longPollingMockConsumers()).that(actual);\n" +
-//            "\t}\n" +
-//            "\n" +
-//            "\t/**\n" +
-//            "\t * Convenience entry point for {@link LongPollingMockConsumer} assertions when\n" +
-//            "\t * being mixed with other \"assertThat\" assertion libraries.\n" +
-//            "\t * \n" +
-//            "\t * @see #assertThat\n" +
-//            "\t */\n" +
-//            "\tpublic static LongPollingMockConsumerSubject assertTruth(io.confluent.csid.utils.LongPollingMockConsumer actual) {\n" +
-//            "\t\treturn assertThat(actual);\n" +
-//            "\t}\n" +
-            "\n" +
-            "\tpublic CommitHistorySubject hasCommittedToPartition(TopicPartition tp) {\n" +
-            "\t\tisNotNull();\n" +
-            "\t\tCopyOnWriteArrayList<Map<TopicPartition, OffsetAndMetadata>> commits = actual.getCommitHistoryInt();\n" +
-            "\t\tList<OffsetAndMetadata> collect = commits.stream()\n" +
-            "\t\t\t\t.filter(x -> x.containsKey(tp))\n" +
-            "\t\t\t\t.map(x -> x.get(tp))\n" +
-            "\t\t\t\t.collect(Collectors.toList());\n" +
-            "\t\tCommitHistory commitHistory = new CommitHistory(collect);\n" +
-            "\t\treturn check(\"hasCommittedToPartition(%s)\", tp).about(commitHistories()).that(commitHistory);\n" +
-            "\t}\n" +
-            "\n" +
-            "void somethingElse(){}\n" +
-            "}\n";
-
 
 }
