@@ -1,22 +1,28 @@
 package com.google.common.truth.extension.generator.testModel;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class MyEmployee extends Person {
-  private UUID id;
+  private UUID id = UUID.randomUUID();
 
-  private ZonedDateTime anniversary;
+  private ZonedDateTime anniversary = ZonedDateTime.now();
 
   private MyEmployee boss;
 
   private IdCard card;
 
-  private List<Project> projectList;
+  private List<Project> projectList = new ArrayList<>();
 
-  State employed;
+  State employed = State.NEVER_EMPLOYED;
+
+  public MyEmployee(final String name) {
+    super(name);
+  }
+
 
   enum State {
     EMPLOLYED, PREVIOUSLY_EMPLOYED, NEVER_EMPLOYED;
@@ -27,15 +33,7 @@ public class MyEmployee extends Person {
    */
   @Override
   public String getName() {
-    return super.getName() + " ID: " +this.getId();
-  }
-
-  public char getId() {
-    return id;
-  }
-
-  public void setId(final char id) {
-    this.id = id;
+    return super.getName() + " ID: " + this.getId();
   }
 
   public MyEmployee getBoss() {
@@ -60,10 +58,6 @@ public class MyEmployee extends Person {
 
   public void setSlipUpList(final List<Project> slipUpList) {
     this.projectList = slipUpList;
-  }
-
-  public MyEmployee(final String name) {
-    super(name);
   }
 
   public List<Project> getProjectList() {
@@ -99,6 +93,24 @@ public class MyEmployee extends Person {
 
   public Optional<Double> getWeighting() {
     return this.weighting;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(final UUID id) {
+    this.id = id;
+  }
+
+  @Override
+  public String toString() {
+    return "MyEmployee{" +
+//            "id=" + id +
+            ", name=" + getName() +
+            ", card=" + card +
+            ", employed=" + employed +
+            '}';
   }
 
 }

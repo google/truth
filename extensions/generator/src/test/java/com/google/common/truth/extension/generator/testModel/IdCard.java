@@ -16,7 +16,7 @@ public class IdCard {
                 '}';
     }
 
-    public IdCard(final UUID id, final String name, final int epoch) {
+    public IdCard(final String name, final int epoch) {
         this.id = id;
         this.name = name;
         this.epoch = epoch;

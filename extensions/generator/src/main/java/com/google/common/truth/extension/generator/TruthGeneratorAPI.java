@@ -4,9 +4,8 @@ import com.google.common.truth.extension.generator.internal.TruthGenerator;
 import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
-import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 /**
  *
@@ -52,12 +51,15 @@ public interface TruthGeneratorAPI {
 
   /**
    * @param ss
+   * @return
    */
-  void generate(SourceClassSets ss);
+  Set<ThreeSystem> generate(SourceClassSets ss);
 
   /**
    *
    * @param classes
+   * @return
    */
-  void generate(List<Class> classes);
+  Set<ThreeSystem> generate(Set<Class<?>> classes);
+
 }

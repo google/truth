@@ -6,7 +6,8 @@ public class Person {
   private long birthSeconds;
   private String name;
   private int birthYear;
-  private ZonedDateTime brithday;
+
+  private ZonedDateTime birthday;
 
   public long getBirthSeconds() {
     return this.birthSeconds;
@@ -34,6 +35,14 @@ public class Person {
 
   public Person(final String name) {
     this.name = name;
+  }
+
+  public ZonedDateTime getBirthday() {
+    return this.birthday;
+  }
+
+  public void setBirthday(final ZonedDateTime birthday) {
+    this.birthday = birthday;
   }
 
 }

@@ -38,7 +38,7 @@ public interface SkeletonGeneratorAPI {
      * @return null if for some reason the class isn't supported
      * @see #threeLayerSystem(Class, Class)
      */
-    Optional<ThreeSystem> threeLayerSystem(Class<?> source, Optional<String> targetPackageName);
+    Optional<ThreeSystem> threeLayerSystem(Class<?> source);
 
     /**
      * @see com.google.common.truth.extension.generator.TruthGeneratorAPI#combinedSystem(Class) 

@@ -3,9 +3,8 @@ package com.google.common.truth.extension.generator;
 import com.google.common.io.Resources;
 import com.google.common.truth.extension.Employee;
 import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
-import com.google.common.truth.extension.generator.testModel.IdCard;
-import com.google.common.truth.extension.generator.testModel.MyEmployee;
-import com.google.common.truth.extension.generator.testModel.Project;
+import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import com.google.common.truth.extension.generator.testModel.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -13,9 +12,8 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,26 +44,33 @@ public class TruthGeneratorTest {
   }
 
   @Test
-  void generate_code() {
+  public void generate_code() {
     // todo need to be able to set base package for all generated classes, kind of like shade, so you cah generate test for classes in other restricted modules
     TruthGeneratorAPI truthGenerator = TruthGeneratorAPI.create();
 
-    List<Class> classes = new ArrayList<>();
+    Set<Class<?>> classes = new HashSet<>();
     classes.add(MyEmployee.class);
     classes.add(IdCard.class);
     classes.add(Project.class);
 
+    String basePackageName = getClass().getPackage().getName();
+    SourceClassSets ss = new SourceClassSets(basePackageName);
+    ss.generateFrom(classes);
+
     // package exists in other module error - needs package target support
-//        classes.add(ZonedDateTime.class);
-//        classes.add(UUID.class);
+    ss.generateFrom(basePackageName, ZonedDateTime.class, UUID.class);
 
-    truthGenerator.generate(classes);
+    Set<ThreeSystem> generated = truthGenerator.generate(ss);
 
-//        Assertions.assertThat(wc).
+    assertThat(generated.size()).isAtLeast(classes.size());
+    Set<? extends Class<?>> generatedSourceClasses = generated.stream().map(x -> x.classUnderTest).collect(Collectors.toSet());
+    assertThat(generatedSourceClasses).containsAtLeast(UUID.class, ZonedDateTime.class);
 
-//        truthGenerator.generate(PartitionState.class);
+    MyEmployee employee = TestModelUtils.createEmployee();
+    ManagedTruth.assertThat(employee).getCard().getEpoch().isAtLeast(0);
+//    ManagedTruth.assertThat(employee).getBoss().getName().isEqualTo("Tony");
 
-//        truthGenerator.maintain(LongPollingMockConsumer.class, LongPollingMockConsumerSubject.class);
+    ManagedTruth.assertThat(employee).getBirthday().getYear().isLessThan(1920);
 
   }
 
@@ -76,15 +81,17 @@ public class TruthGeneratorTest {
     String targetPackageName = this.getClass().getPackage().getName();
     SourceClassSets ss = new SourceClassSets(targetPackageName);
 
-    ss.generateFromPackagesOf(IdCard.class);
+    ss.generateAllFoundInPackagesOf(IdCard.class);
 
     // generate java Subjects and put them in our package
     ss.generateFrom(targetPackageName, UUID.class, ZonedDateTime.class);
 
-    tg.generate(ss);
+    Set<ThreeSystem> generated = tg.generate(ss);
+    assertThat(generated.size()).isAtLeast(ss.getPackageAndClasses().size());
+
   }
 
-    @Test
+  @Test
   public void try_out_assertions() {
 
     // all asserts should be available
