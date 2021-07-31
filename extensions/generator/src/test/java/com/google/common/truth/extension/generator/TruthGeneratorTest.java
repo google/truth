@@ -2,22 +2,20 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
 import com.google.common.truth.extension.Employee;
-import com.google.common.truth.extension.generator.internal.TruthGenerator;
-import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
-import com.google.common.truth.extension.generator.model.IdCard;
-import com.google.common.truth.extension.generator.model.MyEmployee;
-import com.google.common.truth.extension.generator.model.Project;
+import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
+import com.google.common.truth.extension.generator.testModel.IdCard;
+import com.google.common.truth.extension.generator.testModel.MyEmployee;
+import com.google.common.truth.extension.generator.testModel.Project;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,8 +24,8 @@ public class TruthGeneratorTest {
 
   @Test
   public void poc() throws IOException {
-    TruthGeneratorAPI truthGeneratorAPI = new TruthGenerator(Employee.class.getPackageName());
-    String generated = truthGeneratorAPI.generate(Employee.class);
+    TruthGeneratorAPI truthGeneratorAPI = TruthGeneratorAPI.create();
+    String generated = truthGeneratorAPI.combinedSystem(Employee.class);
 
     String expectedFileName = "expected-EmployeeSubject.java.txt";
     String expecting = Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
@@ -40,17 +38,17 @@ public class TruthGeneratorTest {
   }
 
   @Test
-  public void employee() throws FileNotFoundException {
-    TruthGeneratorAPI truthGeneratorAPI = new TruthGenerator(MyEmployee.class.getPackageName());
-    String generate = truthGeneratorAPI.generate(MyEmployee.class);
+  public void combined() {
+    TruthGeneratorAPI truthGeneratorAPI = TruthGeneratorAPI.create();
+    String generate = truthGeneratorAPI.combinedSystem(MyEmployee.class);
 
     assertThat(trim("")).isEqualTo(trim(generate));
   }
 
   @Test
-  void generate_code() throws FileNotFoundException {
+  void generate_code() {
     // todo need to be able to set base package for all generated classes, kind of like shade, so you cah generate test for classes in other restricted modules
-    TruthGeneratorAPI truthGenerator = new TruthGenerator(MyEmployee.class.getPackageName());
+    TruthGeneratorAPI truthGenerator = TruthGeneratorAPI.create();
 
     List<Class> classes = new ArrayList<>();
     classes.add(MyEmployee.class);
@@ -61,14 +59,7 @@ public class TruthGeneratorTest {
 //        classes.add(ZonedDateTime.class);
 //        classes.add(UUID.class);
 
-    List<ThreeSystem> threeSystemStream = classes.stream().map(x -> truthGenerator.threeLayerSystem(x).get()).collect(Collectors.toList());
-
-    TestGenerator tg = new TestGenerator(Set.of());
-    threeSystemStream.forEach(x -> {
-      tg.addTests(x.parent.generated, x.classUnderTest);
-    });
-    truthGenerator.createOverallAccessPoints();
-
+    truthGenerator.generate(classes);
 
 //        Assertions.assertThat(wc).
 
@@ -79,6 +70,21 @@ public class TruthGeneratorTest {
   }
 
   @Test
+  public void package_java_mix() {
+    TruthGeneratorAPI tg = TruthGeneratorAPI.create();
+
+    String targetPackageName = this.getClass().getPackage().getName();
+    SourceClassSets ss = new SourceClassSets(targetPackageName);
+
+    ss.generateFromPackagesOf(IdCard.class);
+
+    // generate java Subjects and put them in our package
+    ss.generateFrom(targetPackageName, UUID.class, ZonedDateTime.class);
+
+    tg.generate(ss);
+  }
+
+    @Test
   public void try_out_assertions() {
 
     // all asserts should be available

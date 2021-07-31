@@ -1,4 +1,4 @@
-package com.google.common.truth.extension.generator.model;
+package com.google.common.truth.extension.generator.testModel;
 
 import java.util.UUID;
 

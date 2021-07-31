@@ -1,10 +1,10 @@
-package com.google.common.truth.extension.generator;
+package com.google.common.truth.extension.generator.internal;
 
 import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.Subject;
-import com.google.common.truth.extension.generator.internal.TruthGenerator;
+import com.google.common.truth.extension.generator.internal.SkeletonGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import org.apache.commons.lang3.ClassUtils;
 import org.jboss.forge.roaster.model.source.Import;
@@ -28,14 +28,15 @@ import static org.reflections.ReflectionUtils.*;
 /**
  * @author Antony Stubbs
  */
-public class TestGenerator {
+// todo needs refactoring into different strategies, interface
+public class SubjectMethodGenerator {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Map<String, Class> compiledSubjects;
   private final Map<String, ThreeSystem> generatedSubjects;
 
-  public TestGenerator(final Set<ThreeSystem> allTypes) {
+  public SubjectMethodGenerator(final Set<ThreeSystem> allTypes) {
     this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getSimpleName(), x -> x));
 
     Reflections reflections = new Reflections("com.google.common.truth", "io.confluent");
@@ -149,7 +150,7 @@ public class TestGenerator {
 //                    && !x.getName().startsWith("lambda") // the factory method won't be the assert methods
 //            );
 //            if (factoryPotentials.isEmpty()) {
-      aboutName = TruthGenerator.getFactoryName(returnType); // take a guess
+      aboutName = Utils.getFactoryName(returnType); // take a guess
 //            } else {
 //                Method method = factoryPotentials.stream().findFirst().get();
 //                aboutName = method.getName();
@@ -276,7 +277,7 @@ public class TestGenerator {
 
     // only serialise results, when all have finished - useful for debugging
     for (ThreeSystem c : allTypes) {
-      TruthGenerator.writeToDisk(c.parent.generated);
+      Utils.writeToDisk(c.parent.generated);
     }
   }
 
