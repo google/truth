@@ -55,7 +55,7 @@
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
         </dependency>
-        <!-- reflections optional dependecy -->
+        <!-- reflections optional dependency -->
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>

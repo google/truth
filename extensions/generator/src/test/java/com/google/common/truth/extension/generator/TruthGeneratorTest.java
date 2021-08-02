@@ -9,6 +9,7 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -22,6 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
 public class TruthGeneratorTest {
+
+  public static final PodamFactoryImpl PODAM_FACTORY = new PodamFactoryImpl();
 
   private String loadFileToString(String expectedFileName) throws IOException {
     return Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
@@ -137,6 +140,21 @@ public class TruthGeneratorTest {
 
 //    MyEmployeeChildSubject.assertThat(TestModelUtils.createEmployee()).hasProjectMapWithKey("key");
 
+  }
+
+  @Test
+  public void test_legacy_mode(){
+    TruthGeneratorAPI tg = TruthGeneratorAPI.create();
+    SourceClassSets ss = new SourceClassSets(this);
+    ss.generateFromNonBean(NonBeanLegacy.class);
+    tg.generate(ss);
+
+    NonBeanLegacy nonBeanLegacy = createInstance();
+    NonBeanLegacyChildSubject.assertThat(nonBeanLegacy).hasAge().isNotNull();
+  }
+
+  private NonBeanLegacy createInstance() {
+    return PODAM_FACTORY.manufacturePojo(NonBeanLegacy.class);
   }
 
 }

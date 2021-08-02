@@ -17,6 +17,7 @@ import org.reflections.Reflections;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -40,6 +41,7 @@ public class SubjectMethodGenerator {
 
   private final Map<String, Class<?>> compiledSubjects;
   private final Map<String, ThreeSystem> generatedSubjects;
+  private ThreeSystem context;
 
   public SubjectMethodGenerator(final Set<ThreeSystem> allTypes) {
     this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getSimpleName(), x -> x));
@@ -52,26 +54,38 @@ public class SubjectMethodGenerator {
     this.compiledSubjects = maps;
   }
 
-
-  public void addTests(JavaClassSource parent, Class<?> classUnderTest) {
-    Collection<Method> getters = getMethods(classUnderTest);
+  public void addTests(ThreeSystem system) {
+    Collection<Method> getters = getMethods(system);
 
     //
     for (Method method : getters) {
-      addFieldAccessors(method, parent, classUnderTest);
+      this.context = system;
+      addFieldAccessors(method, system.getParent().getGenerated(), system.getClassUnderTest());
     }
   }
 
-  private Collection<Method> getMethods(final Class<?> classUnderTest) {
-    Set<Method> getters = ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), withPrefix("get"), withParametersCount(0));
+  private Collection<Method> getMethods(ThreeSystem system) {
+    Class<?> classUnderTest = system.getClassUnderTest();
+    boolean legacyMode = system.isLegacyMode();
 
-    Set<Method> issers = ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), withPrefix("is"), withParametersCount(0));
+    Set<Method> union = new HashSet<>();
+    Set<Method> getters = getMethods(classUnderTest, withPrefix("get"));
+    Set<Method> issers = getMethods(classUnderTest, withPrefix("is"));
 
-    getters.addAll(issers);
+    // also get all other methods, regardless of their prefix
+    Predicate<Method> expectSetters = not(withPrefix("set"));
+    Set<Method> legacy = (legacyMode) ? getMethods(classUnderTest, expectSetters) : Set.of();
 
-    return removeOverridden(getters);
+    union.addAll(getters);
+    union.addAll(issers);
+    union.addAll(legacy);
+
+    return removeOverridden(union);
+  }
+
+  private Set<Method> getMethods(Class<?> classUnderTest, Predicate<Method> prefix) {
+    return ReflectionUtils.getAllMethods(classUnderTest,
+            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), prefix, withParametersCount(0));
   }
 
   private Collection<Method> removeOverridden(final Set<Method> getters) {
@@ -120,7 +134,7 @@ public class SubjectMethodGenerator {
     Class<?> returnType = getWrappedReturnType(method);
 
     // todo skip static methods for now - just need to make template a bit more advanced
-    if(methodIsStatic(method))
+    if (methodIsStatic(method))
       return;
 
     if (Boolean.class.isAssignableFrom(returnType)) {
@@ -173,7 +187,7 @@ public class SubjectMethodGenerator {
     String fieldName = removeStart(method.getName(), "get");
     body = format(body, testPrefix, method.getName(), equality, fieldName, say);
 
-    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "EqualTo";
+    String methodName = "has" + capitalize(fieldName) + capitalize(say.toLowerCase()).trim() + "EqualTo";
     MethodSource<JavaClassSource> newMethod = generated.addMethod();
     newMethod.setName(methodName)
             .setReturnTypeVoid()
@@ -202,7 +216,7 @@ public class SubjectMethodGenerator {
     String fieldName = removeStart(method.getName(), "get");
     body = format(body, testPrefix, method.getName(), fieldName, say);
 
-    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "WithKey";
+    String methodName = "has" + capitalize(fieldName) + capitalize(say.toLowerCase()).trim() + "WithKey";
     MethodSource<JavaClassSource> newMethod = generated.addMethod();
     newMethod
             .setName(methodName)
@@ -230,7 +244,7 @@ public class SubjectMethodGenerator {
     String fieldName = removeStart(method.getName(), "get");
     body = format(body, testPrefix, method.getName(), fieldName, say);
 
-    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "Present";
+    String methodName = "has" + capitalize(fieldName) + capitalize(say.toLowerCase()).trim() + "Present";
     MethodSource<JavaClassSource> newMethod = generated.addMethod();
     newMethod
             .setName(methodName)
@@ -259,7 +273,7 @@ public class SubjectMethodGenerator {
     String say = positive ? "" : "NOT ";
     body = format(body, testPrefix, method.getName(), fieldName, say);
 
-    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "WithElement";
+    String methodName = "has" + capitalize(fieldName) + capitalize(say.toLowerCase()).trim() + "WithElement";
     MethodSource<JavaClassSource> newMethod = generated.addMethod();
     newMethod
             .setName(methodName)
@@ -317,7 +331,6 @@ public class SubjectMethodGenerator {
 
     ClassOrGenerated subjectClass = subjectForType.get();
 
-    // todo add versions with and with the get
     String nameForChainMethod = createNameForChainMethod(method);
     MethodSource<JavaClassSource> has = generated.addMethod()
             .setName(nameForChainMethod)
@@ -367,6 +380,10 @@ public class SubjectMethodGenerator {
    */
   private String createNameForChainMethod(final Method method) {
     String name = method.getName();
+
+    if (context.isLegacyMode())
+      return "has" + capitalize(name);
+
     if (name.startsWith("get")) {
       name = removeStart(name, "get");
       return "has" + name;
@@ -460,8 +477,8 @@ public class SubjectMethodGenerator {
   }
 
   public void addTests(final Set<ThreeSystem> allTypes) {
-    for (ThreeSystem c : allTypes) {
-      addTests(c.parent.getGenerated(), c.classUnderTest);
+    for (ThreeSystem system : allTypes) {
+      addTests(system);
     }
 
     // only serialise results, when all have finished - useful for debugging

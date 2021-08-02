@@ -118,7 +118,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
             x -> generateSkeletonsFromPackages(x, overallEntryPoint).stream()
     ).collect(Collectors.toSet());
 
-    // custom packge destination
+    // custom package destination
     Set<PackageAndClasses> packageAndClasses = ss.getPackageAndClasses();
     Set<ThreeSystem> setStream = packageAndClasses.stream().flatMap(
             x -> {
@@ -130,8 +130,30 @@ public class TruthGenerator implements TruthGeneratorAPI {
     // straight up classes
     Set<ThreeSystem> simpleClasses = generateSkeletons(ss.getSimpleClasses(), Optional.empty(), overallEntryPoint);
 
+    // legacy classes
+    Set<ThreeSystem> legacyClasses = generateSkeletons(ss.getLegacyBeans(), Optional.empty(), overallEntryPoint);
+    legacyClasses.forEach(x -> x.setLegacyMode(true));
+
+    // legacy classes with custom package destination
+    Set<PackageAndClasses> legacyPackageAndClasses = ss.getLegacyPackageAndClasses();
+    Set<ThreeSystem> legacyPackageSet = legacyPackageAndClasses.stream().flatMap(
+            x -> {
+              Set<Class<?>> collect = Arrays.stream(x.getClasses()).collect(Collectors.toSet());
+              return generateSkeletons(collect, Optional.of(x.getTargetPackageName()), overallEntryPoint).stream();
+            }
+    ).collect(Collectors.toSet());
+    legacyPackageSet.forEach(x -> x.setLegacyMode(true));
+
+
+    // add tests
+    Set<ThreeSystem> union = new HashSet<>();
+    union.addAll(skeletons);
+    union.addAll(setStream);
+    union.addAll(simpleClasses);
+    union.addAll(legacyClasses);
+    union.addAll(legacyPackageSet);
+
     //
-    SetView<ThreeSystem> union = union(union(skeletons, setStream), simpleClasses);
     addTests(union);
 
     // create overall entry point

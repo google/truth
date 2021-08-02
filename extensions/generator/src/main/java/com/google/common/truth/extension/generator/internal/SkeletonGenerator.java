@@ -9,6 +9,7 @@ import com.google.common.truth.extension.generator.UserManagedTruth;
 import com.google.common.truth.extension.generator.internal.model.MiddleClass;
 import com.google.common.truth.extension.generator.internal.model.ParentClass;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import lombok.Setter;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.AnnotationSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -34,6 +35,9 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   private final Optional<String> targetPackageName;
   private MiddleClass middle;
   private ParentClass parent;
+
+  @Setter
+  private boolean legacyMode = false;
 
   public SkeletonGenerator(final Optional<String> targetPackageName) {
     this.targetPackageName = targetPackageName;
