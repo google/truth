@@ -1,9 +1,16 @@
-package com.google.common.truth.extension.generator.internal.model;
+package com.google.common.truth.extension.generator;
+
+import lombok.Getter;
+import lombok.Value;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Use this class to prepare the set of source classes to generate for, and settings for different types of sources.
+ */
+@Getter
 public class SourceClassSets {
 
   private final String packageForOverall;
@@ -38,39 +45,10 @@ public class SourceClassSets {
     this.simpleClasses = classes;
   }
 
+  @Value
   public class PackageAndClasses {
-    final String targetPackageName;
-
-    final Class<?>[] classes;
-
-    private PackageAndClasses(final String targetPackageName, final Class<?>[] classes) {
-      this.targetPackageName = targetPackageName;
-      this.classes = classes;
-    }
-
-    public String getTargetPackageName() {
-      return targetPackageName;
-    }
-
-    public Class<?>[] getClasses() {
-      return classes;
-    }
-  }
-
-  public Set<Class<?>[]> getSimplePackageOfClasses() {
-    return simplePackageOfClasses;
-  }
-
-  public Set<PackageAndClasses> getPackageAndClasses() {
-    return packageAndClasses;
-  }
-
-  public String getPackageForOverall() {
-    return packageForOverall;
-  }
-
-  public Set<Class<?>> getSimpleClasses() {
-    return this.simpleClasses;
+    String targetPackageName;
+    Class<?>[] classes;
   }
 
 }

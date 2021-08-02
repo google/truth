@@ -1,11 +1,10 @@
 package com.google.common.truth.extension.generator.internal;
 
-import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.TruthGeneratorAPI;
-import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
-import com.google.common.truth.extension.generator.internal.model.SourceClassSets.PackageAndClasses;
+import com.google.common.truth.extension.generator.SourceClassSets;
+import com.google.common.truth.extension.generator.SourceClassSets.PackageAndClasses;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;

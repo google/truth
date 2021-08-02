@@ -1,13 +1,10 @@
 package com.google.common.truth.extension.generator.internal.model;
 
+import lombok.Value;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+@Value
 public class ManagedClassSet<T> {
-   final Class<T> sourceClass;
-   final JavaClassSource generatedClass;
-
-   public ManagedClassSet(final Class<T> sourceClass, final JavaClassSource generatedClass) {
-      this.sourceClass = sourceClass;
-      this.generatedClass = generatedClass;
-   }
+   Class<T> sourceClass;
+   JavaClassSource generatedClass;
 }

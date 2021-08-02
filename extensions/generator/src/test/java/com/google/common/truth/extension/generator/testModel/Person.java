@@ -1,48 +1,23 @@
 package com.google.common.truth.extension.generator.testModel;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.time.ZonedDateTime;
 
+@Getter
+//@With
+@SuperBuilder(toBuilder = true)
+//@AllArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
 public class Person {
-  private long birthSeconds;
-  private String name;
-  private int birthYear;
+  protected final String name;
+  protected final long someLongAspect;
+  protected final ZonedDateTime birthday;
 
-  private ZonedDateTime birthday;
-
-  public long getBirthSeconds() {
-    return this.birthSeconds;
-  }
-
-  public void setBirthSeconds(final long birthSeconds) {
-    this.birthSeconds = birthSeconds;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(final String name) {
-    this.name = name;
-  }
-
-  public int getBirthYear() {
-    return this.birthYear;
-  }
-
-  public void setBirthYear(final int birthYear) {
-    this.birthYear = birthYear;
-  }
-
-  public Person(final String name) {
-    this.name = name;
-  }
-
-  public ZonedDateTime getBirthday() {
-    return this.birthday;
-  }
-
-  public void setBirthday(final ZonedDateTime birthday) {
-    this.birthday = birthday;
+  public int getBirthYear(){
+    return birthday.getYear();
   }
 
 }

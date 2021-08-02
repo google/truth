@@ -2,7 +2,6 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
 import com.google.common.truth.extension.Employee;
-import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import com.google.common.truth.extension.generator.testModel.*;
 import org.junit.Test;
@@ -67,7 +66,7 @@ public class TruthGeneratorTest {
     assertThat(generatedSourceClasses).containsAtLeast(UUID.class, ZonedDateTime.class);
 
     MyEmployee employee = TestModelUtils.createEmployee();
-    ManagedTruth.assertThat(employee).getCard().getEpoch().isAtLeast(0);
+//    ManagedTruth.assertThat(employee).getCard().getEpoch().isAtLeast(0);
 //    ManagedTruth.assertThat(employee).getBoss().getName().isEqualTo("Tony");
 
 //    ManagedTruth.assertThat(employee).getBirthday().getYear().isLessThan(1920);

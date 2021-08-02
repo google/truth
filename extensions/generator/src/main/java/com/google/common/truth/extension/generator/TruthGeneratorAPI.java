@@ -1,10 +1,8 @@
 package com.google.common.truth.extension.generator;
 
 import com.google.common.truth.extension.generator.internal.TruthGenerator;
-import com.google.common.truth.extension.generator.internal.model.SourceClassSets;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
-import java.util.List;
 import java.util.Set;
 
 /**

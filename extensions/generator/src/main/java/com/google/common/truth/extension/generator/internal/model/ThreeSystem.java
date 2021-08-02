@@ -1,7 +1,9 @@
 package com.google.common.truth.extension.generator.internal.model;
 
+import lombok.Value;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+@Value
 public class ThreeSystem {
    @Override
    public String toString() {
@@ -9,15 +11,8 @@ public class ThreeSystem {
               "classUnderTest=" + classUnderTest + '}';
    }
 
-   public final Class<?> classUnderTest;
-   public final ParentClass parent;
-   public final MiddleClass middle;
-   public final JavaClassSource child;
-
-   public ThreeSystem(final Class<?> classUnderTest, final ParentClass parent, final MiddleClass middle, final JavaClassSource child) {
-      this.classUnderTest = classUnderTest;
-      this.parent = parent;
-      this.middle = middle;
-      this.child = child;
-   }
+   public Class<?> classUnderTest;
+   public ParentClass parent;
+   public MiddleClass middle;
+   public JavaClassSource child;
 }

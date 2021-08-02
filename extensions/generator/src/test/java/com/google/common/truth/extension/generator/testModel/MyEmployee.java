@@ -1,31 +1,63 @@
 package com.google.common.truth.extension.generator.testModel;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import javax.annotation.Nonnull;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.truth.extension.generator.testModel.MyEmployee.State.EMPLOLYED;
+
+//@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
+//@Data
+@Getter
+@Setter(AccessLevel.PRIVATE)
+//@With
 public class MyEmployee extends Person {
-  private UUID id = UUID.randomUUID();
 
-  private ZonedDateTime anniversary = ZonedDateTime.now();
+  UUID id = UUID.randomUUID();
 
-  private MyEmployee boss;
+//  @With
+  ZonedDateTime anniversary = ZonedDateTime.now();
 
-  private IdCard card;
+//  @With
+  MyEmployee boss = null;
 
-  private List<Project> projectList = new ArrayList<>();
+  IdCard card = null;
 
-  State employed = State.NEVER_EMPLOYED;
+  List<Project> projectList = new ArrayList<>();
 
-  public MyEmployee(final String name) {
-    super(name);
+  State employmentState = State.NEVER_EMPLOYED;
+
+  Optional<Double> weighting = Optional.empty();
+
+  public MyEmployee(@Nonnull String name, long someLongAspect, @Nonnull ZonedDateTime birthday) {
+    super(name, someLongAspect, birthday);
   }
-
 
   enum State {
     EMPLOLYED, PREVIOUSLY_EMPLOYED, NEVER_EMPLOYED;
+  }
+
+  /**
+   * Package private test
+   * @return
+   */
+  boolean isEmployed(){
+    return this.employmentState == EMPLOLYED;
+  }
+
+  /**
+   * Primitive vs Wrapper test
+   * @return
+   */
+  Boolean isEmployedWrapped(){
+    return this.employmentState == EMPLOLYED;
   }
 
   /**
@@ -36,72 +68,6 @@ public class MyEmployee extends Person {
     return super.getName() + " ID: " + this.getId();
   }
 
-  public MyEmployee getBoss() {
-    return boss;
-  }
-
-  public void setBoss(final MyEmployee boss) {
-    this.boss = boss;
-  }
-
-  public IdCard getCard() {
-    return card;
-  }
-
-  public void setCard(final IdCard card) {
-    this.card = card;
-  }
-
-  public List<Project> getSlipUpList() {
-    return projectList;
-  }
-
-  public void setSlipUpList(final List<Project> slipUpList) {
-    this.projectList = slipUpList;
-  }
-
-  public List<Project> getProjectList() {
-    return this.projectList;
-  }
-
-  public void setProjectList(final List<Project> projectList) {
-    this.projectList = projectList;
-  }
-
-  public void setWeighting(final Optional<Double> weighting) {
-    this.weighting = weighting;
-  }
-
-  private Optional<Double> weighting;
-
-  public ZonedDateTime getAnniversary() {
-    return this.anniversary;
-  }
-
-  public void setAnniversary(final ZonedDateTime anniversary) {
-    this.anniversary = anniversary;
-  }
-
-
-  public State getEmployed() {
-    return this.employed;
-  }
-
-  public void setEmployed(final State employed) {
-    this.employed = employed;
-  }
-
-  public Optional<Double> getWeighting() {
-    return this.weighting;
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(final UUID id) {
-    this.id = id;
-  }
 
   @Override
   public String toString() {
@@ -109,7 +75,7 @@ public class MyEmployee extends Person {
 //            "id=" + id +
             ", name=" + getName() +
             ", card=" + card +
-            ", employed=" + employed +
+            ", employed=" + employmentState +
             '}';
   }
 

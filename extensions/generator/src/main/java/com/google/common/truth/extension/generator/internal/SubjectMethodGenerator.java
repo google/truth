@@ -2,6 +2,7 @@ package com.google.common.truth.extension.generator.internal;
 
 import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
+import com.google.common.truth.Fact;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
@@ -14,16 +15,18 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static java.lang.reflect.Modifier.PRIVATE;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
+import static java.util.function.Predicate.not;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 import static org.reflections.ReflectionUtils.*;
 
 /**
@@ -60,10 +63,10 @@ public class SubjectMethodGenerator {
 
   private Collection<Method> getMethods(final Class<?> classUnderTest) {
     Set<Method> getters = ReflectionUtils.getAllMethods(classUnderTest,
-            withModifier(Modifier.PUBLIC), withPrefix("get"), withParametersCount(0));
+            not(withModifier(PRIVATE)), withPrefix("get"), withParametersCount(0));
 
     Set<Method> issers = ReflectionUtils.getAllMethods(classUnderTest,
-            withModifier(Modifier.PUBLIC), withPrefix("is"), withParametersCount(0));
+            not(withModifier(PRIVATE)), withPrefix("is"), withParametersCount(0));
 
     getters.addAll(issers);
 
@@ -113,12 +116,105 @@ public class SubjectMethodGenerator {
   );
 
   private void addFieldAccessors(Method method, JavaClassSource generated, Class<?> classUnderTest) {
-    Class<?> returnType = method.getReturnType();
+    Class<?> returnType = getWrappedReturnType(method);
 
-    if(returnType.isAssignableFrom(Boolean.class)){
-      addBooleanMethod();
+    if(Boolean.class.isAssignableFrom(returnType)){
+      addBooleanStrategy(method, generated, classUnderTest);
     }
 
+    if(Collection.class.isAssignableFrom(returnType)){
+      addHasElementStrategy(method, generated, classUnderTest);
+    }
+
+    if(Optional.class.isAssignableFrom(returnType)){
+      addOptionalStrategy(method, generated, classUnderTest);
+    }
+
+    if(Map.class.isAssignableFrom(returnType)){
+      addMapStrategy(method, generated, classUnderTest);
+    }
+
+    if(Enum.class.isAssignableFrom(returnType)){
+      addEnumStrategy(method, generated, classUnderTest);
+    }
+
+    addEqualityStrategy(method, generated, classUnderTest);
+
+    addChainStrategy(method, generated, returnType);
+  }
+
+  private Class<?> getWrappedReturnType(Method method) {
+    Class<?> wrapped = ClassUtils.primitiveToWrapper(method.getReturnType());
+    return wrapped;
+  }
+
+  private void addEqualityStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+
+  }
+
+  private void addEnumStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+
+  }
+
+  private void addMapStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+  }
+
+  private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+  }
+
+  private void addHasElementStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+
+  }
+
+  /**
+   * public void isCeo() {
+   *   if (!actual.isCeo()) {
+   *     failWithActual(simpleFact("expected to be CEO"));
+   *   }
+   * }
+   */
+  private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+    addPositiveBoolean(method, generated);
+    addNegativeBoolean(method, generated);
+
+    generated.addImport(Fact.class)
+            .setStatic(true)
+            .setName(Fact.class.getCanonicalName() + ".simpleFact");
+  }
+
+  private void addPositiveBoolean(Method method, JavaClassSource generated) {
+    String body = ""+
+            "  if (actual.%s()) {\n" +
+            "    failWithActual(simpleFact(\"expected NOT to be %s\"));\n" +
+            "  }\n";
+    String noun = StringUtils.remove(method.getName(), "is");
+    body = format(body, method.getName(), noun);
+
+    String negativeMethodName = removeStart(method.getName(), "is");
+    negativeMethodName = "isNot" + negativeMethodName;
+    generated.addMethod()
+            .setName(negativeMethodName)
+            .setReturnTypeVoid()
+            .setBody(body)
+            .setPublic();
+  }
+
+  private void addNegativeBoolean(Method method, JavaClassSource generated) {
+    String body = ""+
+            "  if (!actual.%s()) {\n" +
+            "    failWithActual(simpleFact(\"expected to be %s\"));\n" +
+            "  }\n";
+    String noun = StringUtils.remove(method.getName(), "is");
+    body = format(body, method.getName(), noun);
+
+    generated.addMethod()
+            .setName(method.getName())
+            .setReturnTypeVoid()
+            .setBody(body)
+            .setPublic();
+  }
+
+  private void addChainStrategy(Method method, JavaClassSource generated, Class<?> returnType) {
     boolean isCoveredByNonPrimitiveStandardSubjects = isTypeCoveredUnderStandardSubjects(returnType);
 
     Optional<ClassOrGenerated> subjectForType = getSubjectForType(returnType);
@@ -135,12 +231,13 @@ public class SubjectMethodGenerator {
     ClassOrGenerated subjectClass = subjectForType.get();
 
     // todo add versions with and with the get
+    String nameForChainMethod = createNameForChainMethod(method);
     MethodSource<JavaClassSource> has = generated.addMethod()
-            .setName(createNameForSubjectMethod(method))
+            .setName(nameForChainMethod)
             .setPublic();
 
     StringBuilder body = new StringBuilder("isNotNull();\n");
-    String check = format("return check(\"%s\")", createNameForSubjectMethod(method));
+    String check = format("return check(\"%s\")", method.getName());
     body.append(check);
 
     boolean notPrimitive = !returnType.isPrimitive();
@@ -170,10 +267,18 @@ public class SubjectMethodGenerator {
     generated.addImport(subjectClass.getSubjectQualifiedName());
   }
 
-  private String createNameForSubjectMethod(final Method method) {
+  /**
+   * Attempt to swap get for has, but only if it starts with get - otherwise leave it alone.
+   */
+  private String createNameForChainMethod(final Method method) {
     String name = method.getName();
-    name = StringUtils.removeStart("get", name);
-    return "has" + name;
+    if (name.startsWith("get")) {
+      name = removeStart(name, "get");
+      return "has" + name;
+    } else if (name.startsWith("is")) {
+      return "has" + removeStart(name, "is");
+    } else
+      return name;
   }
 
   private boolean isTypeCoveredUnderStandardSubjects(final Class<?> returnType) {
@@ -198,6 +303,8 @@ public class SubjectMethodGenerator {
 
   private Optional<ClassOrGenerated> getSubjectForType(final Class<?> type) {
     String name;
+
+    // if primitive, wrap and get wrapped Subject
     if (type.isPrimitive()) {
       Class<?> wrapped = ClassUtils.primitiveToWrapper(type);
       name = wrapped.getSimpleName();

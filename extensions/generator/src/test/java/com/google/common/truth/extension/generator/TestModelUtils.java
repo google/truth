@@ -2,17 +2,22 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.truth.extension.generator.testModel.IdCard;
 import com.google.common.truth.extension.generator.testModel.MyEmployee;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.time.ZonedDateTime;
 
 public class TestModelUtils {
 
   static MyEmployee createEmployee() {
-    MyEmployee employee = new MyEmployee("Zeynep");
-    employee.setBirthday(ZonedDateTime.now().withYear(1983));
-    employee.setBoss(new MyEmployee("Lilan"));
-    employee.setCard(createCard());
-    return employee;
+    PodamFactory factory = new PodamFactoryImpl();
+    MyEmployee.MyEmployeeBuilder<?, ?> employee = factory.manufacturePojo(MyEmployee.class).toBuilder();
+    employee.anniversary(ZonedDateTime.now().withYear(1983));
+    MyEmployee boss = factory.manufacturePojo(MyEmployee.class).toBuilder().name("Lilan").build();
+    employee = employee
+            .boss(boss)
+            .card(createCard());
+    return employee.build();
   }
 
   private static IdCard createCard() {
