@@ -346,7 +346,7 @@ public class Subject {
 
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     isIn(accumulate(first, second, rest));
   }
 
@@ -359,7 +359,7 @@ public class Subject {
 
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 

@@ -505,7 +505,7 @@ final class ProtoTruthMessageDifferencer {
   // Also removes the index for the matching value from actualIndicies.
   //
   // If there is no match, returns null.
-  private RepeatedField./*@Nullable*/ PairResult findMatchingPairResult(
+  private RepeatedField.@Nullable PairResult findMatchingPairResult(
       Deque<Integer> actualIndices,
       List<?> actualValues,
       int expectedIndex,

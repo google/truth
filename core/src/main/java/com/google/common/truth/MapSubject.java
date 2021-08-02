@@ -188,18 +188,18 @@ public class MapSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(
-      @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     return containsExactlyEntriesIn(accumulateMap("containsExactly", k0, v0, rest));
   }
 
   @CanIgnoreReturnValue
   public final Ordered containsAtLeast(
-      @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     return containsAtLeastEntriesIn(accumulateMap("containsAtLeast", k0, v0, rest));
   }
 
   private static Map<Object, Object> accumulateMap(
-      String functionName, @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      String functionName, @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
         "There must be an equal number of key/value pairs "
@@ -682,8 +682,7 @@ public class MapSubject extends Subject {
     // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
     // For bonus points, checking that the even-numbered values are of type E would be sweet.
     @CanIgnoreReturnValue
-    public Ordered containsExactly(
-        @Nullable Object k0, @Nullable E v0, /*@Nullable*/ Object... rest) {
+    public Ordered containsExactly(@Nullable Object k0, @Nullable E v0, @Nullable Object... rest) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
       Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap("containsExactly", k0, v0, rest);
       return containsExactlyEntriesIn(expectedMap);
@@ -702,8 +701,7 @@ public class MapSubject extends Subject {
     // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
     // For bonus points, checking that the even-numbered values are of type E would be sweet.
     @CanIgnoreReturnValue
-    public Ordered containsAtLeast(
-        @Nullable Object k0, @Nullable E v0, /*@Nullable*/ Object... rest) {
+    public Ordered containsAtLeast(@Nullable Object k0, @Nullable E v0, @Nullable Object... rest) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
       Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap("containsAtLeast", k0, v0, rest);
       return containsAtLeastEntriesIn(expectedMap);

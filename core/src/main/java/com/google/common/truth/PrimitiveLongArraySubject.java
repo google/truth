@@ -27,7 +27,7 @@ public final class PrimitiveLongArraySubject extends AbstractArraySubject {
   private final long[] actual;
 
   PrimitiveLongArraySubject(
-      FailureMetadata metadata, long /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, long @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

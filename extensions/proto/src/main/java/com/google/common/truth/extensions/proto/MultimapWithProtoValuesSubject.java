@@ -916,8 +916,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
     @Override
     @CanIgnoreReturnValue
     @SuppressWarnings("unchecked") // ClassCastException is fine
-    public Ordered containsExactly(
-        @Nullable Object k0, @Nullable M v0, /*@Nullable*/ Object... rest) {
+    public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, @Nullable Object... rest) {
       List<M> expectedValues = new ArrayList<>();
       expectedValues.add(v0);
       for (int i = 1; i < rest.length; i += 2) {

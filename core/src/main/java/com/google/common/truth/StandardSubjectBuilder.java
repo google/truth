@@ -112,39 +112,39 @@ public class StandardSubjectBuilder {
     return new IterableSubject(metadata(), actual);
   }
 
-  public final <T> ObjectArraySubject<T> that(@Nullable T /*@Nullable*/[] actual) {
+  public final <T> ObjectArraySubject<T> that(@Nullable T @Nullable [] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }
 
-  public final PrimitiveBooleanArraySubject that(boolean /*@Nullable*/[] actual) {
+  public final PrimitiveBooleanArraySubject that(boolean @Nullable [] actual) {
     return new PrimitiveBooleanArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveShortArraySubject that(short /*@Nullable*/[] actual) {
+  public final PrimitiveShortArraySubject that(short @Nullable [] actual) {
     return new PrimitiveShortArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveIntArraySubject that(int /*@Nullable*/[] actual) {
+  public final PrimitiveIntArraySubject that(int @Nullable [] actual) {
     return new PrimitiveIntArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveLongArraySubject that(long /*@Nullable*/[] actual) {
+  public final PrimitiveLongArraySubject that(long @Nullable [] actual) {
     return new PrimitiveLongArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveCharArraySubject that(char /*@Nullable*/[] actual) {
+  public final PrimitiveCharArraySubject that(char @Nullable [] actual) {
     return new PrimitiveCharArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveByteArraySubject that(byte /*@Nullable*/[] actual) {
+  public final PrimitiveByteArraySubject that(byte @Nullable [] actual) {
     return new PrimitiveByteArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveFloatArraySubject that(float /*@Nullable*/[] actual) {
+  public final PrimitiveFloatArraySubject that(float @Nullable [] actual) {
     return new PrimitiveFloatArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveDoubleArraySubject that(double /*@Nullable*/[] actual) {
+  public final PrimitiveDoubleArraySubject that(double @Nullable [] actual) {
     return new PrimitiveDoubleArraySubject(metadata(), actual, "array");
   }
 
@@ -189,7 +189,7 @@ public class StandardSubjectBuilder {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public final StandardSubjectBuilder withMessage(String format, /*@Nullable*/ Object... args) {
+  public final StandardSubjectBuilder withMessage(String format, @Nullable Object... args) {
     return new StandardSubjectBuilder(metadata().withMessage(format, args));
   }
 

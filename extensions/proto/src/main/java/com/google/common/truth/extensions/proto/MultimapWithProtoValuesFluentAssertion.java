@@ -536,7 +536,7 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, /*@Nullable*/ Object... rest);
+  public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, @Nullable Object... rest);
 
   /**
    * @deprecated Do not call {@code equals()} on a {@code MultimapWithProtoValuesFluentAssertion}.

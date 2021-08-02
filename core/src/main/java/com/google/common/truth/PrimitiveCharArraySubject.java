@@ -27,7 +27,7 @@ public final class PrimitiveCharArraySubject extends AbstractArraySubject {
   private final char[] actual;
 
   PrimitiveCharArraySubject(
-      FailureMetadata metadata, char /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, char @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

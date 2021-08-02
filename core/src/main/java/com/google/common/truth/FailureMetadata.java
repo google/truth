@@ -161,7 +161,7 @@ public final class FailureMetadata {
    * to set a message is {@code check(...).withMessage(...).that(...)} (for calls from within a
    * {@code Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
-  FailureMetadata withMessage(String format, /*@Nullable*/ Object[] args) {
+  FailureMetadata withMessage(String format, @Nullable Object[] args) {
     ImmutableList<LazyMessage> messages = append(this.messages, new LazyMessage(format, args));
     return derive(messages, steps);
   }

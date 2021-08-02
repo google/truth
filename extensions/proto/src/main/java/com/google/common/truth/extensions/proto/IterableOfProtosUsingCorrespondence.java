@@ -83,7 +83,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * elements, not an element itself.
    */
   @CanIgnoreReturnValue
-  Ordered containsExactly(/*@Nullable*/ M... expected);
+  Ordered containsExactly(@Nullable M... expected);
 
   /**
    * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
@@ -117,7 +117,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * subject, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  Ordered containsAtLeast(@Nullable M first, @Nullable M second, /*@Nullable*/ M... rest);
+  Ordered containsAtLeast(@Nullable M first, @Nullable M second, @Nullable M... rest);
 
   /**
    * Checks that the subject contains elements that corresponds to all of the expected elements,
@@ -147,7 +147,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * Checks that the subject contains at least one element that corresponds to at least one of the
    * expected elements.
    */
-  void containsAnyOf(@Nullable M first, @Nullable M second, /*@Nullable*/ M... rest);
+  void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest);
 
   /**
    * Checks that the subject contains at least one element that corresponds to at least one of the
@@ -167,7 +167,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * to any of the given elements.)
    */
   void containsNoneOf(
-      @Nullable M firstExcluded, @Nullable M secondExcluded, /*@Nullable*/ M... restOfExcluded);
+      @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded);
 
   /**
    * Checks that the subject contains no elements that correspond to any of the given elements.

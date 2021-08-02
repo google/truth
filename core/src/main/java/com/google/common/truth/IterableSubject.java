@@ -204,7 +204,7 @@ public class IterableSubject extends Subject {
 
   /** Checks that the subject contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     containsAnyIn(accumulate(first, second, rest));
   }
 
@@ -255,7 +255,7 @@ public class IterableSubject extends Subject {
   public final Ordered containsAtLeast(
       @Nullable Object firstExpected,
       @Nullable Object secondExpected,
-      @Nullable Object /*@Nullable*/... restOfExpected) {
+      @Nullable Object @Nullable ... restOfExpected) {
     return containsAtLeastElementsIn(accumulate(firstExpected, secondExpected, restOfExpected));
   }
 
@@ -379,7 +379,7 @@ public class IterableSubject extends Subject {
    * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsExactly(@Nullable Object /*@Nullable*/... varargs) {
+  public final Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
     List<Object> expected = (varargs == null) ? newArrayList((Object) null) : asList(varargs);
     return containsExactlyElementsIn(
         expected, varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
@@ -694,7 +694,7 @@ public class IterableSubject extends Subject {
   public final void containsNoneOf(
       @Nullable Object firstExcluded,
       @Nullable Object secondExcluded,
-      @Nullable Object /*@Nullable*/... restOfExcluded) {
+      @Nullable Object @Nullable ... restOfExcluded) {
     containsNoneIn(accumulate(firstExcluded, secondExcluded, restOfExcluded));
   }
 
@@ -845,7 +845,7 @@ public class IterableSubject extends Subject {
   @Override
   @Deprecated
   public void isNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     super.isNoneOf(first, second, rest);
   }
 
@@ -1056,6 +1056,11 @@ public class IterableSubject extends Subject {
      * Checks that the subject contains at least one element that corresponds to the given expected
      * element.
      */
+    /*
+     * TODO(cpovirk): Do we want @Nullable on usages of E? Probably not, since it could throw errors
+     * during comparisons? Or maybe we should take the risk for user convenience? If we make
+     * changes, also make them in MapSubject, MultimapSubject, and possibly others.
+     */
     public void contains(@Nullable E expected) {
       Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       for (A actual : getCastActual()) {
@@ -1153,7 +1158,7 @@ public class IterableSubject extends Subject {
      */
     @SafeVarargs
     @CanIgnoreReturnValue
-    public final Ordered containsExactly(@Nullable E /*@Nullable*/... expected) {
+    public final Ordered containsExactly(@Nullable E @Nullable ... expected) {
       return containsExactlyElementsIn(
           (expected == null) ? newArrayList((E) null) : asList(expected));
     }
@@ -1504,7 +1509,7 @@ public class IterableSubject extends Subject {
     @SafeVarargs
     @CanIgnoreReturnValue
     public final Ordered containsAtLeast(
-        @Nullable E first, @Nullable E second, @Nullable E /*@Nullable*/... rest) {
+        @Nullable E first, @Nullable E second, @Nullable E @Nullable ... rest) {
       return containsAtLeastElementsIn(accumulate(first, second, rest));
     }
 
@@ -1753,7 +1758,7 @@ public class IterableSubject extends Subject {
      */
     @SafeVarargs
     public final void containsAnyOf(
-        @Nullable E first, @Nullable E second, @Nullable E /*@Nullable*/... rest) {
+        @Nullable E first, @Nullable E second, @Nullable E @Nullable ... rest) {
       containsAnyIn(accumulate(first, second, rest));
     }
 
@@ -1861,7 +1866,7 @@ public class IterableSubject extends Subject {
     public final void containsNoneOf(
         @Nullable E firstExcluded,
         @Nullable E secondExcluded,
-        @Nullable E /*@Nullable*/... restOfExcluded) {
+        @Nullable E @Nullable ... restOfExcluded) {
       containsNoneIn(accumulate(firstExcluded, secondExcluded, restOfExcluded));
     }
 

@@ -21,6 +21,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -58,7 +59,16 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   @GwtIncompatible("NullPointerTester")
   @SuppressWarnings("GoogleInternalApi")
+  /*
+   * TODO(cpovirk): Reenable these tests publicly. Currently, we depend on guava-android, whose
+   * NullPointerTester doesn't yet recognize type-use @Nullable annotations. And we can't mix the
+   * -jre version of guava-testlib with the -android version of guava because the NullPointerTester
+   *  feature we need requires a -jre-only API.
+   */
+  @org.junit.Ignore
   public void nullPointerTester() {
+    assume().that(isAndroid()).isFalse(); // type-annotation @Nullable is not available
+
     NullPointerTester npTester = new NullPointerTester();
     npTester.setDefault(Fact.class, simpleFact("fact"));
 
@@ -88,7 +98,10 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   @GwtIncompatible("NullPointerTester")
+  @org.junit.Ignore // TODO(cpovirk): Reenable publicly. (See nullPointerTester().)
   public void allAssertThatOverloadsAcceptNull() throws Exception {
+    assume().that(isAndroid()).isFalse(); // type-annotation @Nullable is not available
+
     NullPointerTester npTester = new NullPointerTester();
     npTester.setDefault(Fact.class, simpleFact("fact"));
     for (Method method : Truth.class.getDeclaredMethods()) {
@@ -810,5 +823,9 @@ public class SubjectTest extends BaseSubjectTestCase {
         return new ForbidsEqualityChecksSubject(metadata, actual);
       }
     };
+  }
+
+  private static boolean isAndroid() {
+    return System.getProperty("java.runtime.name").contains("Android");
   }
 }

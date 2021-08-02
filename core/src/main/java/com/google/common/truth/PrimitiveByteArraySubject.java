@@ -27,7 +27,7 @@ public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   private final byte[] actual;
 
   PrimitiveByteArraySubject(
-      FailureMetadata metadata, byte /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, byte @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

@@ -193,39 +193,39 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static <T> ObjectArraySubject<T> assertThat(@Nullable T /*@Nullable*/[] actual) {
+  public static <T> ObjectArraySubject<T> assertThat(@Nullable T @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(boolean /*@Nullable*/[] actual) {
+  public static PrimitiveBooleanArraySubject assertThat(boolean @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveShortArraySubject assertThat(short /*@Nullable*/[] actual) {
+  public static PrimitiveShortArraySubject assertThat(short @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveIntArraySubject assertThat(int /*@Nullable*/[] actual) {
+  public static PrimitiveIntArraySubject assertThat(int @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveLongArraySubject assertThat(long /*@Nullable*/[] actual) {
+  public static PrimitiveLongArraySubject assertThat(long @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveByteArraySubject assertThat(byte /*@Nullable*/[] actual) {
+  public static PrimitiveByteArraySubject assertThat(byte @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveCharArraySubject assertThat(char /*@Nullable*/[] actual) {
+  public static PrimitiveCharArraySubject assertThat(char @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(float /*@Nullable*/[] actual) {
+  public static PrimitiveFloatArraySubject assertThat(float @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(double /*@Nullable*/[] actual) {
+  public static PrimitiveDoubleArraySubject assertThat(double @Nullable [] actual) {
     return assert_().that(actual);
   }
 

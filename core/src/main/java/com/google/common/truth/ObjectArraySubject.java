@@ -27,7 +27,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject {
   private final T[] actual;
 
   ObjectArraySubject(
-      FailureMetadata metadata, @Nullable T /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, @Nullable T @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

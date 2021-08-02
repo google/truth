@@ -27,7 +27,7 @@ public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
   private final boolean[] actual;
 
   PrimitiveBooleanArraySubject(
-      FailureMetadata metadata, boolean /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, boolean @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

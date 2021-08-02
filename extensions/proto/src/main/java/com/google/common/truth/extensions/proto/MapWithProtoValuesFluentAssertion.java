@@ -524,7 +524,7 @@ public interface MapWithProtoValuesFluentAssertion<M extends Message> {
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   @CanIgnoreReturnValue
-  Ordered containsExactly(@Nullable Object k0, @Nullable M v0, /*@Nullable*/ Object... rest);
+  Ordered containsExactly(@Nullable Object k0, @Nullable M v0, @Nullable Object... rest);
 
   /**
    * Fails if the map does not contain exactly the keys in the given map, mapping to values that

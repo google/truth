@@ -34,7 +34,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double[] actual;
 
   PrimitiveDoubleArraySubject(
-      FailureMetadata metadata, double /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, double @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

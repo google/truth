@@ -34,7 +34,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   private final float[] actual;
 
   PrimitiveFloatArraySubject(
-      FailureMetadata metadata, float /*@Nullable*/[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, float @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

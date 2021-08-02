@@ -305,7 +305,7 @@ public class MultimapSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(
-      @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     return containsExactlyEntriesIn(accumulateMultimap(k0, v0, rest));
   }
 
@@ -317,12 +317,12 @@ public class MultimapSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeast(
-      @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     return containsAtLeastEntriesIn(accumulateMultimap(k0, v0, rest));
   }
 
   private static Multimap<Object, Object> accumulateMultimap(
-      @Nullable Object k0, @Nullable Object v0, /*@Nullable*/ Object... rest) {
+      @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
         "There must be an equal number of key/value pairs "
@@ -770,8 +770,7 @@ public class MultimapSubject extends Subject {
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
      */
     @CanIgnoreReturnValue
-    public Ordered containsExactly(
-        @Nullable Object k0, @Nullable E v0, /*@Nullable*/ Object... rest) {
+    public Ordered containsExactly(@Nullable Object k0, @Nullable E v0, @Nullable Object... rest) {
       @SuppressWarnings("unchecked")
       Multimap<?, E> expectedMultimap = (Multimap<?, E>) accumulateMultimap(k0, v0, rest);
       return containsExactlyEntriesIn(expectedMultimap);
@@ -790,8 +789,7 @@ public class MultimapSubject extends Subject {
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
      */
     @CanIgnoreReturnValue
-    public Ordered containsAtLeast(
-        @Nullable Object k0, @Nullable E v0, /*@Nullable*/ Object... rest) {
+    public Ordered containsAtLeast(@Nullable Object k0, @Nullable E v0, @Nullable Object... rest) {
       @SuppressWarnings("unchecked")
       Multimap<?, E> expectedMultimap = (Multimap<?, E>) accumulateMultimap(k0, v0, rest);
       return containsAtLeastEntriesIn(expectedMultimap);

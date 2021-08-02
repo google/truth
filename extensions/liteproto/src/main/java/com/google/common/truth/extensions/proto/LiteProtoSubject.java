@@ -139,10 +139,31 @@ public class LiteProtoSubject extends Subject {
 
   /**
    * @deprecated A Builder can never compare equal to a MessageLite instance. Use {@code build()},
-   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
+   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead. Or,
+   *     if you are passing {@code null}, use {@link #isNull()}.
+   */
+  /*
+   * TODO(cpovirk): Consider @DoNotCall -- or probably some other static analysis, given the problem
+   * discussed in the rest of this comment.
+   *
+   * The problem: isEqualTo(null) resolves to this overload (since this overload is more specific
+   * than isEqualTo(Object)), so @DoNotCall would break all assertions of that form.
+   *
+   * To address that, we could try also adding something like `<NullT extends Impossible &
+   * MessageLite.Builder> void isEqualTo(NullT)` and hoping that isEqualTo(null) would resolve to
+   * that instead. That would also have the benefit of making isEqualTo(null) not produce a
+   * deprecation warning (though of course people "should" use isNull(): b/17294077). But yuck.
+   *
+   * Given the null issue, maybe we should never have added this overload in the first place,
+   * instead adding static analysis specific to MessageLite-MessageLite.Builder comparisons. (Sadly,
+   * we can't remove it now without breaking binary compatibility.)
+   *
+   * Still, we could add static analysis to produce a compile error for isEqualTo(Builder) this even
+   * today, even without using @DoNotCall. And then we could consider removing @Deprecated to stop
+   * spamming the people who call isEqualTo(null).
    */
   @Deprecated
-  public void isEqualTo(MessageLite./*@Nullable*/ Builder builder) {
+  public void isEqualTo(MessageLite.@Nullable Builder builder) {
     isEqualTo((Object) builder);
   }
 
@@ -169,10 +190,12 @@ public class LiteProtoSubject extends Subject {
 
   /**
    * @deprecated A Builder will never compare equal to a MessageLite instance. Use {@code build()},
-   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
+   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead. Or,
+   *     if you are passing {@code null}, use {@link #isNotNull()}.
    */
+  // TODO(cpovirk): Consider @DoNotCall or other static analysis. (See isEqualTo(Builder).)
   @Deprecated
-  public void isNotEqualTo(MessageLite./*@Nullable*/ Builder builder) {
+  public void isNotEqualTo(MessageLite.@Nullable Builder builder) {
     isNotEqualTo((Object) builder);
   }
 

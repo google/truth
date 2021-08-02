@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Handle;
@@ -1506,15 +1507,6 @@ final class ActualValueInference {
       // TODO(cpovirk): Log a warning?
     }
   }
-
-  /*
-   * TODO(cpovirk): Switch to using Checker Framework @Nullable. The problem I see if I try to
-   * switch now is that the AutoValue-generated code is `@Nullable ActualValueInference.StackEntry`
-   * rather than `ActualValueInference.@Nullable StackEntry`. AutoValue normally gets this right
-   * (b/29530042), so I think the failure here is because we use `-source 7`. That might still be
-   * fine, except that j2objc compilation appears to then use `-source 8`.
-   */
-  @interface Nullable {}
 
   private ActualValueInference() {}
 }
