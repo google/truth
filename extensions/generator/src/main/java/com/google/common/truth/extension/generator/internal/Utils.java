@@ -1,5 +1,6 @@
 package com.google.common.truth.extension.generator.internal;
 
+import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
 import org.atteo.evo.inflector.English;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
@@ -49,7 +50,7 @@ public class Utils {
 
     // todo use annotations not name strings
     List<String> ids = List.of("Parent", "Child");
-    boolean isChildOrParent = ids.stream().anyMatch(x -> javaClass.getName().contains(x));
+    boolean isChildOrParent = javaClass.getAnnotation(UserManagedTruth.class) == null;
 
     String baseDirSuffix = (isChildOrParent) ? "truth-assertions-managed" : "truth-assertions-templates";
 

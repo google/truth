@@ -8,12 +8,12 @@ import com.google.common.truth.Truth;
 import com.google.common.truth.extension.generator.internal.model.MiddleClass;
 import com.google.common.truth.extension.generator.internal.model.ParentClass;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.AnnotationSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaDocSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
-import org.reflections.Reflections;
 
 import javax.annotation.processing.Generated;
 import java.io.FileNotFoundException;
@@ -32,14 +32,11 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Optional<String> targetPackageName;
-  private final Reflections reflections;
   private MiddleClass middle;
   private ParentClass parent;
 
   public SkeletonGenerator(final Optional<String> targetPackageName) {
     this.targetPackageName = targetPackageName;
-    this.reflections = new Reflections(this.targetPackageName);
-
   }
 
   @Override
@@ -73,8 +70,7 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     ParentClass parent = createParent(source);
     this.parent = parent;
 
-    MiddleClass middle = createMiddlePlaceHolder(parent.getGenerated(), source);
-    boolean threeSystemParentSubect = source.getName().contains("ThreeSystem");
+    MiddleClass middle = createMiddleUserTemplate(parent.getGenerated(), source);
     this.middle = middle;
 
     String factoryName = Utils.getFactoryName(source);
@@ -83,11 +79,10 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     return of(new ThreeSystem(source, parent, middle, child));
   }
 
-  private MiddleClass createMiddlePlaceHolder(JavaClassSource parent, Class source) {
+  private MiddleClass createMiddleUserTemplate(JavaClassSource parent, Class source) {
     String middleClassName = getSubjectName(source.getSimpleName());
 
-    // todo try to see if class already exists first, user may already have a written one and not know
-    Optional<Class<?>> compiledMiddleClass = middleExists(parent, middleClassName);
+    Optional<Class<?>> compiledMiddleClass = middleExists(parent, middleClassName, source);
     if (compiledMiddleClass.isPresent()) {
       logger.atInfo().log("Skipping middle class Template creation as class already exists: %s", middleClassName);
       return MiddleClass.of(compiledMiddleClass.get());
@@ -101,9 +96,12 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     jd.setText("Optionally move this class into source control, and add your custom assertions here.\n\n" +
             "<p>If the system detects this class already exists, it won't attempt to generate a new one. Note that " +
             "if the base skeleton of this class ever changes, you won't automatically get it updated.");
+    jd.addTagValue("@see", source.getSimpleName());
     jd.addTagValue("@see", parent.getName());
 
     addConstructor(source, middle, false);
+
+    middle.addAnnotation(UserManagedTruth.class).setClassValue("clazz", source);
 
     MethodSource factory = addFactoryAccesor(source, middle, source.getSimpleName());
 
@@ -113,7 +111,7 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     return MiddleClass.of(middle, factory);
   }
 
-  private Optional<Class<?>> middleExists(JavaClassSource parent, String middleClassName) {
+  private Optional<Class<?>> middleExists(JavaClassSource parent, String middleClassName, Class source) {
     try {
       // load from annotated classes instead using Reflections?
       String fullName = parent.getPackage() + "." + middleClassName;

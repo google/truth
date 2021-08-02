@@ -2,6 +2,7 @@ package com.google.common.truth.extension.generator.internal.modelSubjectChicken
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.extension.generator.internal.model.MiddleClass;
+import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
 
 import javax.annotation.processing.Generated;
 
@@ -16,6 +17,7 @@ import javax.annotation.processing.Generated;
  *
  * @see MiddleClassParentSubject
  */
+@UserManagedTruth(clazz = MiddleClass.class)
 @Generated("truth-generator")
 public class MiddleClassSubject extends MiddleClassParentSubject {
 

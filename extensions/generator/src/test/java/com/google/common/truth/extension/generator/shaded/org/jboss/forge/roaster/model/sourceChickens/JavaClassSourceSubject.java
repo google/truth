@@ -2,6 +2,7 @@ package com.google.common.truth.extension.generator.shaded.org.jboss.forge.roast
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.extension.generator.internal.MyStringSubject;
+import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import javax.annotation.processing.Generated;
@@ -17,6 +18,7 @@ import javax.annotation.processing.Generated;
  *
  * @see com.google.common.truth.extension.generator.shaded.org.jboss.forge.roaster.model.sourceChickens.JavaClassSourceParentSubject
  */
+@UserManagedTruth(clazz = JavaClassSource.class)
 @Generated("truth-generator")
 public class JavaClassSourceSubject extends JavaClassSourceParentSubject {
 

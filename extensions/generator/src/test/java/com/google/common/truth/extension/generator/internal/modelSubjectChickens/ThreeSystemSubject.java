@@ -2,6 +2,7 @@ package com.google.common.truth.extension.generator.internal.modelSubjectChicken
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
 
 import javax.annotation.processing.Generated;
 
@@ -16,6 +17,7 @@ import javax.annotation.processing.Generated;
  *
  * @see ThreeSystemParentSubject
  */
+@UserManagedTruth(clazz = ThreeSystem.class)
 @Generated("truth-generator")
 public class ThreeSystemSubject extends ThreeSystemParentSubject {
 

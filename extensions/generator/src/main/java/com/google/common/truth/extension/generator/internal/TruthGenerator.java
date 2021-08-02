@@ -64,7 +64,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
   private Set<Class<?>> filterSubjects(Set<Class<?>> classes, int sizeBeforeFilter) {
     // filter existing subjects from inbound set
     classes = classes.stream().filter(x -> !Subject.class.isAssignableFrom(x)).collect(Collectors.toSet());
-    log.at(Level.WARNING).log("Removed %s Subjects from inbound", classes.size() - sizeBeforeFilter);
+    log.at(Level.FINE).log("Removed %s Subjects from inbound", classes.size() - sizeBeforeFilter);
     return classes;
   }
 
