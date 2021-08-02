@@ -181,7 +181,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyOf(M,M,M...)">containsAnyOf</a></span>&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;first,
              @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;second,
-             <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</code></th>
+             @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
@@ -191,7 +191,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(M,M,M...)">containsAtLeast</a></span>&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;first,
                @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;second,
-               <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</code></th>
+               @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
@@ -215,7 +215,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(M...)">containsExactly</a></span>&#8203;(<a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(M...)">containsExactly</a></span>&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
@@ -252,7 +252,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneOf(M,M,M...)">containsNoneOf</a></span>&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;firstExcluded,
               @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;secondExcluded,
-              <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;restOfExcluded)</code></th>
+              @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;restOfExcluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </td>
@@ -361,7 +361,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(<a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;expected)</pre>
+<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -418,7 +418,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">@CanIgnoreReturnValue
 <a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;first,
                         @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;second,
-                        <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</pre>
+                        @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -474,7 +474,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>containsAnyOf</h4>
 <pre class="methodSignature">void&nbsp;containsAnyOf&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;first,
                    @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;second,
-                   <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</pre>
+                   @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
 </li>
@@ -513,7 +513,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>containsNoneOf</h4>
 <pre class="methodSignature">void&nbsp;containsNoneOf&#8203;(@Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;firstExcluded,
                     @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>&nbsp;secondExcluded,
-                    <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;restOfExcluded)</pre>
+                    @Nullable <a href="IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a>...&nbsp;restOfExcluded)</pre>
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
  (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
  to any of the given elements.)</div>
