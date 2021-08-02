@@ -5,10 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.annotation.Nonnull;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.google.common.truth.extension.generator.testModel.MyEmployee.State.EMPLOLYED;
 
@@ -35,6 +32,8 @@ public class MyEmployee extends Person {
   State employmentState = State.NEVER_EMPLOYED;
 
   Optional<Double> weighting = Optional.empty();
+
+  Map<String, Project> projectMap;
 
   public MyEmployee(@Nonnull String name, long someLongAspect, @Nonnull ZonedDateTime birthday) {
     super(name, someLongAspect, birthday);

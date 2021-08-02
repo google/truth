@@ -134,6 +134,9 @@ public class TruthGeneratorTest {
 //        assertTruth(hi).getCard().getEpoch().isAtLeast(20);
 //        assertTruth(hi).getSlipUpList().hasSize(3);
 //        MyEmployeeSubject myEmployeeSubject = ManagedTruth.assertTruth(hi);
+
+//    MyEmployeeChildSubject.assertThat(TestModelUtils.createEmployee()).hasProjectMapWithKey("key");
+
   }
 
 }

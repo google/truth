@@ -2,7 +2,7 @@ package com.google.common.truth.extension.generator.internal.modelSubjectChicken
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
-import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
+import com.google.common.truth.extension.generator.UserManagedTruth;
 
 import javax.annotation.processing.Generated;
 

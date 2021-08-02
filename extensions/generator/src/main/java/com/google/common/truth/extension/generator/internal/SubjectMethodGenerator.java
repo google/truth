@@ -27,6 +27,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.function.Predicate.not;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 import static org.reflections.ReflectionUtils.*;
 
@@ -119,29 +120,34 @@ public class SubjectMethodGenerator {
   private void addFieldAccessors(Method method, JavaClassSource generated, Class<?> classUnderTest) {
     Class<?> returnType = getWrappedReturnType(method);
 
+    // todo skip static methods for now - just need to make template a bit more advanced
+    if(methodIsStatic(method))
+      return;
+
     if (Boolean.class.isAssignableFrom(returnType)) {
       addBooleanStrategy(method, generated, classUnderTest);
-    }
+    } else {
 
-    if (Collection.class.isAssignableFrom(returnType)) {
-      addHasElementStrategy(method, generated, classUnderTest);
-    }
+      if (Collection.class.isAssignableFrom(returnType)) {
+        addHasElementStrategy(method, generated, classUnderTest);
+      }
 
-    if (Optional.class.isAssignableFrom(returnType)) {
-      addOptionalStrategy(method, generated, classUnderTest);
-    }
+      if (Optional.class.isAssignableFrom(returnType)) {
+        addOptionalStrategy(method, generated, classUnderTest);
+      }
 
-    if (Map.class.isAssignableFrom(returnType)) {
-      addMapStrategy(method, generated, classUnderTest);
-    }
+      if (Map.class.isAssignableFrom(returnType)) {
+        addMapStrategy(method, generated, classUnderTest);
+      }
 
-    if (Enum.class.isAssignableFrom(returnType)) {
-      addEnumStrategy(method, generated, classUnderTest);
+      addEqualityStrategy(method, generated, classUnderTest);
     }
-
-    addEqualityStrategy(method, generated, classUnderTest);
 
     addChainStrategy(method, generated, returnType);
+
+    generated.addImport(Fact.class)
+            .setStatic(true)
+            .setName(Fact.class.getCanonicalName() + ".*");
   }
 
   private Class<?> getWrappedReturnType(Method method) {
@@ -150,62 +156,136 @@ public class SubjectMethodGenerator {
   }
 
   private void addEqualityStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
-
+    equalityStrategyGeneric(method, generated, false);
+    equalityStrategyGeneric(method, generated, true);
   }
 
-  private void addEnumStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+  private void equalityStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+    boolean primitive = method.getReturnType().isPrimitive();
+    String equality = primitive ? " == expected" : ".equals(expected)";
+
+    String body = "" +
+            "  if (%s(actual.%s()%s)) {\n" +
+            "    failWithActual(fact(\"expected %s %sto be equal to\", expected));\n" +
+            "  }\n";
+
+    String testPrefix = positive ? "" : "!";
+    String say = positive ? "" : "NOT ";
+    String fieldName = removeStart(method.getName(), "get");
+    body = format(body, testPrefix, method.getName(), equality, fieldName, say);
+
+    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "EqualTo";
+    MethodSource<JavaClassSource> newMethod = generated.addMethod();
+    newMethod.setName(methodName)
+            .setReturnTypeVoid()
+            .setBody(body)
+            .setPublic();
+    newMethod.addParameter(method.getReturnType(), "expected");
 
   }
 
   private void addMapStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+    addMapStrategyGeneric(method, generated, false);
+    addMapStrategyGeneric(method, generated, true);
   }
 
-  private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
-  }
+  private void addMapStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+    String testPrefix = positive ? "" : "!";
 
-  private void addHasElementStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
-
-  }
-
-  /**
-   * public void isCeo() { if (!actual.isCeo()) { failWithActual(simpleFact("expected to be CEO")); } }
-   */
-  private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
-    addPositiveBoolean(method, generated);
-    addNegativeBoolean(method, generated);
-
-    generated.addImport(Fact.class)
-            .setStatic(true)
-            .setName(Fact.class.getCanonicalName() + ".simpleFact");
-  }
-
-  private void addPositiveBoolean(Method method, JavaClassSource generated) {
     String body = "" +
-            "  if (actual.%s()) {\n" +
-            "    failWithActual(simpleFact(\"expected NOT to be %s\"));\n" +
+            "  if (%sactual.%s().containsKey(expected)) {\n" +
+            "    failWithActual(fact(\"expected %s %sto have key\", expected));\n" +
             "  }\n";
-    String noun = StringUtils.remove(method.getName(), "is");
-    body = format(body, method.getName(), noun);
 
-    String negativeMethodName = removeStart(method.getName(), "is");
-    negativeMethodName = "isNot" + negativeMethodName;
-    generated.addMethod()
-            .setName(negativeMethodName)
+    String say = positive ? "" : "NOT ";
+    String fieldName = removeStart(method.getName(), "get");
+    body = format(body, testPrefix, method.getName(), fieldName, say);
+
+    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "WithKey";
+    MethodSource<JavaClassSource> newMethod = generated.addMethod();
+    newMethod
+            .setName(methodName)
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();
+    newMethod.addParameter(Object.class, "expected");
   }
 
-  private void addNegativeBoolean(Method method, JavaClassSource generated) {
-    String body = "" +
-            "  if (!actual.%s()) {\n" +
-            "    failWithActual(simpleFact(\"expected to be %s\"));\n" +
-            "  }\n";
-    String noun = StringUtils.remove(method.getName(), "is");
-    body = format(body, method.getName(), noun);
+  private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+    addOptionalStrategyGeneric(method, generated, false);
+    addOptionalStrategyGeneric(method, generated, true);
+  }
 
+  private void addOptionalStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+    String testPrefix = positive ? "" : "!";
+    String body = "" +
+            "  if (%sactual.%s().isPresent()) {\n" +
+            "    failWithActual(simpleFact(\"expected %s %sto be present\"));\n" +
+            "  }\n";
+
+    String say = positive ? "" : "NOT ";
+    String fieldName = removeStart(method.getName(), "get");
+    body = format(body, testPrefix, method.getName(), fieldName, say);
+
+    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "Present";
+    MethodSource<JavaClassSource> newMethod = generated.addMethod();
+    newMethod
+            .setName(methodName)
+            .setReturnTypeVoid()
+            .setBody(body)
+            .setPublic();
+    newMethod.addParameter(method.getReturnType(), "expected");
+  }
+
+  private void addHasElementStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+    addHasElementStrategyGeneric(method, generated, false);
+    addHasElementStrategyGeneric(method, generated, true);
+  }
+
+  private void addHasElementStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+    String body = "" +
+            "  if (%sactual.%s().contains(expected)) {\n" +
+            "    failWithActual(fact(\"expected %s %sto have element\", expected));\n" +
+            "  }\n";
+    String testPrefix = positive ? "" : "!";
+
+    String fieldName = removeStart(method.getName(), "get");
+
+    String say = positive ? "" : "NOT ";
+    body = format(body, testPrefix, method.getName(), fieldName, say);
+
+    String methodName = "has" + fieldName + capitalize(say.toLowerCase()).trim() + "WithElement";
+    MethodSource<JavaClassSource> newMethod = generated.addMethod();
+    newMethod
+            .setName(methodName)
+            .setReturnTypeVoid()
+            .setBody(body)
+            .setPublic();
+    newMethod.addParameter(Object.class, "expected");
+  }
+
+  private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+    addBooleanGeneric(method, generated, true);
+    addBooleanGeneric(method, generated, false);
+  }
+
+  private void addBooleanGeneric(Method method, JavaClassSource generated, boolean positive) {
+    String testPrefix = positive ? "" : "!";
+    String say = positive ? "" : "NOT ";
+
+    String body = "" +
+            "  if (%sactual.%s()) {\n" +
+            "    failWithActual(simpleFact(\"expected %sto be %s\"));\n" +
+            "  }\n";
+
+    String noun = StringUtils.remove(method.getName(), "is");
+
+    body = format(body, testPrefix, method.getName(), say, noun);
+
+    String methodName = removeStart(method.getName(), "is");
+    methodName = "is" + capitalize(say.toLowerCase()).trim() + methodName;
     generated.addMethod()
-            .setName(method.getName())
+            .setName(methodName)
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();

@@ -2,6 +2,8 @@ package com.google.common.truth.extension.generator.testModel;
 
 import com.google.common.truth.extension.generator.testModel.MyEmployeeParentSubject;
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.extension.generator.UserManagedTruth;
+import com.google.common.truth.extension.generator.testModel.MyEmployee;
 import javax.annotation.processing.Generated;
 
 /**
@@ -13,8 +15,10 @@ import javax.annotation.processing.Generated;
  * a new one. Note that if the base skeleton of this class ever changes, you
  * won't automatically get it updated.
  *
+ * @see MyEmployee
  * @see MyEmployeeParentSubject
  */
+@UserManagedTruth(clazz = MyEmployee.class)
 @Generated("truth-generator")
 public class MyEmployeeSubject extends MyEmployeeParentSubject {
 

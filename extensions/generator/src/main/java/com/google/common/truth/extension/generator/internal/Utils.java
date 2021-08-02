@@ -1,6 +1,6 @@
 package com.google.common.truth.extension.generator.internal;
 
-import com.google.common.truth.extension.generator.internal.model.UserManagedTruth;
+import com.google.common.truth.extension.generator.UserManagedTruth;
 import org.atteo.evo.inflector.English;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 

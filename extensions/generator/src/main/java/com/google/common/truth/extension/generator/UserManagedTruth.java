@@ -1,4 +1,4 @@
-package com.google.common.truth.extension.generator.internal.model;
+package com.google.common.truth.extension.generator;
 
 import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.internal.SkeletonGeneratorAPI;
