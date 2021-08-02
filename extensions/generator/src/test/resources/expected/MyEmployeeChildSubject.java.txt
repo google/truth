@@ -1,0 +1,50 @@
+package com.google.common.truth.extension.generator.testModel;
+
+import com.google.common.truth.extension.generator.testModel.MyEmployeeSubject;
+import com.google.common.truth.FailureMetadata;
+import static com.google.common.truth.extension.generator.testModel.MyEmployeeSubject.*;
+import com.google.common.truth.Truth;
+import javax.annotation.processing.Generated;
+
+/**
+ * Entry point for assertions for @{MyEmployee}. Import the static accessor
+ * methods from this class and use them. Combines the generated code from
+ * {@MyEmployeeParentSubject}and the user code from
+ * {@com.google.common.truth.extension.generator.testModel.MyEmployeeSubject}.
+ *
+ * @see com.google.common.truth.extension.generator.testModel.MyEmployee
+ * @see com.google.common.truth.extension.generator.testModel.MyEmployeeSubject
+ * @see MyEmployeeParentSubject
+ */
+@Generated("truth-generator")
+public class MyEmployeeChildSubject extends MyEmployeeSubject {
+
+	/**
+	 * This constructor should not be used, instead see the parent's.
+	 *
+	 * @see com.google.common.truth.extension.generator.testModel.MyEmployeeSubject
+	 */
+	private MyEmployeeChildSubject(FailureMetadata failureMetadata,
+			com.google.common.truth.extension.generator.testModel.MyEmployee actual) {
+		super(failureMetadata, actual);
+	}
+
+	/**
+	 * Entry point for {@link MyEmployee} assertions.
+	 */
+	public static MyEmployeeSubject assertThat(
+			com.google.common.truth.extension.generator.testModel.MyEmployee actual) {
+		return Truth.assertAbout(myEmployees()).that(actual);
+	}
+
+	/**
+	 * Convenience entry point for {@link MyEmployee} assertions when being mixed
+	 * with other "assertThat" assertion libraries.
+	 *
+	 * @see #assertThat
+	 */
+	public static MyEmployeeSubject assertTruth(
+			com.google.common.truth.extension.generator.testModel.MyEmployee actual) {
+		return assertThat(actual);
+	}
+}

@@ -1,16 +1,18 @@
 package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
-import com.google.common.truth.extension.Employee;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import com.google.common.truth.extension.generator.testModel.*;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.Chronology;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,15 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 @RunWith(JUnit4.class)
 public class TruthGeneratorTest {
 
-  @Test
-  public void poc() throws IOException {
-    TruthGeneratorAPI truthGeneratorAPI = TruthGeneratorAPI.create();
-    String generated = truthGeneratorAPI.combinedSystem(Employee.class);
-
-    String expectedFileName = "expected-EmployeeSubject.java.txt";
-    String expecting = Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
-
-    assertThat(trim(generated)).isEqualTo(trim(expecting));
+  private String loadFileToString(String expectedFileName) throws IOException {
+    return Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
   }
 
   private String trim(String in) {
@@ -43,7 +38,7 @@ public class TruthGeneratorTest {
   }
 
   @Test
-  public void generate_code() {
+  public void generate_code() throws IOException {
     // todo need to be able to set base package for all generated classes, kind of like shade, so you cah generate test for classes in other restricted modules
     TruthGeneratorAPI truthGenerator = TruthGeneratorAPI.create();
 
@@ -54,22 +49,47 @@ public class TruthGeneratorTest {
 
     String basePackageName = getClass().getPackage().getName();
     SourceClassSets ss = new SourceClassSets(basePackageName);
-    ss.generateFrom(classes);
+    ss.generateAllFoundInPackagesOf(MyEmployee.class);
 
     // package exists in other module error - needs package target support
-    ss.generateFrom(basePackageName, ZonedDateTime.class, UUID.class);
+    ss.generateFrom(basePackageName, UUID.class);
+    ss.generateFromShaded(ZoneId.class, ZonedDateTime.class, Chronology.class);
 
-    Set<ThreeSystem> generated = truthGenerator.generate(ss);
+    Map<Class<?>, ThreeSystem> generated = truthGenerator.generate(ss);
 
     assertThat(generated.size()).isAtLeast(classes.size());
-    Set<? extends Class<?>> generatedSourceClasses = generated.stream().map(x -> x.classUnderTest).collect(Collectors.toSet());
-    assertThat(generatedSourceClasses).containsAtLeast(UUID.class, ZonedDateTime.class);
+    Set<? extends Class<?>> generatedSourceClasses = generated.values().stream().map(x -> x.classUnderTest).collect(Collectors.toSet());
+    assertThat(generatedSourceClasses).containsAtLeast(UUID.class, ZonedDateTime.class, MyEmployee.State.class);
 
-    MyEmployee employee = TestModelUtils.createEmployee();
-//    ManagedTruth.assertThat(employee).getCard().getEpoch().isAtLeast(0);
-//    ManagedTruth.assertThat(employee).getBoss().getName().isEqualTo("Tony");
+    String expectedMyEmployeeParent = loadFileToString("expected/MyEmployeeParentSubject.java.txt");
+    String expectedMyEmployeeChild = loadFileToString("expected/MyEmployeeChildSubject.java.txt");
+    String expectedMyEmployeeMiddle = loadFileToString("expected/MyEmployeeSubject.java.txt");
 
-//    ManagedTruth.assertThat(employee).getBirthday().getYear().isLessThan(1920);
+
+    ThreeSystem threeSystemGenerated = generated.get(MyEmployee.class);
+
+    ManagedTruthChicken.assertThat(threeSystemGenerated)
+            .hasParent().hasGenerated().hasSourceText()
+            .ignoringWhiteSpace().equalTo(expectedMyEmployeeParent); // sanity full chain
+
+    ManagedTruthChicken.assertThat(threeSystemGenerated).hasParentSource(expectedMyEmployeeParent);
+
+    ManagedTruthChicken.assertThat(threeSystemGenerated).hasMiddleSource(expectedMyEmployeeMiddle);
+
+    ManagedTruthChicken.assertThat(threeSystemGenerated).hasChildSource(expectedMyEmployeeChild);
+
+  }
+
+  /**
+   * Chicken, or the egg?
+   */
+  @Test
+  public void boostrapProjectSubjects(){
+    TruthGeneratorAPI tg = TruthGeneratorAPI.create();
+    SourceClassSets ss = new SourceClassSets(getClass().getPackage().getName());
+    ss.generateFromShaded(JavaClassSource.class);
+    ss.generateAllFoundInPackagesOf(getClass());
+    tg.generate(ss);
   }
 
   @Test
@@ -82,11 +102,11 @@ public class TruthGeneratorTest {
     ss.generateAllFoundInPackagesOf(IdCard.class);
 
     // generate java Subjects and put them in our package
-    ss.generateFrom(targetPackageName, UUID.class, ZonedDateTime.class);
+    ss.generateFrom(targetPackageName, UUID.class);
+    ss.generateFromShaded(ZoneId.class, ZonedDateTime.class, Chronology.class);
 
-    Set<ThreeSystem> generated = tg.generate(ss);
+    Map<Class<?>, ThreeSystem> generated = tg.generate(ss);
     assertThat(generated.size()).isAtLeast(ss.getPackageAndClasses().size());
-
   }
 
   @Test

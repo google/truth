@@ -27,6 +27,8 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Optional<String> targetPackageName;
+  private MiddleClass middle;
+  private ParentClass parent;
 
   public SkeletonGenerator(final Optional<String> targetPackageName) {
     this.targetPackageName = targetPackageName;
@@ -61,9 +63,11 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
       return empty();
 
     ParentClass parent = createParent(source);
+    this.parent = parent;
 
     // todo try to see if class already exists first, user may already have a written one and not know
     MiddleClass middle = createMiddlePlaceHolder(parent.generated, source);
+    this.middle = middle;
 
     JavaClassSource child = createChild(parent, middle.generated.getQualifiedName(), source, middle.factoryMethod.getName());
 
@@ -109,13 +113,13 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     return new ParentClass(parent);
   }
 
-  private <T> void addPackageSuperAndAnnotation(final JavaClassSource javaClass, final Class<T> source) {
+  private void addPackageSuperAndAnnotation(final JavaClassSource javaClass, final Class<?> source) {
     addPackageSuperAndAnnotation(javaClass, source.getPackage().getName(), getSubjectName(source.getSimpleName()));
   }
 
-  private <T> JavaClassSource createChild(ParentClass parent,
+  private JavaClassSource createChild(ParentClass parent,
                                           String usersMiddleClassName,
-                                          Class<T> source,
+                                          Class<?> source,
                                           String factoryMethodName) {
     // todo if middle doesn't extend parent, warn
 
@@ -128,6 +132,13 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     javaDoc.addTagValue("@see", source.getName());
     javaDoc.addTagValue("@see", usersMiddleClassName);
     javaDoc.addTagValue("@see", parent.generated.getName());
+
+    child.extendSuperType(this.middle.generated);
+
+    MethodSource<JavaClassSource> constructor = addConstructor(source, child, false);
+    constructor.getJavaDoc().setText("This constructor should not be used, instead see the parent's.")
+            .addTagValue("@see", usersMiddleClassName);
+    constructor.setPrivate();
 
     addAccessPoints(source, child, factoryMethodName, usersMiddleClassName);
 
@@ -298,7 +309,7 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     return javaClass.getMethods().stream().anyMatch(x -> x.getName().equals(factoryName));
   }
 
-  private <T> void addConstructor(Class<T> source, JavaClassSource javaClass, boolean setActual) {
+  private <T> MethodSource<JavaClassSource> addConstructor(Class<?> source, JavaClassSource javaClass, boolean setActual) {
     if (!javaClass.getMethods().stream().anyMatch(x -> x.isConstructor())) {
       // constructor
       MethodSource<JavaClassSource> constructor = javaClass.addMethod()
@@ -310,7 +321,9 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
       if (setActual)
         sb.append("this.actual = actual;");
       constructor.setBody(sb.toString());
+      return constructor;
     }
+    return null;
   }
 
   private <T> void addActualField(Class<T> source, JavaClassSource javaClass) {

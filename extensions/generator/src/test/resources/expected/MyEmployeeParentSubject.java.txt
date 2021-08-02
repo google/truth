@@ -1,0 +1,129 @@
+package com.google.common.truth.extension.generator.testModel;
+
+import com.google.common.truth.Subject;
+import javax.annotation.processing.Generated;
+import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.IntegerSubject;
+import static com.google.common.truth.extension.generator.testModel.MyEmployeeSubject.myEmployees;
+import com.google.common.truth.extension.generator.testModel.MyEmployeeSubject;
+import static com.google.common.truth.extension.generator.testModel.StateSubject.states;
+import com.google.common.truth.extension.generator.testModel.StateSubject;
+import static com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
+import static com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
+import static com.google.common.truth.extension.generator.UUIDSubject.uUIDs;
+import com.google.common.truth.extension.generator.UUIDSubject;
+import com.google.common.truth.StringSubject;
+import com.google.common.truth.LongSubject;
+import com.google.common.truth.IterableSubject;
+import static com.google.common.truth.Fact.simpleFact;
+import com.google.common.truth.BooleanSubject;
+import com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject;
+import static com.google.common.truth.extension.generator.testModel.IdCardSubject.idCards;
+import com.google.common.truth.extension.generator.testModel.IdCardSubject;
+import static com.google.common.truth.Fact.simpleFact;
+
+/**
+ * Truth Subject for the {@link MyEmployee}.
+ * 
+ * Note that this class is generated / managed, and will change over time. So
+ * any changes you might make will be overwritten.
+ * 
+ * @see MyEmployee
+ * @see MyEmployeeSubject
+ * @see MyEmployeeChildSubject
+ */
+@Generated("truth-generator")
+public class MyEmployeeParentSubject extends Subject {
+
+	protected final MyEmployee actual;
+
+	protected MyEmployeeParentSubject(FailureMetadata failureMetadata,
+			com.google.common.truth.extension.generator.testModel.MyEmployee actual) {
+		super(failureMetadata, actual);
+		this.actual = actual;
+	}
+
+	public IntegerSubject hasBirthYear() {
+		isNotNull();
+		return check("getBirthYear").that(actual.getBirthYear());
+	}
+
+	public MyEmployeeSubject hasBoss() {
+		isNotNull();
+		return check("getBoss").about(myEmployees()).that(actual.getBoss());
+	}
+
+	public StateSubject hasEmploymentState() {
+		isNotNull();
+		return check("getEmploymentState").about(states()).that(actual.getEmploymentState());
+	}
+
+	public ZonedDateTimeSubject hasAnniversary() {
+		isNotNull();
+		return check("getAnniversary").about(zonedDateTimes()).that(actual.getAnniversary());
+	}
+
+	public UUIDSubject hasId() {
+		isNotNull();
+		return check("getId").about(uUIDs()).that(actual.getId());
+	}
+
+	public StringSubject hasName() {
+		isNotNull();
+		return check("getName").that(actual.getName());
+	}
+
+	public LongSubject hasSomeLongAspect() {
+		isNotNull();
+		return check("getSomeLongAspect").that(actual.getSomeLongAspect());
+	}
+
+	public IterableSubject hasProjectList() {
+		isNotNull();
+		return check("getProjectList").that(actual.getProjectList());
+	}
+
+	public void isNotEmployed() {
+		if (actual.isEmployed()) {
+			failWithActual(simpleFact("expected NOT to be Employed"));
+		}
+	}
+
+	public void isEmployed() {
+		if (!actual.isEmployed()) {
+			failWithActual(simpleFact("expected to be Employed"));
+		}
+	}
+
+	public BooleanSubject hasEmployed() {
+		isNotNull();
+		return check("isEmployed").that(actual.isEmployed());
+	}
+
+	public ZonedDateTimeSubject hasBirthday() {
+		isNotNull();
+		return check("getBirthday").about(zonedDateTimes()).that(actual.getBirthday());
+	}
+
+	public IdCardSubject hasCard() {
+		isNotNull();
+		return check("getCard").about(idCards()).that(actual.getCard());
+	}
+
+	public void isNotEmployedWrapped() {
+		if (actual.isEmployedWrapped()) {
+			failWithActual(simpleFact("expected NOT to be EmployedWrapped"));
+		}
+	}
+
+	public void isEmployedWrapped() {
+		if (!actual.isEmployedWrapped()) {
+			failWithActual(simpleFact("expected to be EmployedWrapped"));
+		}
+	}
+
+	public BooleanSubject hasEmployedWrapped() {
+		isNotNull();
+		return check("isEmployedWrapped").that(actual.isEmployedWrapped());
+	}
+}

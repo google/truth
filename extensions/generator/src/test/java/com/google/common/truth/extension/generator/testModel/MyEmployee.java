@@ -40,13 +40,12 @@ public class MyEmployee extends Person {
     super(name, someLongAspect, birthday);
   }
 
-  enum State {
+  public enum State {
     EMPLOLYED, PREVIOUSLY_EMPLOYED, NEVER_EMPLOYED;
   }
 
   /**
-   * Package private test
-   * @return
+   * Package-private test
    */
   boolean isEmployed(){
     return this.employmentState == EMPLOLYED;
@@ -54,7 +53,6 @@ public class MyEmployee extends Person {
 
   /**
    * Primitive vs Wrapper test
-   * @return
    */
   Boolean isEmployedWrapped(){
     return this.employmentState == EMPLOLYED;

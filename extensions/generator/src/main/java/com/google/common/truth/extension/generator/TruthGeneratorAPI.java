@@ -3,6 +3,7 @@ package com.google.common.truth.extension.generator;
 import com.google.common.truth.extension.generator.internal.TruthGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,16 +49,21 @@ public interface TruthGeneratorAPI {
   void combinedSystem(SourceClassSets ss);
 
   /**
-   * @param ss
-   * @return
+   * Use this entry point to generate for a large and differing set of source classes - which will also generate a
+   * single point of entry for all of them.
+   *
+   * <p>
+   * There are many different ways to add, check out the different methods in {@link SourceClassSets}.
+   *
+   * @see SourceClassSets
    */
-  Set<ThreeSystem> generate(SourceClassSets ss);
+  Map<Class<?>, ThreeSystem> generate(SourceClassSets ss);
 
   /**
-   *
    * @param classes
    * @return
    */
-  Set<ThreeSystem> generate(Set<Class<?>> classes);
+  Map<Class<?>, ThreeSystem> generate(Set<Class<?>> classes);
 
+  void generate(Class<?>... classes);
 }

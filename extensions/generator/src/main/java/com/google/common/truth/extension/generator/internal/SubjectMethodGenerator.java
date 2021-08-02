@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.lang.reflect.Modifier.PRIVATE;
+import static java.lang.reflect.Modifier.STATIC;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.function.Predicate.not;
@@ -118,23 +119,23 @@ public class SubjectMethodGenerator {
   private void addFieldAccessors(Method method, JavaClassSource generated, Class<?> classUnderTest) {
     Class<?> returnType = getWrappedReturnType(method);
 
-    if(Boolean.class.isAssignableFrom(returnType)){
+    if (Boolean.class.isAssignableFrom(returnType)) {
       addBooleanStrategy(method, generated, classUnderTest);
     }
 
-    if(Collection.class.isAssignableFrom(returnType)){
+    if (Collection.class.isAssignableFrom(returnType)) {
       addHasElementStrategy(method, generated, classUnderTest);
     }
 
-    if(Optional.class.isAssignableFrom(returnType)){
+    if (Optional.class.isAssignableFrom(returnType)) {
       addOptionalStrategy(method, generated, classUnderTest);
     }
 
-    if(Map.class.isAssignableFrom(returnType)){
+    if (Map.class.isAssignableFrom(returnType)) {
       addMapStrategy(method, generated, classUnderTest);
     }
 
-    if(Enum.class.isAssignableFrom(returnType)){
+    if (Enum.class.isAssignableFrom(returnType)) {
       addEnumStrategy(method, generated, classUnderTest);
     }
 
@@ -167,11 +168,7 @@ public class SubjectMethodGenerator {
   }
 
   /**
-   * public void isCeo() {
-   *   if (!actual.isCeo()) {
-   *     failWithActual(simpleFact("expected to be CEO"));
-   *   }
-   * }
+   * public void isCeo() { if (!actual.isCeo()) { failWithActual(simpleFact("expected to be CEO")); } }
    */
   private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
     addPositiveBoolean(method, generated);
@@ -183,7 +180,7 @@ public class SubjectMethodGenerator {
   }
 
   private void addPositiveBoolean(Method method, JavaClassSource generated) {
-    String body = ""+
+    String body = "" +
             "  if (actual.%s()) {\n" +
             "    failWithActual(simpleFact(\"expected NOT to be %s\"));\n" +
             "  }\n";
@@ -200,7 +197,7 @@ public class SubjectMethodGenerator {
   }
 
   private void addNegativeBoolean(Method method, JavaClassSource generated) {
-    String body = ""+
+    String body = "" +
             "  if (!actual.%s()) {\n" +
             "    failWithActual(simpleFact(\"expected to be %s\"));\n" +
             "  }\n";
@@ -256,15 +253,21 @@ public class SubjectMethodGenerator {
               .setStatic(true);
     }
 
-//        String methodPrefix = (returnType.getSimpleName().contains("boolean")) ? "is" : "get";
-//        body.append(".that(actual." + methodPrefix + capitalize(method.getName()) + "());");
-    body.append(format(".that(actual.%s());", method.getName()));
+    if (methodIsStatic(method)) {
+      body.append(format(".that(%s.%s());", method.getDeclaringClass().getSimpleName(), method.getName()));
+    } else {
+      body.append(format(".that(actual.%s());", method.getName()));
+    }
 
     has.setBody(body.toString());
 
     has.setReturnType(subjectClass.getSubjectSimpleName());
 
     generated.addImport(subjectClass.getSubjectQualifiedName());
+  }
+
+  private boolean methodIsStatic(Method method) {
+    return withModifier(STATIC).test(method);
   }
 
   /**
@@ -375,7 +378,7 @@ public class SubjectMethodGenerator {
     }
   }
 
-  static class ClassOrGenerated {
+  public static class ClassOrGenerated {
     final Class<?> clazz;
     final ThreeSystem generated;
 

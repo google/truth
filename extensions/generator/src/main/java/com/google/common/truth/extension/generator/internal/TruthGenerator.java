@@ -1,15 +1,17 @@
 package com.google.common.truth.extension.generator.internal;
 
 import com.google.common.collect.Sets.SetView;
+import com.google.common.flogger.FluentLogger;
 import com.google.common.truth.Subject;
-import com.google.common.truth.extension.generator.TruthGeneratorAPI;
 import com.google.common.truth.extension.generator.SourceClassSets;
 import com.google.common.truth.extension.generator.SourceClassSets.PackageAndClasses;
+import com.google.common.truth.extension.generator.TruthGeneratorAPI;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.union;
@@ -18,6 +20,8 @@ import static com.google.common.collect.Sets.union;
  * @author Antony Stubbs
  */
 public class TruthGenerator implements TruthGeneratorAPI {
+
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
 
   @Override
   public void generate(String... modelPackages) {
@@ -41,10 +45,14 @@ public class TruthGenerator implements TruthGeneratorAPI {
 
   private Set<ThreeSystem> generateSkeletons(Set<Class<?>> classes, Optional<String> targetPackageName,
                                              OverallEntryPoint overallEntryPoint) {
-    SkeletonGenerator skeletonGenerator = new SkeletonGenerator(targetPackageName);
+    int sizeBeforeFilter = classes.size();
+    // filter existing subjects from inbound set
+    classes = classes.stream().filter(x -> !Subject.class.isAssignableFrom(x)).collect(Collectors.toSet());
+    log.at(Level.WARNING).log("Removed %s Subjects from inbound", classes.size() - sizeBeforeFilter);
 
     Set<ThreeSystem> subjectsSystems = new HashSet<>();
     for (Class<?> c : classes) {
+      SkeletonGenerator skeletonGenerator = new SkeletonGenerator(targetPackageName);
       Optional<ThreeSystem> threeSystem = skeletonGenerator.threeLayerSystem(c);
       if (threeSystem.isPresent()) {
         ThreeSystem ts = threeSystem.get();
@@ -93,7 +101,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
   }
 
   @Override
-  public Set<ThreeSystem> generate(SourceClassSets ss) {
+  public Map<Class<?>, ThreeSystem> generate(SourceClassSets ss) {
     Set<String[]> packages = ss.getSimplePackageOfClasses().stream().map(
             this::getPackageStrings
     ).collect(Collectors.toSet());
@@ -117,7 +125,6 @@ public class TruthGenerator implements TruthGeneratorAPI {
     // straight up classes
     Set<ThreeSystem> simpleClasses = generateSkeletons(ss.getSimpleClasses(), Optional.empty(), overallEntryPoint);
 
-
     //
     SetView<ThreeSystem> union = union(union(skeletons, setStream), simpleClasses);
     addTests(union);
@@ -125,15 +132,20 @@ public class TruthGenerator implements TruthGeneratorAPI {
     // create overall entry point
     overallEntryPoint.createOverallAccessPoints(ss.getPackageForOverall());
 
-    return union;
+    return union.stream().collect(Collectors.toMap(ThreeSystem::getClassUnderTest, x -> x));
   }
 
   @Override
-  public Set<ThreeSystem> generate(Set<Class<?>> classes) {
+  public Map<Class<?>, ThreeSystem> generate(Set<Class<?>> classes) {
     Utils.requireNotEmpty(classes);
     SourceClassSets ss = new SourceClassSets(classes.stream().findFirst().get().getPackageName());
     ss.generateFrom(classes);
     return generate(ss);
+  }
+
+  @Override
+  public void generate(Class<?>... classes) {
+    generate(Arrays.stream(classes).collect(Collectors.toSet()));
   }
 
   @Override
