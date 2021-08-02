@@ -1,20 +1,21 @@
-package com.google.common.truth.extension.generator.shaded.org.jboss.forge.roaster.model.source;
+package com.google.common.truth.extension.generator.shaded.org.jboss.forge.roaster.model.sourceChickens;
 
-import com.google.common.truth.extension.generator.internal.MyStringSubject;
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.extension.generator.internal.MyStringSubject;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+
 import javax.annotation.processing.Generated;
 
+// in VCS as we're still in the chicken phase of what comes first - stable maven plugin to generate this for the build before we can remove
+
 /**
- * Optionally move this class into source control, and add your custom
- * assertions here.
+ * Optionally move this class into source control, and add your custom assertions here.
  *
  * <p>
- * If the system detects this class already exists, it won't attempt to generate
- * a new one. Note that if the base skeleton of this class ever changes, you
- * won't automatically get it updated.
+ * If the system detects this class already exists, it won't attempt to generate a new one. Note that if the base
+ * skeleton of this class ever changes, you won't automatically get it updated.
  *
- * @see JavaClassSourceParentSubject
+ * @see com.google.common.truth.extension.generator.shaded.org.jboss.forge.roaster.model.sourceChickens.JavaClassSourceParentSubject
  */
 @Generated("truth-generator")
 public class JavaClassSourceSubject extends JavaClassSourceParentSubject {

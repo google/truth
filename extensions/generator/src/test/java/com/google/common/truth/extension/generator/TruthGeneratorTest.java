@@ -2,6 +2,8 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import com.google.common.truth.extension.generator.internal.modelSubjectChickens.ThreeSystemChildSubject;
+import com.google.common.truth.extension.generator.internal.modelSubjectChickens.ThreeSystemSubject;
 import com.google.common.truth.extension.generator.testModel.*;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.junit.Test;
@@ -68,15 +70,15 @@ public class TruthGeneratorTest {
 
     ThreeSystem threeSystemGenerated = generated.get(MyEmployee.class);
 
-    ManagedTruthChicken.assertThat(threeSystemGenerated)
+    ThreeSystemChildSubject.assertThat(threeSystemGenerated)
             .hasParent().hasGenerated().hasSourceText()
             .ignoringWhiteSpace().equalTo(expectedMyEmployeeParent); // sanity full chain
 
-    ManagedTruthChicken.assertThat(threeSystemGenerated).hasParentSource(expectedMyEmployeeParent);
+    ThreeSystemChildSubject.assertThat(threeSystemGenerated).hasParentSource(expectedMyEmployeeParent);
 
-    ManagedTruthChicken.assertThat(threeSystemGenerated).hasMiddleSource(expectedMyEmployeeMiddle);
+    ThreeSystemChildSubject.assertThat(threeSystemGenerated).hasMiddleSource(expectedMyEmployeeMiddle);
 
-    ManagedTruthChicken.assertThat(threeSystemGenerated).hasChildSource(expectedMyEmployeeChild);
+    ThreeSystemChildSubject.assertThat(threeSystemGenerated).hasChildSource(expectedMyEmployeeChild);
 
   }
 

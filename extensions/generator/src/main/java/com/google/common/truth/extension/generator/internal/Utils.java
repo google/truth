@@ -47,6 +47,7 @@ public class Utils {
     // user can still use a custom target package if they like
     String packageNameSuffix = ".truth";
 
+    // todo use annotations not name strings
     List<String> ids = List.of("Parent", "Child");
     boolean isChildOrParent = ids.stream().anyMatch(x -> javaClass.getName().contains(x));
 

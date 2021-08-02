@@ -46,14 +46,12 @@ public class TruthGenerator implements TruthGeneratorAPI {
   private Set<ThreeSystem> generateSkeletons(Set<Class<?>> classes, Optional<String> targetPackageName,
                                              OverallEntryPoint overallEntryPoint) {
     int sizeBeforeFilter = classes.size();
-    // filter existing subjects from inbound set
-    classes = classes.stream().filter(x -> !Subject.class.isAssignableFrom(x)).collect(Collectors.toSet());
-    log.at(Level.WARNING).log("Removed %s Subjects from inbound", classes.size() - sizeBeforeFilter);
+    classes = filterSubjects(classes, sizeBeforeFilter);
 
     Set<ThreeSystem> subjectsSystems = new HashSet<>();
-    for (Class<?> c : classes) {
+    for (Class<?> clazz : classes) {
       SkeletonGenerator skeletonGenerator = new SkeletonGenerator(targetPackageName);
-      Optional<ThreeSystem> threeSystem = skeletonGenerator.threeLayerSystem(c);
+      Optional<ThreeSystem> threeSystem = skeletonGenerator.threeLayerSystem(clazz);
       if (threeSystem.isPresent()) {
         ThreeSystem ts = threeSystem.get();
         subjectsSystems.add(ts);
@@ -61,6 +59,13 @@ public class TruthGenerator implements TruthGeneratorAPI {
       }
     }
     return subjectsSystems;
+  }
+
+  private Set<Class<?>> filterSubjects(Set<Class<?>> classes, int sizeBeforeFilter) {
+    // filter existing subjects from inbound set
+    classes = classes.stream().filter(x -> !Subject.class.isAssignableFrom(x)).collect(Collectors.toSet());
+    log.at(Level.WARNING).log("Removed %s Subjects from inbound", classes.size() - sizeBeforeFilter);
+    return classes;
   }
 
   private Set<Class<?>> collectSourceClasses(final String[] modelPackages) {

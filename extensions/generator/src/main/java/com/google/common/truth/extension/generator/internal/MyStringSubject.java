@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+/**
+ * @see IgnoringWhiteSpaceComparison
+ */
 public class MyStringSubject extends StringSubject {
 
   String actual;

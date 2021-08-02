@@ -1,23 +1,28 @@
 package com.google.common.truth.extension.generator.internal;
 
 import com.google.common.base.Joiner;
+import com.google.common.flogger.FluentLogger;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.common.truth.Truth;
-import com.google.common.truth.extension.generator.internal.model.*;
+import com.google.common.truth.extension.generator.internal.model.MiddleClass;
+import com.google.common.truth.extension.generator.internal.model.ParentClass;
+import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.*;
-
-import com.google.common.flogger.FluentLogger;
+import org.jboss.forge.roaster.model.source.AnnotationSource;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaDocSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+import org.reflections.Reflections;
 
 import javax.annotation.processing.Generated;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Optional;
 
 import static com.google.common.truth.extension.generator.internal.Utils.getFactoryName;
 import static com.google.common.truth.extension.generator.internal.Utils.writeToDisk;
-import static java.lang.String.format;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * @author Antony Stubbs
@@ -27,11 +32,14 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Optional<String> targetPackageName;
+  private final Reflections reflections;
   private MiddleClass middle;
   private ParentClass parent;
 
   public SkeletonGenerator(final Optional<String> targetPackageName) {
     this.targetPackageName = targetPackageName;
+    this.reflections = new Reflections(this.targetPackageName);
+
   }
 
   @Override
@@ -52,9 +60,9 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     // make child - client code entry point
     JavaClassSource child = createChild(parent, usersMiddleClass.getName(), source, factoryMethodName);
 
-    MiddleClass middleClass = new MiddleClass(null, null, usersMiddleClass);
+    MiddleClass middleClass = MiddleClass.of(usersMiddleClass);
 
-    return Optional.of(new ThreeSystem(source, parent, middleClass, child));
+    return of(new ThreeSystem(source, parent, middleClass, child));
   }
 
   @Override
@@ -65,18 +73,28 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     ParentClass parent = createParent(source);
     this.parent = parent;
 
-    // todo try to see if class already exists first, user may already have a written one and not know
-    MiddleClass middle = createMiddlePlaceHolder(parent.generated, source);
+    MiddleClass middle = createMiddlePlaceHolder(parent.getGenerated(), source);
+    boolean threeSystemParentSubect = source.getName().contains("ThreeSystem");
     this.middle = middle;
 
-    JavaClassSource child = createChild(parent, middle.generated.getQualifiedName(), source, middle.factoryMethod.getName());
+    String factoryName = Utils.getFactoryName(source);
+    JavaClassSource child = createChild(parent, middle.getSimpleName(), source, factoryName);
 
-    return Optional.of(new ThreeSystem(source, parent, middle, child));
+    return of(new ThreeSystem(source, parent, middle, child));
   }
 
   private MiddleClass createMiddlePlaceHolder(JavaClassSource parent, Class source) {
+    String middleClassName = getSubjectName(source.getSimpleName());
+
+    // todo try to see if class already exists first, user may already have a written one and not know
+    Optional<Class<?>> compiledMiddleClass = middleExists(parent, middleClassName);
+    if (compiledMiddleClass.isPresent()) {
+      logger.atInfo().log("Skipping middle class Template creation as class already exists: %s", middleClassName);
+      return MiddleClass.of(compiledMiddleClass.get());
+    }
+
     JavaClassSource middle = Roaster.create(JavaClassSource.class);
-    middle.setName(getSubjectName(source.getSimpleName()));
+    middle.setName(middleClassName);
     middle.setPackage(parent.getPackage());
     middle.extendSuperType(parent);
     JavaDocSource<JavaClassSource> jd = middle.getJavaDoc();
@@ -92,7 +110,18 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
     addGeneratedMarker(middle);
 
     writeToDisk(middle, targetPackageName);
-    return new MiddleClass(middle, factory, null);
+    return MiddleClass.of(middle, factory);
+  }
+
+  private Optional<Class<?>> middleExists(JavaClassSource parent, String middleClassName) {
+    try {
+      // load from annotated classes instead using Reflections?
+      String fullName = parent.getPackage() + "." + middleClassName;
+      Class<?> aClass = Class.forName(fullName);
+      return of(aClass);
+    } catch (ClassNotFoundException e) {
+      return empty();
+    }
   }
 
   private <T> ParentClass createParent(Class<T> source) {
@@ -118,29 +147,29 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   }
 
   private JavaClassSource createChild(ParentClass parent,
-                                          String usersMiddleClassName,
-                                          Class<?> source,
-                                          String factoryMethodName) {
+                                      String usersMiddleClassName,
+                                      Class<?> source,
+                                      String factoryMethodName) {
     // todo if middle doesn't extend parent, warn
 
     JavaClassSource child = Roaster.create(JavaClassSource.class);
     child.setName(getSubjectName(source.getSimpleName() + "Child"));
-    child.setPackage(parent.generated.getPackage());
+    child.setPackage(parent.getGenerated().getPackage());
     JavaDocSource<JavaClassSource> javaDoc = child.getJavaDoc();
     javaDoc.setText("Entry point for assertions for @{" + source.getSimpleName() + "}. Import the static accessor methods from this class and use them.\n" +
-            "Combines the generated code from {@" + parent.generated.getName() + "}and the user code from {@" + usersMiddleClassName + "}.");
+            "Combines the generated code from {@" + parent.getGenerated().getName() + "}and the user code from {@" + usersMiddleClassName + "}.");
     javaDoc.addTagValue("@see", source.getName());
     javaDoc.addTagValue("@see", usersMiddleClassName);
-    javaDoc.addTagValue("@see", parent.generated.getName());
+    javaDoc.addTagValue("@see", parent.getGenerated().getName());
 
-    child.extendSuperType(this.middle.generated);
+    middle.makeChildExtend(child);
 
     MethodSource<JavaClassSource> constructor = addConstructor(source, child, false);
     constructor.getJavaDoc().setText("This constructor should not be used, instead see the parent's.")
             .addTagValue("@see", usersMiddleClassName);
     constructor.setPrivate();
 
-    addAccessPoints(source, child, factoryMethodName, usersMiddleClassName);
+    addAccessPoints(source, child, factoryMethodName, middle.getCanonicalName());
 
     addGeneratedMarker(child);
 

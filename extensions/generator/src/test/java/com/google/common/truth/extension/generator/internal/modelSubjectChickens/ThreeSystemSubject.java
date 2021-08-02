@@ -1,8 +1,11 @@
-package com.google.common.truth.extension.generator.internal.model;
+package com.google.common.truth.extension.generator.internal.modelSubjectChickens;
 
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
 import javax.annotation.processing.Generated;
+
+// in VCS as we're still in the chicken phase of what comes first - stable maven plugin to generate this for the build before we can remove
 
 /**
  * Optionally move this class into source control, and add your custom assertions here.

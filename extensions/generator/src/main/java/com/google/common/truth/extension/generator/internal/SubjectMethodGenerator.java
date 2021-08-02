@@ -369,12 +369,12 @@ public class SubjectMethodGenerator {
 
   public void addTests(final Set<ThreeSystem> allTypes) {
     for (ThreeSystem c : allTypes) {
-      addTests(c.parent.generated, c.classUnderTest);
+      addTests(c.parent.getGenerated(), c.classUnderTest);
     }
 
     // only serialise results, when all have finished - useful for debugging
     for (ThreeSystem c : allTypes) {
-      Utils.writeToDisk(c.parent.generated);
+      Utils.writeToDisk(c.parent.getGenerated());
     }
   }
 
@@ -395,14 +395,14 @@ public class SubjectMethodGenerator {
 
     String getSubjectSimpleName() {
       if (clazz == null)
-        return this.generated.middle.generated.getName();
+        return this.generated.middle.getSimpleName();
       else
         return clazz.getSimpleName();
     }
 
     String getSubjectQualifiedName() {
       if (clazz == null)
-        return this.generated.middle.generated.getQualifiedName();
+        return this.generated.middle.getCanonicalName();
       else
         return clazz.getCanonicalName();
     }
@@ -420,7 +420,7 @@ public class SubjectMethodGenerator {
     }
 
     public String getFactoryContainerName() {
-      return (isGenerated()) ? generated.middle.generated.getCanonicalName() : clazz.getCanonicalName();
+      return (isGenerated()) ? generated.middle.getCanonicalName() : clazz.getCanonicalName();
     }
   }
 }
