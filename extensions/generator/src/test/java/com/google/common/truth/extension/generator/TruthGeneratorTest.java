@@ -70,8 +70,7 @@ public class TruthGeneratorTest {
     ManagedTruth.assertThat(employee).getCard().getEpoch().isAtLeast(0);
 //    ManagedTruth.assertThat(employee).getBoss().getName().isEqualTo("Tony");
 
-    ManagedTruth.assertThat(employee).getBirthday().getYear().isLessThan(1920);
-
+//    ManagedTruth.assertThat(employee).getBirthday().getYear().isLessThan(1920);
   }
 
   @Test

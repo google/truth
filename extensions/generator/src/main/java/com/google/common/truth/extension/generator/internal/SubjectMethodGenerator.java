@@ -4,9 +4,9 @@ import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.Subject;
-import com.google.common.truth.extension.generator.internal.SkeletonGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
@@ -15,6 +15,7 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class SubjectMethodGenerator {
 
     //
     for (Method method : getters) {
-      addPrimitiveTest(method, parent, classUnderTest);
+      addFieldAccessors(method, parent, classUnderTest);
     }
   }
 
@@ -64,7 +65,7 @@ public class SubjectMethodGenerator {
     Set<Method> issers = ReflectionUtils.getAllMethods(classUnderTest,
             withModifier(Modifier.PUBLIC), withPrefix("is"), withParametersCount(0));
 
-    getters.addAll(issers);;
+    getters.addAll(issers);
 
     return removeOverridden(getters);
   }
@@ -104,13 +105,19 @@ public class SubjectMethodGenerator {
           List.class,
           Iterable.class,
           Number.class,
+          Throwable.class,
+          BigDecimal.class,
           String.class,
           Comparable.class,
           Class.class // Enum#getDeclaringClass
-          );
+  );
 
-  private void addPrimitiveTest(Method method, JavaClassSource generated, Class<?> classUnderTest) {
+  private void addFieldAccessors(Method method, JavaClassSource generated, Class<?> classUnderTest) {
     Class<?> returnType = method.getReturnType();
+
+    if(returnType.isAssignableFrom(Boolean.class)){
+      addBooleanMethod();
+    }
 
     boolean isCoveredByNonPrimitiveStandardSubjects = isTypeCoveredUnderStandardSubjects(returnType);
 
@@ -128,51 +135,28 @@ public class SubjectMethodGenerator {
     ClassOrGenerated subjectClass = subjectForType.get();
 
     // todo add versions with and with the get
-    //String prefix = (returnType.getSimpleName().contains("boolean")) ? "" : "";
     MethodSource<JavaClassSource> has = generated.addMethod()
-//            .setName(prefix + method.getName())
-            .setName(method.getName())
+            .setName(createNameForSubjectMethod(method))
             .setPublic();
 
     StringBuilder body = new StringBuilder("isNotNull();\n");
-    String check = "return check(\"" + method.getName() + "\")";
+    String check = format("return check(\"%s\")", createNameForSubjectMethod(method));
     body.append(check);
-
 
     boolean notPrimitive = !returnType.isPrimitive();
     boolean needsAboutCall = notPrimitive && !isCoveredByNonPrimitiveStandardSubjects;
+
     if (needsAboutCall || subjectClass.isGenerated()) {
-      // need to get the Subject instance using about
-      // return check("hasCommittedToPartition(%s)", tp).about(commitHistories()).that(commitHistory);
       String aboutName;
-//            Set<Method> factoryPotentials = getMethods(subjectClass, x ->
-//                    !x.getName().startsWith("assert") // the factory method won't be the assert methods
-//                    && !x.getName().startsWith("lambda") // the factory method won't be the assert methods
-//            );
-//            if (factoryPotentials.isEmpty()) {
       aboutName = Utils.getFactoryName(returnType); // take a guess
-//            } else {
-//                Method method = factoryPotentials.stream().findFirst().get();
-//                aboutName = method.getName();
-//            }
       body.append(format(".about(%s())", aboutName));
 
       // import
       String factoryContainer = subjectClass.getFactoryContainerName();
-//      Optional<Class> factoryContainerOld = this.compiledSubjects.values().parallelStream()
-//            .filter(classes -> Arrays.stream(classes.getMethods())
-//                    .anyMatch(methods -> methods.getName().equals(aboutName)))
-//            .findFirst();
-//      if (factoryContainer.isPresent()) {
-//        Class container = factoryContainer.get();
-        Import anImport = generated.addImport(factoryContainer);
-        String name = factoryContainer + "." + aboutName;
-        anImport.setName(name) // todo better way to do static method import?
-                .setStatic(true);
-//      } else
-//        System.err.println(format("Can't find container for method %s", aboutName));
-
-
+      Import anImport = generated.addImport(factoryContainer);
+      String name = factoryContainer + "." + aboutName;
+      anImport.setName(name) // todo better way to do static method import?
+              .setStatic(true);
     }
 
 //        String methodPrefix = (returnType.getSimpleName().contains("boolean")) ? "is" : "get";
@@ -186,6 +170,12 @@ public class SubjectMethodGenerator {
     generated.addImport(subjectClass.getSubjectQualifiedName());
   }
 
+  private String createNameForSubjectMethod(final Method method) {
+    String name = method.getName();
+    name = StringUtils.removeStart("get", name);
+    return "has" + name;
+  }
+
   private boolean isTypeCoveredUnderStandardSubjects(final Class<?> returnType) {
     // todo should only do this, if we can't find a more specific subect for the returnType
     // todo should check if class is assignable from the super subjects, instead of checking names
@@ -195,7 +185,7 @@ public class SubjectMethodGenerator {
     // todo this is of course too aggressive
 
 //    boolean isCoveredByNonPrimitiveStandardSubjects = specials.contains(returnType.getSimpleName());
-    boolean isCoveredByNonPrimitiveStandardSubjects = nativeTypes.stream().anyMatch(x->x.isAssignableFrom(returnType));
+    boolean isCoveredByNonPrimitiveStandardSubjects = nativeTypes.stream().anyMatch(x -> x.isAssignableFrom(returnType));
 
     // todo is it an array of objects?
     boolean array = returnType.isArray();
@@ -223,9 +213,9 @@ public class SubjectMethodGenerator {
     }
 
     // fall back to native subjects
-    if(subject.isEmpty()){
+    if (subject.isEmpty()) {
       subject = ClassOrGenerated.ofClass(getNativeSubjectForType(type));
-      if(subject.isPresent())
+      if (subject.isPresent())
         logger.at(INFO).log("Falling back to native interface subject %s for type %s", subject.get().clazz, type);
     }
 
@@ -234,10 +224,10 @@ public class SubjectMethodGenerator {
 
   private Optional<Class<?>> getNativeSubjectForType(final Class<?> type) {
     Optional<Class<?>> first = nativeTypes.stream().filter(x -> x.isAssignableFrom(type)).findFirst();
-    if(first.isPresent()){
-        Class<?> aClass = first.get();
-        Class<?> compiledSubjectForTypeName = getCompiledSubjectForTypeName(aClass.getSimpleName());
-        return ofNullable(compiledSubjectForTypeName);
+    if (first.isPresent()) {
+      Class<?> aClass = first.get();
+      Class<?> compiledSubjectForTypeName = getCompiledSubjectForTypeName(aClass.getSimpleName());
+      return ofNullable(compiledSubjectForTypeName);
     }
     return empty();
   }
@@ -247,26 +237,23 @@ public class SubjectMethodGenerator {
       return Optional.of(new ClassOrGenerated(ObjectArraySubject.class, null));
 
     Optional<ThreeSystem> subjectFromGenerated = getSubjectFromGenerated(name);// takes precedence
-      if(subjectFromGenerated.isPresent()) {
-          return Optional.of(new ClassOrGenerated(null, subjectFromGenerated.get()));
-//          String returnName = subjectFromGenerated.get().middle.factoryMethod.getReturnType().getName();
-//          Class<?> aClass = Class.forName(returnName);
-//          return Optional.of(aClass);
-      }
+    if (subjectFromGenerated.isPresent()) {
+      return Optional.of(new ClassOrGenerated(null, subjectFromGenerated.get()));
+    }
 
-      Class<?> aClass = getCompiledSubjectForTypeName(name);
-      if (aClass != null)
+    Class<?> aClass = getCompiledSubjectForTypeName(name);
+    if (aClass != null)
       return Optional.of(new ClassOrGenerated(aClass, null));
 
     return empty();
   }
 
-    private Class<?> getCompiledSubjectForTypeName(final String name) {
-        Class<?> aClass = this.compiledSubjects.get(name + "Subject");
-        return aClass;
-    }
+  private Class<?> getCompiledSubjectForTypeName(final String name) {
+    Class<?> aClass = this.compiledSubjects.get(name + "Subject");
+    return aClass;
+  }
 
-    private Optional<ThreeSystem> getSubjectFromGenerated(final String name) {
+  private Optional<ThreeSystem> getSubjectFromGenerated(final String name) {
     return Optional.ofNullable(this.generatedSubjects.get(name));
   }
 
@@ -282,8 +269,8 @@ public class SubjectMethodGenerator {
   }
 
   static class ClassOrGenerated {
-      final Class<?> clazz;
-      final ThreeSystem generated;
+    final Class<?> clazz;
+    final ThreeSystem generated;
 
     ClassOrGenerated(final Class<?> clazz, final ThreeSystem generated) {
       this.clazz = clazz;
@@ -310,16 +297,16 @@ public class SubjectMethodGenerator {
         return clazz.getCanonicalName();
     }
 
-      @Override
-      public String toString() {
-          return "ClassOrGenerated{" +
-                  "clazz=" + clazz +
-                  ", generated=" + generated +
-                  '}';
-      }
+    @Override
+    public String toString() {
+      return "ClassOrGenerated{" +
+              "clazz=" + clazz +
+              ", generated=" + generated +
+              '}';
+    }
 
     public boolean isGenerated() {
-      return generated!=null;
+      return generated != null;
     }
 
     public String getFactoryContainerName() {
