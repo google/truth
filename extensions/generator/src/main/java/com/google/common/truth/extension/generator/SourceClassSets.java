@@ -18,7 +18,7 @@ public class SourceClassSets {
 
   private final String packageForOverall;
   private final Set<Class<?>[]> simplePackageOfClasses = new HashSet<>();
-  private Set<Class<?>> simpleClasses = new HashSet<>();
+  private final Set<Class<?>> simpleClasses = new HashSet<>();
   private final Set<PackageAndClasses> packageAndClasses = new HashSet<>();
 
   /**
@@ -41,8 +41,12 @@ public class SourceClassSets {
     packageAndClasses.add(new PackageAndClasses(targetPackageName, classes));
   }
 
+  public void generateFrom(Class<?>... classes) {
+    this.simpleClasses.addAll(Arrays.stream(classes).collect(Collectors.toSet()));
+  }
+
   public void generateFrom(Set<Class<?>> classes) {
-    this.simpleClasses = classes;
+    this.simpleClasses.addAll(classes);
   }
 
   /**

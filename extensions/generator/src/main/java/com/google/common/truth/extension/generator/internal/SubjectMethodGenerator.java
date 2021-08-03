@@ -20,8 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static java.lang.reflect.Modifier.PRIVATE;
-import static java.lang.reflect.Modifier.STATIC;
+import static java.lang.reflect.Modifier.*;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.function.Predicate.not;
@@ -39,7 +38,7 @@ public class SubjectMethodGenerator {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final Map<String, Class> compiledSubjects;
+  private final Map<String, Class<?>> compiledSubjects;
   private final Map<String, ThreeSystem> generatedSubjects;
 
   public SubjectMethodGenerator(final Set<ThreeSystem> allTypes) {
@@ -48,8 +47,8 @@ public class SubjectMethodGenerator {
     Reflections reflections = new Reflections("com.google.common.truth", "io.confluent");
     Set<Class<? extends Subject>> subTypes = reflections.getSubTypesOf(Subject.class);
 
-    Map<String, Class> maps = new HashMap<>();
-    subTypes.stream().forEach(x -> maps.put(x.getSimpleName(), x));
+    Map<String, Class<?>> maps = new HashMap<>();
+    subTypes.forEach(x -> maps.put(x.getSimpleName(), x));
     this.compiledSubjects = maps;
   }
 
@@ -65,10 +64,10 @@ public class SubjectMethodGenerator {
 
   private Collection<Method> getMethods(final Class<?> classUnderTest) {
     Set<Method> getters = ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), withPrefix("get"), withParametersCount(0));
+            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), withPrefix("get"), withParametersCount(0));
 
     Set<Method> issers = ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), withPrefix("is"), withParametersCount(0));
+            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), withPrefix("is"), withParametersCount(0));
 
     getters.addAll(issers);
 
@@ -182,6 +181,8 @@ public class SubjectMethodGenerator {
             .setPublic();
     newMethod.addParameter(method.getReturnType(), "expected");
 
+    newMethod.getJavaDoc().setText("Simple check for equality for all fields.");
+
   }
 
   private void addMapStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -209,6 +210,8 @@ public class SubjectMethodGenerator {
             .setBody(body)
             .setPublic();
     newMethod.addParameter(Object.class, "expected");
+
+    newMethod.getJavaDoc().setText("Check Maps for containing a given key.");
   }
 
   private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -235,6 +238,8 @@ public class SubjectMethodGenerator {
             .setBody(body)
             .setPublic();
     newMethod.addParameter(method.getReturnType(), "expected");
+
+    newMethod.getJavaDoc().setText("Checks Optional fields for presence.");
   }
 
   private void addHasElementStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -262,6 +267,8 @@ public class SubjectMethodGenerator {
             .setBody(body)
             .setPublic();
     newMethod.addParameter(Object.class, "expected");
+
+    newMethod.getJavaDoc().setText("Checks if the element is or is not contained in the collection.");
   }
 
   private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -284,11 +291,14 @@ public class SubjectMethodGenerator {
 
     String methodName = removeStart(method.getName(), "is");
     methodName = "is" + capitalize(say.toLowerCase()).trim() + methodName;
-    generated.addMethod()
+    MethodSource<JavaClassSource> booleanMethod = generated.addMethod();
+    booleanMethod
             .setName(methodName)
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();
+
+    booleanMethod.getJavaDoc().setText("Simple is or is not expectation for boolean fields.");
   }
 
   private void addChainStrategy(Method method, JavaClassSource generated, Class<?> returnType) {
@@ -344,6 +354,8 @@ public class SubjectMethodGenerator {
     has.setReturnType(subjectClass.getSubjectSimpleName());
 
     generated.addImport(subjectClass.getSubjectQualifiedName());
+
+    has.getJavaDoc().setText("Returns the Subject for the given field type, so you can chain on other assertions.");
   }
 
   private boolean methodIsStatic(Method method) {
