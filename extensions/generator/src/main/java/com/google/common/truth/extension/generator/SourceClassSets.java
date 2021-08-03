@@ -28,6 +28,10 @@ public class SourceClassSets {
     this.packageForOverall = packageForOverall;
   }
 
+  public SourceClassSets(Class<?> packageFromClass) {
+    this(packageFromClass.getPackage().getName());
+  }
+
   public void generateAllFoundInPackagesOf(Class<?>... classes) {
     simplePackageOfClasses.add(classes);
   }
