@@ -23,5 +23,6 @@
     <module>liteproto</module>
     <module>proto</module>
     <module>generator</module>
+    <module>plugin-maven</module>
   </modules>
 </project>
