@@ -93,7 +93,7 @@ public abstract class Correspondence<A, E> {
    * class MyRecordTestHelper {
    *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
    *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to");
-   *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   *   static boolean recordsEquivalent(MyRecord actual, MyRecord expected) {
    *     // code to check whether records should be considered equivalent for testing purposes
    *   }
    * }
@@ -132,7 +132,7 @@ public abstract class Correspondence<A, E> {
      * Returns whether or not the actual and expected values satisfy the condition defined by this
      * predicate.
      */
-    boolean apply(@Nullable A actual, @Nullable E expected);
+    boolean apply(A actual, E expected);
   }
 
   private static final class FromBinaryPredicate<A, E> extends Correspondence<A, E> {
@@ -145,7 +145,7 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@Nullable A actual, @Nullable E expected) {
+    public boolean compare(A actual, E expected) {
       return predicate.apply(actual, expected);
     }
 
@@ -259,7 +259,7 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@Nullable A actual, @Nullable E expected) {
+    public boolean compare(A actual, E expected) {
       return Objects.equal(actualTransform.apply(actual), expectedTransform.apply(expected));
     }
 
@@ -373,10 +373,10 @@ public abstract class Correspondence<A, E> {
    *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
    *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
    *           .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
-   *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   *   static boolean recordsEquivalent(MyRecord actual, MyRecord expected) {
    *     // code to check whether records should be considered equivalent for testing purposes
    *   }
-   *   static String formatRecordDiff(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   *   static String formatRecordDiff(MyRecord actual, MyRecord expected) {
    *     // code to format the diff between the records
    *   }
    * }
@@ -402,7 +402,7 @@ public abstract class Correspondence<A, E> {
      * expected} values, if possible, or {@code null} if not.
      */
     @Nullable
-    String formatDiff(@Nullable A actual, @Nullable E expected);
+    String formatDiff(A actual, E expected);
   }
 
   private static class FormattingDiffs<A, E> extends Correspondence<A, E> {
@@ -416,12 +416,12 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@Nullable A actual, @Nullable E expected) {
+    public boolean compare(A actual, E expected) {
       return delegate.compare(actual, expected);
     }
 
     @Override
-    public @Nullable String formatDiff(@Nullable A actual, @Nullable E expected) {
+    public @Nullable String formatDiff(A actual, E expected) {
       return formatter.formatDiff(actual, expected);
     }
 
@@ -517,7 +517,7 @@ public abstract class Correspondence<A, E> {
    * returned false. (Note that, in the latter case at least, it is likely that the test author's
    * intention was <i>not</i> for the test to pass with these values.)
    */
-  public abstract boolean compare(@Nullable A actual, @Nullable E expected);
+  public abstract boolean compare(A actual, E expected);
 
   private static class StoredException {
 
@@ -718,7 +718,7 @@ public abstract class Correspondence<A, E> {
    * returns false. This method can help with implementing the exception-handling policy described
    * above, but note that assertions using it <i>must</i> fail later if an exception was stored.
    */
-  final boolean safeCompare(@Nullable A actual, @Nullable E expected, ExceptionStore exceptions) {
+  final boolean safeCompare(A actual, E expected, ExceptionStore exceptions) {
     try {
       return compare(actual, expected);
     } catch (RuntimeException e) {
@@ -744,7 +744,7 @@ public abstract class Correspondence<A, E> {
    * exception and continue to describe the original failure as if this method had returned null,
    * mentioning the failure from this method as additional information.
    */
-  public @Nullable String formatDiff(@Nullable A actual, @Nullable E expected) {
+  public @Nullable String formatDiff(A actual, E expected) {
     return null;
   }
 
@@ -753,8 +753,7 @@ public abstract class Correspondence<A, E> {
    * the result. If it does throw, adds the exception to the given {@link ExceptionStore} and
    * returns null.
    */
-  final @Nullable String safeFormatDiff(
-      @Nullable A actual, @Nullable E expected, ExceptionStore exceptions) {
+  final @Nullable String safeFormatDiff(A actual, E expected, ExceptionStore exceptions) {
     try {
       return formatDiff(actual, expected);
     } catch (RuntimeException e) {
