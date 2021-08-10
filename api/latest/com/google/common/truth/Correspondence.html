@@ -225,8 +225,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>abstract boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compare(A,E)">compare</a></span>&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-       @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compare(A,E)">compare</a></span>&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+       <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Returns whether or not the <code>actual</code> value is said to correspond to the <code>expected</code>
  value for the purposes of this test.</div>
@@ -243,8 +243,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatDiff(A,E)">formatDiff</a></span>&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-          @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatDiff(A,E)">formatDiff</a></span>&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+          <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a> describing the difference between the <code>actual</code> and <code>
  expected</code> values, if possible, or <code>null</code> if not.</div>
@@ -368,7 +368,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  class MyRecordTestHelper {
    static final Correspondence&lt;MyRecord, MyRecord&gt; EQUIVALENCE =
        Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to");
-   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   static boolean recordsEquivalent(MyRecord actual, MyRecord expected) {
      // code to check whether records should be considered equivalent for testing purposes
    }
  }
@@ -535,10 +535,10 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
    static final Correspondence&lt;MyRecord, MyRecord&gt; EQUIVALENCE =
        Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
            .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
-   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   static boolean recordsEquivalent(MyRecord actual, MyRecord expected) {
      // code to check whether records should be considered equivalent for testing purposes
    }
-   static String formatRecordDiff(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   static String formatRecordDiff(MyRecord actual, MyRecord expected) {
      // code to format the diff between the records
    }
  }
@@ -553,8 +553,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>compare</h4>
-<pre class="methodSignature">public abstract&nbsp;boolean&nbsp;compare&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-                                @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public abstract&nbsp;boolean&nbsp;compare&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+                                <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
 <div class="block">Returns whether or not the <code>actual</code> value is said to correspond to the <code>expected</code>
  value for the purposes of this test.
 
@@ -643,8 +643,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>formatDiff</h4>
-<pre class="methodSignature">public&nbsp;@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;formatDiff&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-                                   @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;formatDiff&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+                                   <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a> describing the difference between the <code>actual</code> and <code>
  expected</code> values, if possible, or <code>null</code> if not.
 
