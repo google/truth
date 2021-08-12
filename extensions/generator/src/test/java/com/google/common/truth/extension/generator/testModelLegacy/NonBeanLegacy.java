@@ -1,8 +1,10 @@
-package com.google.common.truth.extension.generator.testModel;
+package com.google.common.truth.extension.generator.testModelLegacy;
 
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
+@Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class NonBeanLegacy {
   final int age;
