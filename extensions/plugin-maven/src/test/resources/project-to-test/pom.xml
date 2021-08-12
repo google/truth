@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>sample.plugin</groupId>
-  <artifactId>hello-maven-plugin</artifactId>
-  <version>HEAD-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>Test MyMojo</name>
+    <groupId>sample.plugin</groupId>
+    <artifactId>hello-maven-plugin</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Test MyMojo</name>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-my-plugin</artifactId>
-        <configuration>
-          <!-- Specify the MyMojo parameter -->
-          <outputDirectory>target/test-harness/project-to-test</outputDirectory>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>truth-generator-maven-plugin</artifactId>
+                <groupId>com.google.truth.extensions</groupId>
+                <configuration>
+                    <!-- List the classes you want to generate assertions for -->
+                    <classes>
+                        <param>java.io.File</param>
+                        <param>com.google.common.truth.extension.generator.testModel.MyEmployee</param>
+                    </classes>
+                    <entryPointClassPackage>com.google.truth.extensions.tests.projectUnderTest</entryPointClassPackage>
+                    <!-- Specify the MyMojo parameter -->
+                    <outputDirectory>target/test-harness/project-to-test</outputDirectory>
+                </configuration>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>touch</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+            </plugin>
+        </plugins>
+    </build>
 </project>

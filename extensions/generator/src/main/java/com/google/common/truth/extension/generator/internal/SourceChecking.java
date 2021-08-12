@@ -4,8 +4,11 @@ import com.google.common.flogger.FluentLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.ReflectionUtils;
 
+import java.lang.module.Configuration;
+import java.lang.module.ModuleDescriptor;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class SourceChecking {
@@ -22,15 +25,32 @@ public class SourceChecking {
     if (isTestClass(source))
       return true;
 
-    if (isJavaPackage(source, targetPackage))
+    if (SubjectMethodGenerator.getNativeTypes().contains(source))
       return true;
 
     return false;
   }
 
+  public static boolean needsShading(Class<?> source) {
+    // todo needs to be more sophisticated and compare modules
+
+    Module sourceModule = source.getModule();
+    Module myModule = SourceChecking.class.getModule();
+    Set<String> packages = sourceModule.getPackages();
+    ModuleDescriptor descriptor = sourceModule.getDescriptor();
+    ModuleLayer layer = sourceModule.getLayer();
+
+    Package aPackage = source.getPackage();
+
+    Class<?> componentType = source.getComponentType();
+    boolean array = source.isArray();
+
+    return source.getPackage().getName().startsWith("java.");
+  }
 
   private static boolean isJavaPackage(Class<?> source, Optional<String> targetPackage) {
     boolean isBlank = targetPackage.isEmpty() || StringUtils.isBlank(targetPackage.get());
+
     if (source.getPackage().getName().startsWith("java.") && isBlank)
       throw new IllegalArgumentException("Cannot construct Subject's for external modules without changing their " +
               "destination package. See SourceClassSets#generateFrom(String, Class<?>...)");

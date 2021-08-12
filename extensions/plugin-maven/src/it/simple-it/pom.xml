@@ -24,10 +24,17 @@
             <id>touch</id>
             <phase>validate</phase>
             <goals>
-              <goal>touch</goal>
+              <goal>generate</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <!-- List the classes you want to generate assertions for -->
+          <classes>
+            <param>java.nio.file.Path</param>
+            <param>com.fake.UnknownClass</param>
+          </classes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

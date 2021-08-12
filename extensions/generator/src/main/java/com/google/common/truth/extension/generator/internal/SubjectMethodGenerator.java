@@ -6,6 +6,7 @@ import com.google.common.truth.Fact;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import lombok.Getter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.Import;
@@ -14,21 +15,24 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
+import javax.swing.text.html.Option;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.lang.reflect.Modifier.*;
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
+import static java.util.Optional.*;
 import static java.util.function.Predicate.not;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
-import static org.apache.commons.lang3.StringUtils.capitalize;
-import static org.apache.commons.lang3.StringUtils.removeStart;
+import static org.apache.commons.lang3.ClassUtils.primitiveToWrapper;
+import static org.apache.commons.lang3.ClassUtils.primitivesToWrappers;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.reflections.ReflectionUtils.*;
 
 /**
@@ -44,7 +48,7 @@ public class SubjectMethodGenerator {
   private ThreeSystem context;
 
   public SubjectMethodGenerator(final Set<ThreeSystem> allTypes) {
-    this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getSimpleName(), x -> x));
+    this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getName(), x -> x));
 
     Reflections reflections = new Reflections("com.google.common.truth", "io.confluent");
     Set<Class<? extends Subject>> subTypes = reflections.getSubTypesOf(Subject.class);
@@ -55,13 +59,37 @@ public class SubjectMethodGenerator {
   }
 
   public void addTests(ThreeSystem system) {
-    Collection<Method> getters = getMethods(system);
+    this.context = system;
 
     //
-    for (Method method : getters) {
-      this.context = system;
-      addFieldAccessors(method, system.getParent().getGenerated(), system.getClassUnderTest());
+    Class<?> classUnderTest = system.getClassUnderTest();
+    JavaClassSource generated = system.getParent().getGenerated();
+
+    //
+    {
+      Collection<Method> getters = getMethods(system);
+      for (Method method : getters) {
+        addFieldAccessors(method, generated, classUnderTest);
+      }
     }
+
+    //
+    {
+      Collection<Method> toers = getMethods(classUnderTest, input -> {
+        if (input == null) return false;
+        String name = input.getName();
+        // exclude lombok builder methods
+        return startsWith("to", name) && !endsWith("Builder", name);
+      });
+      toers = removeOverridden(toers);
+      for (Method method : toers) {
+        addChainStrategy(method, generated, method.getReturnType());
+      }
+    }
+  }
+
+  private <T extends Member> Predicate<T> withSuffix(String suffix) {
+    return input -> input != null && input.getName().startsWith(suffix);
   }
 
   private Collection<Method> getMethods(ThreeSystem system) {
@@ -84,11 +112,16 @@ public class SubjectMethodGenerator {
   }
 
   private Set<Method> getMethods(Class<?> classUnderTest, Predicate<Method> prefix) {
+    // if shaded, can't access package private methods
+    boolean isShaded = context.isShaded();
+    Predicate skip = (ignore) -> true;
+    Predicate shadedPredicate = (isShaded) ? withModifier(PUBLIC) : skip;
+
     return ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), prefix, withParametersCount(0));
+            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), shadedPredicate, prefix, withParametersCount(0));
   }
 
-  private Collection<Method> removeOverridden(final Set<Method> getters) {
+  private Collection<Method> removeOverridden(final Collection<Method> getters) {
     Map<String, Method> result = new HashMap<>();
     for (Method getter : getters) {
       String sig = getSignature(getter);
@@ -117,18 +150,38 @@ public class SubjectMethodGenerator {
   /**
    * In priority order - most specific first
    */
-  private final HashSet<Class<?>> nativeTypes = Sets.newHashSet(
-          Map.class,
-          Set.class,
-          List.class,
-          Iterable.class,
-          Number.class,
-          Throwable.class,
-          BigDecimal.class,
-          String.class,
-          Comparable.class,
-          Class.class // Enum#getDeclaringClass
-  );
+  @Getter
+  private static final HashSet<Class<?>> nativeTypes = new LinkedHashSet();
+
+  @Getter
+  private static final HashSet<Class<?>> nativeTypesTruth8 = new LinkedHashSet();
+
+  static {
+    //
+    Class<?>[] classes = {
+            Optional.class,
+            Map.class,
+            Iterable.class,
+            List.class,
+            Set.class,
+            Number.class,
+            Throwable.class,
+            BigDecimal.class,
+            String.class,
+            Comparable.class,
+            Class.class, // Enum#getDeclaringClass
+            Double.class,
+            Long.class,
+            Integer.class,
+            Short.class,
+            Boolean.class,
+            Object.class};
+    nativeTypes.addAll(Arrays.stream(classes).collect(Collectors.toList()));
+
+    //
+    nativeTypesTruth8.add(Optional.class);
+    nativeTypesTruth8.add(Stream.class);
+  }
 
   private void addFieldAccessors(Method method, JavaClassSource generated, Class<?> classUnderTest) {
     Class<?> returnType = getWrappedReturnType(method);
@@ -164,7 +217,7 @@ public class SubjectMethodGenerator {
   }
 
   private Class<?> getWrappedReturnType(Method method) {
-    Class<?> wrapped = ClassUtils.primitiveToWrapper(method.getReturnType());
+    Class<?> wrapped = primitiveToWrapper(method.getReturnType());
     return wrapped;
   }
 
@@ -197,6 +250,7 @@ public class SubjectMethodGenerator {
 
     newMethod.getJavaDoc().setText("Simple check for equality for all fields.");
 
+    copyThrownExceptions(method, newMethod);
   }
 
   private void addMapStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -204,7 +258,7 @@ public class SubjectMethodGenerator {
     addMapStrategyGeneric(method, generated, true);
   }
 
-  private void addMapStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+  private MethodSource<JavaClassSource> addMapStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
     String testPrefix = positive ? "" : "!";
 
     String body = "" +
@@ -226,6 +280,10 @@ public class SubjectMethodGenerator {
     newMethod.addParameter(Object.class, "expected");
 
     newMethod.getJavaDoc().setText("Check Maps for containing a given key.");
+
+    copyThrownExceptions(method, newMethod);
+
+    return newMethod;
   }
 
   private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -233,7 +291,7 @@ public class SubjectMethodGenerator {
     addOptionalStrategyGeneric(method, generated, true);
   }
 
-  private void addOptionalStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+  private MethodSource<JavaClassSource> addOptionalStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
     String testPrefix = positive ? "" : "!";
     String body = "" +
             "  if (%sactual.%s().isPresent()) {\n" +
@@ -254,6 +312,10 @@ public class SubjectMethodGenerator {
     newMethod.addParameter(method.getReturnType(), "expected");
 
     newMethod.getJavaDoc().setText("Checks Optional fields for presence.");
+
+    copyThrownExceptions(method, newMethod);
+
+    return newMethod;
   }
 
   private void addHasElementStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -261,7 +323,7 @@ public class SubjectMethodGenerator {
     addHasElementStrategyGeneric(method, generated, true);
   }
 
-  private void addHasElementStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
+  private MethodSource<JavaClassSource> addHasElementStrategyGeneric(Method method, JavaClassSource generated, boolean positive) {
     String body = "" +
             "  if (%sactual.%s().contains(expected)) {\n" +
             "    failWithActual(fact(\"expected %s %sto have element\", expected));\n" +
@@ -283,6 +345,10 @@ public class SubjectMethodGenerator {
     newMethod.addParameter(Object.class, "expected");
 
     newMethod.getJavaDoc().setText("Checks if the element is or is not contained in the collection.");
+
+    copyThrownExceptions(method, newMethod);
+
+    return newMethod;
   }
 
   private void addBooleanStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -290,7 +356,7 @@ public class SubjectMethodGenerator {
     addBooleanGeneric(method, generated, false);
   }
 
-  private void addBooleanGeneric(Method method, JavaClassSource generated, boolean positive) {
+  private MethodSource<JavaClassSource> addBooleanGeneric(Method method, JavaClassSource generated, boolean positive) {
     String testPrefix = positive ? "" : "!";
     String say = positive ? "" : "NOT ";
 
@@ -312,21 +378,30 @@ public class SubjectMethodGenerator {
             .setBody(body)
             .setPublic();
 
+    copyThrownExceptions(method, booleanMethod);
+
     booleanMethod.getJavaDoc().setText("Simple is or is not expectation for boolean fields.");
+
+    return booleanMethod;
   }
 
-  private void addChainStrategy(Method method, JavaClassSource generated, Class<?> returnType) {
+  private void copyThrownExceptions(Method method, MethodSource<JavaClassSource> generated) {
+    Class<? extends Exception>[] exceptionTypes = (Class<? extends Exception>[]) method.getExceptionTypes();
+    Stream<Class<? extends Exception>> runtimeExceptions = Arrays.stream(exceptionTypes)
+            .filter(x -> !RuntimeException.class.isAssignableFrom(x));
+    runtimeExceptions.forEach(x -> generated.addThrows(x));
+  }
+
+  private MethodSource<JavaClassSource> addChainStrategy(Method method, JavaClassSource generated, Class<?> returnType) {
     boolean isCoveredByNonPrimitiveStandardSubjects = isTypeCoveredUnderStandardSubjects(returnType);
 
     Optional<ClassOrGenerated> subjectForType = getSubjectForType(returnType);
 
     // no subject to chain
-    // todo needs two passes - one to generate the custom classes, then one to use them in other classes
-    // should generate all base classes first, then run the test creator pass afterwards
     if (subjectForType.isEmpty() && !isCoveredByNonPrimitiveStandardSubjects) {
       logger.at(WARNING).log("Cant find subject for " + returnType);
       // todo log
-      return;
+      return null;
     }
 
     ClassOrGenerated subjectClass = subjectForType.get();
@@ -369,6 +444,10 @@ public class SubjectMethodGenerator {
     generated.addImport(subjectClass.getSubjectQualifiedName());
 
     has.getJavaDoc().setText("Returns the Subject for the given field type, so you can chain on other assertions.");
+
+    copyThrownExceptions(method, has);
+
+    return has;
   }
 
   private boolean methodIsStatic(Method method) {
@@ -389,11 +468,14 @@ public class SubjectMethodGenerator {
       return "has" + name;
     } else if (name.startsWith("is")) {
       return "has" + removeStart(name, "is");
+    } else if (name.startsWith("to")) {
+      return "has" + capitalize(name);
     } else
       return name;
   }
 
-  private boolean isTypeCoveredUnderStandardSubjects(final Class<?> returnType) {
+  // todo cleanup
+  private boolean isTypeCoveredUnderStandardSubjects(Class<?> returnType) {
     // todo should only do this, if we can't find a more specific subect for the returnType
     // todo should check if class is assignable from the super subjects, instead of checking names
     // todo use qualified names
@@ -401,8 +483,18 @@ public class SubjectMethodGenerator {
     // todo try generatin classes for DateTime pakages, like Instant and Duration
     // todo this is of course too aggressive
 
+    returnType = primitiveToWrapper(returnType);
+
 //    boolean isCoveredByNonPrimitiveStandardSubjects = specials.contains(returnType.getSimpleName());
-    boolean isCoveredByNonPrimitiveStandardSubjects = nativeTypes.stream().anyMatch(x -> x.isAssignableFrom(returnType));
+    final Class<?> normalised = (returnType.isArray())
+            ? returnType.getComponentType()
+            : returnType;
+    returnType = normalised;
+
+    List<Class<?>> assignable = nativeTypes.stream().filter(x ->
+            x.isAssignableFrom(normalised)
+    ).collect(Collectors.toList());
+    boolean isCoveredByNonPrimitiveStandardSubjects = !assignable.isEmpty();
 
     // todo is it an array of objects?
     boolean array = returnType.isArray();
@@ -418,22 +510,38 @@ public class SubjectMethodGenerator {
 
     // if primitive, wrap and get wrapped Subject
     if (type.isPrimitive()) {
-      Class<?> wrapped = ClassUtils.primitiveToWrapper(type);
-      name = wrapped.getSimpleName();
+      Class<?> wrapped = primitiveToWrapper(type);
+      name = wrapped.getName();
     } else {
-      name = type.getSimpleName();
+      name = type.getName();
     }
-    Optional<ClassOrGenerated> subject = getSubjectFromString(name);
 
-    if (subject.isEmpty()) {
-      if (Iterable.class.isAssignableFrom(type)) {
-        subject = getSubjectForType(Iterable.class);
+    if (type.isArray()) {
+      Class<?> componentType = type.getComponentType();
+      if (componentType.isPrimitive()) {
+        // PrimitiveBooleanArraySubject
+        String subjectPrefix = "Primitive" + componentType.getSimpleName() + "Array";
+        Class<?> compiledSubjectForTypeName = getCompiledSubjectForTypeName(subjectPrefix);
+        return ClassOrGenerated.ofClass(compiledSubjectForTypeName);
+      } else {
+        return ClassOrGenerated.ofClass(ObjectArraySubject.class);
       }
     }
 
+    //
+    Optional<ClassOrGenerated> subject = getSubjectFromString(name);
+
+//    // iterables
+//    if (subject.isEmpty()) {
+//      if (Iterable.class.isAssignableFrom(type)) {
+//        subject = getSubjectForType(Iterable.class);
+//      }
+//    }
+
     // fall back to native subjects
     if (subject.isEmpty()) {
-      subject = ClassOrGenerated.ofClass(getNativeSubjectForType(type));
+      Optional<Class<?>> nativeSubjectForType = getNativeSubjectForType(type);
+      subject = ClassOrGenerated.ofClass(nativeSubjectForType);
       if (subject.isPresent())
         logger.at(INFO).log("Falling back to native interface subject %s for type %s", subject.get().clazz, type);
     }
@@ -442,9 +550,10 @@ public class SubjectMethodGenerator {
   }
 
   private Optional<Class<?>> getNativeSubjectForType(final Class<?> type) {
-    Optional<Class<?>> first = nativeTypes.stream().filter(x -> x.isAssignableFrom(type)).findFirst();
-    if (first.isPresent()) {
-      Class<?> aClass = first.get();
+    Class<?> normalised = primitiveToWrapper(type);
+    Optional<Class<?>> highestPiorityNativeType = nativeTypes.stream().filter(x -> x.isAssignableFrom(normalised)).findFirst();
+    if (highestPiorityNativeType.isPresent()) {
+      Class<?> aClass = highestPiorityNativeType.get();
       Class<?> compiledSubjectForTypeName = getCompiledSubjectForTypeName(aClass.getSimpleName());
       return ofNullable(compiledSubjectForTypeName);
     }
@@ -452,23 +561,29 @@ public class SubjectMethodGenerator {
   }
 
   private Optional<ClassOrGenerated> getSubjectFromString(final String name) {
-    if (name.endsWith("[]"))
-      return Optional.of(new ClassOrGenerated(ObjectArraySubject.class, null));
+    boolean isObjectArray = name.endsWith("[]");
+    if (isObjectArray)
+      return of(new ClassOrGenerated(ObjectArraySubject.class, null));
 
     Optional<ThreeSystem> subjectFromGenerated = getSubjectFromGenerated(name);// takes precedence
     if (subjectFromGenerated.isPresent()) {
-      return Optional.of(new ClassOrGenerated(null, subjectFromGenerated.get()));
+      return of(new ClassOrGenerated(null, subjectFromGenerated.get()));
     }
 
     Class<?> aClass = getCompiledSubjectForTypeName(name);
     if (aClass != null)
-      return Optional.of(new ClassOrGenerated(aClass, null));
+      return of(new ClassOrGenerated(aClass, null));
 
     return empty();
   }
 
-  private Class<?> getCompiledSubjectForTypeName(final String name) {
-    Class<?> aClass = this.compiledSubjects.get(name + "Subject");
+  private Class<?> getCompiledSubjectForTypeName(String name) {
+    // remove package if exists
+    if (name.contains("."))
+      name = StringUtils.substringAfterLast(name, ".");
+
+    String compoundName = name + "Subject";
+    Class<?> aClass = this.compiledSubjects.get(compoundName);
     return aClass;
   }
 
@@ -498,8 +613,12 @@ public class SubjectMethodGenerator {
 
     static Optional<ClassOrGenerated> ofClass(Optional<Class<?>> clazz) {
       if (clazz.isPresent())
-        return Optional.of(new ClassOrGenerated(clazz.get(), null));
+        return of(new ClassOrGenerated(clazz.get(), null));
       else return empty();
+    }
+
+    static Optional<ClassOrGenerated> ofClass(Class<?> compiledSubjectForTypeName) {
+      return ofClass(of(compiledSubjectForTypeName));
     }
 
     String getSubjectSimpleName() {

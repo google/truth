@@ -1,6 +1,9 @@
 package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
+import com.google.common.truth.StreamSubject;
+import com.google.common.truth.extension.generator.internal.SkeletonGenerator;
+import com.google.common.truth.extension.generator.internal.TruthGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import com.google.common.truth.extension.generator.internal.modelSubjectChickens.ThreeSystemChildSubject;
 import com.google.common.truth.extension.generator.testModel.*;
@@ -12,6 +15,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.chrono.Chronology;
@@ -22,8 +26,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
 public class TruthGeneratorTest {
-
-  public static final PodamFactoryImpl PODAM_FACTORY = new PodamFactoryImpl();
 
   private String loadFileToString(String expectedFileName) throws IOException {
     return Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
@@ -88,7 +90,7 @@ public class TruthGeneratorTest {
    * Chicken, or the egg?
    */
   @Test
-  public void boostrapProjectSubjects(){
+  public void boostrapProjectSubjects() {
     TruthGeneratorAPI tg = TruthGeneratorAPI.create();
     SourceClassSets ss = new SourceClassSets(getClass().getPackage().getName());
     ss.generateFromShaded(JavaClassSource.class);
@@ -114,46 +116,61 @@ public class TruthGeneratorTest {
   }
 
   @Test
-  public void try_out_assertions() {
-
-    // all asserts should be available
-//        ManagedTruth.assertThat(new CommitHistory(List.of()));
-//        ManagedTruth.assertTruth(Range.range(4));
-//
-//        WorkContainer wc = new WorkContainer(4, null, "");
-//
-//        assertTruth(wc).getEpoch().isAtLeast(4);
-//        Truth.assertThat(wc.getEpoch()).isAtLeast(4);
-//
-//        MyEmployee hi = new MyEmployee("Zeynep");
-//        hi.setBoss(new MyEmployee("Lilan"));
-//
-//        assertTruth(hi).getBirthYear().isAtLeast(200);
-//        assertThat(hi.getBirthYear()).isAtLeast(200);
-//
-//        assertThat(hi.getBoss().getName()).contains("Tony");
-//        assertTruth(hi).getBoss().getName().contains("Tony");
-//        assertTruth(hi).getCard().getEpoch().isAtLeast(20);
-//        assertTruth(hi).getSlipUpList().hasSize(3);
-//        MyEmployeeSubject myEmployeeSubject = ManagedTruth.assertTruth(hi);
-
-//    MyEmployeeChildSubject.assertThat(TestModelUtils.createEmployee()).hasProjectMapWithKey("key");
-
-  }
-
-  @Test
-  public void test_legacy_mode(){
+  public void test_legacy_mode() {
     TruthGeneratorAPI tg = TruthGeneratorAPI.create();
     SourceClassSets ss = new SourceClassSets(this);
     ss.generateFromNonBean(NonBeanLegacy.class);
     tg.generate(ss);
-
-    NonBeanLegacy nonBeanLegacy = createInstance();
-//    NonBeanLegacyChildSubject.assertThat(nonBeanLegacy).hasAge().isNotNull();
   }
 
-  private NonBeanLegacy createInstance() {
-    return PODAM_FACTORY.manufacturePojo(NonBeanLegacy.class);
+  /**
+   * Given a single class or classes, generate subjects for all references classes in any nested return values
+   */
+  @Test
+  public void recursive_generation() {
+    TruthGenerator tg = TruthGeneratorAPI.create();
+    Map<Class<?>, ThreeSystem> generate = tg.generate(MyEmployee.class);
+
+    //
+    assertThat(generate).containsKey(MyEmployee.class);
+    assertThat(generate).containsKey(IdCard.class);
+    assertThat(generate).containsKey(MyEmployee.State.class);
+
+    // lost in the generics
+    assertThat(generate).doesNotContainKey(Project.class);
+
+    //
+    assertThat(generate).containsKey(UUID.class);
+    assertThat(generate).containsKey(ZonedDateTime.class);
+    assertThat(generate).containsKey(DayOfWeek.class);
+
+    // recursive subjects that shouldn't be included
+    assertThat(generate).doesNotContainKey(Spliterator.class);
+    assertThat(generate).doesNotContainKey(StreamSubject.class);
+  }
+
+  /**
+   * Automatically shade subjects that are in packages of other modules (that would cause ao compile error)
+   * <p>
+   * NB: if this test fails, the project probably won't compile - as an invalid source class will have been produced.
+   */
+  @Test
+  public void auto_shade() {
+    String basePackage = getClass().getPackage().getName();
+
+    TruthGenerator tg = TruthGeneratorAPI.create();
+    tg.setEntryPoint(Optional.of(basePackage));
+
+    Class<UUID> clazz = UUID.class;
+    Map<Class<?>, ThreeSystem> generate = tg.generate(clazz);
+
+    //
+    assertThat(generate).containsKey(clazz);
+
+    //
+    ThreeSystem threeSystem = generate.get(clazz);
+    JavaClassSource parent = threeSystem.getParent().getGenerated();
+    assertThat(parent.getPackage()).startsWith(basePackage);
   }
 
 }

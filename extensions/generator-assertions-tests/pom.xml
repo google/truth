@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.google.truth.extensions</groupId>
+        <artifactId>truth-extensions-parent</artifactId>
+        <version>HEAD-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>generator-assertions-tests</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+
+    <!--    <build>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <artifactId>truth-generator-maven-plugin</artifactId>-->
+    <!--                <groupId>com.google.truth.extensions</groupId>-->
+    <!--                <configuration>-->
+    <!--                    <classes>-->
+    <!--                        <param>com.google.common.truth.extension.generator.testModel.MyEmployee</param>-->
+    <!--                    </classes>-->
+    <!--                    <entryPointClassPackage>com.google.truth.extensions.tests.projectUnderTest</entryPointClassPackage>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--        </plugins>-->
+    <!--    </build>-->
+
+    <dependencies>
+        <!--        <dependency>-->
+        <!--            <groupId>com.google.truth.extensions</groupId>-->
+        <!--            <artifactId>truth-generator-maven-plugin</artifactId>-->
+        <!--            <type>maven-plugin</type>-->
+        <!--            <version>${project.version}</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.truth</groupId>
+            <artifactId>truth</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-java8-extension</artifactId>
+            <scope>compile</scope>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-generator-extension</artifactId>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>7.2.7.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

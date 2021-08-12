@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public interface TruthGeneratorAPI {
 
-  static TruthGeneratorAPI create() {
+  static TruthGenerator create() {
     return new TruthGenerator();
   }
 
@@ -65,5 +65,5 @@ public interface TruthGeneratorAPI {
    */
   Map<Class<?>, ThreeSystem> generate(Set<Class<?>> classes);
 
-  void generate(Class<?>... classes);
+  Map<Class<?>, ThreeSystem> generate(Class<?>... classes);
 }

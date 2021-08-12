@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <name>Truth Extensions (Parent)</name>
   <description>
-    Parent metdata for a collection of Truth extensions, Subjects, utilities for
+    Parent metadata for a collection of Truth extensions, Subjects, utilities for
     the Truth assertion framework.
   </description>
   <modules>
@@ -24,5 +24,6 @@
     <module>proto</module>
     <module>generator</module>
     <module>plugin-maven</module>
+    <module>generator-assertions-tests</module>
   </modules>
 </project>

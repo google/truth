@@ -1,20 +1,19 @@
 package com.google.common.truth.extension.generator.internal;
 
-import com.google.common.collect.Sets.SetView;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.SourceClassSets;
 import com.google.common.truth.extension.generator.SourceClassSets.PackageAndClasses;
 import com.google.common.truth.extension.generator.TruthGeneratorAPI;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
+import lombok.Getter;
+import lombok.Setter;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.Sets.union;
 
 /**
  * @author Antony Stubbs
@@ -23,19 +22,25 @@ public class TruthGenerator implements TruthGeneratorAPI {
 
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
 
+  private boolean recursive = true;
+
+  @Setter
+  @Getter
+  private Optional<String> entryPoint = Optional.empty();
+
   @Override
   public void generate(String... modelPackages) {
     Utils.requireNotEmpty(modelPackages);
 
-    OverallEntryPoint overallEntryPoint = new OverallEntryPoint();
+    // just take the first for now
+    // todo createEntryPointForPackages(modelPackages)
+    String[] packageNameForOverall = modelPackages;
+    OverallEntryPoint overallEntryPoint = new OverallEntryPoint(packageNameForOverall[0]);
     Set<ThreeSystem> subjectsSystems = generateSkeletonsFromPackages(modelPackages, overallEntryPoint);
 
     //
     addTests(subjectsSystems);
-
-    // just take the first for now
-    String[] packageNameForOverall = modelPackages;
-    overallEntryPoint.createOverallAccessPoints(packageNameForOverall[0]);
+    overallEntryPoint.createOverallAccessPoints();
   }
 
   private Set<ThreeSystem> generateSkeletonsFromPackages(final String[] modelPackages, OverallEntryPoint overallEntryPoint) {
@@ -50,7 +55,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
 
     Set<ThreeSystem> subjectsSystems = new HashSet<>();
     for (Class<?> clazz : classes) {
-      SkeletonGenerator skeletonGenerator = new SkeletonGenerator(targetPackageName);
+      SkeletonGenerator skeletonGenerator = new SkeletonGenerator(targetPackageName, overallEntryPoint);
       Optional<ThreeSystem> threeSystem = skeletonGenerator.threeLayerSystem(clazz);
       if (threeSystem.isPresent()) {
         ThreeSystem ts = threeSystem.get();
@@ -107,11 +112,25 @@ public class TruthGenerator implements TruthGeneratorAPI {
 
   @Override
   public Map<Class<?>, ThreeSystem> generate(SourceClassSets ss) {
+    RecursiveChecker rc = new RecursiveChecker();
+    if (recursive) {
+      rc.addReferencedIncluded(ss);
+    } else {
+      Set<Class<?>> missing = rc.findReferencedNotIncluded(ss);
+      if (!missing.isEmpty()) {
+        log.at(Level.WARNING)
+                .log("Some referenced classes in the tree are not in the list of Subjects to be generated. " +
+                        "Consider using automatic recursive generation, or add the missing classes. " +
+                        "Otherwise your experience will be limited in places." +
+                        "Missing classes %s", missing);
+      }
+    }
+
     Set<String[]> packages = ss.getSimplePackageOfClasses().stream().map(
             this::getPackageStrings
     ).collect(Collectors.toSet());
 
-    OverallEntryPoint overallEntryPoint = new OverallEntryPoint();
+    OverallEntryPoint overallEntryPoint = new OverallEntryPoint(ss.getPackageForOverall());
 
     // skeletons generation is independent and should be able to be done in parallel
     Set<ThreeSystem> skeletons = packages.parallelStream().flatMap(
@@ -157,7 +176,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
     addTests(union);
 
     // create overall entry point
-    overallEntryPoint.createOverallAccessPoints(ss.getPackageForOverall());
+    overallEntryPoint.createOverallAccessPoints();
 
     return union.stream().collect(Collectors.toMap(ThreeSystem::getClassUnderTest, x -> x));
   }
@@ -165,14 +184,24 @@ public class TruthGenerator implements TruthGeneratorAPI {
   @Override
   public Map<Class<?>, ThreeSystem> generate(Set<Class<?>> classes) {
     Utils.requireNotEmpty(classes);
-    SourceClassSets ss = new SourceClassSets(classes.stream().findFirst().get().getPackageName());
+    String entrypointPackage = (this.entryPoint.isPresent())
+            ? entryPoint.get()
+            : createEntrypointPackage(classes);
+    SourceClassSets ss = new SourceClassSets(entrypointPackage);
     ss.generateFrom(classes);
     return generate(ss);
   }
 
+  /**
+   * todo change this to do this by finding the highest common package of all outputs
+   */
+  private String createEntrypointPackage(final Set<Class<?>> classes) {
+    return classes.stream().findFirst().get().getPackageName();
+  }
+
   @Override
-  public void generate(Class<?>... classes) {
-    generate(Arrays.stream(classes).collect(Collectors.toSet()));
+  public Map<Class<?>, ThreeSystem> generate(Class<?>... classes) {
+    return generate(Arrays.stream(classes).collect(Collectors.toSet()));
   }
 
   @Override

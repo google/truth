@@ -8,6 +8,7 @@
         <version>HEAD-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>maven-plugin</packaging>
 
     <!-- maven naming conventions https://maven.apache.org/guides/plugin/guide-java-plugin-development.html -->
     <artifactId>truth-generator-maven-plugin</artifactId>
@@ -64,6 +65,20 @@
             <version>3.3.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- mine -->
+        <dependency>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-generator-extension</artifactId>
+            <version>HEAD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-generator-extension</artifactId>
+            <version>HEAD-SNAPSHOT</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -112,25 +127,35 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
                 <configuration>
                     <!-- <goalPrefix>maven-archetype-plugin</goalPrefix> -->
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>mojo-descriptor</id>
-                        <goals>
-                            <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>help-goal</id>
-                        <goals>
-                            <goal>helpmojo</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>mojo-descriptor</id>-->
+<!--                        <goals>-->
+<!--                            <goal>descriptor</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>compile</phase>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>help-goal</id>-->
+<!--                        <goals>-->
+<!--                            <goal>helpmojo</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>compile</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -138,11 +163,15 @@
     <profiles>
         <profile>
             <id>run-its</id>
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-invoker-plugin</artifactId>
+<!--                        todo maven version -->
                         <version>3.1.0</version>
                         <configuration>
                             <debug>true</debug>
