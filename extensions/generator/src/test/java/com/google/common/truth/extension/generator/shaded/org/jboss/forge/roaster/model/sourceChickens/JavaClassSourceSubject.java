@@ -1,8 +1,8 @@
 package com.google.common.truth.extension.generator.shaded.org.jboss.forge.roaster.model.sourceChickens;
 
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.extension.generator.internal.MyStringSubject;
 import com.google.common.truth.extension.generator.UserManagedTruth;
+import com.google.common.truth.extension.generator.internal.MyStringSubject;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import javax.annotation.processing.Generated;
@@ -34,6 +34,7 @@ public class JavaClassSourceSubject extends JavaClassSourceParentSubject {
   }
 
   public MyStringSubject hasSourceText() {
+    isNotNull();
     return check("toString").about(MyStringSubject.myStrings()).that(actual.toString());
   }
 

@@ -11,12 +11,14 @@ import com.google.common.truth.extension.generator.testModel.MyEmployee.State;
 import static com.google.common.truth.extension.generator.testModel.StateSubject.states;
 import com.google.common.truth.extension.generator.testModel.StateSubject;
 import java.util.Optional;
+import static com.google.common.truth.extension.generator.autoShaded.java.util.OptionalSubject.optionals;
+import com.google.common.truth.extension.generator.autoShaded.java.util.OptionalSubject;
 import java.time.ZonedDateTime;
-import static com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
-import static com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
+import static com.google.common.truth.extension.generator.autoShaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
+import static com.google.common.truth.extension.generator.autoShaded.java.time.ZonedDateTimeSubject.zonedDateTimes;
 import java.util.UUID;
-import static com.google.common.truth.extension.generator.UUIDSubject.uUIDs;
-import com.google.common.truth.extension.generator.UUIDSubject;
+import static com.google.common.truth.extension.generator.autoShaded.java.util.UUIDSubject.uUIDs;
+import com.google.common.truth.extension.generator.autoShaded.java.util.UUIDSubject;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.LongSubject;
 import java.util.List;
@@ -24,7 +26,7 @@ import com.google.common.truth.IterableSubject;
 import java.util.Map;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.BooleanSubject;
-import com.google.common.truth.extension.generator.shaded.java.time.ZonedDateTimeSubject;
+import com.google.common.truth.extension.generator.autoShaded.java.time.ZonedDateTimeSubject;
 import static com.google.common.truth.extension.generator.testModel.IdCardSubject.idCards;
 import com.google.common.truth.extension.generator.testModel.IdCardSubject;
 
@@ -49,46 +51,72 @@ public class MyEmployeeParentSubject extends Subject {
 		this.actual = actual;
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBirthYearNotEqualTo(int expected) {
 		if (!(actual.getBirthYear() == expected)) {
 			failWithActual(fact("expected BirthYear NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBirthYearEqualTo(int expected) {
 		if ((actual.getBirthYear() == expected)) {
 			failWithActual(fact("expected BirthYear to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public IntegerSubject hasBirthYear() {
 		isNotNull();
 		return check("getBirthYear").that(actual.getBirthYear());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBossNotEqualTo(com.google.common.truth.extension.generator.testModel.MyEmployee expected) {
 		if (!(actual.getBoss().equals(expected))) {
 			failWithActual(fact("expected Boss NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBossEqualTo(com.google.common.truth.extension.generator.testModel.MyEmployee expected) {
 		if ((actual.getBoss().equals(expected))) {
 			failWithActual(fact("expected Boss to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public MyEmployeeSubject hasBoss() {
 		isNotNull();
 		return check("getBoss").about(myEmployees()).that(actual.getBoss());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasEmploymentStateNotEqualTo(State expected) {
 		if (!(actual.getEmploymentState().equals(expected))) {
 			failWithActual(fact("expected EmploymentState NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasEmploymentStateEqualTo(
 			com.google.common.truth.extension.generator.testModel.MyEmployee.State expected) {
 		if ((actual.getEmploymentState().equals(expected))) {
@@ -96,224 +124,361 @@ public class MyEmployeeParentSubject extends Subject {
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public StateSubject hasEmploymentState() {
 		isNotNull();
 		return check("getEmploymentState").about(states()).that(actual.getEmploymentState());
 	}
 
-	public void hasWeightingNotPresent(Optional expected) {
+	/**
+	 * Checks Optional fields for presence.
+	 */
+	public void hasWeightingNotPresent() {
 		if (!actual.getWeighting().isPresent()) {
 			failWithActual(simpleFact("expected Weighting NOT to be present"));
 		}
 	}
 
-	public void hasWeightingPresent(java.util.Optional expected) {
+	/**
+	 * Checks Optional fields for presence.
+	 */
+	public void hasWeightingPresent() {
 		if (actual.getWeighting().isPresent()) {
 			failWithActual(simpleFact("expected Weighting to be present"));
 		}
 	}
 
-	public void hasWeightingNotEqualTo(java.util.Optional expected) {
+	/**
+	 * Simple check for equality for all fields.
+	 */
+	public void hasWeightingNotEqualTo(Optional expected) {
 		if (!(actual.getWeighting().equals(expected))) {
 			failWithActual(fact("expected Weighting NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasWeightingEqualTo(java.util.Optional expected) {
 		if ((actual.getWeighting().equals(expected))) {
 			failWithActual(fact("expected Weighting to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
+	public OptionalSubject hasWeighting() {
+		isNotNull();
+		return check("getWeighting").about(optionals()).that(actual.getWeighting());
+	}
+
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasAnniversaryNotEqualTo(ZonedDateTime expected) {
 		if (!(actual.getAnniversary().equals(expected))) {
 			failWithActual(fact("expected Anniversary NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasAnniversaryEqualTo(java.time.ZonedDateTime expected) {
 		if ((actual.getAnniversary().equals(expected))) {
 			failWithActual(fact("expected Anniversary to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public ZonedDateTimeSubject hasAnniversary() {
 		isNotNull();
 		return check("getAnniversary").about(zonedDateTimes()).that(actual.getAnniversary());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasIdNotEqualTo(UUID expected) {
 		if (!(actual.getId().equals(expected))) {
 			failWithActual(fact("expected Id NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasIdEqualTo(java.util.UUID expected) {
 		if ((actual.getId().equals(expected))) {
 			failWithActual(fact("expected Id to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public UUIDSubject hasId() {
 		isNotNull();
 		return check("getId").about(uUIDs()).that(actual.getId());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasNameNotEqualTo(java.lang.String expected) {
 		if (!(actual.getName().equals(expected))) {
 			failWithActual(fact("expected Name NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasNameEqualTo(java.lang.String expected) {
 		if ((actual.getName().equals(expected))) {
 			failWithActual(fact("expected Name to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public StringSubject hasName() {
 		isNotNull();
 		return check("getName").that(actual.getName());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasSomeLongAspectNotEqualTo(long expected) {
 		if (!(actual.getSomeLongAspect() == expected)) {
 			failWithActual(fact("expected SomeLongAspect NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasSomeLongAspectEqualTo(long expected) {
 		if ((actual.getSomeLongAspect() == expected)) {
 			failWithActual(fact("expected SomeLongAspect to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public LongSubject hasSomeLongAspect() {
 		isNotNull();
 		return check("getSomeLongAspect").that(actual.getSomeLongAspect());
 	}
 
+	/**
+	 * Checks if the element is or is not contained in the collection.
+	 */
 	public void hasProjectListNotWithElement(java.lang.Object expected) {
 		if (!actual.getProjectList().contains(expected)) {
 			failWithActual(fact("expected ProjectList NOT to have element", expected));
 		}
 	}
 
+	/**
+	 * Checks if the element is or is not contained in the collection.
+	 */
 	public void hasProjectListWithElement(java.lang.Object expected) {
 		if (actual.getProjectList().contains(expected)) {
 			failWithActual(fact("expected ProjectList to have element", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasProjectListNotEqualTo(List expected) {
 		if (!(actual.getProjectList().equals(expected))) {
 			failWithActual(fact("expected ProjectList NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasProjectListEqualTo(java.util.List expected) {
 		if ((actual.getProjectList().equals(expected))) {
 			failWithActual(fact("expected ProjectList to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public IterableSubject hasProjectList() {
 		isNotNull();
 		return check("getProjectList").that(actual.getProjectList());
 	}
 
+	/**
+	 * Check Maps for containing a given key.
+	 */
 	public void hasProjectMapNotWithKey(java.lang.Object expected) {
 		if (!actual.getProjectMap().containsKey(expected)) {
 			failWithActual(fact("expected ProjectMap NOT to have key", expected));
 		}
 	}
 
+	/**
+	 * Check Maps for containing a given key.
+	 */
 	public void hasProjectMapWithKey(java.lang.Object expected) {
 		if (actual.getProjectMap().containsKey(expected)) {
 			failWithActual(fact("expected ProjectMap to have key", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasProjectMapNotEqualTo(Map expected) {
 		if (!(actual.getProjectMap().equals(expected))) {
 			failWithActual(fact("expected ProjectMap NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasProjectMapEqualTo(java.util.Map expected) {
 		if ((actual.getProjectMap().equals(expected))) {
 			failWithActual(fact("expected ProjectMap to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public MapSubject hasProjectMap() {
 		isNotNull();
 		return check("getProjectMap").that(actual.getProjectMap());
 	}
 
+	/**
+	 * Simple is or is not expectation for boolean fields.
+	 */
 	public void isEmployed() {
 		if (actual.isEmployed()) {
 			failWithActual(simpleFact("expected to be Employed"));
 		}
 	}
 
+	/**
+	 * Simple is or is not expectation for boolean fields.
+	 */
 	public void isNotEmployed() {
 		if (!actual.isEmployed()) {
 			failWithActual(simpleFact("expected NOT to be Employed"));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public BooleanSubject hasEmployed() {
 		isNotNull();
 		return check("isEmployed").that(actual.isEmployed());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBirthdayNotEqualTo(java.time.ZonedDateTime expected) {
 		if (!(actual.getBirthday().equals(expected))) {
 			failWithActual(fact("expected Birthday NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasBirthdayEqualTo(java.time.ZonedDateTime expected) {
 		if ((actual.getBirthday().equals(expected))) {
 			failWithActual(fact("expected Birthday to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public ZonedDateTimeSubject hasBirthday() {
 		isNotNull();
 		return check("getBirthday").about(zonedDateTimes()).that(actual.getBirthday());
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasCardNotEqualTo(com.google.common.truth.extension.generator.testModel.IdCard expected) {
 		if (!(actual.getCard().equals(expected))) {
 			failWithActual(fact("expected Card NOT to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Simple check for equality for all fields.
+	 */
 	public void hasCardEqualTo(com.google.common.truth.extension.generator.testModel.IdCard expected) {
 		if ((actual.getCard().equals(expected))) {
 			failWithActual(fact("expected Card to be equal to", expected));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public IdCardSubject hasCard() {
 		isNotNull();
 		return check("getCard").about(idCards()).that(actual.getCard());
 	}
 
+	/**
+	 * Simple is or is not expectation for boolean fields.
+	 */
 	public void isEmployedWrapped() {
 		if (actual.isEmployedWrapped()) {
 			failWithActual(simpleFact("expected to be EmployedWrapped"));
 		}
 	}
 
+	/**
+	 * Simple is or is not expectation for boolean fields.
+	 */
 	public void isNotEmployedWrapped() {
 		if (!actual.isEmployedWrapped()) {
 			failWithActual(simpleFact("expected NOT to be EmployedWrapped"));
 		}
 	}
 
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
 	public BooleanSubject hasEmployedWrapped() {
 		isNotNull();
 		return check("isEmployedWrapped").that(actual.isEmployedWrapped());

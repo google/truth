@@ -1,13 +1,9 @@
 package com.google.common.truth.extension.generator.internal;
 
-import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
-import com.google.common.truth.Fact;
-import com.google.common.truth.ObjectArraySubject;
-import com.google.common.truth.Subject;
+import com.google.common.truth.*;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import lombok.Getter;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -15,7 +11,6 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
-import javax.swing.text.html.Option;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -31,7 +26,6 @@ import static java.util.function.Predicate.not;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 import static org.apache.commons.lang3.ClassUtils.primitiveToWrapper;
-import static org.apache.commons.lang3.ClassUtils.primitivesToWrappers;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.reflections.ReflectionUtils.*;
 
@@ -43,7 +37,7 @@ public class SubjectMethodGenerator {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final Map<String, Class<?>> compiledSubjects;
+  private final Map<String, Class<?>> classPathSubjectTypes = new HashMap<>();
   private final Map<String, ThreeSystem> generatedSubjects;
   private ThreeSystem context;
 
@@ -51,11 +45,9 @@ public class SubjectMethodGenerator {
     this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getName(), x -> x));
 
     Reflections reflections = new Reflections("com.google.common.truth", "io.confluent");
-    Set<Class<? extends Subject>> subTypes = reflections.getSubTypesOf(Subject.class);
+    Set<Class<? extends Subject>> subjectTypes = reflections.getSubTypesOf(Subject.class);
 
-    Map<String, Class<?>> maps = new HashMap<>();
-    subTypes.forEach(x -> maps.put(x.getSimpleName(), x));
-    this.compiledSubjects = maps;
+    subjectTypes.forEach(x -> classPathSubjectTypes.put(x.getSimpleName(), x));
   }
 
   public void addTests(ThreeSystem system) {
@@ -148,7 +140,8 @@ public class SubjectMethodGenerator {
   }
 
   /**
-   * In priority order - most specific first
+   * In priority order - most specific first. Types that are native to {@link Truth} - i.e. you can call {@link
+   * Truth#assertThat}(...) with it. Note that this does not include {@link Truth8} types.
    */
   @Getter
   private static final HashSet<Class<?>> nativeTypes = new LinkedHashSet();
@@ -159,7 +152,6 @@ public class SubjectMethodGenerator {
   static {
     //
     Class<?>[] classes = {
-            Optional.class,
             Map.class,
             Iterable.class,
             List.class,
@@ -174,8 +166,8 @@ public class SubjectMethodGenerator {
             Long.class,
             Integer.class,
             Short.class,
-            Boolean.class,
-            Object.class};
+            Boolean.class
+    };
     nativeTypes.addAll(Arrays.stream(classes).collect(Collectors.toList()));
 
     //
@@ -309,7 +301,6 @@ public class SubjectMethodGenerator {
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();
-    newMethod.addParameter(method.getReturnType(), "expected");
 
     newMethod.getJavaDoc().setText("Checks Optional fields for presence.");
 
@@ -516,6 +507,7 @@ public class SubjectMethodGenerator {
       name = type.getName();
     }
 
+    // arrays
     if (type.isArray()) {
       Class<?> componentType = type.getComponentType();
       if (componentType.isPrimitive()) {
@@ -529,18 +521,11 @@ public class SubjectMethodGenerator {
     }
 
     //
-    Optional<ClassOrGenerated> subject = getSubjectFromString(name);
+    Optional<ClassOrGenerated> subject = getGeneratedOrCompiledSubjectFromString(name);
 
-//    // iterables
-//    if (subject.isEmpty()) {
-//      if (Iterable.class.isAssignableFrom(type)) {
-//        subject = getSubjectForType(Iterable.class);
-//      }
-//    }
-
-    // fall back to native subjects
+    // Can't find any generated ones or compiled ones - fall back to native subjects
     if (subject.isEmpty()) {
-      Optional<Class<?>> nativeSubjectForType = getNativeSubjectForType(type);
+      Optional<Class<?>> nativeSubjectForType = getClosestTruthNativeSubjectForType(type);
       subject = ClassOrGenerated.ofClass(nativeSubjectForType);
       if (subject.isPresent())
         logger.at(INFO).log("Falling back to native interface subject %s for type %s", subject.get().clazz, type);
@@ -549,18 +534,18 @@ public class SubjectMethodGenerator {
     return subject;
   }
 
-  private Optional<Class<?>> getNativeSubjectForType(final Class<?> type) {
+  private Optional<Class<?>> getClosestTruthNativeSubjectForType(final Class<?> type) {
     Class<?> normalised = primitiveToWrapper(type);
-    Optional<Class<?>> highestPiorityNativeType = nativeTypes.stream().filter(x -> x.isAssignableFrom(normalised)).findFirst();
-    if (highestPiorityNativeType.isPresent()) {
-      Class<?> aClass = highestPiorityNativeType.get();
+    Optional<Class<?>> highestPriorityNativeType = nativeTypes.stream().filter(x -> x.isAssignableFrom(normalised)).findFirst();
+    if (highestPriorityNativeType.isPresent()) {
+      Class<?> aClass = highestPriorityNativeType.get();
       Class<?> compiledSubjectForTypeName = getCompiledSubjectForTypeName(aClass.getSimpleName());
       return ofNullable(compiledSubjectForTypeName);
     }
     return empty();
   }
 
-  private Optional<ClassOrGenerated> getSubjectFromString(final String name) {
+  private Optional<ClassOrGenerated> getGeneratedOrCompiledSubjectFromString(final String name) {
     boolean isObjectArray = name.endsWith("[]");
     if (isObjectArray)
       return of(new ClassOrGenerated(ObjectArraySubject.class, null));
@@ -583,7 +568,7 @@ public class SubjectMethodGenerator {
       name = StringUtils.substringAfterLast(name, ".");
 
     String compoundName = name + "Subject";
-    Class<?> aClass = this.compiledSubjects.get(compoundName);
+    Class<?> aClass = this.classPathSubjectTypes.get(compoundName);
     return aClass;
   }
 
@@ -602,8 +587,20 @@ public class SubjectMethodGenerator {
     }
   }
 
+  /**
+   * An `Either` type that represents a {@link Subject} for a type being either an existing Compiled class, or a new
+   * Generated class.
+   */
   public static class ClassOrGenerated {
+
+    /**
+     * an existing Subject class on the class path
+     */
     final Class<?> clazz;
+
+    /**
+     * a new generated Subject
+     */
     final ThreeSystem generated;
 
     ClassOrGenerated(final Class<?> clazz, final ThreeSystem generated) {

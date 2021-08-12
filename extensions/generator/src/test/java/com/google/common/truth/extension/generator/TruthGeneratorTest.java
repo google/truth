@@ -1,17 +1,17 @@
 package com.google.common.truth.extension.generator;
 
 import com.google.common.io.Resources;
-import com.google.common.truth.StreamSubject;
-import com.google.common.truth.extension.generator.internal.SkeletonGenerator;
 import com.google.common.truth.extension.generator.internal.TruthGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import com.google.common.truth.extension.generator.internal.modelSubjectChickens.ThreeSystemChildSubject;
-import com.google.common.truth.extension.generator.testModel.*;
+import com.google.common.truth.extension.generator.testModel.IdCard;
+import com.google.common.truth.extension.generator.testModel.MyEmployee;
+import com.google.common.truth.extension.generator.testModel.NonBeanLegacy;
+import com.google.common.truth.extension.generator.testModel.Project;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -21,6 +21,7 @@ import java.time.ZonedDateTime;
 import java.time.chrono.Chronology;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -43,6 +44,9 @@ public class TruthGeneratorTest {
     assertThat(trim("")).isEqualTo(trim(generate));
   }
 
+  /**
+   * Base test that compares with expected generated code for test model
+   */
   @Test
   public void generate_code() throws IOException {
     // todo need to be able to set base package for all generated classes, kind of like shade, so you cah generate test for classes in other restricted modules
@@ -112,7 +116,7 @@ public class TruthGeneratorTest {
     ss.generateFromShaded(ZoneId.class, ZonedDateTime.class, Chronology.class);
 
     Map<Class<?>, ThreeSystem> generated = tg.generate(ss);
-    assertThat(generated.size()).isAtLeast(ss.getPackageAndClasses().size());
+    assertThat(generated.size()).isAtLeast(ss.getTargetPackageAndClasses().size());
   }
 
   @Test
@@ -146,7 +150,7 @@ public class TruthGeneratorTest {
 
     // recursive subjects that shouldn't be included
     assertThat(generate).doesNotContainKey(Spliterator.class);
-    assertThat(generate).doesNotContainKey(StreamSubject.class);
+    assertThat(generate).doesNotContainKey(Stream.class);
   }
 
   /**

@@ -9,11 +9,10 @@ import javax.annotation.processing.Generated;
 /**
  * Entry point for assertions for @{MyEmployee}. Import the static accessor
  * methods from this class and use them. Combines the generated code from
- * {@MyEmployeeParentSubject}and the user code from
- * {@com.google.common.truth.extension.generator.testModel.MyEmployeeSubject}.
+ * {@MyEmployeeParentSubject}and the user code from {@MyEmployeeSubject}.
  *
  * @see com.google.common.truth.extension.generator.testModel.MyEmployee
- * @see com.google.common.truth.extension.generator.testModel.MyEmployeeSubject
+ * @see MyEmployeeSubject
  * @see MyEmployeeParentSubject
  */
 @Generated("truth-generator")
@@ -22,7 +21,7 @@ public class MyEmployeeChildSubject extends MyEmployeeSubject {
 	/**
 	 * This constructor should not be used, instead see the parent's.
 	 *
-	 * @see com.google.common.truth.extension.generator.testModel.MyEmployeeSubject
+	 * @see MyEmployeeSubject
 	 */
 	private MyEmployeeChildSubject(FailureMetadata failureMetadata,
 			com.google.common.truth.extension.generator.testModel.MyEmployee actual) {

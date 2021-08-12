@@ -34,6 +34,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <!-- Used to generate Java 8 chains for users that use them -->
             <groupId>com.google.truth.extensions</groupId>
             <artifactId>truth-java8-extension</artifactId>
             <scope>compile</scope>

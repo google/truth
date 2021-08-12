@@ -2,16 +2,17 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.truth.extension.generator.internal.ClassUtils;
 import lombok.Getter;
 import lombok.Value;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Use this class to prepare the set of source classes to generate for, and settings for different types of sources.
@@ -20,13 +21,37 @@ import static java.util.Arrays.stream;
 public class SourceClassSets {
 
   private final String packageForOverall;
-  private final Set<Class<?>[]> simplePackageOfClasses = new HashSet<>();
-  private final Set<Class<?>> simpleClasses = new HashSet<>();
-  private final Set<PackageAndClasses> packageAndClasses = new HashSet<>();
-  private final Set<Class<?>> legacyBeans = new HashSet<>();
-  private final Set<PackageAndClasses> legacyPackageAndClasses = new HashSet<>();
-  private Set<Class<?>> classSetCache;
 
+  /**
+   *
+   */
+  //todo rename
+  private final Set<String> simplePackages = new HashSet<>();
+
+  /**
+   *
+   */
+  private final Set<Class<?>> simpleClasses = new HashSet<>();
+
+  /**
+   *
+   */
+  private final Set<TargetPackageAndClasses> targetPackageAndClasses = new HashSet<>();
+
+  /**
+   *
+   */
+  private final Set<Class<?>> legacyBeans = new HashSet<>();
+
+  /**
+   *
+   */
+  private final Set<TargetPackageAndClasses> legacyTargetPackageAndClasses = new HashSet<>();
+
+  /**
+   *
+   */
+  private Set<Class<?>> classSetCache;
 
   /**
    * @param packageForOverall the package to put the overall access points
@@ -42,12 +67,25 @@ public class SourceClassSets {
     this(packageFromObject.getClass().getPackage().getName());
   }
 
+  /**
+   * Use the package of this class base package;
+   */
   public SourceClassSets(Class<?> packageFromClass) {
     this(packageFromClass.getPackage().getName());
   }
 
   public void generateAllFoundInPackagesOf(Class<?>... classes) {
-    simplePackageOfClasses.add(classes);
+    Set<String> collect = stream(classes).map(x -> x.getPackage().getName()).collect(toSet());
+    simplePackages.addAll(collect);
+  }
+
+  public void generateAllFoundInPackages(Package... packages) {
+    Set<String> collect = stream(packages).map(Package::getName).collect(toSet());
+    simplePackages.addAll(collect);
+  }
+
+  public void generateAllFoundInPackages(String... packageNames) {
+    simplePackages.addAll(stream(packageNames).collect(toSet()));
   }
 
   /**
@@ -56,11 +94,11 @@ public class SourceClassSets {
    * I.e. for UUID.class you can't create a Subject in the same package as it (not allowed).
    */
   public void generateFrom(String targetPackageName, Class<?>... classes) {
-    packageAndClasses.add(new PackageAndClasses(targetPackageName, classes));
+    targetPackageAndClasses.add(new TargetPackageAndClasses(targetPackageName, classes));
   }
 
   public void generateFrom(Class<?>... classes) {
-    this.simpleClasses.addAll(stream(classes).collect(Collectors.toSet()));
+    this.simpleClasses.addAll(stream(classes).collect(toSet()));
   }
 
   public void generateFrom(Set<Class<?>> classes) {
@@ -71,19 +109,19 @@ public class SourceClassSets {
    * Shades the given source classes into the base package, suffixed with the source package
    */
   public void generateFromShaded(Class<?>... classes) {
-    Set<PackageAndClasses> packageAndClassesStream = mapToPackageSets(classes);
-    this.packageAndClasses.addAll(packageAndClassesStream);
+    Set<TargetPackageAndClasses> targetPackageAndClassesStream = mapToPackageSets(classes);
+    this.targetPackageAndClasses.addAll(targetPackageAndClassesStream);
   }
 
-  private Set<PackageAndClasses> mapToPackageSets(Class<?>[] classes) {
+  private Set<TargetPackageAndClasses> mapToPackageSets(Class<?>[] classes) {
     ImmutableListMultimap<Package, Class<?>> grouped = Multimaps.index(asList(classes), Class::getPackage);
 
     return grouped.keySet().stream().map(x -> {
       Class<?>[] classSet = grouped.get(x).toArray(new Class<?>[0]);
-      PackageAndClasses newSet = new PackageAndClasses(getTargetPackageName(x),
+      TargetPackageAndClasses newSet = new TargetPackageAndClasses(getTargetPackageName(x),
               classSet);
       return newSet;
-    }).collect(Collectors.toSet());
+    }).collect(toSet());
   }
 
   private String getTargetPackageName(Package p) {
@@ -97,8 +135,8 @@ public class SourceClassSets {
   }
 
   public void generateFromShadedNonBean(Class<?>... clazzes) {
-    Set<PackageAndClasses> packageAndClassesStream = mapToPackageSets(clazzes);
-    this.legacyPackageAndClasses.addAll(packageAndClassesStream);
+    Set<TargetPackageAndClasses> targetPackageAndClassesStream = mapToPackageSets(clazzes);
+    this.legacyTargetPackageAndClasses.addAll(targetPackageAndClassesStream);
   }
 
   public void generateFrom(ClassLoader loader, String... classes) {
@@ -118,14 +156,15 @@ public class SourceClassSets {
     union.addAll(getSimpleClasses());
     union.addAll(getLegacyBeans());
 
-    Set<Class<?>> collect = getPackageAndClasses().stream().flatMap(x ->
+    Set<Class<?>> collect = getTargetPackageAndClasses().stream().flatMap(x ->
             stream(x.classes)
-    ).collect(Collectors.toSet());
+    ).collect(toSet());
     union.addAll(collect);
 
-    union.addAll(getLegacyPackageAndClasses().stream().flatMap(x -> stream(x.classes)).collect(Collectors.toSet()));
+    union.addAll(getLegacyTargetPackageAndClasses().stream().flatMap(x -> stream(x.classes)).collect(toSet()));
 
-    union.addAll(getSimplePackageOfClasses().stream().flatMap(x -> stream(x)).collect(Collectors.toSet()));
+    union.addAll(getSimplePackages().stream().flatMap(
+            x -> ClassUtils.collectSourceClasses(x).stream()).collect(toSet()));
 
     // todo need more elegant solution than this
     this.classSetCache = union;
@@ -134,6 +173,7 @@ public class SourceClassSets {
 
   // todo shouldn't be public?
   public void addIfMissing(final Set<? extends Class<?>> clazzes) {
+    getAllClasses(); // update class set cache
     clazzes.forEach(x -> {
       if (!classSetCache.contains(x))
         generateFrom(x);
@@ -147,11 +187,14 @@ public class SourceClassSets {
 
   public boolean isLegacyClass(final Class<?> theClass) {
     return getLegacyBeans().contains(theClass)
-            || getLegacyPackageAndClasses().stream().anyMatch(x-> asList(x.classes).contains(theClass));
+            || getLegacyTargetPackageAndClasses().stream().anyMatch(x -> asList(x.classes).contains(theClass));
   }
 
+  /**
+   * Container for classes and the target package they're to be produced into
+   */
   @Value
-  public static class PackageAndClasses {
+  public static class TargetPackageAndClasses {
     String targetPackageName;
     Class<?>[] classes;
   }
