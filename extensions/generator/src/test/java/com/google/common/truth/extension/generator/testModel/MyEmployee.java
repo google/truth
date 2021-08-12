@@ -1,6 +1,8 @@
 package com.google.common.truth.extension.generator.testModel;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.annotation.Nonnull;
@@ -9,31 +11,26 @@ import java.util.*;
 
 import static com.google.common.truth.extension.generator.testModel.MyEmployee.State.EMPLOLYED;
 
-//@AllArgsConstructor
 @SuperBuilder(toBuilder = true)
-//@Data
 @Getter
 @Setter(AccessLevel.PRIVATE)
-//@With
 public class MyEmployee extends Person {
 
-  UUID id = UUID.randomUUID();
+  private UUID id = UUID.randomUUID();
 
-//  @With
-  ZonedDateTime anniversary = ZonedDateTime.now();
+  private ZonedDateTime anniversary = ZonedDateTime.now();
 
-//  @With
-  MyEmployee boss = null;
+  private MyEmployee boss = null;
 
-  IdCard card = null;
+  private IdCard card = null;
 
-  List<Project> projectList = new ArrayList<>();
+  private List<Project> projectList = new ArrayList<>();
 
-  State employmentState = State.NEVER_EMPLOYED;
+  private State employmentState = State.NEVER_EMPLOYED;
 
-  Optional<Double> weighting = Optional.empty();
+  private Optional<Double> weighting = Optional.empty();
 
-  Map<String, Project> projectMap;
+  private Map<String, Project> projectMap = new HashMap<>();
 
   public MyEmployee(@Nonnull String name, long someLongAspect, @Nonnull ZonedDateTime birthday) {
     super(name, someLongAspect, birthday);
@@ -43,17 +40,32 @@ public class MyEmployee extends Person {
     EMPLOLYED, PREVIOUSLY_EMPLOYED, NEVER_EMPLOYED;
   }
 
+  public Person toPlainPerson() {
+    return Person.builder().birthday(birthday).name(name).someLongAspect(someLongAspect).build();
+  }
+
+  /**
+   * I know - the model doesn't need to make sense :)
+   */
+  public State[] toStateArray() {
+    return new State[0];
+  }
+
+  public Object[] toProjectObjectArray() {
+    return projectList.toArray();
+  }
+
   /**
    * Package-private test
    */
-  boolean isEmployed(){
+  boolean isEmployed() {
     return this.employmentState == EMPLOLYED;
   }
 
   /**
    * Primitive vs Wrapper test
    */
-  Boolean isEmployedWrapped(){
+  Boolean isEmployedWrapped() {
     return this.employmentState == EMPLOLYED;
   }
 
@@ -65,11 +77,9 @@ public class MyEmployee extends Person {
     return super.getName() + " ID: " + this.getId();
   }
 
-
   @Override
   public String toString() {
     return "MyEmployee{" +
-//            "id=" + id +
             ", name=" + getName() +
             ", card=" + card +
             ", employed=" + employmentState +

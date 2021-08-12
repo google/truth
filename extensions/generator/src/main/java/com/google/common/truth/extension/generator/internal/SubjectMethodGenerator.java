@@ -59,7 +59,10 @@ public class SubjectMethodGenerator {
 
     //
     {
-      Collection<Method> getters = getMethods(system);
+      Collection<Method> getters = getMethods(system)
+              // output a consistent ordering - alphabetical my method name
+              .stream().sorted((o1, o2) -> Comparator.comparing(Method::getName).compare(o1, o2))
+              .collect(Collectors.toList());
       for (Method method : getters) {
         addFieldAccessors(method, generated, classUnderTest);
       }
@@ -71,7 +74,7 @@ public class SubjectMethodGenerator {
         if (input == null) return false;
         String name = input.getName();
         // exclude lombok builder methods
-        return startsWith("to", name) && !endsWith("Builder", name);
+        return startsWith(name, "to") && !endsWith(name, "Builder");
       });
       toers = removeOverridden(toers);
       for (Method method : toers) {
@@ -403,7 +406,7 @@ public class SubjectMethodGenerator {
             .setPublic();
 
     StringBuilder body = new StringBuilder("isNotNull();\n");
-    String check = format("return check(\"%s\")", method.getName());
+    String check = format("return check(\"%s()\")", method.getName());
     body.append(check);
 
     boolean notPrimitive = !returnType.isPrimitive();
@@ -466,21 +469,18 @@ public class SubjectMethodGenerator {
   }
 
   // todo cleanup
-  private boolean isTypeCoveredUnderStandardSubjects(Class<?> returnType) {
+  private boolean isTypeCoveredUnderStandardSubjects(final Class<?> returnType) {
     // todo should only do this, if we can't find a more specific subect for the returnType
     // todo should check if class is assignable from the super subjects, instead of checking names
     // todo use qualified names
     // todo add support truth8 extensions - optional etc
-    // todo try generatin classes for DateTime pakages, like Instant and Duration
+    // todo try generating classes for DateTime packages, like Instant and Duration
     // todo this is of course too aggressive
-
-    returnType = primitiveToWrapper(returnType);
 
 //    boolean isCoveredByNonPrimitiveStandardSubjects = specials.contains(returnType.getSimpleName());
     final Class<?> normalised = (returnType.isArray())
             ? returnType.getComponentType()
             : returnType;
-    returnType = normalised;
 
     List<Class<?>> assignable = nativeTypes.stream().filter(x ->
             x.isAssignableFrom(normalised)

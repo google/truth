@@ -1,7 +1,7 @@
 package com.google.common.truth.extension.generator.internal.model;
 
-import lombok.*;
-import org.checkerframework.common.util.report.qual.ReportWrite;
+import lombok.Getter;
+import lombok.Setter;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 @Getter
@@ -33,7 +33,7 @@ public class ThreeSystem {
     return !packagesAreContained();
   }
 
-// todo rename
+  // todo rename
   private boolean packagesAreContained() {
     Package underTestPackage = classUnderTest.getPackage();
     String subjectPackage = parent.getGenerated().getPackage();

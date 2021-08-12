@@ -2,14 +2,11 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.truth.Truth;
 import com.google.common.truth.extension.generator.testModel.*;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import org.junit.Test;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 
-import static com.google.common.truth.extension.generator.ManagedTruth.assertTruth;
 import static com.google.common.truth.extension.generator.testModel.MyEmployeeChildSubject.assertTruth;
 
 /**
@@ -81,8 +78,9 @@ public class GeneratedAssertionTests {
     MyEmployee emp = createInstance(MyEmployee.class);
     MyEmployeeSubject es = ManagedTruth.assertThat(emp);
 
-    es.hasAnniversary()
+    es.hasAnniversary();
     es.hasEmploymentState();
+    Truth.assertThat(true).isFalse();
   }
 
 

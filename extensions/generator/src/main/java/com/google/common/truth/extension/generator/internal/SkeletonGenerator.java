@@ -32,6 +32,12 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String BACKUP_PACKAGE = "com.google.common.truth.extension.generator";
+
+  /**
+   * For testing. Used to force generating of middle class, even if it's detected.
+   */
+  public static boolean forceMiddleGenerate;
+
   private final OverallEntryPoint overallEntryPoint;
 
   private Optional<String> targetPackageName;
@@ -124,6 +130,9 @@ public class SkeletonGenerator implements SkeletonGeneratorAPI {
   }
 
   private Optional<Class<?>> middleExists(JavaClassSource parent, String middleClassName, Class source) {
+    if (forceMiddleGenerate)
+      return empty();
+
     try {
       // load from annotated classes instead using Reflections?
       String fullName = parent.getPackage() + "." + middleClassName;
