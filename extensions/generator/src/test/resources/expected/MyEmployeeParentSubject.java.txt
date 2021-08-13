@@ -272,18 +272,20 @@ public class MyEmployeeParentSubject extends Subject {
 	}
 
 	/**
-	 * Checks if the element is or is not contained in the collection.
+	 * Checks if a {@link Project} element is, or is not contained in the
+	 * collection.
 	 */
-	public void hasProjectListNotWithElement(java.lang.Object expected) {
+	public void hasProjectListNotWithElement(com.google.common.truth.extension.generator.testModel.Project expected) {
 		if (!actual.getProjectList().contains(expected)) {
 			failWithActual(fact("expected ProjectList NOT to have element", expected));
 		}
 	}
 
 	/**
-	 * Checks if the element is or is not contained in the collection.
+	 * Checks if a {@link Project} element is, or is not contained in the
+	 * collection.
 	 */
-	public void hasProjectListWithElement(java.lang.Object expected) {
+	public void hasProjectListWithElement(com.google.common.truth.extension.generator.testModel.Project expected) {
 		if (actual.getProjectList().contains(expected)) {
 			failWithActual(fact("expected ProjectList to have element", expected));
 		}
@@ -317,18 +319,18 @@ public class MyEmployeeParentSubject extends Subject {
 	}
 
 	/**
-	 * Check Maps for containing a given key.
+	 * Check Maps for containing a given {@link String} key.
 	 */
-	public void hasProjectMapNotWithKey(java.lang.Object expected) {
+	public void hasProjectMapNotWithKey(java.lang.String expected) {
 		if (!actual.getProjectMap().containsKey(expected)) {
 			failWithActual(fact("expected ProjectMap NOT to have key", expected));
 		}
 	}
 
 	/**
-	 * Check Maps for containing a given key.
+	 * Check Maps for containing a given {@link String} key.
 	 */
-	public void hasProjectMapWithKey(java.lang.Object expected) {
+	public void hasProjectMapWithKey(java.lang.String expected) {
 		if (actual.getProjectMap().containsKey(expected)) {
 			failWithActual(fact("expected ProjectMap to have key", expected));
 		}
