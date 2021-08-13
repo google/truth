@@ -13,7 +13,6 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.*;
@@ -21,6 +20,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.google.common.truth.extension.generator.internal.ClassUtils.getStrippedReturnTypeFirstGenericParam;
 import static com.google.common.truth.extension.generator.internal.ClassUtils.maybeGetSimpleName;
 import static java.lang.String.format;
 import static java.lang.reflect.Modifier.*;
@@ -277,7 +277,7 @@ public class SubjectMethodGenerator {
             .setPublic();
 
     // parameter
-    Type keyType = getReturnTypeFirstGenericParam(method);
+    Type keyType = getStrippedReturnTypeFirstGenericParam(method);
     newMethod.addParameter(keyType.getTypeName(), "expected");
 
     //
@@ -286,20 +286,6 @@ public class SubjectMethodGenerator {
     copyThrownExceptions(method, newMethod);
 
     return newMethod;
-  }
-
-  private Type getReturnTypeFirstGenericParam(Method method) {
-    Class<?> keyType = Object.class; // default fall back
-    Type genericReturnType = method.getGenericReturnType();
-    if (genericReturnType instanceof ParameterizedType) {
-      ParameterizedType parameterizedReturnType = (ParameterizedType) genericReturnType;
-      Type[] actualTypeArguments = parameterizedReturnType.getActualTypeArguments();
-      if (actualTypeArguments.length > 0) { // must have at least 1
-        Type key = actualTypeArguments[0];
-        return key;
-      }
-    }
-    return keyType;
   }
 
   private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -359,7 +345,7 @@ public class SubjectMethodGenerator {
             .setPublic();
 
 
-    Type elementType = getReturnTypeFirstGenericParam(method);
+    Type elementType = getStrippedReturnTypeFirstGenericParam(method);
     newMethod.addParameter(elementType.getTypeName(), "expected");
 
     newMethod.getJavaDoc().setText(format("Checks if a {@link %s} element is, or is not contained in the collection.", maybeGetSimpleName(elementType)));

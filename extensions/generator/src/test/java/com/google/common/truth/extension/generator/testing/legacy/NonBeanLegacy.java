@@ -1,4 +1,4 @@
-package com.google.common.truth.extension.generator.testModelLegacy;
+package com.google.common.truth.extension.generator.testing.legacy;
 
 
 import lombok.Builder;

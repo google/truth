@@ -10,7 +10,7 @@ import com.google.common.truth.extension.generator.internal.modelSubjectChickens
 import com.google.common.truth.extension.generator.testModel.IdCard;
 import com.google.common.truth.extension.generator.testModel.MyEmployee;
 import com.google.common.truth.extension.generator.testModel.Project;
-import com.google.common.truth.extension.generator.testModelLegacy.NonBeanLegacy;
+import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacy;
 import org.jboss.forge.roaster.model.Method;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -132,7 +132,7 @@ public class TruthGeneratorTest {
   @Test
   public void test_legacy_mode() {
     TruthGeneratorAPI tg = TruthGeneratorAPI.create();
-    SourceClassSets ss = new SourceClassSets(this);
+    SourceClassSets ss = new SourceClassSets(this.getClass().getPackage().getName() + ".legacy");
     ss.generateFromNonBean(NonBeanLegacy.class);
     Map<Class<?>, ThreeSystem> generated = tg.generate(ss);
 

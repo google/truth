@@ -6,9 +6,9 @@ import com.google.common.truth.extension.generator.testModel.ManagedTruth;
 import com.google.common.truth.extension.generator.testModel.MyEmployee;
 import com.google.common.truth.extension.generator.testModel.MyEmployeeChildSubject;
 import com.google.common.truth.extension.generator.testModel.MyEmployeeSubject;
-import com.google.common.truth.extension.generator.testModelLegacy.NonBeanLegacy;
-import com.google.common.truth.extension.generator.testModelLegacy.NonBeanLegacyChildSubject;
-import com.google.common.truth.extension.generator.testModelLegacy.NonBeanLegacySubject;
+import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacy;
+import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacyChildSubject;
+import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacySubject;
 import org.junit.Test;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
