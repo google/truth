@@ -101,8 +101,9 @@ public class SubjectMethodGenerator {
     Set<Method> issers = getMethods(classUnderTest, withPrefix("is"));
 
     // also get all other methods, regardless of their prefix
-    Predicate<Method> expectSetters = not(withPrefix("set"));
-    Set<Method> legacy = (legacyMode) ? getMethods(classUnderTest, expectSetters) : Set.of();
+    Predicate<Method> exceptSetters = not(withPrefix("set"));
+    Predicate<Method> exceptToers = not(withPrefix("to"));
+    Set<Method> legacy = (legacyMode) ? getMethods(classUnderTest, exceptSetters, exceptToers) : Set.of();
 
     union.addAll(getters);
     union.addAll(issers);
@@ -111,14 +112,20 @@ public class SubjectMethodGenerator {
     return removeOverridden(union);
   }
 
-  private Set<Method> getMethods(Class<?> classUnderTest, Predicate<Method> prefix) {
+  private Set<Method> getMethods(Class<?> classUnderTest, Predicate<Method>... prefix) {
     // if shaded, can't access package private methods
     boolean isShaded = context.isShaded();
-    Predicate skip = (ignore) -> true;
-    Predicate shadedPredicate = (isShaded) ? withModifier(PUBLIC) : skip;
+    Predicate<Method> skip = (ignore) -> true;
+    Predicate<Method> shadedPredicate = (isShaded) ? withModifier(PUBLIC) : skip;
 
-    return ReflectionUtils.getAllMethods(classUnderTest,
-            not(withModifier(PRIVATE)), not(withModifier(PROTECTED)), shadedPredicate, prefix, withParametersCount(0));
+    List<Predicate<? super Method>> predicatesCollect = Arrays.stream(prefix).collect(Collectors.toList());
+    predicatesCollect.add(shadedPredicate);
+    predicatesCollect.add(not(withModifier(PRIVATE)));
+    predicatesCollect.add(not(withModifier(PROTECTED)));
+    predicatesCollect.add(withParametersCount(0));
+
+    Predicate<? super Method>[] predicates = predicatesCollect.toArray(new Predicate[0]);
+    return ReflectionUtils.getAllMethods(classUnderTest, predicates);
   }
 
   private Collection<Method> removeOverridden(final Collection<Method> getters) {
@@ -377,18 +384,24 @@ public class SubjectMethodGenerator {
 
     String methodName = removeStart(method.getName(), "is");
     methodName = "is" + capitalize(say.toLowerCase()).trim() + methodName;
-    MethodSource<JavaClassSource> booleanMethod = generated.addMethod();
-    booleanMethod
-            .setName(methodName)
-            .setReturnTypeVoid()
-            .setBody(body)
-            .setPublic();
 
-    copyThrownExceptions(method, booleanMethod);
+    if (generated.getMethod(methodName) == null) {
+      MethodSource<JavaClassSource> booleanMethod = generated.addMethod();
+      booleanMethod
+              .setName(methodName)
+              .setReturnTypeVoid()
+              .setBody(body)
+              .setPublic();
 
-    booleanMethod.getJavaDoc().setText("Simple is or is not expectation for boolean fields.");
+      copyThrownExceptions(method, booleanMethod);
 
-    return booleanMethod;
+      booleanMethod.getJavaDoc().setText("Simple is or is not expectation for boolean fields.");
+
+      return booleanMethod;
+    } else {
+      logger.atWarning().log("Method name collision, skipping adding boolean generic for %s", methodName);
+      return null;
+    }
   }
 
   private void copyThrownExceptions(Method method, MethodSource<JavaClassSource> generated) {
@@ -522,6 +535,7 @@ public class SubjectMethodGenerator {
     // arrays
     if (type.isArray()) {
       Class<?> componentType = type.getComponentType();
+      componentType = primitiveToWrapper(componentType);
       if (componentType.isPrimitive()) {
         // PrimitiveBooleanArraySubject
         String subjectPrefix = "Primitive" + componentType.getSimpleName() + "Array";
