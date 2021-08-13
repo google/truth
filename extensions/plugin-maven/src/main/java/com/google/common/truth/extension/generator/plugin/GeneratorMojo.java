@@ -62,11 +62,12 @@ public class GeneratorMojo extends AbstractMojo {
   @Parameter(defaultValue = "", property = "truth.generateAssertionsInPackage")
   public String generateAssertionsInPackage;
 
-  /**
-   * Flag specifying whether to clean the directory where assertions are generated. The default is false.
-   */
-  @Parameter(defaultValue = "false", property = "truth.cleanTargetDir")
-  public boolean cleanTargetDir;
+  // todo?
+//  /**
+//   * Flag specifying whether to clean the directory where assertions are generated. The default is false.
+//   */
+//  @Parameter(defaultValue = "false", property = "truth.cleanTargetDir")
+//  public boolean cleanTargetDir;
 
   /**
    * List of packages to generate assertions for.
@@ -80,19 +81,21 @@ public class GeneratorMojo extends AbstractMojo {
   @Parameter(property = "truth.classes")
   public String[] classes;
 
-  /**
-   * Generated assertions are limited to classes matching one of the given regular expressions, default is to include
-   * all classes.
-   */
-  @Parameter(property = "truth.includes")
-  public String[] includes = INCLUDE_ALL_CLASSES;
+  // todo
+//  /**
+//   * Generated assertions are limited to classes matching one of the given regular expressions, default is to include
+//   * all classes.
+//   */
+//  @Parameter(property = "truth.includes")
+//  public String[] includes = INCLUDE_ALL_CLASSES;
 
-  /**
-   * If class matches one of the given regex, no assertions will be generated for it, default is not to exclude
-   * anything.
-   */
-  @Parameter(property = "truth.excludes")
-  public String[] excludes = new String[0];
+  // todo
+//  /**
+//   * If class matches one of the given regex, no assertions will be generated for it, default is not to exclude
+//   * anything.
+//   */
+//  @Parameter(property = "truth.excludes")
+//  public String[] excludes = new String[0];
 
 
   /**
@@ -102,14 +105,17 @@ public class GeneratorMojo extends AbstractMojo {
   @Parameter(property = "truth.entryPointClassPackage")
   public String entryPointClassPackage;
 
-  /**
-   * Skip generating classes, handy way to disable the plugin.
-   */
-  @Parameter(property = "truth.skip")
-  public boolean skip = false;
+  // todo
+//  /**
+//   * Skip generating classes, handy way to disable the plugin.
+//   */
+//  @Parameter(property = "truth.skip")
+//  public boolean skip = false;
 
-  @Parameter(property = "truth.recursive")
-  public boolean recursive = true;
+
+  // todo
+//  @Parameter(property = "truth.recursive")
+//  public boolean recursive = true;
 
   /**
    * for testing
