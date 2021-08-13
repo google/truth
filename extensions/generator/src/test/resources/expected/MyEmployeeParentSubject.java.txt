@@ -19,17 +19,21 @@ import com.google.common.truth.extension.generator.testModel.StateSubject;
 import java.util.UUID;
 import static com.google.common.truth.extension.generator.internal.autoShaded.java.util.UUIDSubject.uUIDs;
 import com.google.common.truth.extension.generator.internal.autoShaded.java.util.UUIDSubject;
-import com.google.common.truth.StringSubject;
+import static com.google.common.truth.extension.generator.internal.MyStringSubject.strings;
+import static com.google.common.truth.extension.generator.internal.MyStringSubject.strings;
 import java.util.List;
 import com.google.common.truth.IterableSubject;
 import java.util.Map;
-import com.google.common.truth.MapSubject;
+import static com.google.common.truth.extension.generator.internal.MyMapSubject.maps;
+import com.google.common.truth.extension.generator.internal.MyMapSubject;
 import com.google.common.truth.LongSubject;
 import java.util.Optional;
 import static com.google.common.truth.extension.generator.internal.autoShaded.java.util.OptionalSubject.optionals;
 import com.google.common.truth.extension.generator.internal.autoShaded.java.util.OptionalSubject;
+import static com.google.common.truth.extension.generator.internal.MyStringSubject.strings;
 import com.google.common.truth.BooleanSubject;
 import com.google.common.truth.ObjectArraySubject;
+import com.google.common.truth.extension.generator.internal.MyStringSubject;
 import static com.google.common.truth.extension.generator.testModel.PersonSubject.persons;
 import com.google.common.truth.extension.generator.testModel.PersonSubject;
 
@@ -266,9 +270,9 @@ public class MyEmployeeParentSubject extends Subject {
 	 * Returns the Subject for the given field type, so you can chain on other
 	 * assertions.
 	 */
-	public StringSubject hasName() {
+	public MyStringSubject hasName() {
 		isNotNull();
-		return check("getName()").that(actual.getName());
+		return check("getName()").about(strings()).that(actual.getName());
 	}
 
 	/**
@@ -358,9 +362,9 @@ public class MyEmployeeParentSubject extends Subject {
 	 * Returns the Subject for the given field type, so you can chain on other
 	 * assertions.
 	 */
-	public MapSubject hasProjectMap() {
+	public MyMapSubject hasProjectMap() {
 		isNotNull();
-		return check("getProjectMap()").that(actual.getProjectMap());
+		return check("getProjectMap()").about(maps()).that(actual.getProjectMap());
 	}
 
 	/**
@@ -436,6 +440,33 @@ public class MyEmployeeParentSubject extends Subject {
 	}
 
 	/**
+	 * Simple check for equality for all fields.
+	 */
+	public void hasWorkNickNameNotEqualTo(java.lang.String expected) {
+		if (!(actual.getWorkNickName().equals(expected))) {
+			failWithActual(fact("expected WorkNickName NOT to be equal to", expected));
+		}
+	}
+
+	/**
+	 * Simple check for equality for all fields.
+	 */
+	public void hasWorkNickNameEqualTo(java.lang.String expected) {
+		if ((actual.getWorkNickName().equals(expected))) {
+			failWithActual(fact("expected WorkNickName to be equal to", expected));
+		}
+	}
+
+	/**
+	 * Returns the Subject for the given field type, so you can chain on other
+	 * assertions.
+	 */
+	public MyStringSubject hasWorkNickName() {
+		isNotNull();
+		return check("getWorkNickName()").about(strings()).that(actual.getWorkNickName());
+	}
+
+	/**
 	 * Simple is or is not expectation for boolean fields.
 	 */
 	public void isEmployed() {
@@ -502,9 +533,9 @@ public class MyEmployeeParentSubject extends Subject {
 	 * Returns the Subject for the given field type, so you can chain on other
 	 * assertions.
 	 */
-	public StringSubject hasToString() {
+	public MyStringSubject hasToString() {
 		isNotNull();
-		return check("toString()").that(actual.toString());
+		return check("toString()").about(strings()).that(actual.toString());
 	}
 
 	/**

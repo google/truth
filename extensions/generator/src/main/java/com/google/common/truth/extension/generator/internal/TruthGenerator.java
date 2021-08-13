@@ -9,10 +9,7 @@ import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -37,6 +34,11 @@ public class TruthGenerator implements TruthGeneratorAPI {
   @Setter
   @Getter
   private Optional<String> entryPoint = Optional.empty();
+
+  /**
+   * Base Truth subject extensions to inject into Subject tree
+   */
+  private final Map<Class<?>, Class<? extends Subject>> subjectExtensions = new HashMap<>();
 
   @Override
   public void generate(String... modelPackages) {
@@ -84,7 +86,7 @@ public class TruthGenerator implements TruthGeneratorAPI {
   }
 
   private void addTests(final Set<ThreeSystem> allTypes) {
-    SubjectMethodGenerator tg = new SubjectMethodGenerator(allTypes);
+    SubjectMethodGenerator tg = new SubjectMethodGenerator(allTypes, subjectExtensions);
     tg.addTests(allTypes);
   }
 
@@ -138,10 +140,11 @@ public class TruthGenerator implements TruthGeneratorAPI {
     ).collect(toSet());
 
     // straight up classes
-    Set<ThreeSystem> simpleClasses = generateSkeletons(ss.getSimpleClasses(), Optional.empty(), overallEntryPoint);
+    Optional<String> packageForOverall = Optional.ofNullable(ss.getPackageForOverall());
+    Set<ThreeSystem> simpleClasses = generateSkeletons(ss.getSimpleClasses(), packageForOverall, overallEntryPoint);
 
     // legacy classes
-    Set<ThreeSystem> legacyClasses = generateSkeletons(ss.getLegacyBeans(), Optional.empty(), overallEntryPoint);
+    Set<ThreeSystem> legacyClasses = generateSkeletons(ss.getLegacyBeans(), packageForOverall, overallEntryPoint);
     legacyClasses.forEach(x -> x.setLegacyMode(true));
 
     // legacy classes with custom package destination
@@ -193,6 +196,11 @@ public class TruthGenerator implements TruthGeneratorAPI {
   @Override
   public Map<Class<?>, ThreeSystem> generate(Class<?>... classes) {
     return generate(stream(classes).collect(toSet()));
+  }
+
+  @Override
+  public void registerStandardSubjectExtension(Class<?> targetType, Class<? extends Subject> myMapSubjectClass) {
+    this.subjectExtensions.put(targetType, myMapSubjectClass);
   }
 
   @Override

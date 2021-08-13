@@ -44,10 +44,6 @@ public class TruthGeneratorTest {
     return Resources.toString(Resources.getResource(expectedFileName), Charset.defaultCharset());
   }
 
-  private String trim(String in) {
-    return in.replaceAll("(?m)^(\\s)*|(\\s)*$", "");
-  }
-
   /**
    * Base test that compares with expected generated code for test model
    */
@@ -56,6 +52,11 @@ public class TruthGeneratorTest {
     // todo need to be able to set base package for all generated classes, kind of like shade, so you cah generate test for classes in other restricted modules
     TruthGenerator truthGenerator = TruthGeneratorAPI.create();
 
+    //
+    truthGenerator.registerStandardSubjectExtension(String.class, MyStringSubject.class);
+    truthGenerator.registerStandardSubjectExtension(Map.class, MyMapSubject.class);
+
+    //
     Set<Class<?>> classes = new HashSet<>();
     classes.add(MyEmployee.class);
     classes.add(IdCard.class);
@@ -88,7 +89,7 @@ public class TruthGeneratorTest {
 
     assertThat(threeSystemGenerated)
             .hasParent().hasGenerated().hasSourceText()
-            .ignoringWhiteSpace().equalTo(expectedMyEmployeeParent); // sanity full chain
+            .ignoringTrailingWhiteSpace().equalTo(expectedMyEmployeeParent); // sanity full chain
 
     assertThat(threeSystemGenerated).hasParentSource(expectedMyEmployeeParent);
 
@@ -264,7 +265,40 @@ public class TruthGeneratorTest {
 
   @Test
   public void standard_extensions() {
-    assertThat(true).isFalse();
+    TruthGenerator tg = TruthGeneratorAPI.create();
+    TruthGeneratorAPI tgApi = tg;
+    tg.setRecursive(false); // speed
+    tg.setEntryPoint(of(this.getClass().getPackage().getName() + ".extensions"));
+
+    // register handlers
+    // todo do this with annotation scanning instead
+    tgApi.registerStandardSubjectExtension(String.class, MyStringSubject.class);
+    tgApi.registerStandardSubjectExtension(Map.class, MyMapSubject.class);
+
+    //
+    Map<Class<?>, ThreeSystem> generate = tg.generate(MyEmployee.class);
+    ThreeSystem threeSystem = generate.get(MyEmployee.class);
+    JavaClassSource generated = threeSystem.getParent().getGenerated();
+
+    // custom string
+    {
+      String name = "hasName";
+      List<MethodSource<JavaClassSource>> method = generated.getMethods().stream().filter(x -> x.getName().equals(name)).collect(toList());
+      assertThat(method).hasSize(1);
+      MethodSource<JavaClassSource> hasKey = method.get(0);
+      Type<JavaClassSource> returnType = hasKey.getReturnType();
+      assertThat(returnType.getName()).isEqualTo(MyStringSubject.class.getSimpleName());
+    }
+
+    // custom map
+    {
+      String name = "hasProjectMap";
+      List<MethodSource<JavaClassSource>> method = generated.getMethods().stream().filter(x -> x.getName().equals(name)).collect(toList());
+      assertThat(method).hasSize(1);
+      MethodSource<JavaClassSource> hasKey = method.get(0);
+      Type<JavaClassSource> returnType = hasKey.getReturnType();
+      assertThat(returnType.getName()).isEqualTo(MyMapSubject.class.getSimpleName());
+    }
   }
 
 }

@@ -1,8 +1,8 @@
 package com.google.common.truth.extension.generator.internal.modelSubjectChickens;
 
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 import com.google.common.truth.extension.generator.UserManagedTruth;
+import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
 import javax.annotation.processing.Generated;
 
@@ -34,14 +34,14 @@ public class ThreeSystemSubject extends ThreeSystemParentSubject {
   }
 
   public void hasParentSource(String expected) {
-    hasParent().hasGenerated().hasSourceText().ignoringWhiteSpace().equalTo(expected);
+    hasParent().hasGenerated().hasSourceText().ignoringTrailingWhiteSpace().equalTo(expected);
   }
 
   public void hasMiddleSource(String expected) {
-    hasMiddle().hasGenerated().hasSourceText().ignoringWhiteSpace().equalTo(expected);
+    hasMiddle().hasGenerated().hasSourceText().ignoringTrailingWhiteSpace().equalTo(expected);
   }
 
   public void hasChildSource(String expected) {
-    hasChild().hasSourceText().ignoringWhiteSpace().equalTo(expected);
+    hasChild().hasSourceText().ignoringTrailingWhiteSpace().equalTo(expected);
   }
 }

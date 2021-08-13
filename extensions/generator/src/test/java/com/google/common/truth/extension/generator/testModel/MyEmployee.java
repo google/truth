@@ -22,6 +22,8 @@ public class MyEmployee extends Person {
 
   private MyEmployee boss = null;
 
+  private String workNickName;
+
   private IdCard card = null;
 
   private List<Project> projectList = new ArrayList<>();

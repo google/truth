@@ -28,6 +28,26 @@
     <!--        </plugins>-->
     <!--    </build>-->
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>13</source>
+                    <target>13</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <!--        <dependency>-->
         <!--            <groupId>com.google.truth.extensions</groupId>-->
@@ -49,6 +69,13 @@
         <dependency>
             <groupId>com.google.truth.extensions</groupId>
             <artifactId>truth-generator-extension</artifactId>
+            <type>jar</type>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-generator-extension</artifactId>
             <type>test-jar</type>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -63,6 +90,12 @@
             <artifactId>podam</artifactId>
             <version>7.2.7.RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.18.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

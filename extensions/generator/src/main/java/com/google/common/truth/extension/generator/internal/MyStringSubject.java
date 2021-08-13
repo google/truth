@@ -2,13 +2,15 @@ package com.google.common.truth.extension.generator.internal;
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.StringSubject;
+import com.google.common.truth.extension.generator.BaseSubjectExtension;
+import com.google.common.truth.extension.generator.SubjectFactoryMethod;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 /**
  * @see IgnoringWhiteSpaceComparison
  */
+@BaseSubjectExtension
 public class MyStringSubject extends StringSubject {
 
   String actual;
@@ -18,14 +20,12 @@ public class MyStringSubject extends StringSubject {
     this.actual = actual;
   }
 
-  /**
-   * Returns an assertion builder for a {@link JavaClassSource} class.
-   */
-  public static Factory<MyStringSubject, String> myStrings() {
+  @SubjectFactoryMethod
+  public static Factory<MyStringSubject, String> strings() {
     return MyStringSubject::new;
   }
 
-  public IgnoringWhiteSpaceComparison ignoringWhiteSpace() {
+  public IgnoringWhiteSpaceComparison ignoringTrailingWhiteSpace() {
     return new IgnoringWhiteSpaceComparison();
   }
 

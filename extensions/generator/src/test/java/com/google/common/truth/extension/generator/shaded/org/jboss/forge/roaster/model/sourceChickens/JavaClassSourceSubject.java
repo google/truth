@@ -35,7 +35,7 @@ public class JavaClassSourceSubject extends JavaClassSourceParentSubject {
 
   public MyStringSubject hasSourceText() {
     isNotNull();
-    return check("toString").about(MyStringSubject.myStrings()).that(actual.toString());
+    return check("toString").about(MyStringSubject.strings()).that(actual.toString());
   }
 
 }

@@ -1,5 +1,6 @@
 package com.google.common.truth.extension.generator;
 
+import com.google.common.truth.Subject;
 import com.google.common.truth.extension.generator.internal.TruthGenerator;
 import com.google.common.truth.extension.generator.internal.model.ThreeSystem;
 
@@ -66,4 +67,14 @@ public interface TruthGeneratorAPI {
   Map<Class<?>, ThreeSystem> generate(Set<Class<?>> classes);
 
   Map<Class<?>, ThreeSystem> generate(Class<?>... classes);
+
+  /**
+   * Manually register extensions to base Subject types - i.e. extend StringSubject with your own features. These will
+   * get dynamically inserted into the generated Subject tree when used.
+   *
+   * @param targetType        the class under test - e.g. String
+   * @param myMapSubjectClass the Subject class which extends the base Subject
+   */
+  void registerStandardSubjectExtension(Class<?> targetType, Class<? extends Subject> myMapSubjectClass);
+
 }

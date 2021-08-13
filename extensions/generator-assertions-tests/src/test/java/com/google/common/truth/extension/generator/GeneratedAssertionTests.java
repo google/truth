@@ -2,21 +2,24 @@ package com.google.common.truth.extension.generator;
 
 import com.google.common.truth.Truth;
 import com.google.common.truth.extension.generator.internal.TruthGeneratorTest;
+import com.google.common.truth.extension.generator.internal.legacy.NonBeanLegacyChildSubject;
+import com.google.common.truth.extension.generator.internal.legacy.NonBeanLegacySubject;
 import com.google.common.truth.extension.generator.testModel.ManagedTruth;
 import com.google.common.truth.extension.generator.testModel.MyEmployee;
 import com.google.common.truth.extension.generator.testModel.MyEmployeeChildSubject;
 import com.google.common.truth.extension.generator.testModel.MyEmployeeSubject;
 import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacy;
-import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacyChildSubject;
-import com.google.common.truth.extension.generator.testing.legacy.NonBeanLegacySubject;
 import org.junit.Test;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import static com.google.common.truth.extension.generator.InstanceUtils.createInstance;
 import static com.google.common.truth.extension.generator.testModel.MyEmployee.State.NEVER_EMPLOYED;
 import static com.google.common.truth.extension.generator.testModel.MyEmployeeChildSubject.assertTruth;
 
 
 /**
+ * Uses output from packages completed tests run from the generator module.
+ *
  * @see TruthGeneratorTest#generate_code
  */
 public class GeneratedAssertionTests {
@@ -53,10 +56,6 @@ public class GeneratedAssertionTests {
     NonBeanLegacySubject nonBeanLegacySubject = NonBeanLegacyChildSubject.assertThat(nonBeanLegacy);
     nonBeanLegacySubject.hasAge().isNotNull();
     nonBeanLegacySubject.hasName().isEqualTo("lilan");
-  }
-
-  private <T> T createInstance(Class<T> clazz) {
-    return PODAM_FACTORY.manufacturePojo(clazz);
   }
 
   @Test

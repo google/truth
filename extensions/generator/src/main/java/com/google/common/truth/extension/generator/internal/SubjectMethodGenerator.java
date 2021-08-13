@@ -42,10 +42,12 @@ public class SubjectMethodGenerator {
 
   private final Map<String, Class<?>> classPathSubjectTypes = new HashMap<>();
   private final Map<String, ThreeSystem> generatedSubjects;
+  private final Map<Class<?>, Class<? extends Subject>> subjectExtensions;
   private ThreeSystem context;
 
-  public SubjectMethodGenerator(final Set<ThreeSystem> allTypes) {
+  public SubjectMethodGenerator(Set<ThreeSystem> allTypes, Map<Class<?>, Class<? extends Subject>> subjectExtensions) {
     this.generatedSubjects = allTypes.stream().collect(Collectors.toMap(x -> x.classUnderTest.getName(), x -> x));
+    this.subjectExtensions = subjectExtensions;
 
     Reflections reflections = new Reflections("com.google.common.truth", "io.confluent");
     Set<Class<? extends Subject>> subjectTypes = reflections.getSubTypesOf(Subject.class);
@@ -418,8 +420,9 @@ public class SubjectMethodGenerator {
     String check = format("return check(\"%s()\")", method.getName());
     body.append(check);
 
+    boolean isAnExtendedSubject = this.subjectExtensions.containsValue(subjectClass.clazz);
     boolean notPrimitive = !returnType.isPrimitive();
-    boolean needsAboutCall = notPrimitive && !isCoveredByNonPrimitiveStandardSubjects;
+    boolean needsAboutCall = notPrimitive && !isCoveredByNonPrimitiveStandardSubjects || isAnExtendedSubject;
 
     if (needsAboutCall || subjectClass.isGenerated()) {
       String aboutName;
@@ -529,10 +532,15 @@ public class SubjectMethodGenerator {
       }
     }
 
+    // extensions take priority
+    Class<? extends Subject> extension = this.subjectExtensions.get(type);
+    if (extension != null)
+      return ClassOrGenerated.ofClass(extension);
+
     //
     Optional<ClassOrGenerated> subject = getGeneratedOrCompiledSubjectFromString(name);
 
-    // Can't find any generated ones or compiled ones - fall back to native subjects
+    // Can't find any generated ones or compiled ones - fall back to native subjects that are assignable (e.g. comparable or iterable)
     if (subject.isEmpty()) {
       Optional<Class<?>> nativeSubjectForType = getClosestTruthNativeSubjectForType(type);
       subject = ClassOrGenerated.ofClass(nativeSubjectForType);
@@ -545,6 +553,8 @@ public class SubjectMethodGenerator {
 
   private Optional<Class<?>> getClosestTruthNativeSubjectForType(final Class<?> type) {
     Class<?> normalised = primitiveToWrapper(type);
+
+    // native
     Optional<Class<?>> highestPriorityNativeType = nativeTypes.stream().filter(x -> x.isAssignableFrom(normalised)).findFirst();
     if (highestPriorityNativeType.isPresent()) {
       Class<?> aClass = highestPriorityNativeType.get();
@@ -564,6 +574,7 @@ public class SubjectMethodGenerator {
       return of(new ClassOrGenerated(null, subjectFromGenerated.get()));
     }
 
+    // any matching compiled subject
     Class<?> aClass = getCompiledSubjectForTypeName(name);
     if (aClass != null)
       return of(new ClassOrGenerated(aClass, null));
