@@ -158,7 +158,7 @@ public class GeneratorMojo extends AbstractMojo {
     SourceClassSets ss = new SourceClassSets(getEntryPointClassPackage());
 
     ss.generateFrom(getProjectClassLoader(), getClasses());
-//    ss.generatefrom(getPackages());
+    ss.generateAllFoundInPackages(getPackages());
 
     Map<Class<?>, ThreeSystem> generated = tg.generate(ss);
     return generated;

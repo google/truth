@@ -15,6 +15,7 @@ import org.jboss.forge.roaster.model.Method;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
+import org.jboss.forge.roaster.model.source.ParameterSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -29,10 +30,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.google.common.truth.Correspondence.from;
 import static com.google.common.truth.Correspondence.transforming;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extension.generator.internal.modelSubjectChickens.ThreeSystemChildSubject.assertThat;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 @RunWith(JUnit4.class)
 public class TruthGeneratorTest {
@@ -219,6 +222,49 @@ public class TruthGeneratorTest {
     Type<JavaClassSource> hasToProjectArray = threeSystem.getParent().getGenerated()
             .getMethod("hasToStateArray").getReturnType();
     assertThat(hasToProjectArray.getSimpleName()).isEqualTo(ObjectArraySubject.class.getSimpleName());
+  }
+
+  /**
+   * Test if we can get generics in some situations
+   */
+  @Test
+  public void get_generics() {
+    TruthGenerator tg = TruthGeneratorAPI.create();
+    tg.setRecursive(false); // speed
+
+    Map<Class<?>, ThreeSystem> generate = tg.generate(MyEmployee.class);
+    ThreeSystem threeSystem = generate.get(MyEmployee.class);
+    JavaClassSource generated = threeSystem.getParent().getGenerated();
+
+
+    Correspondence<ParameterSource<JavaClassSource>, Class<?>> classNames = from(
+            (actual, expected) -> actual.getType().getName().equals(expected.getName()),
+            "has class name matching class name of");
+
+    // map contains strong key, value
+    {
+      String name = "hasProjectMapWithKey";
+      List<MethodSource<JavaClassSource>> method = generated.getMethods().stream().filter(x -> x.getName().equals(name)).collect(toList());
+      assertThat(method).hasSize(1);
+      MethodSource<JavaClassSource> hasKey = method.get(0);
+      List<ParameterSource<JavaClassSource>> parameters = hasKey.getParameters();
+      assertThat(parameters).comparingElementsUsing(classNames).containsExactly(String.class);
+    }
+
+    // list contains strong element
+    {
+      String name = "hasProjectListWithElement";
+      List<MethodSource<JavaClassSource>> method = generated.getMethods().stream().filter(x -> x.getName().equals(name)).collect(toList());
+      assertThat(method).hasSize(1);
+      MethodSource<JavaClassSource> hasKey = method.get(0);
+      List<ParameterSource<JavaClassSource>> parameters = hasKey.getParameters();
+      assertThat(parameters).comparingElementsUsing(classNames).containsExactly(Project.class);
+    }
+  }
+
+  @Test
+  public void standard_extensions() {
+    assertThat(true).isFalse();
   }
 
 }

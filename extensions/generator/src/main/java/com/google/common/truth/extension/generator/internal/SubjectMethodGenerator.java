@@ -13,12 +13,15 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.google.common.truth.extension.generator.internal.ClassUtils.maybeGetSimpleName;
 import static java.lang.String.format;
 import static java.lang.reflect.Modifier.*;
 import static java.util.Optional.*;
@@ -272,13 +275,31 @@ public class SubjectMethodGenerator {
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();
-    newMethod.addParameter(Object.class, "expected");
 
-    newMethod.getJavaDoc().setText("Check Maps for containing a given key.");
+    // parameter
+    Type keyType = getReturnTypeFirstGenericParam(method);
+    newMethod.addParameter(keyType.getTypeName(), "expected");
+
+    //
+    newMethod.getJavaDoc().setText(format("Check Maps for containing a given {@link %s} key.", maybeGetSimpleName(keyType)));
 
     copyThrownExceptions(method, newMethod);
 
     return newMethod;
+  }
+
+  private Type getReturnTypeFirstGenericParam(Method method) {
+    Class<?> keyType = Object.class; // default fall back
+    Type genericReturnType = method.getGenericReturnType();
+    if (genericReturnType instanceof ParameterizedType) {
+      ParameterizedType parameterizedReturnType = (ParameterizedType) genericReturnType;
+      Type[] actualTypeArguments = parameterizedReturnType.getActualTypeArguments();
+      if (actualTypeArguments.length > 0) { // must have at least 1
+        Type key = actualTypeArguments[0];
+        return key;
+      }
+    }
+    return keyType;
   }
 
   private void addOptionalStrategy(Method method, JavaClassSource generated, Class<?> classUnderTest) {
@@ -336,9 +357,12 @@ public class SubjectMethodGenerator {
             .setReturnTypeVoid()
             .setBody(body)
             .setPublic();
-    newMethod.addParameter(Object.class, "expected");
 
-    newMethod.getJavaDoc().setText("Checks if the element is or is not contained in the collection.");
+
+    Type elementType = getReturnTypeFirstGenericParam(method);
+    newMethod.addParameter(elementType.getTypeName(), "expected");
+
+    newMethod.getJavaDoc().setText(format("Checks if a {@link %s} element is, or is not contained in the collection.", maybeGetSimpleName(elementType)));
 
     copyThrownExceptions(method, newMethod);
 
@@ -383,7 +407,7 @@ public class SubjectMethodGenerator {
     Class<? extends Exception>[] exceptionTypes = (Class<? extends Exception>[]) method.getExceptionTypes();
     Stream<Class<? extends Exception>> runtimeExceptions = Arrays.stream(exceptionTypes)
             .filter(x -> !RuntimeException.class.isAssignableFrom(x));
-    runtimeExceptions.forEach(x -> generated.addThrows(x));
+    runtimeExceptions.forEach(generated::addThrows);
   }
 
   private MethodSource<JavaClassSource> addChainStrategy(Method method, JavaClassSource generated, Class<?> returnType) {
@@ -394,7 +418,6 @@ public class SubjectMethodGenerator {
     // no subject to chain
     if (subjectForType.isEmpty() && !isCoveredByNonPrimitiveStandardSubjects) {
       logger.at(WARNING).log("Cant find subject for " + returnType);
-      // todo log
       return null;
     }
 

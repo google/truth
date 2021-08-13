@@ -27,6 +27,11 @@ public class TruthGenerator implements TruthGeneratorAPI {
 
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
 
+  /**
+   * Marks whether to try to find all referenced types from the source types, to generate Subjects for all of them, and
+   * use them all in the Subject tree.
+   */
+  @Setter
   private boolean recursive = true;
 
   @Setter

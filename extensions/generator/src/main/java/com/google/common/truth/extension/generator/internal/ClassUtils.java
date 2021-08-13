@@ -3,7 +3,10 @@ package com.google.common.truth.extension.generator.internal;
 import com.google.common.truth.Subject;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
+import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +16,13 @@ public class ClassUtils {
     // for all classes in package
     SubTypesScanner subTypesScanner = new SubTypesScanner(false);
 
-    Reflections reflections = new Reflections(modelPackages, subTypesScanner);
+    ConfigurationBuilder build = new ConfigurationBuilder()
+            .forPackages(modelPackages)
+            .filterInputsBy(new FilterBuilder().includePackage(modelPackages))
+            .setScanners(subTypesScanner)
+            .setExpandSuperTypes(true);
+
+    Reflections reflections = new Reflections(build);
     reflections.expandSuperTypes(); // get things that extend something that extend object
 
     // https://github.com/ronmamo/reflections/issues/126
@@ -27,4 +36,7 @@ public class ClassUtils {
     return allTypes;
   }
 
+  public static String maybeGetSimpleName(Type elementType) {
+    return (elementType instanceof Class<?>) ? ((Class<?>) elementType).getSimpleName() : elementType.getTypeName();
+  }
 }
