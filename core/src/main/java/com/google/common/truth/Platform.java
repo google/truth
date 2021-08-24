@@ -201,11 +201,6 @@ final class Platform {
     return Float.toString(value);
   }
 
-  /** Turns a non-double, non-float object into a string. */
-  static String stringValueOfNonFloatingPoint(Object o) {
-    return String.valueOf(o);
-  }
-
   /** Returns a human readable string representation of the throwable's stack trace. */
   static String getStackTraceAsString(Throwable throwable) {
     return Throwables.getStackTraceAsString(throwable);

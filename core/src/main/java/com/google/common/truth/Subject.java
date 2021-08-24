@@ -24,7 +24,6 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
-import static com.google.common.truth.Platform.stringValueOfNonFloatingPoint;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
@@ -409,7 +408,7 @@ public class Subject {
     } else if (o instanceof Float) {
       return floatToString((Float) o);
     } else {
-      return stringValueOfNonFloatingPoint(o);
+      return String.valueOf(o);
     }
   }
 
