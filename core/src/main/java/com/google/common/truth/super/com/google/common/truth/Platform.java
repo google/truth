@@ -20,6 +20,7 @@ import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.collect.ImmutableList;
+import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -134,6 +135,31 @@ final class Platform {
   private static String toLocaleString(double value) {
     // Recieve a double as a parameter so that "(Object) value" does not box it.
     return ((NativeNumber) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
+  }
+
+  @JsType(isNative = true, namespace = "proto.im")
+  private static class Message {
+    public native String serialize();
+  }
+
+  @JsMethod(namespace = "proto.im.debug")
+  private static native Object dump(Message msg) /*-{
+    // Emtpy stub to make GWT happy. This will never get executed under GWT.
+    throw new Error();
+  }-*/;
+
+  /** Turns a non-double, non-float object into a string. */
+  static String stringValueOfNonFloatingPoint(Object o) {
+    // Check if we are in J2CL mode by probing a system property that only exists in GWT.
+    boolean inJ2clMode = System.getProperty("superdevmode", "doesntexist").equals("doesntexist");
+    if (inJ2clMode && o instanceof Message) {
+      Message msg = (Message) o;
+      boolean dumpAvailable =
+          "true".equals(System.getProperty("goog.DEBUG", "true"))
+              && !"true".equals(System.getProperty("COMPILED", "false"));
+      return dumpAvailable ? dump(msg).toString() : msg.serialize();
+    }
+    return String.valueOf(o);
   }
 
   /** Tests if current platform is Android which is always false. */
