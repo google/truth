@@ -19,6 +19,8 @@ import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.LongSubject;
+import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -79,8 +81,19 @@ public final class EmployeeSubject extends Subject {
       failWithActual(simpleFact("expected not to be CEO"));
     }
   }
+  
+  // Chained subjects methods below this point
 
-  // TODO(kak): Add methods that return other subjects. E.g.,
-  // public StringSubject username() {}
-  // public IterableSubject languages() {}
+  public StringSubject name() {
+    return check("name()").that(actual.name())
+  }
+
+  public StringSubject username() {
+    return check("username()").that(actual.username())
+  }
+
+  public LongSubject id() {
+    return check("id()").that(actual.id())
+  }
+
 }
