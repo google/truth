@@ -182,7 +182,7 @@ There are four parts to the example:
         Users can statically import your method alongside Truth's `assertThat`
         methods. Static imports with the same name follow the same
         overload-resolution rules as normal Java overloads, so the imports can
-        coexist unless in a file unless it makes a call that's ambiguous.
+        coexist in a file unless it makes a call that's ambiguous.
 
         (If your users do end up with an ambiguous reference, they can instead
         use the `Subject.Factory` (`assertAbout(employees()).that(...)`) or use
