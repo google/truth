@@ -353,10 +353,11 @@ collection elements).
 
 ## A case for AssertJ {#for-assertj}
 
-While we prefer Truth, we acknowledge that others may prefer AssertJ. Here are
-some cases in which AssertJ offers advantages:
+While we prefer Truth, we acknowledge that others may prefer AssertJ. The two
+libraries make different tradeoffs:
 
 -   AssertJ offers a larger API.
+
     -   It offers more assertions. While we believe that Truth offers most of
         the most commonly needed assertions, some projects might make a lot of
         assertions about, say, `URI` objects, which Truth doesn't include
@@ -369,15 +370,11 @@ some cases in which AssertJ offers advantages:
     -   It offers support for Hamcrest-style "[conditions]." We prefer to avoid
         this model for the same
         [reasons that we prefer Truth to Hamcrest](#vs-hamcrest).
--   While we prefer Truth's failure messages overall, there are cases in which
-    AssertJ is still better. Consider this Truth message: `Not true that
-    <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33}>. It has the
-    following entries with unexpected keys: {feb=2} and has the following
-    entries with matching keys but different values: {march=(expected 33 but got
-    3)}`
+
 -   In order to support Android by default, Truth
     [makes it a little harder](faq#java8) to use assertions specific to Java 8
     types, like `Optional`.
+
 -   Truth has a few puzzlers of its own. For example:
 
     -   `assertThat(listOfStrings).doesNotContain(integer)` passes, even though
