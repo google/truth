@@ -56,9 +56,7 @@ Again, the two are very similar. We prefer Truth for its
     easier to understand, and it lets us spend more time improving core
     features.
 
-We also usually prefer Truth's [failure messages](#failure-messages) (though we
-find AssertJ's to often be similar and, in some cases we're still working on, to
-even be better).
+We also usually prefer Truth's [failure messages](#failure-messages).
 
 Additionally, Truth works on Android devices [by default](#platforms), without
 requiring users to use an older version or import a different class than usual.
@@ -90,7 +88,7 @@ found, though, that more is not always better:
 
 ### Failure messages {#failure-messages}
 
-We prefer Truth's (in most cases, at least). Here's an example:
+We usually prefer Truth's. Here's an example:
 
 ```
 value of    : projectsByTeam().valuesForKey(corelibs)
@@ -358,10 +356,11 @@ libraries make different tradeoffs:
 
 -   AssertJ offers a larger API.
 
-    -   It offers more assertions. While we believe that Truth offers most of
-        the most commonly needed assertions, some projects might make a lot of
-        assertions about, say, `URI` objects, which Truth doesn't include
-        built-in support for.
+    -   It offers more assertions. While
+        [we keep Truth's API small deliberately](#assertion-count), and while we
+        believe that Truth offers most of the most commonly needed assertions,
+        some projects might make a lot of assertions about, say, `URI` objects,
+        which Truth doesn't include built-in support for.
     -   It offers features like [reflective field comparisons] -- include
         configurable [recursive field comparison]. We find that some of these
         can make code harder to maintain, but we grant that they can be
@@ -399,16 +398,18 @@ libraries make different tradeoffs:
     to generate it for you.
 
 -   AssertJ supports multiple assertion calls on the same object in the same
-    statement: `assertThat(list).contains(x, y).doesNotContain(z);`. Truth does
-    not. Both libraries support "chaining" in the sense of a method that returns
-    a new asserter for a sub-object: For example, AssertJ supports
+    statement: `assertThat(list).contains(x, y).doesNotContain(z);`.
+    [Truth does not.](https://github.com/google/truth/issues/884) Both libraries
+    *do* support "chaining" in the sense of a method that returns a new asserter
+    for a sub-object: For example, AssertJ supports
     `assertThat(list).last().isEqualTo(x);`. And Truth supports
     `assertThat(multimap).valuesForKey(x).containsExactly(y, z);`. Our
     philosophy has been that it's clearer to support only one kind of chaining,
     but we suspect that the AssertJ style is generally clear, too, and it can be
-    convenient. Kotlin users of Truth can emulate AssertJ-style chaining by
-    using [`apply`]: `assertThat(list).apply { contains(x, y) doesNotContain(z);
-    }`
+    convenient. Kotlin users of Truth can
+    [emulate](https://github.com/google/truth/issues/572) AssertJ-style chaining
+    by using [`apply`]: `assertThat(list).apply { contains(x, y)
+    doesNotContain(z); }`
 
 -   AssertJ provides [a tool][AssertJ-migrator] to automatically migrate from
     JUnit and other libraries to AssertJ. Truth has one, but it's only for
@@ -440,7 +441,8 @@ These seem fixable in principle, but they demonstrate some of the reasons that
 we chose to make `FailureStrategy` a fundamental part of Truth.
 
 On the other hand, AssertJ's soft assertions let you divide a test into multiple
-groups of soft assertions. Truth does not support this.
+groups of soft assertions. Truth
+[does not support this](https://github.com/google/truth/issues/266).
 
 ## Library support
 
