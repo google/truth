@@ -37,7 +37,7 @@
       time, one gets submitted before the other, and
       the other ends up with a merge conflict. That requires reapprovals.
     -->
-    <guava.jre.version>30.1.1-jre</guava.jre.version>
+    <guava.jre.version>31.0-jre</guava.jre.version>
     <gwt.version>2.9.0</gwt.version>
     <protobuf.version>3.18.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
