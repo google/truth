@@ -85,19 +85,19 @@ public final class EmployeeSubject extends Subject {
   // Chained subjects methods below this point
 
   public StringSubject name() {
-    return check("name()").that(actual.name())
+    return check("name()").that(actual.name());
   }
 
   public StringSubject username() {
-    return check("username()").that(actual.username())
+    return check("username()").that(actual.username());
   }
 
   public LongSubject id() {
-    return check("id()").that(actual.id())
+    return check("id()").that(actual.id());
   }
 
   public ComparableSubject<Employee.Location> location() {
-    return check("location()").that(actual.location())
+    return check("location()").that(actual.location());
   }
 
 }
