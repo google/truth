@@ -55,19 +55,19 @@ public final class EmployeeSubject extends Subject {
   // User-defined test assertion SPI below this point
 
   public void hasName(String name) {
-    check("name()").that(actual.name()).isEqualTo(name);
+    name().isEqualTo(name);
   }
 
   public void hasUsername(String username) {
-    check("username()").that(actual.username()).isEqualTo(username);
+    username().isEqualTo(username);
   }
 
   public void hasId(long id) {
-    check("id()").that(actual.id()).isEqualTo(id);
+    id().isEqualTo(id);
   }
 
   public void hasLocation(Employee.Location location) {
-    check("location()").that(actual.location()).isEqualTo(location);
+    location().isEqualTo(location);
   }
 
   public void isCeo() {
@@ -94,6 +94,10 @@ public final class EmployeeSubject extends Subject {
 
   public LongSubject id() {
     return check("id()").that(actual.id())
+  }
+
+  public ComparableSubject<Employee.Location> location() {
+    return check("location()").that(actual.location())
   }
 
 }
