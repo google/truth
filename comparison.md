@@ -476,7 +476,7 @@ artifact and main `Truth` class; AssertJ is more modularized, offering
 [recursive field comparison]: https://assertj.github.io/doc/#assertj-core-recursive-comparison
 [bug]: https://github.com/google/truth/issues/new
 [`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
-[truth-api]: https://truth.dev/api/latest/index.html
+[truth-api]: https://truth.dev/api/latest/com/google/common/truth/package-summary.html
 [assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/package-summary.html
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/AbstractIterableAssert.html#method.summary
