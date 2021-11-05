@@ -477,9 +477,9 @@ artifact and main `Truth` class; AssertJ is more modularized, offering
 [bug]: https://github.com/google/truth/issues/new
 [`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
 [truth-api]: https://truth.dev/api/latest/index.html
-[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core
+[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/package-summary.html
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
-[`AbstractIterableAssert`]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/AbstractIterableAssert.html
+[`AbstractIterableAssert`]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/AbstractIterableAssert.html#method.summary
 [`apply`]: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html
 [`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-
 [`AbstractOptionalAssert`]: https://github.com/joel-costigliola/assertj-core/blob/ced2937f8e1647ab7893adb9fc766e64b1ab20a9/src/main/java/org/assertj/core/api/AbstractOptionalAssert.java#L45
