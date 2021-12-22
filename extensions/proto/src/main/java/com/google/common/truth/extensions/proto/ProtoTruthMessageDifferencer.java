@@ -26,7 +26,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.truth.Correspondence;
 import com.google.common.truth.extensions.proto.DiffResult.RepeatedField;
@@ -272,14 +271,14 @@ final class ProtoTruthMessageDifferencer {
     }
     List<?> entryMessages = (List<?>) container;
 
-    // Can't use an ImmutableMap.Builder because proto wire format could have multiple entries with
-    // the same key. Documented behaviour is to use the last seen entry.
-    Map<Object, Object> retVal = Maps.newHashMap();
+    ImmutableMap.Builder<Object, Object> retVal = ImmutableMap.builder();
     for (Object entry : entryMessages) {
       Message message = (Message) entry;
       retVal.put(valueAtFieldNumber(message, 1), valueAtFieldNumber(message, 2));
     }
-    return ImmutableMap.copyOf(retVal);
+    // Use buildKeepingLast() because proto wire format could have multiple entries with
+    // the same key. Documented behaviour is to use the last seen entry.
+    return retVal.buildKeepingLast();
   }
 
   private static Object valueAtFieldNumber(Message message, int fieldNumber) {
