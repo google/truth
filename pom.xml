@@ -265,7 +265,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.1</version> <!-- work around ubuntu bug -->
+          <version>3.2.2</version> <!-- work around ubuntu bug -->
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
