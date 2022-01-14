@@ -58,6 +58,7 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.ClassTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.matchers.Description;
+import com.google.errorprone.suppliers.Supplier;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ExpressionStatementTree;
@@ -94,6 +95,12 @@ import javax.lang.model.element.Modifier;
     severity = SUGGESTION)
 public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     implements ClassTreeMatcher {
+
+  private static final String CORRESPONDENCE_CLASS = "com.google.common.truth.Correspondence";
+
+  private static final Supplier<Type> COM_GOOGLE_COMMON_TRUTH_CORRESPONDENCE =
+      VisitorState.memoize(state -> state.getTypeFromString(CORRESPONDENCE_CLASS));
+
   @Override
   public Description matchClass(ClassTree tree, VisitorState state) {
     if (!isCorrespondence(tree.getExtendsClause(), state)) {
@@ -646,13 +653,11 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
   }
 
   private static boolean isCorrespondence(Tree supertypeTree, VisitorState state) {
-    Type correspondenceType = state.getTypeFromString(CORRESPONDENCE_CLASS);
+    Type correspondenceType = COM_GOOGLE_COMMON_TRUTH_CORRESPONDENCE.get(state);
     if (correspondenceType == null) {
       return false;
     }
     return supertypeTree != null
         && state.getTypes().isSameType(getSymbol(supertypeTree).type, correspondenceType);
   }
-
-  private static final String CORRESPONDENCE_CLASS = "com.google.common.truth.Correspondence";
 }

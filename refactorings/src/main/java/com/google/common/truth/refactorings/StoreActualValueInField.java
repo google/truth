@@ -44,6 +44,7 @@ import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
+import com.google.errorprone.suppliers.Supplier;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
@@ -75,6 +76,17 @@ import javax.lang.model.element.Name;
     severity = SUGGESTION)
 public final class StoreActualValueInField extends BugChecker
     implements MethodInvocationTreeMatcher {
+
+  private static final Supplier<Symbol> COM_GOOGLE_COMMON_TRUTH_SUBJECT_SYMBOL =
+      VisitorState.memoize(state -> state.getSymbolFromString("com.google.common.truth.Subject"));
+
+  private static final Supplier<Type> COM_GOOGLE_COMMON_TRUTH_FAILUREMETADATA =
+      VisitorState.memoize(
+          state -> state.getTypeFromString("com.google.common.truth.FailureMetadata"));
+
+  private static final Supplier<Type> COM_GOOGLE_COMMON_TRUTH_SUBJECT_TYPE =
+      VisitorState.memoize(state -> state.getTypeFromString("com.google.common.truth.Subject"));
+
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
     ClassTree enclosingClass = state.findEnclosing(ClassTree.class);
@@ -144,7 +156,7 @@ public final class StoreActualValueInField extends BugChecker
   }
 
   private static String qualifierForThis(VisitorState state) {
-    Type subjectBaseType = state.getTypeFromString("com.google.common.truth.Subject");
+    Type subjectBaseType = COM_GOOGLE_COMMON_TRUTH_SUBJECT_TYPE.get(state);
 
     boolean seenClassInBetween = false;
     for (Tree t : state.getPath()) {
@@ -211,10 +223,10 @@ public final class StoreActualValueInField extends BugChecker
     Type actualType =
         extractTypeArgAsMemberOfSupertype(
             getType(state.findEnclosing(ClassTree.class)),
-            state.getSymbolFromString("com.google.common.truth.Subject"),
+            COM_GOOGLE_COMMON_TRUTH_SUBJECT_SYMBOL.get(state),
             1,
             state.getTypes());
-    Type failureMetadataType = state.getTypeFromString("com.google.common.truth.FailureMetadata");
+    Type failureMetadataType = COM_GOOGLE_COMMON_TRUTH_FAILUREMETADATA.get(state);
     ImmutableSet<IdentifierTree> candidates =
         args.stream()
             .flatMap(a -> maybeToIdentifier(a, state))
@@ -264,8 +276,7 @@ public final class StoreActualValueInField extends BugChecker
       constructor()
           .forClass(
               (type, state) ->
-                  isSubtype(
-                      type, state.getTypeFromString("com.google.common.truth.Subject"), state));
+                  isSubtype(type, COM_GOOGLE_COMMON_TRUTH_SUBJECT_TYPE.get(state), state));
   private static final Matcher<ExpressionTree> ACTUAL_METHOD =
       anyOf(
           instanceMethod()
