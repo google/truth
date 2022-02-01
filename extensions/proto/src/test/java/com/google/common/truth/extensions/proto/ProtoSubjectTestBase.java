@@ -250,7 +250,7 @@ public class ProtoSubjectTestBase {
     for (int i = 0; i < rest.length; i += 2) {
       builder.put((K) rest[i], (V) rest[i + 1]);
     }
-    return builder.build();
+    return builder.buildOrThrow();
   }
 
   @SuppressWarnings("unchecked")
