@@ -133,7 +133,7 @@ the `displayingDiffsPairedBy` method as providing an equivalent for an assertion
 about an `Iterable`. Note that this won't affect whether the test passes or
 fails.)
 
-## Lite Proto Support {#lite}
+## Lite Proto and Android Support {#lite}
 
 Nominal support exists for Lite protos, commonly used in Android code due to the
 size of the full-proto runtime. However, most features available for full protos
