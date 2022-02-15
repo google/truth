@@ -38,7 +38,7 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
    }
 
   public void testBuildClasses() {
-    new Inventory().toString(); // force invocation.
+    String unused = new Inventory().toString(); // force invocation.
   }
 
   public void testBoolean() {
