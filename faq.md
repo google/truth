@@ -196,18 +196,23 @@ assertThat(user.getId()).isEqualTo(USER_ID); // constant value
 ```
 
 Please **do not** write the above assertion as
-`assertThat(42).isEqualTo(user.getId())`.
+
+``` {.bad}
+assertThat(42).isEqualTo(user.getId())
+```
 
 Here's another example of two ways to write an assertion:
 
 ```java
 assertThat(ImmutableList.of("red", "white", "blue")).contains(user.getFavoriteColor()); // BAD
+```
+```java
 assertThat(user.getFavoriteColor()).isAnyOf("red", "white", "blue");                    // GOOD
 ```
 
 You should always use the latter instead of the former.
 
-Any time you see a *literal value* or *constant* inside the `assertThat` call,
+Tip: Any time you see a *literal value* or *constant* inside the `assertThat` call,
 you should stop and try to write the *inverse assertion*.
 
 ## How do I compare floating point numbers with Truth? {#floating-point}
