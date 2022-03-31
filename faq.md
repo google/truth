@@ -197,7 +197,7 @@ assertThat(user.getId()).isEqualTo(USER_ID); // constant value
 
 Please **do not** write the above assertion as
 
-``` {.bad}
+```java
 assertThat(42).isEqualTo(user.getId())
 ```
 
