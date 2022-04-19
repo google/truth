@@ -388,8 +388,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "required elements were all found, but order was wrong",
         "expected order for required elements",
+        "actual order for required elements",
         "but was");
     assertFailureValue("expected order for required elements", "[null, 1, 3]");
+    assertFailureValue("actual order for required elements", "[1, null, 3]");
   }
 
   @Test
@@ -432,8 +434,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "required elements were all found, but order was wrong",
         "expected order for required elements",
+        "actual order for required elements",
         "but was");
     assertFailureValue("expected order for required elements", "[1, 3, null]");
+    assertFailureValue("actual order for required elements", "[1, null, 3]");
   }
 
   @Test

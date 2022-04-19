@@ -271,6 +271,7 @@ public class IterableSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(this.actual);
+    List<?> order = Lists.newArrayList(actual);
     final Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<Object> missing = newArrayList();
@@ -306,16 +307,21 @@ public class IterableSubject extends Subject {
      * actual iterable than the default of "but was," which may _sound_ like it should show only the
      * required elements, rather than the full actual iterable.
      */
-    return ordered
-        ? IN_ORDER
-        : new Ordered() {
-          @Override
-          public void inOrder() {
-            failWithActual(
-                simpleFact("required elements were all found, but order was wrong"),
-                fact("expected order for required elements", expected));
-          }
-        };
+    if (ordered) {
+      return IN_ORDER;
+    } else {
+      order.retainAll(expected);
+      return new Ordered() {
+        @Override
+        public void inOrder() {
+          failWithActual(
+                  simpleFact("required elements were all found, but order was wrong"),
+                  fact("expected order for required elements", expected),
+                  fact("actual order for required elements", order));
+
+        }
+      };
+    }
   }
 
   /**
