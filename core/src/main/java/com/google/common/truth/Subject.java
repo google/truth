@@ -557,21 +557,29 @@ public class Subject {
       return ComparisonResult.differentWithDescription(
           indexFact, fact("expected", expectedLength), fact("but was", actualLength));
     }
+    StringBuilder indexList = new StringBuilder(lastIndex + "[");
+    boolean flag = false;
     for (int i = 0; i < actualLength; i++) {
       String index = lastIndex + "[" + i + "]";
       Object expected = Array.get(expectedArray, i);
       Object actual = Array.get(actualArray, i);
       if (actual != null
-          && actual.getClass().isArray()
-          && expected != null
-          && expected.getClass().isArray()) {
+              && actual.getClass().isArray()
+              && expected != null
+              && expected.getClass().isArray()) {
         ComparisonResult result = checkArrayEqualsRecursive(expected, actual, index);
         if (!result.valuesAreEqual()) {
           return result;
         }
       } else if (!gwtSafeObjectEquals(actual, expected)) {
-        return ComparisonResult.differentWithDescription(fact("differs at index", index));
+        flag = true;
+        indexList= new StringBuilder(indexList + Integer.toString(i) + ", ");
+//        return ComparisonResult.differentWithDescription(fact("differs at index", index));
       }
+    }
+    if (flag){
+      indexList.append("]");
+      return ComparisonResult.differentWithDescription(fact("differs at index", indexList.toString()));
     }
     return ComparisonResult.equal();
   }
