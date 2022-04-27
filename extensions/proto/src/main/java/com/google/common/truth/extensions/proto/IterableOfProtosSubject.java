@@ -29,7 +29,9 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.TypeRegistry;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -64,6 +66,7 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
   private final FailureMetadata metadata;
   private final Iterable<M> actual;
   private final FluentEqualityConfig config;
+  private final TextFormat.Printer protoPrinter;
 
   protected IterableOfProtosSubject(
       FailureMetadata failureMetadata, @Nullable Iterable<M> messages) {
@@ -78,6 +81,25 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     this.metadata = failureMetadata;
     this.actual = messages;
     this.config = config;
+    this.protoPrinter = TextFormat.printer().usingTypeRegistry(config.useTypeRegistry());
+  }
+
+  @Override
+  protected String actualCustomStringRepresentation() {
+    StringBuilder sb = new StringBuilder().append('[');
+    boolean first = true;
+    for (M element : actual) {
+      if (!first) {
+        sb.append(", ");
+      }
+      first = false;
+      try {
+        protoPrinter.print(element, sb);
+      } catch (IOException impossible) {
+        throw new AssertionError(impossible);
+      }
+    }
+    return sb.append(']').toString();
   }
 
   /**
