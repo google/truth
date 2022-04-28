@@ -786,6 +786,91 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testAnyMessage_notEqual_diffPrintsExpandedAny() {
+    String typeUrl =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+    Message msgWithAny =
+        parse("" + "o_int: 42 " + "o_any_message: { [" + typeUrl + "]: {r_string: \"foo\"} }");
+    Message msgWithoutAny = parse("o_int: 42");
+
+    expectFailureWhenTesting()
+        .that(msgWithAny)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .isEqualTo(msgWithoutAny);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "added: o_any_message: \n" + "[" + typeUrl + "] {\n" + "  r_string: \"foo\"\n" + "}\n");
+
+    expectFailureWhenTesting()
+        .that(msgWithoutAny)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .isEqualTo(msgWithAny);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "deleted: o_any_message: \n"
+                + "["
+                + typeUrl
+                + "] {\n"
+                + "  r_string: \"foo\"\n"
+                + "}\n");
+  }
+
+  @Test
+  public void testRepeatedAnyMessage_notEqual_diffPrintsExpandedAny() {
+    String typeUrl =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+    String fooSubMessage = "{ [" + typeUrl + "]: {r_string: \"foo\"} }";
+    String barSubMessage = "{ [" + typeUrl + "]: {r_string: \"bar\"} }";
+    String bazSubMessage = "{ [" + typeUrl + "]: {r_string: \"baz\"} }";
+    Message msgWithFooBar =
+        parse(
+            ""
+                + "o_int: 42 "
+                + "r_any_message: "
+                + fooSubMessage
+                + "r_any_message: "
+                + barSubMessage);
+    Message msgWithBazFoo =
+        parse(
+            ""
+                + "o_int: 42 "
+                + "r_any_message: "
+                + bazSubMessage
+                + "r_any_message: "
+                + fooSubMessage);
+
+    expectFailureWhenTesting()
+        .that(msgWithFooBar)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .ignoringRepeatedFieldOrder()
+        .isEqualTo(msgWithBazFoo);
+
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            ""
+                + "moved: r_any_message[1] -> r_any_message[0]:\n"
+                + "added: r_any_message[1]: \n"
+                + "["
+                + typeUrl
+                + "] {\n"
+                + "  r_string: \"bar\"\n"
+                + "}\n"
+                + "deleted: r_any_message[0]: \n"
+                + "["
+                + typeUrl
+                + "] {\n"
+                + "  r_string: \"baz\"\n"
+                + "}");
+  }
+
+  @Test
   public void testAnyMessagesWithDifferentTypes() {
     String typeUrl =
         isProto3()

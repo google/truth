@@ -62,12 +62,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 final class ProtoTruthMessageDifferencer {
   private final FluentEqualityConfig rootConfig;
   private final Descriptor rootDescriptor;
+  private final TextFormat.Printer protoPrinter;
 
   private ProtoTruthMessageDifferencer(FluentEqualityConfig rootConfig, Descriptor descriptor) {
     rootConfig.validate(descriptor, FieldDescriptorValidator.ALLOW_ALL);
 
     this.rootConfig = rootConfig;
     this.rootDescriptor = descriptor;
+    this.protoPrinter = TextFormat.printer().usingTypeRegistry(rootConfig.useTypeRegistry());
   }
 
   /** Create a new {@link ProtoTruthMessageDifferencer} for the given config and descriptor. */
@@ -387,6 +389,7 @@ final class ProtoTruthMessageDifferencer {
                 .setActual(actualList.get(i))
                 .setActualFieldIndex(i)
                 .setFieldDescriptor(fieldDescriptor)
+                .setProtoPrinter(protoPrinter)
                 .build());
       } else {
         builder.addPairResult(
@@ -481,6 +484,7 @@ final class ProtoTruthMessageDifferencer {
                   .setFieldDescriptor(fieldDescriptor)
                   .setExpected(expected)
                   .setExpectedFieldIndex(expectedIndex)
+                  .setProtoPrinter(protoPrinter)
                   .build());
         }
       }
@@ -494,6 +498,7 @@ final class ProtoTruthMessageDifferencer {
               .setFieldDescriptor(fieldDescriptor)
               .setActual(actualList.get(index))
               .setActualFieldIndex(index)
+              .setProtoPrinter(protoPrinter)
               .build());
     }
 
@@ -555,7 +560,8 @@ final class ProtoTruthMessageDifferencer {
     RepeatedField.PairResult.Builder pairResultBuilder =
         RepeatedField.PairResult.newBuilder()
             .setResult(comparison.result())
-            .setFieldDescriptor(fieldDescriptor);
+            .setFieldDescriptor(fieldDescriptor)
+            .setProtoPrinter(protoPrinter);
     if (actual != null) {
       pairResultBuilder.setActual(actual).setActualFieldIndex(actualFieldIndex);
     }
@@ -687,7 +693,8 @@ final class ProtoTruthMessageDifferencer {
         SingularField.newBuilder()
             .setSubScopeId(SubScopeId.of(fieldDescriptor))
             .setFieldName(fieldName)
-            .setResult(result.build());
+            .setResult(result.build())
+            .setProtoPrinter(protoPrinter);
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -750,7 +757,8 @@ final class ProtoTruthMessageDifferencer {
         SingularField.newBuilder()
             .setSubScopeId(SubScopeId.of(fieldDescriptor))
             .setFieldName(fieldName)
-            .setResult(result.build());
+            .setResult(result.build())
+            .setProtoPrinter(protoPrinter);
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -904,7 +912,8 @@ final class ProtoTruthMessageDifferencer {
         SingularField.newBuilder()
             .setSubScopeId(SubScopeId.of(unknownFieldDescriptor))
             .setFieldName(fieldName)
-            .setResult(result.build());
+            .setResult(result.build())
+            .setProtoPrinter(protoPrinter);
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -932,7 +941,8 @@ final class ProtoTruthMessageDifferencer {
         SingularField.newBuilder()
             .setSubScopeId(SubScopeId.of(unknownFieldDescriptor))
             .setFieldName(fieldName)
-            .setResult(result.build());
+            .setResult(result.build())
+            .setProtoPrinter(protoPrinter);
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }

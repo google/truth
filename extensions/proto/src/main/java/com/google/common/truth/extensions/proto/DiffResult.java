@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
-import com.google.common.truth.extensions.proto.RecursableDiffEntity.WithResultCode.Result;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ForOverride;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -45,6 +44,7 @@ import java.util.Set;
  */
 @AutoValue
 abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
+
   /**
    * Structural summary of the difference between two singular (non-repeated) fields.
    *
@@ -54,7 +54,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
    * to the default value, and the other did not.
    */
   @AutoValue
-  abstract static class SingularField extends RecursableDiffEntity.WithResultCode {
+  abstract static class SingularField extends RecursableDiffEntity.WithResultCode
+      implements ProtoPrintable {
     /** The type information for this field. May be absent if result code is {@code IGNORED}. */
     abstract Optional<SubScopeId> subScopeId();
 
@@ -108,9 +109,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         case ADDED:
           sb.append("added: ").append(fieldPrefix).append(": ");
           if (actual().get() instanceof Message) {
-            sb.append("\n").append(actual().get());
+            sb.append("\n");
+            printMessage((Message) actual().get(), sb);
           } else {
-            sb.append(valueString(subScopeId().get(), actual().get())).append("\n");
+            printFieldValue(subScopeId().get(), actual().get(), sb);
+            sb.append("\n");
           }
           return;
         case IGNORED:
@@ -122,9 +125,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
             sb.append("\n");
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
-            sb.append(": ")
-                .append(valueString(subScopeId().get(), actualOrExpected()))
-                .append("\n");
+            sb.append(": ");
+            printFieldValue(subScopeId().get(), actualOrExpected(), sb);
+            sb.append("\n");
           }
           return;
         case MODIFIED:
@@ -133,19 +136,21 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
             sb.append("\n");
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
-            sb.append(": ")
-                .append(valueString(subScopeId().get(), expected().get()))
-                .append(" -> ")
-                .append(valueString(subScopeId().get(), actual().get()))
-                .append("\n");
+            sb.append(": ");
+            printFieldValue(subScopeId().get(), expected().get(), sb);
+            sb.append(" -> ");
+            printFieldValue(subScopeId().get(), actual().get(), sb);
+            sb.append("\n");
           }
           return;
         case REMOVED:
           sb.append("deleted: ").append(fieldPrefix).append(": ");
           if (expected().get() instanceof Message) {
-            sb.append("\n").append(expected().get());
+            sb.append("\n");
+            printMessage((Message) expected().get(), sb);
           } else {
-            sb.append(valueString(subScopeId().get(), expected().get())).append("\n");
+            printFieldValue(subScopeId().get(), expected().get(), sb);
+            sb.append("\n");
           }
           return;
         default:
@@ -159,7 +164,12 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     }
 
     static SingularField ignored(String fieldName) {
-      return newBuilder().setFieldName(fieldName).setResult(Result.IGNORED).build();
+      return newBuilder()
+          .setFieldName(fieldName)
+          .setResult(Result.IGNORED)
+          // Ignored fields don't need a customized proto printer.
+          .setProtoPrinter(TextFormat.printer())
+          .build();
     }
 
     static Builder newBuilder() {
@@ -184,6 +194,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
 
       abstract Builder setUnknownsBreakdown(UnknownFieldSetDiff unknownsBreakdown);
 
+      abstract Builder setProtoPrinter(TextFormat.Printer value);
+
       abstract SingularField build();
     }
   }
@@ -206,7 +218,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
      * If both are present but the indexes differ, it represents a 'move'.
      */
     @AutoValue
-    abstract static class PairResult extends RecursableDiffEntity.WithResultCode {
+    abstract static class PairResult extends RecursableDiffEntity.WithResultCode
+        implements ProtoPrintable {
       /** The {@link FieldDescriptor} describing the repeated field for this pair. */
       abstract FieldDescriptor fieldDescriptor();
 
@@ -264,9 +277,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           case ADDED:
             sb.append("added: ").append(indexed(fieldPrefix, actualFieldIndex())).append(": ");
             if (isMessage()) {
-              sb.append("\n").append(actual().get());
+              sb.append("\n");
+              printMessage((Message) actual().get(), sb);
             } else {
-              sb.append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              printFieldValue(fieldDescriptor(), actual().get(), sb);
+              sb.append("\n");
             }
             return;
           case IGNORED:
@@ -286,7 +301,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
               sb.append("\n");
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(" ");
+              printFieldValue(fieldDescriptor(), actual().get(), sb);
+              sb.append("\n");
             }
             return;
           case MATCHED:
@@ -303,7 +320,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
               sb.append("\n");
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(" ");
+              printFieldValue(fieldDescriptor(), actual().get(), sb);
+              sb.append("\n");
             }
             return;
           case MOVED_OUT_OF_ORDER:
@@ -316,7 +335,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
               sb.append("\n");
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(" ");
+              printFieldValue(fieldDescriptor(), actual().get(), sb);
+              sb.append("\n");
             }
             return;
           case MODIFIED:
@@ -333,18 +354,20 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
               sb.append("\n");
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ")
-                  .append(valueString(fieldDescriptor(), expected().get()))
-                  .append(" -> ")
-                  .append(valueString(fieldDescriptor(), actual().get()));
+              sb.append(" ");
+              printFieldValue(fieldDescriptor(), expected().get(), sb);
+              sb.append(" -> ");
+              printFieldValue(fieldDescriptor(), actual().get(), sb);
             }
             return;
           case REMOVED:
             sb.append("deleted: ").append(indexed(fieldPrefix, expectedFieldIndex())).append(": ");
             if (isMessage()) {
-              sb.append("\n").append(expected().get());
+              sb.append("\n");
+              printMessage((Message) expected().get(), sb);
             } else {
-              sb.append(valueString(fieldDescriptor(), expected().get())).append("\n");
+              printFieldValue(fieldDescriptor(), expected().get(), sb);
+              sb.append("\n");
             }
             return;
         }
@@ -376,6 +399,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         abstract Builder setActual(Object actual);
 
         abstract Builder setExpected(Object expected);
+
+        abstract Builder setProtoPrinter(TextFormat.Printer value);
 
         abstract Builder setBreakdown(DiffResult breakdown);
 
@@ -513,6 +538,48 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     }
   }
 
+  /** Utilities to support printing messages and proto fields using a {@link TextFormat.Printer}. */
+  interface ProtoPrintable {
+    TextFormat.Printer protoPrinter();
+
+    default void printMessage(Message m, StringBuilder sb) {
+      try {
+        protoPrinter().print(m, sb);
+      } catch (IOException impossible) {
+        throw new AssertionError(impossible);
+      }
+    }
+
+    default void printFieldValue(SubScopeId subScopeId, Object o, StringBuilder sb) {
+      switch (subScopeId.kind()) {
+        case FIELD_DESCRIPTOR:
+          printFieldValue(subScopeId.fieldDescriptor(), o, sb);
+          return;
+        case UNKNOWN_FIELD_DESCRIPTOR:
+          printFieldValue(subScopeId.unknownFieldDescriptor(), o, sb);
+          return;
+      }
+      throw new AssertionError(subScopeId.kind());
+    }
+
+    default void printFieldValue(FieldDescriptor field, Object value, StringBuilder sb) {
+      try {
+        protoPrinter().printFieldValue(field, value, sb);
+      } catch (IOException impossible) {
+        throw new AssertionError(impossible);
+      }
+    }
+
+    default void printFieldValue(
+        UnknownFieldDescriptor unknownField, Object value, StringBuilder sb) {
+      try {
+        TextFormat.printUnknownFieldValue(unknownField.type().wireType(), value, sb);
+      } catch (IOException impossible) {
+        throw new AssertionError(impossible);
+      }
+    }
+  }
+
   /** The {@link Message} being tested. */
   abstract Message actual();
 
@@ -597,36 +664,6 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
 
   private static String newFieldPrefix(String rootFieldPrefix, String toAdd) {
     return rootFieldPrefix.isEmpty() ? toAdd : (rootFieldPrefix + "." + toAdd);
-  }
-
-  private static String valueString(SubScopeId subScopeId, Object o) {
-    switch (subScopeId.kind()) {
-      case FIELD_DESCRIPTOR:
-        return valueString(subScopeId.fieldDescriptor(), o);
-      case UNKNOWN_FIELD_DESCRIPTOR:
-        return valueString(subScopeId.unknownFieldDescriptor(), o);
-    }
-    throw new AssertionError(subScopeId.kind());
-  }
-
-  private static String valueString(FieldDescriptor fieldDescriptor, Object o) {
-    StringBuilder sb = new StringBuilder();
-    try {
-      TextFormat.printFieldValue(fieldDescriptor, o, sb);
-      return sb.toString();
-    } catch (IOException impossible) {
-      throw new AssertionError(impossible);
-    }
-  }
-
-  private static String valueString(UnknownFieldDescriptor unknownFieldDescriptor, Object o) {
-    StringBuilder sb = new StringBuilder();
-    try {
-      TextFormat.printUnknownFieldValue(unknownFieldDescriptor.type().wireType(), o, sb);
-      return sb.toString();
-    } catch (IOException impossible) {
-      throw new AssertionError(impossible);
-    }
   }
 
   @CanIgnoreReturnValue
