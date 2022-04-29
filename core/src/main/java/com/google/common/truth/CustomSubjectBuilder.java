@@ -69,5 +69,5 @@ public abstract class CustomSubjectBuilder {
     return metadata;
   }
 
-  // TODO(user): Better enforce that subclasses implement a that() method.
+  // TODO(user,cgruber): Better enforce that subclasses implement a that() method.
 }
