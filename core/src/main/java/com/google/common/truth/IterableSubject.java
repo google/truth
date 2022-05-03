@@ -271,7 +271,7 @@ public class IterableSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(this.actual);
-    List<?> order = Lists.newArrayList(actual);
+    List<?> actualOrder = Lists.newArrayList(actual);
     final Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<Object> missing = newArrayList();
@@ -310,14 +310,14 @@ public class IterableSubject extends Subject {
     if (ordered) {
       return IN_ORDER;
     } else {
-      order.retainAll(expected);
+      actualOrder.retainAll(expected);
       return new Ordered() {
         @Override
         public void inOrder() {
-          failWithActual(
+          failWithoutActual(
                   simpleFact("required elements were all found, but order was wrong"),
                   fact("expected order for required elements", expected),
-                  fact("actual order for required elements", order));
+                  fact("actual order for required elements", actualOrder));
 
         }
       };
