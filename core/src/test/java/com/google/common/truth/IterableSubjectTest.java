@@ -390,6 +390,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         "expected order for required elements",
         "but was");
     assertFailureValue("expected order for required elements", "[null, 1, 3]");
+    assertFailureValue("but was", "[1, null, 3]");
+  }
+
+  @Test
+  public void iterableContainsAtLeastInOrderWithFailureWithActualOrder() {
+    expectFailureWhenTestingThat(asList(1, 2, null, 3, 4)).containsAtLeast(null, 1, 3).inOrder();
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "expected order for required elements",
+        "but order was",
+        "full contents");
+    assertFailureValue("expected order for required elements", "[null, 1, 3]");
+    assertFailureValue("but order was", "[1, null, 3]");
+    assertFailureValue("full contents", "[1, 2, null, 3, 4]");
   }
 
   @Test

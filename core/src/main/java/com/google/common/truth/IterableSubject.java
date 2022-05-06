@@ -298,22 +298,22 @@ public class IterableSubject extends Subject {
       return failAtLeast(expected, missing);
     }
 
-    /*
-     * TODO(cpovirk): In the NotInOrder case, also include a Fact that shows _only_ the required
-     * elements (that is, without any extras) but in the order they were actually found. That should
-     * make it easier for users to compare the actual order of the required elements to the expected
-     * order. Or, if that's too much trouble, at least try to find a better title for the full
-     * actual iterable than the default of "but was," which may _sound_ like it should show only the
-     * required elements, rather than the full actual iterable.
-     */
     return ordered
         ? IN_ORDER
         : new Ordered() {
           @Override
           public void inOrder() {
-            failWithActual(
-                simpleFact("required elements were all found, but order was wrong"),
-                fact("expected order for required elements", expected));
+            ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+            facts.add(simpleFact("required elements were all found, but order was wrong"));
+            facts.add(fact("expected order for required elements", expected));
+            List<Object> actualOrder = Lists.newArrayList(IterableSubject.this.actual);
+            if (actualOrder.retainAll(expected)) {
+              facts.add(fact("but order was", actualOrder));
+              facts.add(fullContents());
+              failWithoutActual(facts.build());
+            } else {
+              failWithActual(facts.build());
+            }
           }
         };
   }
@@ -841,7 +841,9 @@ public class IterableSubject extends Subject {
     }
   }
 
-  /** @deprecated You probably meant to call {@link #containsNoneOf} instead. */
+  /**
+   * @deprecated You probably meant to call {@link #containsNoneOf} instead.
+   */
   @Override
   @Deprecated
   public void isNoneOf(
@@ -849,7 +851,9 @@ public class IterableSubject extends Subject {
     super.isNoneOf(first, second, rest);
   }
 
-  /** @deprecated You probably meant to call {@link #containsNoneIn} instead. */
+  /**
+   * @deprecated You probably meant to call {@link #containsNoneIn} instead.
+   */
   @Override
   @Deprecated
   public void isNotIn(Iterable<?> iterable) {
@@ -1955,8 +1959,7 @@ public class IterableSubject extends Subject {
        * Returns a {@link Pairing} of the given expected and actual values, or {@code null} if the
        * expected values are not uniquely keyed.
        */
-      @Nullable
-      Pairing pair(
+      @Nullable Pairing pair(
           List<? extends E> expectedValues,
           List<? extends A> actualValues,
           Correspondence.ExceptionStore exceptions) {
