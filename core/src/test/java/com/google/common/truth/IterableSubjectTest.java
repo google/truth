@@ -448,6 +448,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         "expected order for required elements",
         "but was");
     assertFailureValue("expected order for required elements", "[1, 3, null]");
+    assertFailureValue("but was", "BadIterable"); // TODO(b/231966021): Output its elements.
   }
 
   @Test
