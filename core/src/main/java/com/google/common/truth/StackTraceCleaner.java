@@ -190,7 +190,8 @@ final class StackTraceCleaner {
   }
 
   private static final ImmutableSet<String> SUBJECT_CLASS =
-      ImmutableSet.of(Subject.class.getCanonicalName());
+      ImmutableSet.of(
+          Subject.class.getCanonicalName());
 
   private static final ImmutableSet<String> STANDARD_SUBJECT_BUILDER_CLASS =
       ImmutableSet.of(StandardSubjectBuilder.class.getCanonicalName());
