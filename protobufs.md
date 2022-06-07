@@ -22,11 +22,11 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
     **Gradle:**
 
     ```groovy
-    buildscript {
-      repositories.mavenLocal()
+    repositories {
+      mavenCentral()
     }
     dependencies {
-      testCompile "com.google.truth.extensions:truth-proto-extension:{{ site.version }}"
+      testImplementation "com.google.truth.extensions:truth-proto-extension:{{ site.version }}"
     }
     ```
 
@@ -155,11 +155,11 @@ doing dynamic comparisons. To use lite protos with proto truth:
     **Gradle:**
 
     ```groovy
-    buildscript {
-      repositories.mavenLocal()
+    repositories {
+      mavenCentral()
     }
     dependencies {
-      testCompile "com.google.truth.extensions:truth-liteproto-extension:{{ site.version }}"
+      testImplementation "com.google.truth.extensions:truth-liteproto-extension:{{ site.version }}"
     }
     ```
 
