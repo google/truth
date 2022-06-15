@@ -29,7 +29,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.truth.Correspondence;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
@@ -409,7 +408,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   abstract Builder toBuilder();
 
-  @CanIgnoreReturnValue
   @AutoValue.Builder
   abstract static class Builder {
     abstract Builder setIgnoreFieldAbsenceScope(FieldScopeLogic fieldScopeLogic);
@@ -433,6 +431,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
+    @CanIgnoreReturnValue
     final Builder setUnpackingAnyUsing(
         TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
       setUseTypeRegistry(typeRegistry);
@@ -444,7 +443,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
     abstract Builder setUseExtensionRegistry(ExtensionRegistry extensionRegistry);
 
-    @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
 
     abstract Builder setUsingCorrespondenceStringFunction(
@@ -455,11 +453,13 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     // Lazy formatting methods.
     // These allow us to print raw integer field numbers with meaningful names.
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceString(String string) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(usingCorrespondenceStringFunction(), Functions.constant(string)));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldNumbersString(
         String fmt, Iterable<Integer> fieldNumbers) {
       return setUsingCorrespondenceStringFunction(
@@ -468,6 +468,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
               FieldScopeUtil.fieldNumbersFunction(fmt, fieldNumbers)));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldDescriptorsString(
         String fmt, Iterable<FieldDescriptor> fieldDescriptors) {
       return setUsingCorrespondenceStringFunction(
@@ -476,6 +477,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
               Functions.constant(String.format(fmt, join(fieldDescriptors)))));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldScopeString(String fmt, FieldScope fieldScope) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(

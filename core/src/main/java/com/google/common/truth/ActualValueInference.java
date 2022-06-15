@@ -26,7 +26,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.CheckReturnValue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -1279,7 +1278,6 @@ final class ActualValueInference {
     }
 
     @AutoValue.Builder
-    @CanIgnoreReturnValue
     abstract static class Builder {
       abstract Builder setReceiver(StackEntry receiver);
 
@@ -1289,7 +1287,6 @@ final class ActualValueInference {
 
       abstract Builder setName(String name);
 
-      @CheckReturnValue
       abstract Invocation build();
     }
   }
