@@ -675,8 +675,22 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(one, two)).containsExactly(one, two).inOrder();
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(two, one));
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(one, two)).inOrder();
+  }
+
+  @Test
+  public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCodeFailureTooMany() {
+    HashCodeThrower one = new HashCodeThrower();
+    HashCodeThrower two = new HashCodeThrower();
 
     expectFailureWhenTestingThat(asList(one, two)).containsExactly(one);
+  }
+
+  @Test
+  public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCodeOneMismatch() {
+    HashCodeThrower one = new HashCodeThrower();
+    HashCodeThrower two = new HashCodeThrower();
+
+    expectFailureWhenTestingThat(asList(one, one)).containsExactly(one, two);
   }
 
   private static class HashCodeThrower {

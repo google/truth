@@ -25,13 +25,13 @@ import com.google.common.base.Equivalence.Wrapper;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.SetMultimap;
+import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -262,7 +262,7 @@ final class SubjectUtils {
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
   static List<Object> retainMatchingToString(Iterable<?> items, Iterable<?> itemsToCheck) {
-    SetMultimap<String, Object> stringValueToItemsToCheck = HashMultimap.create();
+    ListMultimap<String, Object> stringValueToItemsToCheck = ArrayListMultimap.create();
     for (Object itemToCheck : itemsToCheck) {
       stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
     }
