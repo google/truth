@@ -55,7 +55,7 @@ abstract class AbstractArraySubject extends Subject {
    * @throws IllegalArgumentException if {@code length < 0}
    */
   public final void hasLength(int length) {
-    checkArgument(length >= 0, "length (%s) must be >= 0");
+    checkArgument(length >= 0, "length (%s) must be >= 0", length);
     check("length").that(length()).isEqualTo(length);
   }
 
