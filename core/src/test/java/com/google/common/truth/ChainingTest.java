@@ -211,6 +211,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
   @Test
   public void badFormat() {
     try {
+      @SuppressWarnings("LenientFormatStringValidation") // Intentional for testing.
       Object unused = assertThat("root").check("%s %s", 1, 2, 3);
       assert_().fail();
     } catch (IllegalArgumentException expected) {

@@ -29,6 +29,7 @@ import org.junit.runners.JUnit4;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@SuppressWarnings("LenientFormatStringValidation") // Intentional for testing
 @RunWith(JUnit4.class)
 public class CustomFailureMessageTest extends BaseSubjectTestCase {
 
