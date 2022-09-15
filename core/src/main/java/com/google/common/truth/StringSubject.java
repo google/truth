@@ -59,7 +59,7 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string is not equal to the zero-length "empty string." */
   public void isEmpty() {
     if (actual == null) {
-      failWithActual(simpleFact("expected empty string"));
+      failWithActual(simpleFact("expected an empty string"));
     } else if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
@@ -68,7 +68,7 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string is equal to the zero-length "empty string." */
   public void isNotEmpty() {
     if (actual == null) {
-      failWithActual(simpleFact("expected nonempty string"));
+      failWithActual(simpleFact("expected a non-empty string"));
     } else if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }

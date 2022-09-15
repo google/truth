@@ -73,7 +73,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringIsEmptyFailNull() {
     expectFailureWhenTestingThat(null).isEmpty();
-    assertFailureKeys("expected empty string", "but was");
+    assertFailureKeys("expected an empty string", "but was");
   }
 
   @Test
@@ -90,7 +90,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringIsNotEmptyFailNull() {
     expectFailureWhenTestingThat(null).isNotEmpty();
-    assertFailureKeys("expected nonempty string", "but was");
+    assertFailureKeys("expected a non-empty string", "but was");
   }
 
   @Test
