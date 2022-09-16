@@ -20,9 +20,9 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.StreamSubject.streams;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
-import java.util.List;
 import java.util.stream.Stream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,17 +36,19 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
+  @SuppressWarnings("DoNotCall")
   @Test
   public void testIsEqualTo() throws Exception {
     Stream<String> stream = Stream.of("hello");
-    assertThat(stream).isEqualTo(stream);
+    assertThrows(UnsupportedOperationException.class, () -> assertThat(stream).isEqualTo(stream));
   }
 
+  @SuppressWarnings("DoNotCall")
   @Test
-  public void testIsEqualToList() throws Exception {
+  public void testIsNotEqualTo() throws Exception {
     Stream<String> stream = Stream.of("hello");
-    List<String> list = asList("hello");
-    AssertionError unused = expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
+    assertThrows(
+        UnsupportedOperationException.class, () -> assertThat(stream).isNotEqualTo(stream));
   }
 
   @Test

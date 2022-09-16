@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -223,7 +224,35 @@ public final class StreamSubject extends Subject {
     check().that(actualList).isInOrder(comparator);
   }
 
-  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  /**
+   * @deprecated {@code streamA.isEqualTo(streamB)} always fails, except when passed the exact same
+   *     stream reference
+   */
+  @Override
+  @DoNotCall(
+      "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
+          + " equality semantics")
+  @Deprecated
+  public void isEqualTo(@Nullable Object expected) {
+    throw new UnsupportedOperationException(
+        "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
+            + " equality semantics");
+  }
+
+  /**
+   * @deprecated {@code streamA.isNotEqualTo(streamB)} always passes, except when passed the exact
+   *     same stream reference
+   */
+  @Override
+  @DoNotCall(
+      "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
+          + " equality semantics")
+  @Deprecated
+  public void isNotEqualTo(@Nullable Object unexpected) {
+    throw new UnsupportedOperationException(
+        "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
+            + " equality semantics");
+  }
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }
