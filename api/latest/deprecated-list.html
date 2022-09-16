@@ -267,6 +267,20 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StreamSubject.html#isEqualTo(java.lang.Object)">com.google.common.truth.StreamSubject.isEqualTo&#8203;(Object)</a></th>
+<td class="colLast">
+<div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
+     stream reference</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StreamSubject.html#isNotEqualTo(java.lang.Object)">com.google.common.truth.StreamSubject.isNotEqualTo&#8203;(Object)</a></th>
+<td class="colLast">
+<div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
+     same stream reference</div>
+</td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StringSubject.html#isEquivalentAccordingToCompareTo(java.lang.String)">com.google.common.truth.StringSubject.isEquivalentAccordingToCompareTo&#8203;(String)</a></th>
 <td class="colLast">
 <div class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</div>

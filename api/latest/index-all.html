@@ -2455,6 +2455,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
+     stream reference</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails if the subject is not equal to the given object.</div>
@@ -2762,6 +2769,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
  <code>Float#equals</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
+     same stream reference</div>
+</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
