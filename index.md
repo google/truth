@@ -171,7 +171,9 @@ import static com.google.common.truth.Truth8.assertThat;
 ```java
 String string = "awesome";
 assertThat(string).startsWith("awe");
-assertWithMessage("Without me, it's just aweso").that(string).contains("me");
+assertWithMessage("Without me, it's just aweso")
+    .that(string)
+    .contains("me");
 
 Iterable<Color> googleColors = googleLogo.getColors();
 assertThat(googleColors)
