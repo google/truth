@@ -104,7 +104,7 @@ public class IterableSubject extends Subject {
   protected String actualCustomStringRepresentation() {
     if (actual != null) {
       // Check the value of iterable.toString() against the default Object.toString() implementation
-      // so we can avoid things like "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
+      // so that we can avoid things like "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
       String objectToString =
           actual.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(actual));
       if (actual.toString().equals(objectToString)) {
@@ -243,7 +243,7 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
@@ -260,7 +260,7 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -319,7 +319,7 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -688,7 +688,7 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that a actual iterable contains none of the excluded objects or fails. (Duplicates are
+   * Checks that an actual iterable contains none of the excluded objects or fails. (Duplicates are
    * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
    */
   public final void containsNoneOf(
@@ -986,7 +986,7 @@ public class IterableSubject extends Subject {
      *
      * <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
      * keyed by {@code keyFunction}, and if an unexpected element and a missing element have the
-     * same non-null key then the they are paired up. (Elements with null keys are not paired.) The
+     * same non-null key then they are paired up. (Elements with null keys are not paired.) The
      * failure message will show paired elements together, and a diff will be shown if the {@link
      * Correspondence#formatDiff} method returns non-null.
      *
@@ -1028,7 +1028,7 @@ public class IterableSubject extends Subject {
      * <p>On assertions where it makes sense to do so, the elements are paired as follows: the
      * unexpected elements are keyed by {@code actualKeyFunction}, the missing elements are keyed by
      * {@code expectedKeyFunction}, and if an unexpected element and a missing element have the same
-     * non-null key then the they are paired up. (Elements with null keys are not paired.) The
+     * non-null key then they are paired up. (Elements with null keys are not paired.) The
      * failure message will show paired elements together, and a diff will be shown if the {@link
      * Correspondence#formatDiff} method returns non-null.
      *
@@ -1502,7 +1502,7 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that correspond to all the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -1518,7 +1518,7 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that correspond to all the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -1584,7 +1584,7 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that correspond to all the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -2046,7 +2046,7 @@ public class IterableSubject extends Subject {
       }
     }
 
-    /** An description of a pairing between expected and actual values. N.B. This is mutable. */
+    /** A description of a pairing between expected and actual values. N.B. This is mutable. */
     private final class Pairing {
 
       /**
