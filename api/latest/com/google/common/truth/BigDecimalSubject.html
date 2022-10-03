@@ -124,13 +124,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li><a href="Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="ComparableSubject.html" title="class in com.google.common.truth">com.google.common.truth.ComparableSubject</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&gt;</li>
+<li><a href="ComparableSubject.html" title="class in com.google.common.truth">com.google.common.truth.ComparableSubject</a>&lt;java.math.BigDecimal&gt;</li>
 <li>
 <ul class="inheritance">
 <li>com.google.common.truth.BigDecimalSubject</li>
@@ -146,8 +146,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <hr>
 <pre>public final class <span class="typeNameLabel">BigDecimalSubject</span>
-extends <a href="ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&gt;</pre>
-<div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a> typed subjects.</div>
+extends <a href="ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;java.math.BigDecimal&gt;</pre>
+<div class="block">Propositions for <code>BigDecimal</code> typed subjects.</div>
 <dl>
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Kurt Alfred Kluever</dd>
@@ -191,40 +191,40 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.</div>
+<div class="block">Fails if the subject's value and scale is not equal to the given <code>BigDecimal</code>.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualToIgnoringScale(long)">isEqualToIgnoringScale</a></span>&#8203;(long&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject's value is not equal to the value of the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a> created from
+<div class="block">Fails if the subject's value is not equal to the value of the <code>BigDecimal</code> created from
  the expected <code>long</code> (i.e., fails if <code>actual.comparesTo(new BigDecimal(expected)) !=
  0</code>).</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualToIgnoringScale(java.lang.String)">isEqualToIgnoringScale</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualToIgnoringScale(java.lang.String)">isEqualToIgnoringScale</a></span>&#8203;(java.lang.String&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject's value is not equal to the value of the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a> created from
+<div class="block">Fails if the subject's value is not equal to the value of the <code>BigDecimal</code> created from
  the expected string (i.e., fails if <code>actual.comparesTo(new BigDecimal(expected)) != 0</code>).</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualToIgnoringScale(java.math.BigDecimal)">isEqualToIgnoringScale</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualToIgnoringScale(java.math.BigDecimal)">isEqualToIgnoringScale</a></span>&#8203;(java.math.BigDecimal&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject's value is not equal to the value of the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.</div>
+<div class="block">Fails if the subject's value is not equal to the value of the given <code>BigDecimal</code>.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(java.math.BigDecimal&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not equivalent to the given value according to <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true#compareTo(T)" title="class or interface in java.lang" class="externalLink"><code>Comparable.compareTo(T)</code></a>, (i.e., fails if <code>a.comparesTo(b) != 0</code>).</div>
+<div class="block">Fails if the subject is not equivalent to the given value according to <code>Comparable.compareTo(T)</code>, (i.e., fails if <code>a.comparesTo(b) != 0</code>).</div>
 </td>
 </tr>
 </table>
@@ -246,8 +246,8 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -271,8 +271,8 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualToIgnoringScale</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualToIgnoringScale&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</pre>
-<div class="block">Fails if the subject's value is not equal to the value of the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>. (i.e.,
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualToIgnoringScale&#8203;(java.math.BigDecimal&nbsp;expected)</pre>
+<div class="block">Fails if the subject's value is not equal to the value of the given <code>BigDecimal</code>. (i.e.,
  fails if <code>actual.comparesTo(expected) != 0</code>).
 
  <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
@@ -285,8 +285,8 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualToIgnoringScale</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualToIgnoringScale&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</pre>
-<div class="block">Fails if the subject's value is not equal to the value of the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a> created from
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualToIgnoringScale&#8203;(java.lang.String&nbsp;expected)</pre>
+<div class="block">Fails if the subject's value is not equal to the value of the <code>BigDecimal</code> created from
  the expected string (i.e., fails if <code>actual.comparesTo(new BigDecimal(expected)) != 0</code>).
 
  <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
@@ -300,7 +300,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <li class="blockList">
 <h4>isEqualToIgnoringScale</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isEqualToIgnoringScale&#8203;(long&nbsp;expected)</pre>
-<div class="block">Fails if the subject's value is not equal to the value of the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a> created from
+<div class="block">Fails if the subject's value is not equal to the value of the <code>BigDecimal</code> created from
  the expected <code>long</code> (i.e., fails if <code>actual.comparesTo(new BigDecimal(expected)) !=
  0</code>).
 
@@ -314,8 +314,8 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
-<div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
+<div class="block">Fails if the subject's value and scale is not equal to the given <code>BigDecimal</code>.
 
  <p><b>Note:</b> If you only want to compare the values of the BigDecimals and not their scales,
  use <a href="#isEqualToIgnoringScale(java.math.BigDecimal)"><code>isEqualToIgnoringScale(BigDecimal)</code></a> instead.</div>
@@ -331,14 +331,14 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockListLast">
 <li class="blockList">
 <h4>isEquivalentAccordingToCompareTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</pre>
-<div class="block">Fails if the subject is not equivalent to the given value according to <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true#compareTo(T)" title="class or interface in java.lang" class="externalLink"><code>Comparable.compareTo(T)</code></a>, (i.e., fails if <code>a.comparesTo(b) != 0</code>). This method behaves
+<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(java.math.BigDecimal&nbsp;expected)</pre>
+<div class="block">Fails if the subject is not equivalent to the given value according to <code>Comparable.compareTo(T)</code>, (i.e., fails if <code>a.comparesTo(b) != 0</code>). This method behaves
  identically to (the more clearly named) <a href="#isEqualToIgnoringScale(java.math.BigDecimal)"><code>isEqualToIgnoringScale(BigDecimal)</code></a>.
 
  <p><b>Note:</b> Do not use this method for checking object equality. Instead, use <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(Object)</code></a>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ComparableSubject.html#isEquivalentAccordingToCompareTo(T)">isEquivalentAccordingToCompareTo</a></code>&nbsp;in class&nbsp;<code><a href="ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&gt;</code></dd>
+<dd><code><a href="ComparableSubject.html#isEquivalentAccordingToCompareTo(T)">isEquivalentAccordingToCompareTo</a></code>&nbsp;in class&nbsp;<code><a href="ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;java.math.BigDecimal&gt;</code></dd>
 </dl>
 </li>
 </ul>

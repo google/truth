@@ -124,7 +124,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li>com.google.common.truth.extensions.proto.FieldScopes</li>
@@ -136,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <hr>
 <pre>public final class <span class="typeNameLabel">FieldScopes</span>
-extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></pre>
+extends java.lang.Object</pre>
 <div class="block">Factory class for <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> instances.</div>
 </li>
 </ul>
@@ -176,7 +176,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#allowingFieldDescriptors(java.lang.Iterable)">allowingFieldDescriptors</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#allowingFieldDescriptors(java.lang.Iterable)">allowingFieldDescriptors</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches nothing except the provided field descriptors for
  the message.</div>
@@ -193,7 +193,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#allowingFields(java.lang.Iterable)">allowingFields</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#allowingFields(java.lang.Iterable)">allowingFields</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches nothing except the provided field numbers for the
  top level message type.</div>
@@ -219,7 +219,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromSetFields(java.lang.Iterable)">fromSetFields</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromSetFields(java.lang.Iterable)">fromSetFields</a></span>&#8203;(java.lang.Iterable&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</code></th>
 <td class="colLast">
 <div class="block">Creates a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
  messages, with the same semantics as in <a href="#fromSetFields(com.google.protobuf.Message)"><code>fromSetFields(Message)</code></a>.</div>
@@ -236,7 +236,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptors(java.lang.Iterable)">ignoringFieldDescriptors</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptors(java.lang.Iterable)">ignoringFieldDescriptors</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches everything except the provided field descriptors for
  the message.</div>
@@ -253,7 +253,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFields(java.lang.Iterable)">ignoringFields</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFields(java.lang.Iterable)">ignoringFields</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches everything except the provided field numbers for the
  top level message type.</div>
@@ -271,8 +271,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink">equals</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink">hashCode</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang" class="externalLink">toString</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -356,7 +356,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>fromSetFields</h4>
-<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fromSetFields&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fromSetFields&#8203;(java.lang.Iterable&lt;? extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</pre>
 <div class="block">Creates a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
  messages, with the same semantics as in <a href="#fromSetFields(com.google.protobuf.Message)"><code>fromSetFields(Message)</code></a>.
 
@@ -391,7 +391,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFields</h4>
-<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;ignoringFields&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;ignoringFields&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches everything except the provided field numbers for the
  top level message type.
 
@@ -427,7 +427,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldDescriptors</h4>
-<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;ignoringFieldDescriptors&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;ignoringFieldDescriptors&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches everything except the provided field descriptors for
  the message.</div>
 <dl>
@@ -458,7 +458,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>allowingFields</h4>
-<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;allowingFields&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;allowingFields&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches nothing except the provided field numbers for the
  top level message type.</div>
 <dl>
@@ -489,7 +489,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>allowingFieldDescriptors</h4>
-<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;allowingFieldDescriptors&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;allowingFieldDescriptors&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches nothing except the provided field descriptors for
  the message.</div>
 <dl>

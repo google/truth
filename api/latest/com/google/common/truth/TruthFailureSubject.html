@@ -124,7 +124,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li><a href="Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a></li>
@@ -147,7 +147,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public final class <span class="typeNameLabel">TruthFailureSubject</span>
 extends <a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></pre>
-<div class="block">Subject for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>AssertionError</code></a> objects thrown by Truth. <code>TruthFailureSubject</code> contains
+<div class="block">Subject for <code>AssertionError</code> objects thrown by Truth. <code>TruthFailureSubject</code> contains
  methods for asserting about the individual "facts" of those failures. This allows tests to avoid
  asserting about the same fact more often than necessary, including avoiding asserting about facts
  that are set by other subjects that the main subject delegates to. This keeps tests shorter and
@@ -204,14 +204,14 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#factValue(java.lang.String)">factValue</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#factValue(java.lang.String)">factValue</a></span>&#8203;(java.lang.String&nbsp;key)</code></th>
 <td class="colLast">
 <div class="block">Returns a subject for the value with the given name.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#factValue(java.lang.String,int)">factValue</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#factValue(java.lang.String,int)">factValue</a></span>&#8203;(java.lang.String&nbsp;key,
          int&nbsp;index)</code></th>
 <td class="colLast">
 <div class="block">Returns a subject for the value of the <code>index</code>-th instance of the fact with the given
@@ -219,7 +219,7 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>static <a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a>,&#8203;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a>&gt;</code></td>
+<td class="colFirst"><code>static <a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a>,&#8203;java.lang.AssertionError&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#truthFailures()">truthFailures</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Factory for creating <a href="TruthFailureSubject.html" title="class in com.google.common.truth"><code>TruthFailureSubject</code></a> instances.</div>
@@ -244,8 +244,8 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -269,7 +269,7 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 <ul class="blockList">
 <li class="blockList">
 <h4>truthFailures</h4>
-<pre class="methodSignature">public static&nbsp;<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a>,&#8203;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a>&gt;&nbsp;truthFailures()</pre>
+<pre class="methodSignature">public static&nbsp;<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a>,&#8203;java.lang.AssertionError&gt;&nbsp;truthFailures()</pre>
 <div class="block">Factory for creating <a href="TruthFailureSubject.html" title="class in com.google.common.truth"><code>TruthFailureSubject</code></a> instances. Most users will just use <a href="ExpectFailure.html#assertThat(java.lang.AssertionError)"><code>ExpectFailure.assertThat(java.lang.AssertionError)</code></a>.</div>
 </li>
 </ul>
@@ -289,7 +289,7 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 <ul class="blockList">
 <li class="blockList">
 <h4>factValue</h4>
-<pre class="methodSignature">public&nbsp;<a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a>&nbsp;factValue&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key)</pre>
+<pre class="methodSignature">public&nbsp;<a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a>&nbsp;factValue&#8203;(java.lang.String&nbsp;key)</pre>
 <div class="block">Returns a subject for the value with the given name.
 
  <p>The value is always a string, the <code>String.valueOf</code> representation of the value passed
@@ -317,7 +317,7 @@ extends <a href="ThrowableSubject.html" title="class in com.google.common.truth"
 <ul class="blockListLast">
 <li class="blockList">
 <h4>factValue</h4>
-<pre class="methodSignature">public&nbsp;<a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a>&nbsp;factValue&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
+<pre class="methodSignature">public&nbsp;<a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a>&nbsp;factValue&#8203;(java.lang.String&nbsp;key,
                                int&nbsp;index)</pre>
 <div class="block">Returns a subject for the value of the <code>index</code>-th instance of the fact with the given
  name. Most Truth failures do not contain multiple facts with the same key, so most tests should

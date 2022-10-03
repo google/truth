@@ -133,8 +133,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  compared.
 
  <p>The <b>keys</b> of these maps are treated as ordinary objects, and keys which happen to be
- protocol buffers are not given special treatment. They are compared with <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(java.lang.Object)</code></a>
- and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink"><code>Object.hashCode()</code></a> as documented by the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink"><code>Map</code></a> interface.
+ protocol buffers are not given special treatment. They are compared with <code>Object.equals(java.lang.Object)</code>
+ and <code>Object.hashCode()</code> as documented by the <code>Map</code> interface.
 
  <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
  return a <code>MapWithProtoValuesFluentAssertion</code>, such as <a href="#containsExactly(java.lang.Object,M,java.lang.Object...)"><code>containsExactly(java.lang.Object, M, java.lang.Object...)</code></a> or <a href="#containsEntry(java.lang.Object,M)"><code>containsEntry(java.lang.Object, M)</code></a>.
@@ -171,7 +171,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,M)">containsEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,M)">containsEntry</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expectedKey,
              @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;expectedValue)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
@@ -180,9 +180,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,M,java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,M,java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable java.lang.Object&nbsp;k0,
                @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;v0,
-               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
+               @Nullable java.lang.Object...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
  correspond to the given values.</div>
@@ -190,7 +190,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyEntriesIn(java.util.Map)">containsExactlyEntriesIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;? extends <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMap)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyEntriesIn(java.util.Map)">containsExactlyEntriesIn</a></span>&#8203;(java.util.Map&lt;?,&#8203;? extends <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMap)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain exactly the keys in the given map, mapping to values that
  correspond to the values of the given map.</div>
@@ -198,7 +198,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,M)">doesNotContainEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,M)">doesNotContainEntry</a></span>&#8203;(@Nullable java.lang.Object&nbsp;excludedKey,
                    @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;excludedValue)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the given
@@ -207,7 +207,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</div>
@@ -243,7 +243,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored.</div>
@@ -260,7 +260,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringExtraRepeatedFieldElementsOfFieldsForValues(java.lang.Iterable)">ignoringExtraRepeatedFieldElementsOfFieldsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringExtraRepeatedFieldElementsOfFieldsForValues(java.lang.Iterable)">ignoringExtraRepeatedFieldElementsOfFieldsForValues</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
  numbers should be ignored.</div>
@@ -285,7 +285,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldAbsenceOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldAbsenceOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality.</div>
@@ -302,7 +302,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldAbsenceOfFieldsForValues(java.lang.Iterable)">ignoringFieldAbsenceOfFieldsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldAbsenceOfFieldsForValues(java.lang.Iterable)">ignoringFieldAbsenceOfFieldsForValues</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
  ignored when comparing for equality.</div>
@@ -318,7 +318,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptorsForValues(java.lang.Iterable)">ignoringFieldDescriptorsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptorsForValues(java.lang.Iterable)">ignoringFieldDescriptorsForValues</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
 </td>
@@ -340,7 +340,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldsForValues(java.lang.Iterable)">ignoringFieldsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldsForValues(java.lang.Iterable)">ignoringFieldsForValues</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
@@ -364,7 +364,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(java.lang.Iterable)">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality.</div>
@@ -381,7 +381,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringRepeatedFieldOrderOfFieldsForValues(java.lang.Iterable)">ignoringRepeatedFieldOrderOfFieldsForValues</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringRepeatedFieldOrderOfFieldsForValues(java.lang.Iterable)">ignoringRepeatedFieldOrderOfFieldsForValues</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality.</div>
@@ -416,7 +416,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usingDoubleToleranceForFieldDescriptorsForValues(double,java.lang.Iterable)">usingDoubleToleranceForFieldDescriptorsForValues</a></span>&#8203;(double&nbsp;tolerance,
-                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+                                                java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
@@ -435,7 +435,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i32" class="altColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usingDoubleToleranceForFieldsForValues(double,java.lang.Iterable)">usingDoubleToleranceForFieldsForValues</a></span>&#8203;(double&nbsp;tolerance,
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+                                      java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Compares double fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
@@ -462,7 +462,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i35" class="rowColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usingFloatToleranceForFieldDescriptorsForValues(float,java.lang.Iterable)">usingFloatToleranceForFieldDescriptorsForValues</a></span>&#8203;(float&nbsp;tolerance,
-                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
+                                               java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
@@ -481,7 +481,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usingFloatToleranceForFieldsForValues(float,java.lang.Iterable)">usingFloatToleranceForFieldsForValues</a></span>&#8203;(float&nbsp;tolerance,
-                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</code></th>
+                                     java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
@@ -563,7 +563,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldAbsenceOfFieldsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldsForValues&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
  ignored when comparing for equality. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>Descriptors.FieldDescriptor</code></a>) if they are to be ignored as well.
 
@@ -599,7 +599,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldAbsenceOfFieldDescriptorsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
  as well.
@@ -705,7 +705,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringRepeatedFieldOrderOfFieldsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldsForValues&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
  (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>Descriptors.FieldDescriptor</code></a>) if their orders are to be ignored as well.
@@ -742,7 +742,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
  orders are to be ignored as well.
@@ -798,7 +798,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringExtraRepeatedFieldElementsOfFieldsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldsForValues&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
  numbers should be ignored. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>Descriptors.FieldDescriptor</code></a>) if their extra elements are to be ignored as well.
 
@@ -836,7 +836,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
  ignored as well.
@@ -888,7 +888,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>usingDoubleToleranceForFieldsForValues</h4>
 <pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;usingDoubleToleranceForFieldsForValues&#8203;(double&nbsp;tolerance,
-                                                                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+                                                                            java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Compares double fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
 <dl>
@@ -921,7 +921,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>usingDoubleToleranceForFieldDescriptorsForValues</h4>
 <pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;usingDoubleToleranceForFieldDescriptorsForValues&#8203;(double&nbsp;tolerance,
-                                                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+                                                                                      java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 <dl>
@@ -969,7 +969,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>usingFloatToleranceForFieldsForValues</h4>
 <pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;usingFloatToleranceForFieldsForValues&#8203;(float&nbsp;tolerance,
-                                                                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+                                                                           java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
 <dl>
@@ -1002,7 +1002,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>usingFloatToleranceForFieldDescriptorsForValues</h4>
 <pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;usingFloatToleranceForFieldDescriptorsForValues&#8203;(float&nbsp;tolerance,
-                                                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+                                                                                     java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
 <dl>
@@ -1072,7 +1072,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang" class="externalLink">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldsForValues&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.
 
  <p>This method adds on any previous <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> related settings, overriding previous
@@ -1108,7 +1108,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldDescriptorsForValues</h4>
-<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<pre class="methodSignature"><a href="MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a>&lt;<a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues&#8203;(java.lang.Iterable&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.
 
  <p>This method adds on any previous <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> related settings, overriding previous
@@ -1184,7 +1184,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>containsEntry</h4>
-<pre class="methodSignature">void&nbsp;containsEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
+<pre class="methodSignature">void&nbsp;containsEntry&#8203;(@Nullable java.lang.Object&nbsp;expectedKey,
                    @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;expectedValue)</pre>
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
  the given value.</div>
@@ -1198,7 +1198,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainEntry</h4>
-<pre class="methodSignature">void&nbsp;doesNotContainEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
+<pre class="methodSignature">void&nbsp;doesNotContainEntry&#8203;(@Nullable java.lang.Object&nbsp;excludedKey,
                          @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;excludedValue)</pre>
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the given
  value.</div>
@@ -1213,13 +1213,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable java.lang.Object&nbsp;k0,
                         @Nullable <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&nbsp;v0,
-                        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
+                        @Nullable java.lang.Object...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
  correspond to the given values.
 
- <p>The values must all be of type <code>M</code>, and a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> will be thrown if
+ <p>The values must all be of type <code>M</code>, and a <code>ClassCastException</code> will be thrown if
  any other type is encountered.
 
  <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
@@ -1233,7 +1233,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>containsExactlyEntriesIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;? extends <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMap)</pre>
+<a href="../../Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn&#8203;(java.util.Map&lt;?,&#8203;? extends <a href="MapWithProtoValuesFluentAssertion.html" title="type parameter in MapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMap)</pre>
 <div class="block">Fails if the map does not contain exactly the keys in the given map, mapping to values that
  correspond to the values of the given map.</div>
 </li>
@@ -1244,14 +1244,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>equals</h4>
-<pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-boolean&nbsp;equals&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</pre>
+<pre class="methodSignature">@Deprecated
+boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</div>
 </div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></code></dd>
+<dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../Subject.html#equals(java.lang.Object)"><code>Subject.equals(Object)</code></a></dd>
 </dl>
@@ -1263,14 +1263,14 @@ boolean&nbsp;equals&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/ja
 <ul class="blockListLast">
 <li class="blockList">
 <h4>hashCode</h4>
-<pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
+<pre class="methodSignature">@Deprecated
 int&nbsp;hashCode()</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>MapWithProtoValuesFluentAssertion</code> does not support <code>hashCode()</code>.</div>
 </div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></code></dd>
+<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../Subject.html#hashCode()"><code>Subject.hashCode()</code></a></dd>
 </dl>

@@ -124,7 +124,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
+<li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
 <li><a href="Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a></li>
@@ -146,18 +146,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">IterableSubject</span>
 extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a></pre>
-<div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> subjects.
+<div class="block">Propositions for <code>Iterable</code> subjects.
 
  <p><b>Note:</b>
 
  <ul>
-   <li>Assertions may iterate through the given <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> more than once. If you have an
-       unusual implementation of <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> which does not support multiple iterations
+   <li>Assertions may iterate through the given <code>Iterable</code> more than once. If you have an
+       unusual implementation of <code>Iterable</code> which does not support multiple iterations
        (sometimes known as a "one-shot iterable"), you must copy your iterable into a collection
        which does (e.g. <code>ImmutableList.copyOf(iterable)</code> or, if your iterable may contain
        null, <code>newArrayList(iterable)</code>). If you don't, you may see surprising failures.
-   <li>Assertions may also require that the elements in the given <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> implement
-       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink"><code>Object.hashCode()</code></a> correctly.
+   <li>Assertions may also require that the elements in the given <code>Iterable</code> implement
+       <code>Object.hashCode()</code> correctly.
  </ul></div>
 <dl>
 <dt><span class="simpleTagLabel">Author:</span></dt>
@@ -187,7 +187,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <td class="colFirst"><code>static class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,&#8203;<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;</span></code></th>
 <td class="colLast">
-<div class="block">A partially specified check in which the actual elements (normally the elements of the <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) are compared to expected elements using a <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.</div>
+<div class="block">A partially specified check in which the actual elements (normally the elements of the <code>Iterable</code> under test) are compared to expected elements using a <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.</div>
 </td>
 </tr>
 </table>
@@ -218,7 +218,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.lang.Iterable)">IterableSubject</a></span>&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;iterable)</code></th>
+               @Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
 <div class="block">Constructor for use by subclasses.</div>
 </td>
@@ -242,7 +242,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
+<td class="colFirst"><code>protected java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#actualCustomStringRepresentation()">actualCustomStringRepresentation</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
@@ -258,14 +258,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(java.lang.Object)">contains</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;element)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(java.lang.Object)">contains</a></span>&#8203;(@Nullable java.lang.Object&nbsp;element)</code></th>
 <td class="colLast">
 <div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Iterable)">containsAnyIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Iterable)">containsAnyIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided
  collection or fails.</div>
@@ -273,7 +273,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Object%5B%5D)">containsAnyIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Object%5B%5D)">containsAnyIn</a></span>&#8203;(java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
  fails.</div>
@@ -281,53 +281,53 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyOf(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAnyOf</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-             @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-             @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyOf(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAnyOf</a></span>&#8203;(@Nullable java.lang.Object&nbsp;first,
+             @Nullable java.lang.Object&nbsp;second,
+             @Nullable java.lang.Object @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one of the provided objects or fails.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;firstExpected,
-               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;secondExpected,
-               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;restOfExpected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast</a></span>&#8203;(@Nullable java.lang.Object&nbsp;firstExpected,
+               @Nullable java.lang.Object&nbsp;secondExpected,
+               @Nullable java.lang.Object @Nullable ...&nbsp;restOfExpected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expectedIterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;varargs)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable java.lang.Object @Nullable ...&nbsp;varargs)</code></th>
 <td class="colLast">
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Object%5B%5D)">containsExactlyElementsIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Object%5B%5D)">containsExactlyElementsIn</a></span>&#8203;(java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
@@ -341,7 +341,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
  iterable or fails.</div>
@@ -349,7 +349,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Object%5B%5D)">containsNoneIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Object%5B%5D)">containsNoneIn</a></span>&#8203;(java.lang.Object[]&nbsp;excluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains none of the elements contained in the excluded array
  or fails.</div>
@@ -357,16 +357,16 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">containsNoneOf</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;firstExcluded,
-              @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;secondExcluded,
-              @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;restOfExcluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">containsNoneOf</a></span>&#8203;(@Nullable java.lang.Object&nbsp;firstExcluded,
+              @Nullable java.lang.Object&nbsp;secondExcluded,
+              @Nullable java.lang.Object @Nullable ...&nbsp;restOfExcluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that a actual iterable contains none of the excluded objects or fails.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(java.lang.Object)">doesNotContain</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;element)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(java.lang.Object)">doesNotContain</a></span>&#8203;(@Nullable java.lang.Object&nbsp;element)</code></th>
 <td class="colLast">
 <div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
 </td>
@@ -394,7 +394,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
@@ -408,7 +408,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInOrder(java.util.Comparator)">isInOrder</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInOrder(java.util.Comparator)">isInOrder</a></span>&#8203;(java.util.Comparator&lt;?&gt;&nbsp;comparator)</code></th>
 <td class="colLast">
 <div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
 </td>
@@ -423,16 +423,16 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInStrictOrder(java.util.Comparator)">isInStrictOrder</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInStrictOrder(java.util.Comparator)">isInStrictOrder</a></span>&#8203;(java.util.Comparator&lt;?&gt;&nbsp;comparator)</code></th>
 <td class="colLast">
 <div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></span>&#8203;(@Nullable java.lang.Object&nbsp;first,
+        @Nullable java.lang.Object&nbsp;second,
+        @Nullable java.lang.Object @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)"><code>containsNoneOf(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a> instead.</div>
@@ -448,7 +448,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;iterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneIn(java.lang.Iterable)"><code>containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</div>
@@ -467,8 +467,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
+<code>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -493,7 +493,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <li class="blockList">
 <h4>IterableSubject</h4>
 <pre>protected&nbsp;IterableSubject&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-                          @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;iterable)</pre>
+                          @Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="Subject.html#check(java.lang.String,java.lang.Object...)"><code>check(...)</code></a><code>.that(actual)</code>.</div>
 </li>
@@ -514,7 +514,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>actualCustomStringRepresentation</h4>
-<pre class="methodSignature">protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;actualCustomStringRepresentation()</pre>
+<pre class="methodSignature">protected&nbsp;java.lang.String&nbsp;actualCustomStringRepresentation()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#actualCustomStringRepresentation()">Subject</a></code></span></div>
 <div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
  or otherwise position it in an error message. This should only be overridden to provide an
@@ -536,14 +536,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
  objects are equal if any of the following is true:
 
  <ul>
    <li>they are equal according to <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal(java.lang.Object,java.lang.Object)" title="class or interface in com.google.common.base" class="externalLink"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
-   <li>they are arrays and are considered equal by the appropriate <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals(long%5B%5D,long%5B%5D)" title="class or interface in java.util" class="externalLink"><code>Arrays.equals(long[], long[])</code></a>
+   <li>they are arrays and are considered equal by the appropriate <code>Arrays.equals(long[], long[])</code>
        overload
    <li>they are boxed integer types (<code>Byte</code>, <code>Short</code>, <code>Character</code>, <code>
        Integer</code>, or <code>Long</code>) and they are numerically equal when converted to <code>Long</code>.
@@ -552,7 +552,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
        <code>Double</code>. (This allows <code>assertThat(someDouble).isEqualTo(0)</code> to pass.)
  </ul>
 
- <p><b>Note:</b> This method does not test the <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(java.lang.Object)</code></a> implementation itself; it
+ <p><b>Note:</b> This method does not test the <code>Object.equals(java.lang.Object)</code> implementation itself; it
  <i>assumes</i> that method is functioning correctly according to its contract. Testing an
  <code>equals</code> implementation requires a utility such as <a href="https://mvnrepository.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s <a href="https://static.javadoc.io/com.google.guava/guava-testlib/23.0/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
 
@@ -601,7 +601,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;contains&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;element)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;contains&#8203;(@Nullable java.lang.Object&nbsp;element)</pre>
 <div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
 </li>
 </ul>
@@ -611,7 +611,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContain</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContain&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;element)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContain&#8203;(@Nullable java.lang.Object&nbsp;element)</pre>
 <div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
 </li>
 </ul>
@@ -631,9 +631,9 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAnyOf</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyOf&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-                                @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-                                @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;rest)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyOf&#8203;(@Nullable java.lang.Object&nbsp;first,
+                                @Nullable java.lang.Object&nbsp;second,
+                                @Nullable java.lang.Object @Nullable ...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains at least one of the provided objects or fails.</div>
 </li>
 </ul>
@@ -643,7 +643,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAnyIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided
  collection or fails.</div>
 </li>
@@ -654,7 +654,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAnyIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(java.lang.Object[]&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
  fails.</div>
 </li>
@@ -666,9 +666,9 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <li class="blockList">
 <h4>containsAtLeast</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;firstExpected,
-                                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;secondExpected,
-                                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;restOfExpected)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable java.lang.Object&nbsp;firstExpected,
+                                     @Nullable java.lang.Object&nbsp;secondExpected,
+                                     @Nullable java.lang.Object @Nullable ...&nbsp;restOfExpected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements to this call then it must appear at
  least that number of times in the actual elements.
@@ -685,7 +685,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expectedIterable)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -702,7 +702,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Object[]&nbsp;expected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -719,7 +719,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;varargs)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable java.lang.Object @Nullable ...&nbsp;varargs)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
@@ -739,7 +739,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the <code>
@@ -757,7 +757,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;expected)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(java.lang.Object[]&nbsp;expected)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the array
@@ -773,9 +773,9 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>containsNoneOf</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneOf&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;firstExcluded,
-                                 @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;secondExcluded,
-                                 @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;restOfExcluded)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneOf&#8203;(@Nullable java.lang.Object&nbsp;firstExcluded,
+                                 @Nullable java.lang.Object&nbsp;secondExcluded,
+                                 @Nullable java.lang.Object @Nullable ...&nbsp;restOfExcluded)</pre>
 <div class="block">Checks that a actual iterable contains none of the excluded objects or fails. (Duplicates are
  irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)</div>
 </li>
@@ -786,7 +786,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>containsNoneIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;excluded)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</pre>
 <div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
  iterable or fails. (Duplicates are irrelevant to this test, which fails if any of the actual
  elements equal any of the excluded.)</div>
@@ -798,7 +798,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>containsNoneIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>[]&nbsp;excluded)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(java.lang.Object[]&nbsp;excluded)</pre>
 <div class="block">Checks that the actual iterable contains none of the elements contained in the excluded array
  or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
  equal any of the excluded.)</div>
@@ -816,8 +816,8 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
  than the element that preceded it.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang" class="externalLink">NullPointerException</a></code> - if any element is null</dd>
+<dd><code>java.lang.ClassCastException</code> - if any pair of elements is not mutually Comparable</dd>
+<dd><code>java.lang.NullPointerException</code> - if any element is null</dd>
 </dl>
 </li>
 </ul>
@@ -827,13 +827,13 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>isInStrictOrder</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isInStrictOrder&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isInStrictOrder&#8203;(java.util.Comparator&lt;?&gt;&nbsp;comparator)</pre>
 <div class="block">Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
  ordered means that each element in the iterable is <i>strictly</i> greater than the element
  that preceded it.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
+<dd><code>java.lang.ClassCastException</code> - if any pair of elements is not mutually Comparable</dd>
 </dl>
 </li>
 </ul>
@@ -849,8 +849,8 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
  preceded it.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang" class="externalLink">NullPointerException</a></code> - if any element is null</dd>
+<dd><code>java.lang.ClassCastException</code> - if any pair of elements is not mutually Comparable</dd>
+<dd><code>java.lang.NullPointerException</code> - if any element is null</dd>
 </dl>
 </li>
 </ul>
@@ -860,12 +860,12 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>isInOrder</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isInOrder&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isInOrder&#8203;(java.util.Comparator&lt;?&gt;&nbsp;comparator)</pre>
 <div class="block">Fails if the iterable is not ordered, according to the given comparator. Ordered means that
  each element in the iterable is greater than or equal to the element that preceded it.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
+<dd><code>java.lang.ClassCastException</code> - if any pair of elements is not mutually Comparable</dd>
 </dl>
 </li>
 </ul>
@@ -875,10 +875,10 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>isNoneOf</h4>
-<pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a> @Nullable ...&nbsp;rest)</pre>
+<pre class="methodSignature">@Deprecated
+public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable java.lang.Object&nbsp;first,
+                     @Nullable java.lang.Object&nbsp;second,
+                     @Nullable java.lang.Object @Nullable ...&nbsp;rest)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)"><code>containsNoneOf(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a> instead.</div>
 </div>
@@ -896,8 +896,8 @@ public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable <a href="https://docs.oracle.com
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotIn</h4>
-<pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;iterable)</pre>
+<pre class="methodSignature">@Deprecated
+public&nbsp;void&nbsp;isNotIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneIn(java.lang.Iterable)"><code>containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</div>
 </div>
@@ -916,7 +916,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
 <li class="blockList">
 <h4>comparingElementsUsing</h4>
 <pre class="methodSignature">public&nbsp;&lt;A,&#8203;E&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;&nbsp;comparingElementsUsing&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</pre>
-<div class="block">Starts a method chain for a check in which the actual elements (i.e. the elements of the <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) are compared to expected elements using the given <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.
+<div class="block">Starts a method chain for a check in which the actual elements (i.e. the elements of the <code>Iterable</code> under test) are compared to expected elements using the given <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.
  The actual elements must be of type <code>A</code>, the expected elements must be of type <code>E</code>.
  The check is actually executed by continuing the method chain. For example:
 
@@ -928,7 +928,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
  Iterable&lt;? extends A&gt;</code>), <code>correspondence</code> is a <code>Correspondence&lt;A, E&gt;</code>, and <code>
  expected</code> is an <code>E</code>.
 
- <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
+ <p>Any of the methods on the returned object may throw <code>ClassCastException</code> if they
  encounter an actual element that is not of type <code>A</code>.</div>
 </li>
 </ul>
@@ -940,7 +940,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
 <h4>formattingDiffsUsing</h4>
 <pre class="methodSignature">public&nbsp;&lt;T&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</pre>
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e. an element of the
- <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) and the element it is expected to be equal to, but isn't. The
+ <code>Iterable</code> under test) and the element it is expected to be equal to, but isn't. The
  actual and expected elements must be of type <code>T</code>. The check is actually executed by
  continuing the method chain. You may well want to use <a href="IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy(com.google.common.base.Function)"><code>IterableSubject.UsingCorrespondence.displayingDiffsPairedBy(com.google.common.base.Function&lt;? super E, ?&gt;)</code></a> to specify how the elements should be paired up
  for diffing. For example:
@@ -953,14 +953,14 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
  </code></pre>
 
  where <code>actualFoos</code> is an <code>Iterable&lt;Foo&gt;</code>, <code>FooTestHelper.formatDiff</code> is a
- static method taking two <code>Foo</code> arguments and returning a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a>, <code>
+ static method taking two <code>Foo</code> arguments and returning a <code>String</code>, <code>
  Foo.getId</code> is a no-arg instance method returning some kind of ID, and <code>foo1</code>, {code
  foo2}, and <code>foo3</code> are <code>Foo</code> instances.
 
  <p>Unlike when using <a href="#comparingElementsUsing(com.google.common.truth.Correspondence)"><code>comparingElementsUsing(com.google.common.truth.Correspondence&lt;? super A, ? super E&gt;)</code></a>, the elements are still compared using
  object equality, so this method does not affect whether a test passes or fails.
 
- <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
+ <p>Any of the methods on the returned object may throw <code>ClassCastException</code> if they
  encounter an actual element that is not of type <code>T</code>.</div>
 <dl>
 <dt><span class="simpleTagLabel">Since:</span></dt>
