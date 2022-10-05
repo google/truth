@@ -554,6 +554,15 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isInstanceOfPrimitiveType() {
+    try {
+      assertThat(1).isInstanceOf(int.class);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @Test
   public void isNotInstanceOfUnrelatedClass() {
     assertThat("a").isNotInstanceOf(Long.class);
   }
@@ -596,6 +605,15 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
 
     expectFailure.whenTesting().that("a").isNotInstanceOf(CharSequence.class);
+  }
+
+  @Test
+  public void isNotInstanceOfPrimitiveType() {
+    try {
+      assertThat(1).isNotInstanceOf(int.class);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test

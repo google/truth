@@ -19,6 +19,7 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
@@ -300,7 +301,7 @@ public class Subject {
       failWithActual("expected instance of", clazz.getName());
       return;
     }
-    if (!Platform.isInstanceOfType(actual, clazz)) {
+    if (!isInstanceOfType(actual, clazz)) {
       if (classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
@@ -329,13 +330,25 @@ public class Subject {
     if (actual == null) {
       return; // null is not an instance of clazz.
     }
-    if (Platform.isInstanceOfType(actual, clazz)) {
+    if (isInstanceOfType(actual, clazz)) {
       failWithActual("expected not to be an instance of", clazz.getName());
       /*
        * TODO(cpovirk): Consider including actual.getClass() if it's not clazz itself but only a
        * subtype.
        */
     }
+  }
+
+  private static boolean isInstanceOfType(Object instance, Class<?> clazz) {
+    checkArgument(
+        !clazz.isPrimitive(),
+        "Cannot check instanceof for primitive type %s. Pass the wrapper class instead.",
+        clazz.getSimpleName());
+    /*
+     * TODO(cpovirk): Make the message include `Primitives.wrap(clazz).getSimpleName()` once that
+     * method is available in a public guava-gwt release that we depend on.
+     */
+    return Platform.isInstanceOfType(instance, clazz);
   }
 
   /** Fails unless the subject is equal to any element in the given iterable. */
