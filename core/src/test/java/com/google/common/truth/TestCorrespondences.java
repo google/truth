@@ -205,8 +205,8 @@ final class TestCorrespondences {
       if (parts.size() != 2) {
         return null;
       }
-      @Nullable Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
-      @Nullable Integer score = Ints.tryParse(parts.get(1));
+      Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
+      Integer score = Ints.tryParse(parts.get(1));
       if (id == null || score == null) {
         return null;
       }
@@ -275,7 +275,7 @@ final class TestCorrespondences {
               new Correspondence.BinaryPredicate<String, Record>() {
                 @Override
                 public boolean apply(String actual, Record expected) {
-                  @Nullable Record actualRecord = Record.parse(actual);
+                  Record actualRecord = Record.parse(actual);
                   return actualRecord != null && recordsAreCloseEnough(actualRecord, expected);
                 }
               },
@@ -288,8 +288,8 @@ final class TestCorrespondences {
               // });
               new Correspondence.DiffFormatter<String, Record>() {
                 @Override
-                public String formatDiff(String actual, Record expected) {
-                  @Nullable Record actualRecord = Record.parse(actual);
+                public @Nullable String formatDiff(String actual, Record expected) {
+                  Record actualRecord = Record.parse(actual);
                   return actualRecord != null ? formatRecordDiff(actualRecord, expected) : null;
                 }
               });
@@ -304,7 +304,7 @@ final class TestCorrespondences {
     return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
   }
 
-  private static String formatRecordDiff(Record actual, Record expected) {
+  private static @Nullable String formatRecordDiff(Record actual, Record expected) {
     if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
       return "score:" + (actual.getScore() - expected.getScore());
     } else {

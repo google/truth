@@ -67,7 +67,7 @@ import org.objectweb.asm.Type;
 @GwtIncompatible
 final class ActualValueInference {
   /** <b>Call {@link Platform#inferDescription} rather than calling this directly.</b> */
-  static String describeActualValue(String className, String methodName, int lineNumber) {
+  static @Nullable String describeActualValue(String className, String methodName, int lineNumber) {
     InferenceClassVisitor visitor;
     try {
       // TODO(cpovirk): Verify that methodName is correct for constructors and static initializers.
@@ -140,7 +140,7 @@ final class ActualValueInference {
       throw new ClassCastException(getClass().getName());
     }
 
-    String description() {
+    @Nullable String description() {
       return null;
     }
   }
@@ -1409,7 +1409,7 @@ final class ActualValueInference {
     }
 
     @Override
-    public MethodVisitor visitMethod(
+    public @Nullable MethodVisitor visitMethod(
         int access, String name, String desc, String signature, String[] exceptions) {
       /*
        * Each InferenceMethodVisitor instance may be used only once. Still, it might seem like we

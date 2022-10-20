@@ -81,8 +81,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import javax.annotation.Nullable;
 import javax.lang.model.element.Modifier;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Refactors some subclasses of {@code Correspondence} to instead call {@code Correspondence.from}.
@@ -292,7 +292,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       private ParentType parentType = ParentType.OTHER;
 
       @Override
-      public Void visitMethodInvocation(MethodInvocationTree node, Void unused) {
+      public @Nullable Void visitMethodInvocation(MethodInvocationTree node, Void unused) {
         boolean isComparingElementsUsing =
             Optional.of(node.getMethodSelect())
                 .filter(t -> t.getKind() == MEMBER_SELECT)
@@ -311,7 +311,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       }
 
       @Override
-      public Void visitNewClass(NewClassTree node, Void unused) {
+      public @Nullable Void visitNewClass(NewClassTree node, Void unused) {
         if (getSymbol(node.getIdentifier()).equals(classSymbol)) {
           calls.put(parentType, node);
         }
@@ -331,7 +331,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     Set<Tree> references = new HashSet<>();
     new TreeScanner<Void, Void>() {
       @Override
-      public Void scan(Tree node, Void unused) {
+      public @Nullable Void scan(Tree node, Void unused) {
         if (equal(getSymbol(node), classSymbol)
             && getDeclaredSymbol(node) == null // Don't touch the ClassTree that we're replacing.
         ) {
@@ -341,7 +341,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       }
 
       @Override
-      public Void visitNewClass(NewClassTree node, Void aVoid) {
+      public @Nullable Void visitNewClass(NewClassTree node, Void aVoid) {
         scan(node.getEnclosingExpression(), null);
         // Do NOT scan node.getIdentifier().
         scan(node.getTypeArguments(), null);
@@ -452,7 +452,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
    * Converts the given method into a lambda, either expression or block, if "appropriate." For
    * details about the various cases, see implementation comments.
    */
-  private static Tree maybeMakeLambdaBody(MethodTree compareMethod, VisitorState state) {
+  private static @Nullable Tree maybeMakeLambdaBody(MethodTree compareMethod, VisitorState state) {
     ExpressionTree comparison = returnExpression(compareMethod);
     if (comparison != null) {
       // compare() is defined as simply `return something;`. Create a lambda.
@@ -479,7 +479,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     boolean[] referenceFound = new boolean[1];
     new TreeScanner<Void, Void>() {
       @Override
-      public Void scan(Tree node, Void aVoid) {
+      public @Nullable Void scan(Tree node, Void aVoid) {
         if (paramsOfEnclosingMethod.contains(getSymbol(node))) {
           referenceFound[0] = true;
         }
@@ -505,7 +505,8 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
   }
 
   /** Like {@link VisitorState#findEnclosing} but doesn't consider the leaf to enclose itself. */
-  private static <T extends Tree> T findStrictlyEnclosing(VisitorState state, Class<T> clazz) {
+  private static <T extends Tree> @Nullable T findStrictlyEnclosing(
+      VisitorState state, Class<T> clazz) {
     return stream(state.getPath().getParentPath())
         .filter(clazz::isInstance)
         .map(clazz::cast)
@@ -518,7 +519,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
    * path. For example, if called with {@code ClassTree}, it might return a {@code MethodTree}
    * inside the class.
    */
-  private static Tree findChildOfStrictlyEnclosing(
+  private static @Nullable Tree findChildOfStrictlyEnclosing(
       VisitorState state, Class<? extends Tree> clazz) {
     Tree previous = state.getPath().getLeaf();
     for (Tree t : state.getPath().getParentPath()) {
@@ -577,7 +578,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     abstract Optional<String> supportingMethodDefinition();
   }
 
-  private static ExpressionTree returnExpression(MethodTree method) {
+  private static @Nullable ExpressionTree returnExpression(MethodTree method) {
     List<? extends StatementTree> statements = method.getBody().getStatements();
     if (statements.size() != 1) {
       return null;

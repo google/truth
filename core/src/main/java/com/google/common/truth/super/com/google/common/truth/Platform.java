@@ -51,21 +51,6 @@ final class Platform {
     return false;
   }
 
-  abstract static class PlatformComparisonFailure extends AssertionError {
-    PlatformComparisonFailure(
-        String message,
-        String unusedUnderGwtExpected,
-        String unusedUnderGwtActual,
-        Throwable cause) {
-      super(message, cause);
-    }
-
-    @Override
-    public final String toString() {
-      return getLocalizedMessage();
-    }
-  }
-
   /** Determines if the given subject contains a match for the given regex. */
   static boolean containsMatch(String subject, String regex) {
     return compile(regex).test(subject);
@@ -83,7 +68,7 @@ final class Platform {
     // Do nothing. See notes in StackTraceCleanerTest.
   }
 
-  static String inferDescription() {
+  static @Nullable String inferDescription() {
     return null;
   }
 
@@ -96,6 +81,21 @@ final class Platform {
      * always been stuck like this.
      */
     return null;
+  }
+
+  abstract static class PlatformComparisonFailure extends AssertionError {
+    PlatformComparisonFailure(
+        String message,
+        String unusedUnderGwtExpected,
+        String unusedUnderGwtActual,
+        @Nullable Throwable cause) {
+      super(message, cause);
+    }
+
+    @Override
+    public final String toString() {
+      return getLocalizedMessage();
+    }
   }
 
   static String doubleToString(double value) {
@@ -162,15 +162,15 @@ final class Platform {
     return String.valueOf(o);
   }
 
-  /** Tests if current platform is Android which is always false. */
-  static boolean isAndroid() {
-    return false;
-  }
-
   /** Returns a human readable string representation of the throwable's stack trace. */
   static String getStackTraceAsString(Throwable throwable) {
     // TODO(cpovirk): Write a naive implementation that at least dumps the main exception's stack.
     return throwable.toString();
+  }
+
+  /** Tests if current platform is Android which is always false. */
+  static boolean isAndroid() {
+    return false;
   }
 
   /**

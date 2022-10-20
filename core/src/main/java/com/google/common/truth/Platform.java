@@ -78,7 +78,7 @@ final class Platform {
    * the value passed to {@code assertThat} or {@code that}, as distinct from any later actual
    * values produced by chaining calls like {@code hasMessageThat}.
    */
-  static String inferDescription() {
+  static @Nullable String inferDescription() {
     if (isInferDescriptionDisabled()) {
       return null;
     }
