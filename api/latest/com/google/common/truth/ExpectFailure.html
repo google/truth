@@ -372,7 +372,8 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>expectFailure</h4>
-<pre class="methodSignature">public static&nbsp;java.lang.AssertionError&nbsp;expectFailure&#8203;(<a href="ExpectFailure.StandardSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a>&nbsp;assertionCallback)</pre>
+<pre class="methodSignature">@CanIgnoreReturnValue
+public static&nbsp;java.lang.AssertionError&nbsp;expectFailure&#8203;(<a href="ExpectFailure.StandardSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a>&nbsp;assertionCallback)</pre>
 <div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
  Java 8+ tests similar to <code>expectThrows()</code>:
 
@@ -386,7 +387,8 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>expectFailureAbout</h4>
-<pre class="methodSignature">public static&nbsp;&lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>,&#8203;A&gt;&nbsp;java.lang.AssertionError&nbsp;expectFailureAbout&#8203;(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,&#8203;A&gt;&nbsp;factory,
+<pre class="methodSignature">@CanIgnoreReturnValue
+public static&nbsp;&lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>,&#8203;A&gt;&nbsp;java.lang.AssertionError&nbsp;expectFailureAbout&#8203;(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,&#8203;A&gt;&nbsp;factory,
                                                                                       <a href="ExpectFailure.SimpleSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;S,&#8203;A&gt;&nbsp;assertionCallback)</pre>
 <div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
  Java 8+ tests similar to <code>expectThrows()</code>:
