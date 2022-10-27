@@ -259,4 +259,12 @@ final class Platform {
      */
     return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
   }
+
+  static boolean isKotlinRange(Iterable<?> iterable) {
+    return false;
+  }
+
+  static boolean kotlinRangeContains(Iterable<?> haystack, Object needle) {
+    throw new AssertionError(); // never called under GWT because isKotlinRange returns false
+  }
 }

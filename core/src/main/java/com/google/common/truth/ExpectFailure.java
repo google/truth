@@ -23,6 +23,7 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.SimpleAssertionError;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -161,6 +162,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * <p>{@code AssertionError failure = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
    */
+  @CanIgnoreReturnValue
   public static AssertionError expectFailure(StandardSubjectBuilderCallback assertionCallback) {
     ExpectFailure expectFailure = new ExpectFailure();
     expectFailure.enterRuleContext(); // safe since this instance doesn't leave this method
@@ -175,6 +177,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
    */
+  @CanIgnoreReturnValue
   public static <S extends Subject, A> AssertionError expectFailureAbout(
       final Subject.Factory<S, A> factory,
       final SimpleSubjectBuilderCallback<S, A> assertionCallback) {

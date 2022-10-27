@@ -25,6 +25,8 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
+import static com.google.common.truth.Platform.isKotlinRange;
+import static com.google.common.truth.Platform.kotlinRangeContains;
 import static com.google.common.truth.Platform.stringValueOfNonFloatingPoint;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
@@ -353,9 +355,16 @@ public class Subject {
 
   /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
-    if (!Iterables.contains(iterable, actual)) {
+    if (!contains(iterable, actual)) {
       failWithActual("expected any of", iterable);
     }
+  }
+
+  private static boolean contains(Iterable<?> haystack, Object needle) {
+    if (isKotlinRange(haystack)) {
+      return kotlinRangeContains(haystack, needle);
+    }
+    return Iterables.contains(haystack, needle);
   }
 
   /** Fails unless the subject is equal to any of the given elements. */
