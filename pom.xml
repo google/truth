@@ -40,9 +40,6 @@
     <guava.jre.version>31.1-jre</guava.jre.version>
     <gwt.version>2.9.0</gwt.version>
     <protobuf.version>3.21.9</protobuf.version>
-    <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
-    <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
-    <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
     <os-maven-plugin.version>1.7.0</os-maven-plugin.version>
@@ -129,8 +126,8 @@
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
-        <artifactId>protobuf-lite</artifactId>
-        <version>3.0.1</version>
+        <artifactId>protobuf-javalite</artifactId>
+        <version>${protobuf.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.re2j</groupId>
@@ -230,6 +227,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.4.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
