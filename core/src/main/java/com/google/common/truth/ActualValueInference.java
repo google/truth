@@ -1453,7 +1453,8 @@ final class ActualValueInference {
      */
     return (owner.equals("com/google/common/truth/Truth") && name.equals("assertThat"))
         || (owner.equals("com/google/common/truth/StandardSubjectBuilder") && name.equals("that"))
-        || (owner.equals("com/google/common/truth/SimpleSubjectBuilder") && name.equals("that"));
+        || (owner.equals("com/google/common/truth/SimpleSubjectBuilder") && name.equals("that"))
+        || (owner.equals("com/google/common/truth/Expect") && name.equals("that"));
   }
 
   private static boolean isBoxing(String owner, String name, String desc) {
