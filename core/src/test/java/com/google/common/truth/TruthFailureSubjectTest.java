@@ -157,13 +157,13 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   @Test
   public void nonTruthErrorFactKeys() {
     Object unused = expectFailureWhenTestingThat(new AssertionError()).factKeys();
-    assertFailureKeys("expected a failure thrown by Truth's new failure API", "but was");
+    assertFailureKeys("expected a failure thrown by Truth's failure API", "but was");
   }
 
   @Test
   public void nonTruthErrorFactValue() {
     Object unused = expectFailureWhenTestingThat(new AssertionError()).factValue("foo");
-    assertFailureKeys("expected a failure thrown by Truth's new failure API", "but was");
+    assertFailureKeys("expected a failure thrown by Truth's failure API", "but was");
   }
 
   private TruthFailureSubject assertThat(Fact... facts) {
