@@ -353,6 +353,7 @@ final class StackTraceCleaner {
         "Testing framework",
         "junit",
         "org.junit",
+        "androidx.test.internal.runner",
         "com.google.testing.junit",
         "com.google.testing.testsize",
         "com.google.testing.util"),
@@ -370,7 +371,9 @@ final class StackTraceCleaner {
       // TODO(cpovirk): This is really only for tests in Truth itself, so this doesn't matter yet,
       // but.... If the Truth tests someday start calling into nested classes, we may want to add:
       // || fullyQualifiedClassName.contains("Test$")
-      if (fullyQualifiedClassName.endsWith("Test")) {
+      if (fullyQualifiedClassName.endsWith("Test")
+          && !fullyQualifiedClassName.equals(
+              "androidx.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest")) {
         return StackFrameType.NEVER_REMOVE;
       }
 
