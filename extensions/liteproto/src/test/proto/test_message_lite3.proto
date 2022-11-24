@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package com.google.common.truth.extensions.proto;
 
-option optimize_for = LITE_RUNTIME;
-
 option java_package = "com.google.common.truth.extensions.proto";
 option java_multiple_files = true;
 

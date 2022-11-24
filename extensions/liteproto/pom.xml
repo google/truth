@@ -38,8 +38,8 @@
     </dependency>
     <dependency>
       <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-lite</artifactId>
-      <!-- protobuf-lite is not compatible with protobuf-java, so we mark it optional. -->
+      <artifactId>protobuf-javalite</artifactId>
+      <!-- protobuf-javalite is not compatible with protobuf-java, so we mark it optional. -->
       <optional>true</optional>
     </dependency>
   </dependencies>
@@ -60,11 +60,13 @@
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
         <configuration>
-          <protocArtifact>com.google.protobuf:protoc:${protobuf-lite.protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+          <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
           <includes>
             <param>test_message_lite2.proto</param>
             <param>test_message_lite3.proto</param>
           </includes>
+          <!-- TODO(cpovirk): After https://github.com/xolstice/protobuf-maven-plugin/commit/3ae165e5f6b33f8a6221ece11cc79a7df5eeb8df is in a release (so that javaOptions works below), restore this compilation step, remove the copy-proto-generated-code step below, and delete the pre-generated-test-sources directory. Then *hopefully* this will Just Work. -->
+          <skip>true</skip>
         </configuration>
         <executions>
           <execution>
@@ -73,6 +75,27 @@
             <goals>
               <goal>test-compile</goal>
             </goals>
+            <configuration>
+              <javaOptions>lite</javaOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-proto-generated-code</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>pre-generated-test-sources</source>
+              </sources>
+            </configuration>
           </execution>
         </executions>
       </plugin>
