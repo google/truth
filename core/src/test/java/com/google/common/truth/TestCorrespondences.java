@@ -84,12 +84,17 @@ final class TestCorrespondences {
               // (Integer a, Integer e) -> Math.abs(a - e) <= 10,
               new Correspondence.BinaryPredicate<Integer, Integer>() {
                 @Override
-                public boolean apply(Integer actual, Integer expected) {
+                public boolean apply(@Nullable Integer actual, @Nullable Integer expected) {
+                  if (actual == null || expected == null) {
+                    throw new NullPointerExceptionFromWithin10Of();
+                  }
                   return Math.abs(actual - expected) <= 10;
                 }
               },
               "is within 10 of")
           .formattingDiffsUsing(INT_DIFF_FORMATTER);
+
+  private static final class NullPointerExceptionFromWithin10Of extends NullPointerException {}
 
   /**
    * A correspondence between strings which tests for case-insensitive equality. Supports null
