@@ -25,6 +25,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
+import org.objectweb.asm.Opcodes;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.IOException;
 import java.io.InputStream;
@@ -266,7 +267,7 @@ final class ActualValueInference {
         String name,
         String methodDescriptor,
         ImmutableSetMultimap.Builder<Integer, StackEntry> actualValueAtLine) {
-      super(Opcodes.ASM8);
+      super(Opcodes.ASM9);
       localVariableSlots = createInitialLocalVariableSlots(access, owner, name, methodDescriptor);
       previousFrame =
           FrameInfo.create(
@@ -1393,7 +1394,7 @@ final class ActualValueInference {
     private String className;
 
     InferenceClassVisitor(String methodNameToVisit) {
-      super(Opcodes.ASM7);
+      super(Opcodes.ASM9);
       this.methodNameToVisit = methodNameToVisit;
     }
 
