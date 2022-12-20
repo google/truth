@@ -25,6 +25,7 @@ import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
  * GWT and non-GWT version.
@@ -268,3 +269,4 @@ final class Platform {
     throw new AssertionError(); // never called under GWT because isKotlinRange returns false
   }
 }
+
