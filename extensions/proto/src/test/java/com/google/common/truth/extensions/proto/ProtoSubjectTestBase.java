@@ -141,6 +141,10 @@ public class ProtoSubjectTestBase {
     return extensionRegistry;
   }
 
+  protected final Message clone(Message in) {
+    return in.toBuilder().build();
+  }
+
   protected Message parse(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();

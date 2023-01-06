@@ -248,8 +248,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message eqMessage = parse("r_string: \"bar\" r_string: \"foo\"");
     Message diffMessage = parse("r_string: \"foo\" r_string: \"foo\" r_string: \"bar\"");
 
-    expectThat(message).isEqualTo(message.toBuilder().build());
-    expectThat(message).ignoringRepeatedFieldOrder().isEqualTo(message.toBuilder().build());
+    expectThat(message).isEqualTo(clone(message));
+    expectThat(message).ignoringRepeatedFieldOrder().isEqualTo(clone(message));
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);
     expectThat(eqMessage).isNotEqualTo(message);
@@ -268,10 +268,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
             "r_test_message: { o_int: 44 r_string: \"qux\" r_string: \"baz\" } "
                 + "r_test_message: { o_int: 33 r_string: \"bar\" r_string: \"foo\" } ");
 
-    expectThat(nestedMessage).isEqualTo(nestedMessage.toBuilder().build());
-    expectThat(nestedMessage)
-        .ignoringRepeatedFieldOrder()
-        .isEqualTo(nestedMessage.toBuilder().build());
+    expectThat(nestedMessage).isEqualTo(clone(nestedMessage));
+    expectThat(nestedMessage).ignoringRepeatedFieldOrder().isEqualTo(clone(nestedMessage));
     expectThat(diffNestedMessage).isNotEqualTo(nestedMessage);
     expectThat(diffNestedMessage).ignoringRepeatedFieldOrder().isNotEqualTo(nestedMessage);
     expectThat(eqNestedMessage).isNotEqualTo(nestedMessage);
