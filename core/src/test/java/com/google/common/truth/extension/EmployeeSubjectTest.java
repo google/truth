@@ -17,12 +17,12 @@ package com.google.common.truth.extension;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
-import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extension.EmployeeSubject.assertThat;
 import static com.google.common.truth.extension.EmployeeSubject.employees;
 
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.common.truth.extension.Employee.Location;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -57,6 +57,7 @@ public final class EmployeeSubjectTest {
     assertThat(failure).factValue("value of").isEqualTo("employee.username()");
   }
 
+  @CanIgnoreReturnValue
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<EmployeeSubject, Employee> callback) {
     return expectFailureAbout(employees(), callback);
