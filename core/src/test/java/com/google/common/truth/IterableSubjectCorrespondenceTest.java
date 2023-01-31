@@ -32,6 +32,7 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
+import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.TestCorrespondences.Record;
@@ -53,6 +54,40 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
+
+  @Test
+  @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall", "deprecation"})
+  public void equalsThrowsUSOE() {
+    try {
+      boolean unused =
+          assertThat(ImmutableList.of(42.0))
+              .comparingElementsUsing(tolerance(10e-5))
+              .equals(ImmutableList.of(0.0));
+    } catch (UnsupportedOperationException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "UsingCorrespondence.equals() is not supported. Did you mean to call"
+                  + " containsExactlyElementsIn(expected) instead of equals(expected)?");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
+  @SuppressWarnings({"DoNotCall", "deprecation"})
+  public void hashCodeThrowsUSOE() {
+    try {
+      int unused =
+          assertThat(ImmutableList.of(42.0)).comparingElementsUsing(tolerance(10e-5)).hashCode();
+    } catch (UnsupportedOperationException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("UsingCorrespondence.hashCode() is not supported.");
+      return;
+    }
+    fail("Should have thrown.");
+  }
 
   @Test
   public void contains_success() {

@@ -58,6 +58,7 @@ import com.google.common.collect.Sets;
 import com.google.common.truth.Correspondence.DiffFormatter;
 import com.google.common.truth.SubjectUtils.DuplicateGroupedAndTyped;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -965,6 +966,47 @@ public class IterableSubject extends Subject {
       this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
       this.pairer = Optional.of(pairer);
+    }
+
+    /**
+     * @throws UnsupportedOperationException always
+     * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects or intermediate
+     *     classes. If you are writing a test assertion (actual vs. expected), use methods liks
+     *     {@link #containsExactlyElementsIn(Iterable)} instead.
+     */
+    @DoNotCall(
+        "UsingCorrespondence.equals() is not supported. Did you mean to call"
+            + " containsExactlyElementsIn(expected) instead of equals(expected)?")
+    @Deprecated
+    @Override
+    public final boolean equals(@Nullable Object o) {
+      throw new UnsupportedOperationException(
+          "UsingCorrespondence.equals() is not supported. Did you mean to call"
+              + " containsExactlyElementsIn(expected) instead of equals(expected)?");
+    }
+
+    /**
+     * @throws UnsupportedOperationException always
+     * @deprecated {@link Object#hashCode()} is not supported on Truth types.
+     */
+    @DoNotCall("UsingCorrespondence.hashCode() is not supported.")
+    @Deprecated
+    @Override
+    public final int hashCode() {
+      throw new UnsupportedOperationException("UsingCorrespondence.hashCode() is not supported.");
+    }
+
+    /**
+     * @throws UnsupportedOperationException always
+     * @deprecated {@link Object#toString()} is not supported on Truth subjects.
+     */
+    @Deprecated
+    @DoNotCall("UsingCorrespondence.toString() is not supported.")
+    @Override
+    public final String toString() {
+      throw new UnsupportedOperationException(
+          "UsingCorrespondence.toString() is not supported. Did you mean to call"
+              + " assertThat(foo.toString()) instead of assertThat(foo).toString()?");
     }
 
     /**
