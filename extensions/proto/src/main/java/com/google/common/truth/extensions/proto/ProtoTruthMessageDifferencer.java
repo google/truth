@@ -37,7 +37,6 @@ import com.google.protobuf.Any;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
-import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.UnknownFieldSet;
@@ -716,16 +715,12 @@ final class ProtoTruthMessageDifferencer {
       FluentEqualityConfig config) {
     Result.Builder result = Result.builder();
 
-    // Use the default if it's set and we're ignoring field absence, or if it's a Proto3 primitive
-    // for which default is indistinguishable from unset.
+    // Use the default if it's set and we're ignoring field absence or if it's a field without
+    // presence for which default is indistinguishable from unset.
     SubScopeId subScopeId = SubScopeId.of(fieldDescriptor);
-    boolean isNonRepeatedProto3 =
-        !fieldDescriptor.isRepeated()
-            && fieldDescriptor.getContainingOneof() == null
-            && fieldDescriptor.getFile().getSyntax() == Syntax.PROTO3;
+    boolean hasPresence = fieldDescriptor.isRepeated() || fieldDescriptor.hasPresence();
     boolean ignoreFieldAbsence =
-        isNonRepeatedProto3
-            || config.ignoreFieldAbsenceScope().contains(rootDescriptor, subScopeId);
+        !hasPresence || config.ignoreFieldAbsenceScope().contains(rootDescriptor, subScopeId);
     actual = orIfIgnoringFieldAbsence(actual, defaultValue, ignoreFieldAbsence);
     expected = orIfIgnoringFieldAbsence(expected, defaultValue, ignoreFieldAbsence);
 
