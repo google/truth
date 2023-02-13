@@ -33,8 +33,15 @@ project. They include:
 
 Other extensions that are not part of the Truth project itself include:
 
-*   [AndroidX Test](https://developer.android.com/training/testing/fundamentals#assertions)
-    for testing Android types, like `Intent`
+*   [AndroidX Test](https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/test-setup#add-gradle)
+    for testing Android types,
+    [like `Intent`](https://developer.android.com/reference/androidx/test/ext/truth/content/IntentSubject):
+    *   [`app`](https://developer.android.com/reference/androidx/test/ext/truth/app/package-summary)
+    *   [`content`](https://developer.android.com/reference/androidx/test/ext/truth/content/package-summary)
+    *   [`location`](https://developer.android.com/reference/androidx/test/ext/truth/location/package-summary)
+    *   [`os`](https://developer.android.com/reference/androidx/test/ext/truth/os/package-summary)
+    *   [`util`](https://developer.android.com/reference/androidx/test/ext/truth/util/package-summary)
+    *   [`view`](https://developer.android.com/reference/androidx/test/ext/truth/view/package-summary)
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
 ## Using subjects from extensions
