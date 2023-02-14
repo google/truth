@@ -99,7 +99,6 @@ public class Subject {
 
   private final FailureMetadata metadata;
   private final Object actual;
-  private String customName = null;
   private final @Nullable String typeDescriptionOverride;
 
   /**
@@ -882,8 +881,7 @@ public class Subject {
       }
     } else {
       if (equalityCheck == EqualityCheck.EQUAL && actual != null && expected != null) {
-        metadata.failEqualityCheck(
-            nameAsFacts(), difference.factsOrEmpty(), expectedString, actualString);
+        metadata.failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
       } else {
         failEqualityCheckNoComparisonFailure(
             difference,
@@ -1061,8 +1059,7 @@ public class Subject {
    */
   @Deprecated
   final void failWithoutSubject(String check) {
-    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failWithoutActual(simpleFact(lenientFormat("Not true that %s %s", strSubject, check)));
+    failWithoutActual(simpleFact(lenientFormat("Not true that the subject %s", check)));
   }
 
   /**
@@ -1206,16 +1203,6 @@ public class Subject {
   }
 
   private void doFail(ImmutableList<Fact> facts) {
-    metadata.fail(prependNameIfAny(facts));
-  }
-
-  private ImmutableList<Fact> prependNameIfAny(ImmutableList<Fact> facts) {
-    return concat(nameAsFacts(), facts);
-  }
-
-  private ImmutableList<Fact> nameAsFacts() {
-    return customName == null
-        ? ImmutableList.<Fact>of()
-        : ImmutableList.of(fact("name", customName));
+    metadata.fail(facts);
   }
 }

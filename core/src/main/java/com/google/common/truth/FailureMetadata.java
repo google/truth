@@ -167,7 +167,6 @@ public final class FailureMetadata {
   }
 
   void failEqualityCheck(
-      ImmutableList<Fact> headFacts,
       ImmutableList<Fact> tailFacts,
       String expected,
       String actual) {
@@ -175,10 +174,7 @@ public final class FailureMetadata {
         makeComparisonFailure(
             evaluateAll(messages),
             makeComparisonFailureFacts(
-                concat(description(), headFacts),
-                concat(tailFacts, rootUnlessThrowable()),
-                expected,
-                actual),
+                description(), concat(tailFacts, rootUnlessThrowable()), expected, actual),
             expected,
             actual,
             rootCause()));
