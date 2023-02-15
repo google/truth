@@ -41,6 +41,9 @@ jobs:
       - name: 'Test'
         shell: bash
         run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true
+      - name: 'Javadoc Test Run'
+        shell: bash
+        run: mvn -B -P!standard-with-extra-repos javadoc:aggregate -U
 
   publish_snapshot:
     name: 'Publish snapshot'

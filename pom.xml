@@ -37,6 +37,9 @@
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
     <os-maven-plugin.version>1.7.1</os-maven-plugin.version>
+
+    <!-- Default to no additional options (for Java 8). Overridden by a profile. -->
+    <conditionalJavadoc9PlusOptions></conditionalJavadoc9PlusOptions>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -228,12 +231,8 @@
           <version>3.4.1</version>
           <configuration>
             <additionalOptions>
-              <additionalOption>--frames</additionalOption>
-              <additionalOption>-Xdoclint:-html</additionalOption>
+              <additionalOption>-Xdoclint:-html ${conditionalJavadoc9PlusOptions}</additionalOption>
             </additionalOptions>
-            <additionalJOptions>
-              <additionalJOption>--no-module-directories</additionalJOption>
-            </additionalJOptions>
             <doctitle>Truth ${project.version}</doctitle>
             <windowtitle>Truth ${project.version}</windowtitle>
             <quiet>true</quiet>
@@ -375,6 +374,33 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <!--
+          Passes JDK 11-12-specific `no-module-directories` flag to Javadoc tool,
+          which is required to make symbol search work correctly in the generated
+          pages.
+
+          This flag does not exist on 9-10 and 13+ (https://bugs.openjdk.java.net/browse/JDK-8215582).
+
+          Consider removing it once our release and test scripts are migrated to a recent JDK (17+).
+       -->
+      <id>javadocs-jdk11-12</id>
+      <activation>
+        <jdk>[11,13)</jdk>
+      </activation>
+      <properties>
+        <maven-javadoc-plugin.additionalJOptions>--no-module-directories</maven-javadoc-plugin.additionalJOptions>
+      </properties>
+    </profile>
+    <profile>
+      <id>javadocs-jdk9plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <conditionalJavadocOptions>--frames</conditionalJavadocOptions>
+      </properties>
     </profile>
   </profiles>
 </project>
