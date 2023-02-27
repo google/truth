@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
-import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
 
 /** Various validators, to ensure that explicit comparison settings made by the user make sense. */
 enum FieldDescriptorValidator {
@@ -37,9 +36,8 @@ enum FieldDescriptorValidator {
           fieldDescriptor);
 
       checkArgument(
-          fieldDescriptor.getContainingType().getFile().getSyntax() != Syntax.PROTO3
-              || fieldDescriptor.getJavaType() == JavaType.MESSAGE,
-          "%s is a primitive field in a Proto 3 message; it cannot be absent",
+          fieldDescriptor.hasPresence(),
+          "%s is a field without presence; it cannot be absent",
           fieldDescriptor);
     }
   },

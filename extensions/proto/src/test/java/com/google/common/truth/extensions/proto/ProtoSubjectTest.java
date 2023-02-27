@@ -208,7 +208,7 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         fail("Expected failure.");
       } catch (Exception e) {
         assertThat(e).hasMessageThat().contains("o_double");
-        assertThat(e).hasMessageThat().contains("is a primitive field in a Proto 3 message");
+        assertThat(e).hasMessageThat().contains("is a field without presence");
       }
     } else {
       expectThat(message)
