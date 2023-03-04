@@ -38,8 +38,8 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
 
   private static final double NEARLY_MAX = 1.7976931348623155E308;
   private static final double NEGATIVE_NEARLY_MAX = -1.7976931348623155E308;
-  private static final double OVER_MIN = 1.0E-323;
-  private static final double UNDER_NEGATIVE_MIN = -1.0E-323;
+  private static final double OVER_MIN = 9.9E-324;
+  private static final double UNDER_NEGATIVE_MIN = -9.9E-324;
   private static final double GOLDEN = 1.23;
   private static final double OVER_GOLDEN = 1.2300000000000002;
 
