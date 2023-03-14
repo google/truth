@@ -354,6 +354,7 @@ final class StackTraceCleaner {
         "junit",
         "org.junit",
         "androidx.test.internal.runner",
+        "com.github.bazel_contrib.contrib_rules_jvm.junit5",
         "com.google.testing.junit",
         "com.google.testing.testsize",
         "com.google.testing.util"),
