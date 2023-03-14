@@ -204,7 +204,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfWithOneShotIterable() {
-    final Iterator<Object> iterator = asList((Object) 2, 1, "b").iterator();
+    Iterator<Object> iterator = asList((Object) 2, 1, "b").iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override
@@ -408,8 +408,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterable() {
-    final Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
-    final Iterator<Object> iterator = iterable.iterator();
+    Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
+    Iterator<Object> iterator = iterable.iterator();
     Iterable<Object> oneShot =
         new Iterable<Object>() {
           @Override
@@ -428,7 +428,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterableWrongOrder() {
-    final Iterator<Object> iterator = asList((Object) 2, 1, null, 4, "a", 3, "b").iterator();
+    Iterator<Object> iterator = asList((Object) 2, 1, null, 4, "a", 3, "b").iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override
@@ -914,7 +914,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyInOrderWithOneShotIterable() {
-    final Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
+    Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override
@@ -927,7 +927,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyInOrderWithOneShotIterableWrongOrder() {
-    final Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
+    Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override

@@ -704,7 +704,7 @@ public class Subject {
 
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
-    final LazyMessage message = new LazyMessage(format, args);
+    LazyMessage message = new LazyMessage(format, args);
     Function<String, String> descriptionUpdate =
         new Function<String, String>() {
           @Override

@@ -953,8 +953,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   @Test
   public void testMapWithDefaultKeysAndValues() throws InvalidProtocolBufferException {
     Descriptor descriptor = getFieldDescriptor("o_int").getContainingType();
-    final String defaultString = "";
-    final int defaultInt32 = 0;
+    String defaultString = "";
+    int defaultInt32 = 0;
     Message message = makeProtoMap(ImmutableMap.of(defaultString, 1, "foo", defaultInt32));
     Message dynamicMessage =
         DynamicMessage.parseFrom(

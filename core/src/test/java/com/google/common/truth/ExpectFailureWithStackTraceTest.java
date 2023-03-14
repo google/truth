@@ -44,7 +44,7 @@ public class ExpectFailureWithStackTraceTest {
 
     @Override
     public Statement apply(Statement base, Description description) {
-      final Statement s = delegate.apply(base, description);
+      Statement s = delegate.apply(base, description);
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {

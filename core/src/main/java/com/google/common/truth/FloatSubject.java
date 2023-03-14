@@ -112,7 +112,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public TolerantFloatComparison isWithin(final float tolerance) {
+  public TolerantFloatComparison isWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
@@ -151,7 +151,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
    *     Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public TolerantFloatComparison isNotWithin(final float tolerance) {
+  public TolerantFloatComparison isNotWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {

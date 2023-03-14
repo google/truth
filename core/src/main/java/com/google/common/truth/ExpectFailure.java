@@ -179,8 +179,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    */
   @CanIgnoreReturnValue
   public static <S extends Subject, A> AssertionError expectFailureAbout(
-      final Subject.Factory<S, A> factory,
-      final SimpleSubjectBuilderCallback<S, A> assertionCallback) {
+      Subject.Factory<S, A> factory, SimpleSubjectBuilderCallback<S, A> assertionCallback) {
     // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
     return expectFailure(
         new StandardSubjectBuilderCallback() {
@@ -201,7 +200,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   @Override
   @GwtIncompatible("org.junit.rules.TestRule")
-  public Statement apply(final Statement base, Description description) {
+  public Statement apply(Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);
     return new Statement() {

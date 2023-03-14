@@ -234,8 +234,8 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     }
 
     ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
-    for (final Object actual : fortyTwosNoChar) {
-      for (final Object expected : fortyTwosNoChar) {
+    for (Object actual : fortyTwosNoChar) {
+      for (Object expected : fortyTwosNoChar) {
         ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> actualFirst =
             new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
               @Override

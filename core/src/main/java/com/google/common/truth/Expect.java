@@ -245,7 +245,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   }
 
   @Override
-  public Statement apply(final Statement base, Description description) {
+  public Statement apply(Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);
     return new Statement() {

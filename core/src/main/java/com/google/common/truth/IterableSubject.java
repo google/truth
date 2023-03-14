@@ -273,7 +273,7 @@ public class IterableSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(checkNotNull(this.actual));
-    final Collection<?> expected = iterableToCollection(expectedIterable);
+    Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<@Nullable Object> missing = newArrayList();
     List<@Nullable Object> actualNotInOrder = newArrayList();
@@ -420,7 +420,7 @@ public class IterableSubject extends Subject {
   }
 
   private Ordered containsExactlyElementsIn(
-      final @Nullable Iterable<?> required, boolean addElementsInWarning) {
+      @Nullable Iterable<?> required, boolean addElementsInWarning) {
     checkNotNull(required);
     Iterator<?> actualIter = checkNotNull(actual).iterator();
     Iterator<?> requiredIter = required.iterator();
@@ -780,7 +780,7 @@ public class IterableSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   @SuppressWarnings({"unchecked"})
-  public final void isInStrictOrder(final Comparator<?> comparator) {
+  public final void isInStrictOrder(Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be in strict order",
@@ -812,7 +812,7 @@ public class IterableSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   @SuppressWarnings({"unchecked"})
-  public final void isInOrder(final Comparator<?> comparator) {
+  public final void isInOrder(Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be in order",
@@ -1225,7 +1225,7 @@ public class IterableSubject extends Subject {
      * on the object returned by this method.
      */
     @CanIgnoreReturnValue
-    public Ordered containsExactlyElementsIn(final @Nullable Iterable<? extends E> expected) {
+    public Ordered containsExactlyElementsIn(@Nullable Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(checkNotNull(expected));
 
@@ -1576,7 +1576,7 @@ public class IterableSubject extends Subject {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    public Ordered containsAtLeastElementsIn(final Iterable<? extends E> expected) {
+    public Ordered containsAtLeastElementsIn(Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
       // Check if the expected elements correspond in order to any subset of the actual elements.

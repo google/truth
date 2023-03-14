@@ -34,7 +34,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   static Function<Optional<Descriptor>, String> fieldNumbersFunction(
-      final String fmt, final Iterable<Integer> fieldNumbers) {
+      String fmt, Iterable<Integer> fieldNumbers) {
     return new Function<Optional<Descriptor>, String>() {
       @Override
       public String apply(Optional<Descriptor> optDescriptor) {
@@ -50,7 +50,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   static Function<Optional<Descriptor>, String> fieldScopeFunction(
-      final String fmt, final FieldScope fieldScope) {
+      String fmt, FieldScope fieldScope) {
     return new Function<Optional<Descriptor>, String>() {
       @Override
       public String apply(Optional<Descriptor> optDescriptor) {
@@ -61,8 +61,8 @@ final class FieldScopeUtil {
 
   /** Returns a function which concatenates the outputs of the two input functions. */
   static Function<Optional<Descriptor>, String> concat(
-      final Function<? super Optional<Descriptor>, String> function1,
-      final Function<? super Optional<Descriptor>, String> function2) {
+      Function<? super Optional<Descriptor>, String> function1,
+      Function<? super Optional<Descriptor>, String> function2) {
     return new Function<Optional<Descriptor>, String>() {
       @Override
       public String apply(Optional<Descriptor> optDescriptor) {

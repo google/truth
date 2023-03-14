@@ -104,7 +104,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public TolerantDoubleComparison isWithin(final double tolerance) {
+  public TolerantDoubleComparison isWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
@@ -143,7 +143,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
    *     Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public TolerantDoubleComparison isNotWithin(final double tolerance) {
+  public TolerantDoubleComparison isNotWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {

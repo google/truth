@@ -53,7 +53,7 @@ public class ExpectTest {
   private final TestRule postTestWait =
       new TestRule() {
         @Override
-        public Statement apply(final Statement base, Description description) {
+        public Statement apply(Statement base, Description description) {
           return new Statement() {
             @Override
             public void evaluate() throws Throwable {
@@ -235,7 +235,7 @@ public class ExpectTest {
      * expect.that(3).isEqualTo(4), we would always either fail the test or throw an
      * IllegalStateException, not record a "failure" that we never read.
      */
-    final IntegerSubject expectThat3 = expect.that(3);
+    IntegerSubject expectThat3 = expect.that(3);
     taskToAwait =
         executor.submit(
             new Runnable() {

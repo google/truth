@@ -771,8 +771,8 @@ public class SubjectTest extends BaseSubjectTestCase {
     assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
 
-  private static <T> Iterable<T> oneShotIterable(final T... values) {
-    final Iterator<T> iterator = Iterators.forArray(values);
+  private static <T> Iterable<T> oneShotIterable(T... values) {
+    Iterator<T> iterator = Iterators.forArray(values);
     return new Iterable<T>() {
       @Override
       public Iterator<T> iterator() {

@@ -35,7 +35,7 @@ public class ExpectFailureNonRuleTest {
 
   @Test
   public void testExpect_userThrowExceptionInSubject_shouldPropagate() throws Exception {
-    final List<Failure> reportedFailure = Lists.newArrayList();
+    List<Failure> reportedFailure = Lists.newArrayList();
     RunNotifier runNotifier = new RunNotifier();
     runNotifier.addListener(
         new RunListener() {
@@ -59,7 +59,7 @@ public class ExpectFailureNonRuleTest {
 
   @Test
   public void testExpect_userThrowExceptionAfterSubject_shouldPropagate() throws Exception {
-    final List<Failure> reportedFailure = Lists.newArrayList();
+    List<Failure> reportedFailure = Lists.newArrayList();
     RunNotifier runNotifier = new RunNotifier();
     runNotifier.addListener(
         new RunListener() {

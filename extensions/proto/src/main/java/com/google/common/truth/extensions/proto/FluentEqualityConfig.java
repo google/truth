@@ -365,7 +365,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   }
 
   final <M extends Message> Correspondence<M, M> toCorrespondence(
-      final Optional<Descriptor> optDescriptor) {
+      Optional<Descriptor> optDescriptor) {
     checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return Correspondence.from(
             // If we were allowed lambdas, this would be:

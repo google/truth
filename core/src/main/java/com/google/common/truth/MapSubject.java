@@ -743,7 +743,7 @@ public class MapSubject extends Subject {
 
     private <K extends @Nullable Object, V extends E> Ordered internalContainsEntriesIn(
         Map<K, V> expectedMap, boolean allowUnexpected) {
-      final Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
       MapDifference<@Nullable Object, A, V> diff =
           MapDifference.create(
               getCastSubject(),
@@ -774,7 +774,7 @@ public class MapSubject extends Subject {
     }
 
     @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-    private <V extends E> Differ<A, V> differ(final Correspondence.ExceptionStore exceptions) {
+    private <V extends E> Differ<A, V> differ(Correspondence.ExceptionStore exceptions) {
       return new Differ<A, V>() {
         @Override
         public @Nullable String diff(A actual, V expected) {

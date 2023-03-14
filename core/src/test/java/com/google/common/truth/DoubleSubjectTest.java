@@ -96,8 +96,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
-  private static void assertThatIsWithinFails(
-      final double actual, final double tolerance, final double expected) {
+  private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -129,8 +128,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNotWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
-  private static void assertThatIsNotWithinFails(
-      final double actual, final double tolerance, final double expected) {
+  private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -371,7 +369,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(1.0).isEqualTo(1);
   }
 
-  private static void assertThatIsEqualToFails(final double actual, final double expected) {
+  private static void assertThatIsEqualToFails(double actual, double expected) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -394,7 +392,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(1.0).isNotEqualTo(2);
   }
 
-  private static void assertThatIsNotEqualToFails(final @Nullable Double value) {
+  private static void assertThatIsNotEqualToFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -416,7 +414,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsZeroFails(null);
   }
 
-  private static void assertThatIsZeroFails(final @Nullable Double value) {
+  private static void assertThatIsZeroFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -439,7 +437,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNonZeroFails(null, "expected a double other than zero");
   }
 
-  private static void assertThatIsNonZeroFails(final @Nullable Double value, String factKey) {
+  private static void assertThatIsNonZeroFails(@Nullable Double value, String factKey) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -460,7 +458,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsPositiveInfinityFails(null);
   }
 
-  private static void assertThatIsPositiveInfinityFails(final @Nullable Double value) {
+  private static void assertThatIsPositiveInfinityFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -480,7 +478,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNegativeInfinityFails(null);
   }
 
-  private static void assertThatIsNegativeInfinityFails(final @Nullable Double value) {
+  private static void assertThatIsNegativeInfinityFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -500,7 +498,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNaNFails(null);
   }
 
-  private static void assertThatIsNaNFails(final @Nullable Double value) {
+  private static void assertThatIsNaNFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -522,7 +520,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsFiniteFails(null);
   }
 
-  private static void assertThatIsFiniteFails(final @Nullable Double value) {
+  private static void assertThatIsFiniteFails(@Nullable Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
