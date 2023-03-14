@@ -110,13 +110,13 @@ better error messaging in the event of a failure.
 When an assertion involving an `Iterable` of protos fails, the failure messages
 can often be hard to understand. If you know of some key function which uniquely
 indexes the expected protos, you can use the `displayingDiffsPairedBy` method to
-tell ProtoTruth about it. For example, if you have a proto called `Record`, and
-you're making an assertion about an `Iterable<Record>`, and the expected records
-have unique values of an `id` field, then you could write this:
+tell ProtoTruth about it. For example, if you have a proto called `MyRecord`,
+and you're making an assertion about an `Iterable<MyRecord>`, and the expected
+records have unique values of an `id` field, then you could write this:
 
 ```java
 assertThat(actualRecordProtos)
-    .displayingDiffsPairedBy(Record::getId)
+    .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
 

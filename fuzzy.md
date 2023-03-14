@@ -67,12 +67,12 @@ The most general factory method for `Correspondence` instances is
 available for convenience in specific cases, such as
 [`Correspondence.transforming`][correspondence-transforming] for testing the
 elements for equality after some transformation. Here's an example
-correspondence between instances of some `Record` class and integers, which
+correspondence between instances of some `MyRecord` class and integers, which
 tests whether calling `getId` on the record returns the integer:
 
 ```java
 private static final Correspondence<MyRecord, Integer> RECORD_HAS_ID =
-    Correspondence.transforming(Record::getId, "has an ID of");
+    Correspondence.transforming(MyRecord::getId, "has an ID of");
 ```
 
 You may want to think about handling of null elements. In the examples above,
@@ -129,15 +129,15 @@ failing tests easier.
 If you are making an assertion about an `Iterable`, and you know of some key
 function which uniquely indexes the expected elements, then you can use the
 [`displayingDiffsPairedBy`][iterable-displaying-diffs] method to tell Fuzzy
-Truth about it. For example, if you have a type called `Record`, and you're
-making an assertion about an `Iterable<Record>` using a `Correspondence` called
-`RECORD_EQUIVALENCE`, and the expected records have unique IDs returned by a
-`getId()` method, then you could write this:
+Truth about it. For example, if you have a type called `MyRecord`, and you're
+making an assertion about an `Iterable<MyRecord>` using a `Correspondence`
+called `RECORD_EQUIVALENCE`, and the expected records have unique IDs returned
+by a `getId()` method, then you could write this:
 
 ```java
 assertThat(actualRecords)
     .comparingElementsUsing(RECORD_EQUIVALENCE)
-    .displayingDiffsPairedBy(Record::getId)
+    .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
 
@@ -162,12 +162,12 @@ a value type are equivalent might provide diff-formatting to describe which
 properties of the value types are different. You can supply this functionality
 using the [`formattingDiffsUsing`][correspondence-formatting-diffs].
 
-Here's an example correspondence between `Record` instances:
+Here's an example correspondence between `MyRecord` instances:
 
 ```java
 class RecordTestHelper {
 
-  static final Correspondence<Record, Record> RECORD_EQUIVALENCE =
+  static final Correspondence<MyRecord, MyRecord> RECORD_EQUIVALENCE =
       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
           .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
 
@@ -197,7 +197,7 @@ Truth) by using a method such as
 ```java
 assertThat(actualRecords)
     .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff)
-    .displayingDiffsPairedBy(Record::getId)
+    .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
 
