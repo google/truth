@@ -141,22 +141,22 @@ final class TestCorrespondences {
    * An example value object. It has an optional {@code id} field and a required {@code score}
    * field, both positive integers.
    */
-  static final class Record {
+  static final class MyRecord {
     private final int id;
     private final int score;
 
-    static Record create(int id, int score) {
+    static MyRecord create(int id, int score) {
       checkState(id >= 0);
       checkState(score > 0);
-      return new Record(id, score);
+      return new MyRecord(id, score);
     }
 
-    static Record createWithoutId(int score) {
+    static MyRecord createWithoutId(int score) {
       checkState(score >= 0);
-      return new Record(-1, score);
+      return new MyRecord(-1, score);
     }
 
-    Record(int id, int score) {
+    MyRecord(int id, int score) {
       this.id = id;
       this.score = score;
     }
@@ -174,14 +174,14 @@ final class TestCorrespondences {
       return score;
     }
 
-    boolean hasSameId(Record that) {
+    boolean hasSameId(MyRecord that) {
       return this.id == that.id;
     }
 
     @Override
     public boolean equals(@Nullable Object o) {
-      if (o instanceof Record) {
-        Record that = (Record) o;
+      if (o instanceof MyRecord) {
+        MyRecord that = (MyRecord) o;
         return this.id == that.id && this.score == that.score;
       }
       return false;
@@ -205,7 +205,7 @@ final class TestCorrespondences {
      * If the argument is the string form of a record, returns that record; otherwise returns {@code
      * null}.
      */
-    static @Nullable Record parse(String str) {
+    static @Nullable MyRecord parse(String str) {
       List<String> parts = Splitter.on('/').splitToList(str);
       if (parts.size() != 2) {
         return null;
@@ -215,25 +215,25 @@ final class TestCorrespondences {
       if (id == null || score == null) {
         return null;
       }
-      return new Record(id, score);
+      return new MyRecord(id, score);
     }
   }
 
   /**
-   * A correspondence between {@link Record} instances which tests whether their {@code id} values
+   * A correspondence between {@link MyRecord} instances which tests whether their {@code id} values
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is not
    * supported.
    *
    * <p>The {@link Correspondence#compare} implementation support nulls, such that null corresponds
    * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
-  static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
+  static final Correspondence<MyRecord, MyRecord> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
       Correspondence.from(
           // If we were allowed to use method references, this would be:
           // TestCorrespondences::recordsAreCloseEnough,
-          new Correspondence.BinaryPredicate<Record, Record>() {
+          new Correspondence.BinaryPredicate<MyRecord, MyRecord>() {
             @Override
-            public boolean apply(Record actual, Record expected) {
+            public boolean apply(MyRecord actual, MyRecord expected) {
               return recordsAreCloseEnough(actual, expected);
             }
           },
@@ -243,18 +243,18 @@ final class TestCorrespondences {
    * A formatter for diffs between records. If the records have the same key, it gives a string of
    * the form {@code "score:<score_diff>"}. If they have different keys, it gives null.
    */
-  static final Correspondence.DiffFormatter<Record, Record> RECORD_DIFF_FORMATTER =
+  static final Correspondence.DiffFormatter<MyRecord, MyRecord> RECORD_DIFF_FORMATTER =
       // If we were allowed to use method references, this would be:
       // TestCorrespondences::formatRecordDiff);
-      new Correspondence.DiffFormatter<Record, Record>() {
+      new Correspondence.DiffFormatter<MyRecord, MyRecord>() {
         @Override
-        public String formatDiff(Record actual, Record expected) {
+        public String formatDiff(MyRecord actual, MyRecord expected) {
           return formatRecordDiff(actual, expected);
         }
       };
 
   /**
-   * A correspondence between {@link Record} instances which tests whether their {@code id} values
+   * A correspondence between {@link MyRecord} instances which tests whether their {@code id} values
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is enabled
    * for records with equal {@code id} values, with a formatted diff showing the actual {@code
    * score} value less the expected {@code score} value preceded by the literal {@code score:}.
@@ -262,7 +262,7 @@ final class TestCorrespondences {
    * <p>The {@link Correspondence#compare} implementation support nulls, such that null corresponds
    * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
-  static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
+  static final Correspondence<MyRecord, MyRecord> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
       RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(RECORD_DIFF_FORMATTER);
 
   /**
@@ -270,17 +270,17 @@ final class TestCorrespondences {
    * values are strings which will be parsed before comparing. If the string does not parse to a
    * record then it does not correspond and is not diffed. Does not support null strings or records.
    */
-  static final Correspondence<String, Record> PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
+  static final Correspondence<String, MyRecord> PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
       Correspondence.from(
               // If we were allowed to use lambdas, this would be:
-              // (String a, Record e) -> {
-              //   @Nullable Record actualRecord = Record.parse(a);
+              // (String a, MyRecord e) -> {
+              //   @Nullable MyRecord actualRecord = MyRecord.parse(a);
               //   return actualRecord != null && recordsAreCloseEnough(actualRecord, e);
               // },
-              new Correspondence.BinaryPredicate<String, Record>() {
+              new Correspondence.BinaryPredicate<String, MyRecord>() {
                 @Override
-                public boolean apply(String actual, Record expected) {
-                  Record actualRecord = Record.parse(actual);
+                public boolean apply(String actual, MyRecord expected) {
+                  MyRecord actualRecord = MyRecord.parse(actual);
                   return actualRecord != null && recordsAreCloseEnough(actualRecord, expected);
                 }
               },
@@ -288,18 +288,19 @@ final class TestCorrespondences {
           .formattingDiffsUsing(
               // If we were allowe to use lambdas, this would be:
               // (a, e) -> {
-              //   @Nullable Record actualRecord = Record.parse(a);
+              //   @Nullable MyRecord actualRecord = MyRecord.parse(a);
               //   return actualRecord != null ? formatRecordDiff(actualRecord, e) : null;
               // });
-              new Correspondence.DiffFormatter<String, Record>() {
+              new Correspondence.DiffFormatter<String, MyRecord>() {
                 @Override
-                public @Nullable String formatDiff(String actual, Record expected) {
-                  Record actualRecord = Record.parse(actual);
+                public @Nullable String formatDiff(String actual, MyRecord expected) {
+                  MyRecord actualRecord = MyRecord.parse(actual);
                   return actualRecord != null ? formatRecordDiff(actualRecord, expected) : null;
                 }
               });
 
-  private static boolean recordsAreCloseEnough(@Nullable Record actual, @Nullable Record expected) {
+  private static boolean recordsAreCloseEnough(
+      @Nullable MyRecord actual, @Nullable MyRecord expected) {
     if (actual == null) {
       return expected == null;
     }
@@ -309,7 +310,7 @@ final class TestCorrespondences {
     return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
   }
 
-  private static @Nullable String formatRecordDiff(Record actual, Record expected) {
+  private static @Nullable String formatRecordDiff(MyRecord actual, MyRecord expected) {
     if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
       return "score:" + (actual.getScore() - expected.getScore());
     } else {
@@ -318,27 +319,27 @@ final class TestCorrespondences {
   }
 
   /**
-   * A key function for {@link Record} instances that keys records by their {@code id} values. The
+   * A key function for {@link MyRecord} instances that keys records by their {@code id} values. The
    * key is null if the record has no {@code id}. Does not support null records.
    */
-  static final Function<Record, Integer> RECORD_ID =
-      new Function<Record, Integer>() {
+  static final Function<MyRecord, Integer> RECORD_ID =
+      new Function<MyRecord, Integer>() {
 
         @Override
-        public @Nullable Integer apply(Record record) {
+        public @Nullable Integer apply(MyRecord record) {
           return record.hasId() ? record.getId() : null;
         }
       };
 
   /**
-   * A key function for {@link Record} instances that keys records by their {@code id} values. The
+   * A key function for {@link MyRecord} instances that keys records by their {@code id} values. The
    * key is null if the record has no {@code id}. Does not support null records.
    */
-  static final Function<Record, Integer> NULL_SAFE_RECORD_ID =
-      new Function<Record, Integer>() {
+  static final Function<MyRecord, Integer> NULL_SAFE_RECORD_ID =
+      new Function<MyRecord, Integer>() {
 
         @Override
-        public @Nullable Integer apply(Record record) {
+        public @Nullable Integer apply(MyRecord record) {
           if (record == null) {
             return 0;
           }
@@ -347,7 +348,7 @@ final class TestCorrespondences {
       };
 
   /**
-   * A key function for {@link String} instances that attempts to parse them as {@link Record}
+   * A key function for {@link String} instances that attempts to parse them as {@link MyRecord}
    * instances and keys records by their {@code id} values. The key is null if the string does not
    * parse or the record has no {@code id}. Does not support null strings.
    */
@@ -356,7 +357,7 @@ final class TestCorrespondences {
 
         @Override
         public @Nullable Integer apply(String str) {
-          Record record = Record.parse(str);
+          MyRecord record = MyRecord.parse(str);
           return record != null ? RECORD_ID.apply(record) : null;
         }
       };

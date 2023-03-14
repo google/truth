@@ -35,7 +35,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.truth.TestCorrespondences.Record;
+import com.google.common.truth.TestCorrespondences.MyRecord;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
@@ -158,14 +158,14 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_contains() {
-    Record expected = Record.create(2, 200);
-    ImmutableList<Record> actual =
+    MyRecord expected = MyRecord.create(2, 200);
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(4, 400),
-            Record.create(2, 189),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(4, 400),
+            MyRecord.create(2, 189),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -191,14 +191,14 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_contains_noDiff() {
-    Record expected = Record.create(2, 200);
-    ImmutableList<Record> actual =
+    MyRecord expected = MyRecord.create(2, 200);
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(4, 400),
-            Record.create(2, 189),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(4, 400),
+            MyRecord.create(2, 189),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -217,8 +217,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_contains_handlesActualKeyerExceptions() {
-    Record expected = Record.create(0, 999);
-    List<Record> actual = asList(Record.create(1, 100), null, Record.create(4, 400));
+    MyRecord expected = MyRecord.create(0, 999);
+    List<MyRecord> actual = asList(MyRecord.create(1, 100), null, MyRecord.create(4, 400));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -238,8 +238,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_contains_handlesExpectedKeyerExceptions() {
-    List<Record> actual =
-        asList(Record.create(1, 100), Record.create(2, 200), Record.create(4, 400));
+    List<MyRecord> actual =
+        asList(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(4, 400));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -259,8 +259,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_contains_handlesFormatDiffExceptions() {
-    Record expected = Record.create(0, 999);
-    List<Record> actual = asList(Record.create(1, 100), null, Record.create(4, 400));
+    MyRecord expected = MyRecord.create(0, 999);
+    List<MyRecord> actual = asList(MyRecord.create(1, 100), null, MyRecord.create(4, 400));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -657,18 +657,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_1arg_containsExactlyElementsIn() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(900));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(900));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(4, 400),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(4, 400),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -701,12 +701,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_2arg_containsExactlyElementsIn() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(900));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(900));
     ImmutableList<String> actual = ImmutableList.of("1/100", "2/211", "4/400", "none/999");
     expectFailure
         .whenTesting()
@@ -740,18 +740,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_onlyKeyed() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(999));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(3, 303),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(3, 303),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -776,18 +776,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_noKeyed() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(900));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(900));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 201),
-            Record.create(4, 400),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 201),
+            MyRecord.create(4, 400),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -808,18 +808,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_noDiffs() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(999));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(3, 303),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(3, 303),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -851,19 +851,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   public void displayingDiffsPairedBy_containsExactlyElementsIn_notUnique() {
     // The missing elements here are not uniquely keyed by the key function, so the key function
     // should be ignored, but a warning about this should be appended to the failure message.
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.create(3, 301),
-            Record.createWithoutId(900));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.create(3, 301),
+            MyRecord.createWithoutId(900));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 211),
-            Record.create(4, 400),
-            Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 211),
+            MyRecord.create(4, 400),
+            MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -885,9 +885,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesActualKeyerExceptions() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(4, 400));
-    List<Record> actual = asList(Record.create(1, 101), Record.create(2, 211), null);
+    ImmutableList<MyRecord> expected =
+        ImmutableList.of(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(4, 400));
+    List<MyRecord> actual = asList(MyRecord.create(1, 101), MyRecord.create(2, 211), null);
     expectFailure
         .whenTesting()
         .that(actual)
@@ -917,9 +917,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesExpectedKeyerExceptions() {
-    List<Record> expected = asList(Record.create(1, 100), Record.create(2, 200), null);
-    List<Record> actual =
-        asList(Record.create(1, 101), Record.create(2, 211), Record.create(4, 400));
+    List<MyRecord> expected = asList(MyRecord.create(1, 100), MyRecord.create(2, 200), null);
+    List<MyRecord> actual =
+        asList(MyRecord.create(1, 101), MyRecord.create(2, 211), MyRecord.create(4, 400));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -949,9 +949,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesFormatDiffExceptions() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
-    List<Record> actual = asList(Record.create(1, 101), Record.create(2, 211), null);
+    ImmutableList<MyRecord> expected =
+        ImmutableList.of(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(0, 999));
+    List<MyRecord> actual = asList(MyRecord.create(1, 101), MyRecord.create(2, 211), null);
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1310,15 +1310,16 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingElementsPairedBy_containsAtLeastElementsIn() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.createWithoutId(999));
-    ImmutableList<Record> actual =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 101),
-            Record.create(2, 211),
-            Record.create(2, 222),
-            Record.create(3, 303),
-            Record.createWithoutId(888));
+            MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
+        ImmutableList.of(
+            MyRecord.create(1, 101),
+            MyRecord.create(2, 211),
+            MyRecord.create(2, 222),
+            MyRecord.create(3, 303),
+            MyRecord.createWithoutId(888));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1353,14 +1354,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingElementsPairedBy_containsAtLeastElementsIn_notUnique() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(2, 201),
-            Record.createWithoutId(999));
-    ImmutableList<Record> actual =
-        ImmutableList.of(Record.create(1, 101), Record.create(3, 303), Record.createWithoutId(999));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(2, 201),
+            MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
+        ImmutableList.of(
+            MyRecord.create(1, 101), MyRecord.create(3, 303), MyRecord.createWithoutId(999));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1380,10 +1382,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingElementsPairedBy_containsAtLeastElementsIn_handlesFormatDiffExceptions() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
-    List<Record> actual =
-        asList(Record.create(1, 101), Record.create(2, 211), Record.create(3, 303), null);
+    ImmutableList<MyRecord> expected =
+        ImmutableList.of(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(0, 999));
+    List<MyRecord> actual =
+        asList(MyRecord.create(1, 101), MyRecord.create(2, 211), MyRecord.create(3, 303), null);
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1682,19 +1684,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsAnyIn_withKeyMatches() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(3, 300),
-            Record.createWithoutId(999));
-    ImmutableList<Record> actual =
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(3, 300),
+            MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(3, 311),
-            Record.create(2, 211),
-            Record.create(2, 222),
-            Record.create(4, 404),
-            Record.createWithoutId(888));
+            MyRecord.create(3, 311),
+            MyRecord.create(2, 211),
+            MyRecord.create(2, 222),
+            MyRecord.create(4, 404),
+            MyRecord.createWithoutId(888));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1735,10 +1737,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsAnyIn_withoutKeyMatches() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.createWithoutId(999));
-    ImmutableList<Record> actual =
-        ImmutableList.of(Record.create(3, 300), Record.create(4, 411), Record.createWithoutId(888));
+    ImmutableList<MyRecord> expected =
+        ImmutableList.of(
+            MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
+        ImmutableList.of(
+            MyRecord.create(3, 300), MyRecord.create(4, 411), MyRecord.createWithoutId(888));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1754,14 +1758,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsAnyIn_notUnique() {
-    ImmutableList<Record> expected =
+    ImmutableList<MyRecord> expected =
         ImmutableList.of(
-            Record.create(1, 100),
-            Record.create(2, 200),
-            Record.create(2, 250),
-            Record.createWithoutId(999));
-    ImmutableList<Record> actual =
-        ImmutableList.of(Record.create(3, 300), Record.create(2, 211), Record.createWithoutId(888));
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 200),
+            MyRecord.create(2, 250),
+            MyRecord.createWithoutId(999));
+    ImmutableList<MyRecord> actual =
+        ImmutableList.of(
+            MyRecord.create(3, 300), MyRecord.create(2, 211), MyRecord.createWithoutId(888));
     expectFailure
         .whenTesting()
         .that(actual)
@@ -1778,9 +1783,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void displayingDiffsPairedBy_containsAnyIn_handlesFormatDiffExceptions() {
-    ImmutableList<Record> expected =
-        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
-    List<Record> actual = asList(Record.create(3, 311), Record.create(4, 404), null);
+    ImmutableList<MyRecord> expected =
+        ImmutableList.of(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(0, 999));
+    List<MyRecord> actual = asList(MyRecord.create(3, 311), MyRecord.create(4, 404), null);
     expectFailure
         .whenTesting()
         .that(actual)
@@ -2028,28 +2033,28 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void formattingDiffsUsing_success() {
-    ImmutableList<Record> actual =
-        ImmutableList.of(Record.create(3, 300), Record.create(2, 200), Record.create(1, 100));
+    ImmutableList<MyRecord> actual =
+        ImmutableList.of(MyRecord.create(3, 300), MyRecord.create(2, 200), MyRecord.create(1, 100));
     assertThat(actual)
         .formattingDiffsUsing(RECORD_DIFF_FORMATTER)
         .displayingDiffsPairedBy(RECORD_ID)
-        .containsExactly(Record.create(1, 100), Record.create(2, 200), Record.create(3, 300));
+        .containsExactly(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(3, 300));
   }
 
   @Test
   public void formattingDiffsUsing_failure() {
-    ImmutableList<Record> actual =
+    ImmutableList<MyRecord> actual =
         ImmutableList.of(
-            Record.create(3, 300),
-            Record.create(2, 201),
-            Record.create(1, 100),
-            Record.create(2, 199));
+            MyRecord.create(3, 300),
+            MyRecord.create(2, 201),
+            MyRecord.create(1, 100),
+            MyRecord.create(2, 199));
     expectFailure
         .whenTesting()
         .that(actual)
         .formattingDiffsUsing(RECORD_DIFF_FORMATTER)
         .displayingDiffsPairedBy(RECORD_ID)
-        .containsExactly(Record.create(1, 100), Record.create(2, 200), Record.create(3, 300));
+        .containsExactly(MyRecord.create(1, 100), MyRecord.create(2, 200), MyRecord.create(3, 300));
     assertFailureKeys(
         "for key",
         "missing",

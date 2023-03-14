@@ -1023,7 +1023,7 @@ public class IterableSubject extends Subject {
      * <pre>{@code
      * assertThat(actualRecords)
      *     .comparingElementsUsing(RECORD_CORRESPONDENCE)
-     *     .displayingDiffsPairedBy(Record::getId)
+     *     .displayingDiffsPairedBy(MyRecord::getId)
      *     .containsExactlyElementsIn(expectedRecords);
      * }</pre>
      *
