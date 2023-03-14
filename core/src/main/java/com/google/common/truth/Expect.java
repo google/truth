@@ -86,7 +86,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private static final class ExpectationGatherer implements FailureStrategy {
     @GuardedBy("this")
-    private final List<AssertionError> failures = new ArrayList<AssertionError>();
+    private final List<AssertionError> failures = new ArrayList<>();
 
     @GuardedBy("this")
     private TestPhase inRuleContext = BEFORE;

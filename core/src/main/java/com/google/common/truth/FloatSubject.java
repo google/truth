@@ -36,7 +36,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class FloatSubject extends ComparableSubject<Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
-  private final Float actual;
+  private final @Nullable Float actual;
   private final DoubleSubject asDouble;
 
   FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
@@ -209,7 +209,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Float other) {
+  public final void isEquivalentAccordingToCompareTo(@Nullable Float other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 

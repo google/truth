@@ -31,7 +31,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
-  private final float[] actual;
+  private final float @Nullable [] actual;
 
   PrimitiveFloatArraySubject(
       FailureMetadata metadata, float @Nullable [] o, @Nullable String typeDescription) {
@@ -64,7 +64,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
    * </ul>
    */
   @Override
-  public void isEqualTo(Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     super.isEqualTo(expected);
   }
 
@@ -83,7 +83,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
    * </ul>
    */
   @Override
-  public void isNotEqualTo(Object expected) {
+  public void isNotEqualTo(@Nullable Object expected) {
     super.isNotEqualTo(expected);
   }
 
@@ -239,7 +239,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   private IterableSubject iterableSubject() {
     return checkNoNeedToDisplayBothValues("asList()")
         .about(iterablesWithCustomFloatToString())
-        .that(Floats.asList(actual));
+        .that(Floats.asList(checkNotNull(actual)));
   }
 
   /*
@@ -253,7 +253,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   private Factory<IterableSubject, Iterable<?>> iterablesWithCustomFloatToString() {
     return new Factory<IterableSubject, Iterable<?>>() {
       @Override
-      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+      public IterableSubject createSubject(FailureMetadata metadata, @Nullable Iterable<?> actual) {
         return new IterableSubjectWithInheritedToString(metadata, actual);
       }
     };
@@ -261,7 +261,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
 
   private final class IterableSubjectWithInheritedToString extends IterableSubject {
 
-    IterableSubjectWithInheritedToString(FailureMetadata metadata, Iterable<?> actual) {
+    IterableSubjectWithInheritedToString(FailureMetadata metadata, @Nullable Iterable<?> actual) {
       super(metadata, actual);
     }
 

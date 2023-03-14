@@ -27,7 +27,7 @@ final class LazyMessage {
       "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";
 
   private final String format;
-  private final Object[] args;
+  private final @Nullable Object[] args;
 
   LazyMessage(String format, @Nullable Object... args) {
     this.format = format;

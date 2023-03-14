@@ -36,7 +36,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class DoubleSubject extends ComparableSubject<Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  private final Double actual;
+  private final @Nullable Double actual;
 
   DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
     super(metadata, actual);
@@ -201,7 +201,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Double other) {
+  public final void isEquivalentAccordingToCompareTo(@Nullable Double other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 

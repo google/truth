@@ -33,10 +33,12 @@ public class LongSubject extends ComparableSubject<Long> {
     super(metadata, actual);
   }
 
-  /** @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality. */
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality.
+   */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Long other) {
+  public final void isEquivalentAccordingToCompareTo(@Nullable Long other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 

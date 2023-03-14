@@ -68,7 +68,7 @@ public final class FailureMetadata {
     }
 
     static Step checkCall(
-        OldAndNewValuesAreSimilar valuesAreSimilar,
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar,
         @Nullable Function<String, String> descriptionUpdate) {
       return new Step(null, descriptionUpdate, valuesAreSimilar);
     }
@@ -238,7 +238,7 @@ public final class FailureMetadata {
       }
 
       if (description == null) {
-        description = step.subject.typeDescription();
+        description = checkNotNull(step.subject).typeDescription();
       }
     }
     return descriptionIsInteresting
@@ -287,7 +287,7 @@ public final class FailureMetadata {
       }
 
       if (rootSubject == null) {
-        if (step.subject.actual() instanceof Throwable) {
+        if (checkNotNull(step.subject).actual() instanceof Throwable) {
           /*
            * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
            * so we don't need to include it again in the message.
@@ -306,8 +306,9 @@ public final class FailureMetadata {
         ? ImmutableList.of(
             fact(
                 // TODO(cpovirk): Use inferDescription() here when appropriate? But it can be long.
-                rootSubject.subject.typeDescription() + " was",
-                rootSubject.subject.actualCustomStringRepresentationForPackageMembersToCall()))
+                checkNotNull(checkNotNull(rootSubject).subject).typeDescription() + " was",
+                checkNotNull(checkNotNull(rootSubject).subject)
+                    .actualCustomStringRepresentationForPackageMembersToCall()))
         : ImmutableList.<Fact>of();
   }
 
@@ -317,7 +318,7 @@ public final class FailureMetadata {
    */
   private @Nullable Throwable rootCause() {
     for (Step step : steps) {
-      if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
+      if (!step.isCheckCall() && checkNotNull(step.subject).actual() instanceof Throwable) {
         return (Throwable) step.subject.actual();
       }
     }

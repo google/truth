@@ -44,4 +44,5 @@ public final class SimpleSubjectBuilder<SubjectT extends Subject, ActualT> {
   public SubjectT that(@Nullable ActualT actual) {
     return subjectFactory.createSubject(metadata, actual);
   }
+
 }

@@ -20,6 +20,7 @@ import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
@@ -88,7 +89,7 @@ public class Subject {
    */
   public interface Factory<SubjectT extends Subject, ActualT> {
     /** Creates a new {@link Subject}. */
-    SubjectT createSubject(FailureMetadata metadata, ActualT actual);
+    SubjectT createSubject(FailureMetadata metadata, @Nullable ActualT actual);
   }
 
   private static final FailureStrategy IGNORE_STRATEGY =
@@ -97,8 +98,8 @@ public class Subject {
         public void fail(AssertionError failure) {}
       };
 
-  private final FailureMetadata metadata;
-  private final Object actual;
+  private final @Nullable FailureMetadata metadata;
+  private final @Nullable Object actual;
   private final @Nullable String typeDescriptionOverride;
 
   /**
@@ -121,8 +122,10 @@ public class Subject {
    * obfuscated names.
    */
   Subject(
-      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
-    this.metadata = metadata.updateForSubject(this);
+      @Nullable FailureMetadata metadata,
+      @Nullable Object actual,
+      @Nullable String typeDescriptionOverride) {
+    this.metadata = metadata == null ? null : metadata.updateForSubject(this);
     this.actual = actual;
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
@@ -353,13 +356,14 @@ public class Subject {
   }
 
   /** Fails unless the subject is equal to any element in the given iterable. */
-  public void isIn(Iterable<?> iterable) {
+  public void isIn(@Nullable Iterable<?> iterable) {
+    checkNotNull(iterable);
     if (!contains(iterable, actual)) {
       failWithActual("expected any of", iterable);
     }
   }
 
-  private static boolean contains(Iterable<?> haystack, Object needle) {
+  private static boolean contains(Iterable<?> haystack, @Nullable Object needle) {
     if (isKotlinRange(haystack)) {
       return kotlinRangeContains(haystack, needle);
     }
@@ -373,7 +377,8 @@ public class Subject {
   }
 
   /** Fails if the subject is equal to any element in the given iterable. */
-  public void isNotIn(Iterable<?> iterable) {
+  public void isNotIn(@Nullable Iterable<?> iterable) {
+    checkNotNull(iterable);
     if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
@@ -386,7 +391,7 @@ public class Subject {
   }
 
   /** Returns the actual value under test. */
-  final Object actual() {
+  final @Nullable Object actual() {
     return actual;
   }
 
@@ -449,10 +454,10 @@ public class Subject {
     return Iterables.transform(asList(array), STRINGIFY);
   }
 
-  private static final Function<Object, Object> STRINGIFY =
-      new Function<Object, Object>() {
+  private static final Function<@Nullable Object, @Nullable Object> STRINGIFY =
+      new Function<@Nullable Object, @Nullable Object>() {
         @Override
-        public Object apply(@Nullable Object input) {
+        public @Nullable Object apply(@Nullable Object input) {
           if (input != null && input.getClass().isArray()) {
             Iterable<?> iterable;
             if (input.getClass() == boolean[].class) {
@@ -514,7 +519,7 @@ public class Subject {
 
     private final @Nullable ImmutableList<Fact> facts;
 
-    private ComparisonResult(ImmutableList<Fact> facts) {
+    private ComparisonResult(@Nullable ImmutableList<Fact> facts) {
       this.facts = facts;
     }
 
@@ -619,7 +624,7 @@ public class Subject {
     }
   }
 
-  private static boolean gwtSafeObjectEquals(Object actual, Object expected) {
+  private static boolean gwtSafeObjectEquals(@Nullable Object actual, @Nullable Object expected) {
     if (actual instanceof Double && expected instanceof Double) {
       return Double.doubleToLongBits((Double) actual) == Double.doubleToLongBits((Double) expected);
     } else if (actual instanceof Float && expected instanceof Float) {
@@ -655,7 +660,7 @@ public class Subject {
    */
   @Deprecated
   final StandardSubjectBuilder check() {
-    return new StandardSubjectBuilder(metadata.updateForCheckCall());
+    return new StandardSubjectBuilder(checkNotNull(metadata).updateForCheckCall());
   }
 
   /**
@@ -686,18 +691,19 @@ public class Subject {
    * @param format a template with {@code %s} placeholders
    * @param args the arguments to be inserted into those placeholders
    */
-  protected final StandardSubjectBuilder check(String format, Object... args) {
+  protected final StandardSubjectBuilder check(String format, @Nullable Object... args) {
     return doCheck(OldAndNewValuesAreSimilar.DIFFERENT, format, args);
   }
 
   // TODO(b/134064106): Figure out a public API for this.
 
-  final StandardSubjectBuilder checkNoNeedToDisplayBothValues(String format, Object... args) {
+  final StandardSubjectBuilder checkNoNeedToDisplayBothValues(
+      String format, @Nullable Object... args) {
     return doCheck(OldAndNewValuesAreSimilar.SIMILAR, format, args);
   }
 
   private StandardSubjectBuilder doCheck(
-      OldAndNewValuesAreSimilar valuesAreSimilar, String format, Object[] args) {
+      OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
     final LazyMessage message = new LazyMessage(format, args);
     Function<String, String> descriptionUpdate =
         new Function<String, String>() {
@@ -707,7 +713,7 @@ public class Subject {
           }
         };
     return new StandardSubjectBuilder(
-        metadata.updateForCheckCall(valuesAreSimilar, descriptionUpdate));
+        checkNotNull(metadata).updateForCheckCall(valuesAreSimilar, descriptionUpdate));
   }
 
   /**
@@ -804,7 +810,7 @@ public class Subject {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  final void fail(String verb, Object... messageParts) {
+  final void fail(String verb, @Nullable Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that <");
     message.append(actualCustomStringRepresentation()).append("> ").append(verb);
     for (Object part : messageParts) {
@@ -828,12 +834,12 @@ public class Subject {
    * Special version of {@link #failEqualityCheck} for use from {@link IterableSubject}, documented
    * further there.
    */
-  final void failEqualityCheckForEqualsWithoutDescription(Object expected) {
+  final void failEqualityCheckForEqualsWithoutDescription(@Nullable Object expected) {
     failEqualityCheck(EqualityCheck.EQUAL, expected, ComparisonResult.differentNoDescription());
   }
 
   private void failEqualityCheck(
-      EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
+      EqualityCheck equalityCheck, @Nullable Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);
     String actualClass = actual == null ? "(null reference)" : actual.getClass().getName();
@@ -881,7 +887,8 @@ public class Subject {
       }
     } else {
       if (equalityCheck == EqualityCheck.EQUAL && actual != null && expected != null) {
-        metadata.failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
+        checkNotNull(metadata)
+            .failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
       } else {
         failEqualityCheckNoComparisonFailure(
             difference,
@@ -895,7 +902,7 @@ public class Subject {
    * Checks whether the actual and expected values are strings that match except for trailing
    * whitespace. If so, reports a failure and returns true.
    */
-  private boolean tryFailForTrailingWhitespaceOnly(Object expected) {
+  private boolean tryFailForTrailingWhitespaceOnly(@Nullable Object expected) {
     if (!(actual instanceof String) || !(expected instanceof String)) {
       return false;
     }
@@ -964,7 +971,7 @@ public class Subject {
    * Checks whether the actual and expected values are empty strings. If so, reports a failure and
    * returns true.
    */
-  private boolean tryFailForEmptyString(Object expected) {
+  private boolean tryFailForEmptyString(@Nullable Object expected) {
     if (!(actual instanceof String) || !(expected instanceof String)) {
       return false;
     }
@@ -1203,6 +1210,6 @@ public class Subject {
   }
 
   private void doFail(ImmutableList<Fact> facts) {
-    metadata.fail(facts);
+    checkNotNull(metadata).fail(facts);
   }
 }

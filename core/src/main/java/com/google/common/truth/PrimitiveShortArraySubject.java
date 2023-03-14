@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.primitives.Shorts;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -24,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveShortArraySubject extends AbstractArraySubject {
-  private final short[] actual;
+  private final short @Nullable [] actual;
 
   PrimitiveShortArraySubject(
       FailureMetadata metadata, short @Nullable [] o, @Nullable String typeDescription) {
@@ -33,6 +35,6 @@ public final class PrimitiveShortArraySubject extends AbstractArraySubject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Shorts.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Shorts.asList(checkNotNull(actual)));
   }
 }

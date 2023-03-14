@@ -47,13 +47,13 @@ final class AssertionErrorWithFacts extends AssertionError implements ErrorWithF
 
   @Override
   @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-  public Throwable getCause() {
+  public @Nullable Throwable getCause() {
     return cause;
   }
 
   @Override
   public String toString() {
-    return getLocalizedMessage();
+    return checkNotNull(getLocalizedMessage());
   }
 
   @Override

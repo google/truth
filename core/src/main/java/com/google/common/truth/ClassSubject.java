@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -25,7 +27,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @GwtIncompatible("reflection")
 public final class ClassSubject extends Subject {
-  private final Class<?> actual;
+  private final @Nullable Class<?> actual;
 
   ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
     super(metadata, o);
@@ -37,7 +39,7 @@ public final class ClassSubject extends Subject {
    * class or interface.
    */
   public void isAssignableTo(Class<?> clazz) {
-    if (!clazz.isAssignableFrom(actual)) {
+    if (!clazz.isAssignableFrom(checkNotNull(actual))) {
       failWithActual("expected to be assignable to", clazz.getName());
     }
   }

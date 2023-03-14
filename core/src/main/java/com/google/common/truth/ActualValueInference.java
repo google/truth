@@ -15,6 +15,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static java.lang.Thread.currentThread;
@@ -974,9 +975,11 @@ final class ActualValueInference {
      * @param invocation the method invocation being visited, or {@code null} if a non-method
      *     descriptor is being visited
      */
-    private void pushDescriptorAndMaybeProcessMethodCall(String desc, Invocation invocation) {
+    private void pushDescriptorAndMaybeProcessMethodCall(
+        String desc, @Nullable Invocation invocation) {
       if (invocation != null && invocation.isOnSubjectInstance()) {
-        actualValueAtLocation.put(labelsSeen.build(), invocation.receiver().actualValue());
+        actualValueAtLocation.put(
+            labelsSeen.build(), checkNotNull(invocation.receiver()).actualValue());
       }
 
       boolean hasParams = invocation != null && (Type.getArgumentsAndReturnSizes(desc) >> 2) > 1;
@@ -1011,7 +1014,8 @@ final class ActualValueInference {
       }
     }
 
-    private void pushMaybeDescribed(InferredType type, Invocation invocation, boolean hasParams) {
+    private void pushMaybeDescribed(
+        InferredType type, @Nullable Invocation invocation, boolean hasParams) {
       push(invocation == null ? opaque(type) : invocation.deriveEntry(type, hasParams));
     }
 
@@ -1032,10 +1036,11 @@ final class ActualValueInference {
           operandStack,
           methodSignature);
       int expectedLastIndex = operandStack.size() - count - 1;
-      StackEntry lastPopped = null;
-      for (int i = operandStack.size() - 1; i > expectedLastIndex; --i) {
-        lastPopped = operandStack.remove(i);
-      }
+
+      StackEntry lastPopped;
+      do {
+        lastPopped = operandStack.remove(operandStack.size() - 1);
+      } while (operandStack.size() - 1 > expectedLastIndex);
       return lastPopped;
     }
 
@@ -1262,7 +1267,7 @@ final class ActualValueInference {
       } else if (actualValue() != null) {
         return subjectFor(type, actualValue());
       } else if (isOnSubjectInstance()) {
-        return subjectFor(type, receiver().actualValue());
+        return subjectFor(type, checkNotNull(receiver()).actualValue());
       } else if (BORING_NAMES.contains(name())) {
         /*
          * TODO(cpovirk): For no-arg instance methods like get(), return "foo.get()," where "foo" is
@@ -1496,7 +1501,7 @@ final class ActualValueInference {
     return (flags & bitmask) == bitmask;
   }
 
-  private static void closeQuietly(InputStream stream) {
+  private static void closeQuietly(@Nullable InputStream stream) {
     if (stream == null) {
       return;
     }

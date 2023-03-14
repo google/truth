@@ -15,7 +15,9 @@
  */
 package com.google.common.truth;
 
+
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.internal.AssumptionViolatedException;
 
 /**
@@ -66,7 +68,8 @@ public final class TruthJUnit {
 
   // TODO(diamondm): remove this and use org.junit.AssumptionViolatedException once we're on v4.12
   private static class ThrowableAssumptionViolatedException extends AssumptionViolatedException {
-    public ThrowableAssumptionViolatedException(String message, Throwable throwable) {
+    public ThrowableAssumptionViolatedException(
+        @Nullable String message, @Nullable Throwable throwable) {
       super(message);
       if (throwable != null) initCause(throwable);
     }

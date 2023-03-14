@@ -95,7 +95,7 @@ final class Platform {
 
     @Override
     public final String toString() {
-      return getLocalizedMessage();
+      return "" + getLocalizedMessage();
     }
   }
 
@@ -150,9 +150,9 @@ final class Platform {
   }-*/;
 
   /** Turns a non-double, non-float object into a string. */
-  static String stringValueOfNonFloatingPoint(Object o) {
+  static String stringValueOfNonFloatingPoint(@Nullable Object o) {
     // Check if we are in J2CL mode by probing a system property that only exists in GWT.
-    boolean inJ2clMode = System.getProperty("superdevmode", "doesntexist").equals("doesntexist");
+    boolean inJ2clMode = "doesntexist".equals(System.getProperty("superdevmode", "doesntexist"));
     if (inJ2clMode && o instanceof Message) {
       Message msg = (Message) o;
       boolean dumpAvailable =
@@ -265,7 +265,7 @@ final class Platform {
     return false;
   }
 
-  static boolean kotlinRangeContains(Iterable<?> haystack, Object needle) {
+  static boolean kotlinRangeContains(Iterable<?> haystack, @Nullable Object needle) {
     throw new AssertionError(); // never called under GWT because isKotlinRange returns false
   }
 }

@@ -24,6 +24,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -101,7 +102,7 @@ public final class Truth {
    * StandardSubjectBuilder#about about(...)}, as discussed in <a
    * href="https://truth.dev/faq#java8">this FAQ entry</a>.
    */
-  public static StandardSubjectBuilder assertWithMessage(String messageToPrepend) {
+  public static StandardSubjectBuilder assertWithMessage(@Nullable String messageToPrepend) {
     return assert_().withMessage(messageToPrepend);
   }
 
@@ -121,7 +122,7 @@ public final class Truth {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public static StandardSubjectBuilder assertWithMessage(String format, Object... args) {
+  public static StandardSubjectBuilder assertWithMessage(String format, @Nullable Object... args) {
     return assert_().withMessage(format, args);
   }
 
@@ -197,35 +198,37 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(boolean @Nullable [] actual) {
+  // TODO(b/269115309): Switch back to @Nullable for Kotlin 1.8.20
+
+  public static PrimitiveBooleanArraySubject assertThat(@CheckForNull boolean[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveShortArraySubject assertThat(short @Nullable [] actual) {
+  public static PrimitiveShortArraySubject assertThat(@CheckForNull short[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveIntArraySubject assertThat(int @Nullable [] actual) {
+  public static PrimitiveIntArraySubject assertThat(@CheckForNull int[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveLongArraySubject assertThat(long @Nullable [] actual) {
+  public static PrimitiveLongArraySubject assertThat(@CheckForNull long[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveByteArraySubject assertThat(byte @Nullable [] actual) {
+  public static PrimitiveByteArraySubject assertThat(@CheckForNull byte[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveCharArraySubject assertThat(char @Nullable [] actual) {
+  public static PrimitiveCharArraySubject assertThat(@CheckForNull char[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(float @Nullable [] actual) {
+  public static PrimitiveFloatArraySubject assertThat(@CheckForNull float[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(double @Nullable [] actual) {
+  public static PrimitiveDoubleArraySubject assertThat(@CheckForNull double[] actual) {
     return assert_().that(actual);
   }
 
@@ -301,13 +304,13 @@ public final class Truth {
 
     @Override
     @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-    public Throwable getCause() {
+    public @Nullable Throwable getCause() {
       return cause;
     }
 
     @Override
     public String toString() {
-      return getLocalizedMessage();
+      return checkNotNull(getLocalizedMessage());
     }
   }
 }

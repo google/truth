@@ -195,7 +195,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * Creates a subject for asserting about the given {@link AssertionError}, usually one produced by
    * Truth.
    */
-  public static TruthFailureSubject assertThat(AssertionError actual) {
+  public static TruthFailureSubject assertThat(@Nullable AssertionError actual) {
     return assertAbout(truthFailures()).that(actual);
   }
 

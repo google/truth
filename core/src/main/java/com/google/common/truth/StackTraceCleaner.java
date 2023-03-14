@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Thread.currentThread;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** Utility that cleans stack traces to remove noise from common frameworks. */
 @GwtIncompatible
@@ -48,8 +50,8 @@ final class StackTraceCleaner {
 
   private final Throwable throwable;
   private final List<StackTraceElementWrapper> cleanedStackTrace = new ArrayList<>();
-  private StackTraceElementWrapper lastStackFrameElementWrapper = null;
-  private StackFrameType currentStreakType = null;
+  private @Nullable StackTraceElementWrapper lastStackFrameElementWrapper = null;
+  private @Nullable StackFrameType currentStreakType = null;
   private int currentStreakLength = 0;
 
   /**
@@ -174,10 +176,11 @@ final class StackTraceCleaner {
 
     if (currentStreakLength == 1) {
       // A single frame isn't a streak. Just include the frame as-is in the result.
-      cleanedStackTrace.add(lastStackFrameElementWrapper);
+      cleanedStackTrace.add(checkNotNull(lastStackFrameElementWrapper));
     } else {
       // Add a single frame to the result summarizing the streak of framework frames
-      cleanedStackTrace.add(createStreakReplacementFrame(currentStreakType, currentStreakLength));
+      cleanedStackTrace.add(
+          createStreakReplacementFrame(checkNotNull(currentStreakType), currentStreakLength));
     }
 
     clearStreak();
@@ -253,8 +256,8 @@ final class StackTraceCleaner {
     return false;
   }
 
-  private static boolean isSubtypeOf(Class<?> subclass, String superclass) {
-    for (; subclass != null; subclass = subclass.getSuperclass()) {
+  private static boolean isSubtypeOf(@Nullable Class<?> subclass, String superclass) {
+    for (; subclass != null; subclass = checkNotNull(subclass).getSuperclass()) {
       if (subclass.getCanonicalName() != null && subclass.getCanonicalName().equals(superclass)) {
         return true;
       }

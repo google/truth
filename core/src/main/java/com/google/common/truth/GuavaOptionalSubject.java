@@ -30,7 +30,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  */
 public final class GuavaOptionalSubject extends Subject {
-  private final Optional<?> actual;
+  private final @Nullable Optional<?> actual;
 
   GuavaOptionalSubject(
       FailureMetadata metadata, @Nullable Optional<?> actual, @Nullable String typeDescription) {
@@ -67,7 +67,7 @@ public final class GuavaOptionalSubject extends Subject {
    * assertThat(myOptional.get()).contains("foo");
    * }</pre>
    */
-  public void hasValue(Object expected) {
+  public void hasValue(@Nullable Object expected) {
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }

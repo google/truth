@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -23,7 +25,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  */
 public class ThrowableSubject extends Subject {
-  private final Throwable actual;
+  private final @Nullable Throwable actual;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
@@ -53,7 +55,7 @@ public class ThrowableSubject extends Subject {
               "(Note from Truth: When possible, instead of asserting on the full message, assert"
                   + " about individual facts by using ExpectFailure.assertThat.)");
     }
-    return check.that(actual.getMessage());
+    return check.that(checkNotNull(actual).getMessage());
   }
 
   /**

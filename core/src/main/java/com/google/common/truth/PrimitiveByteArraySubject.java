@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.primitives.Bytes;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -24,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class PrimitiveByteArraySubject extends AbstractArraySubject {
-  private final byte[] actual;
+  private final byte @Nullable [] actual;
 
   PrimitiveByteArraySubject(
       FailureMetadata metadata, byte @Nullable [] o, @Nullable String typeDescription) {
@@ -33,6 +35,6 @@ public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Bytes.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Bytes.asList(checkNotNull(actual)));
   }
 }
