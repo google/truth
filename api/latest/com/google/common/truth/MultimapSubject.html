@@ -170,7 +170,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;<a href="MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">A</a>,&#8203;<a href="MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">E</a>&gt;</span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;<a href="MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">A</a> extends @Nullable java.lang.Object,&#8203;<a href="MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">E</a> extends @Nullable java.lang.Object&gt;</span></code></th>
 <td class="colLast">
 <div class="block">A partially specified check in which the actual values (i.e.</div>
 </td>
@@ -227,7 +227,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>&lt;A,&#8203;E&gt;<br><a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;</code></td>
+<td class="colFirst"><code>&lt;A extends @Nullable java.lang.Object,&#8203;E extends @Nullable java.lang.Object&gt;<br><a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#comparingValuesUsing(com.google.common.truth.Correspondence)">comparingValuesUsing</a></span>&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</code></th>
 <td class="colLast">
 <div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
@@ -594,7 +594,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockListLast">
 <li class="blockList">
 <h4>comparingValuesUsing</h4>
-<pre class="methodSignature">public&nbsp;&lt;A,&#8203;E&gt;&nbsp;<a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;&nbsp;comparingValuesUsing&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</pre>
+<pre class="methodSignature">public&nbsp;&lt;A extends @Nullable java.lang.Object,&#8203;E extends @Nullable java.lang.Object&gt;&nbsp;<a href="MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;&nbsp;comparingValuesUsing&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</pre>
 <div class="block">Starts a method chain for a check in which the actual values (i.e. the values of the <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink"><code>Multimap</code></a> under test) are compared to expected values using the given <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.
  The actual values must be of type <code>A</code>, and the expected values must be of type <code>E</code>.
  The check is actually executed by continuing the method chain. For example:

@@ -219,7 +219,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(java.math.BigDecimal&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(@Nullable java.math.BigDecimal&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equivalent to the given value according to <code>Comparable.compareTo(T)</code>, (i.e., fails if <code>a.comparesTo(b) != 0</code>).</div>
 </td>
@@ -328,7 +328,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockListLast">
 <li class="blockList">
 <h4>isEquivalentAccordingToCompareTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(java.math.BigDecimal&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(@Nullable java.math.BigDecimal&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equivalent to the given value according to <code>Comparable.compareTo(T)</code>, (i.e., fails if <code>a.comparesTo(b) != 0</code>). This method behaves
  identically to (the more clearly named) <a href="#isEqualToIgnoringScale(java.math.BigDecimal)"><code>isEqualToIgnoringScale(BigDecimal)</code></a>.
 

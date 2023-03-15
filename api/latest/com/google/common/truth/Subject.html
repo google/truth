@@ -234,7 +234,7 @@ extends java.lang.Object</pre>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>protected <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#check(java.lang.String,java.lang.Object...)">check</a></span>&#8203;(java.lang.String&nbsp;format,
-     java.lang.Object...&nbsp;args)</code></th>
+     @Nullable java.lang.Object...&nbsp;args)</code></th>
 <td class="colLast">
 <div class="block">Returns a builder for creating a derived subject.</div>
 </td>
@@ -315,7 +315,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isIn(java.lang.Iterable)">isIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isIn(java.lang.Iterable)">isIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
 <div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
 </td>
@@ -345,7 +345,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is equal to any element in the given iterable.</div>
 </td>
@@ -547,7 +547,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>isIn</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
 <div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
 </li>
 </ul>
@@ -569,7 +569,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotIn</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNotIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNotIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
 <div class="block">Fails if the subject is equal to any element in the given iterable.</div>
 </li>
 </ul>
@@ -610,7 +610,7 @@ protected&nbsp;java.lang.String&nbsp;actualCustomStringRepresentation()</pre>
 <li class="blockList">
 <h4>check</h4>
 <pre class="methodSignature">protected final&nbsp;<a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;check&#8203;(java.lang.String&nbsp;format,
-                                             java.lang.Object...&nbsp;args)</pre>
+                                             @Nullable java.lang.Object...&nbsp;args)</pre>
 <div class="block">Returns a builder for creating a derived subject.
 
  <p>Derived subjects retain the <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> and <a href="StandardSubjectBuilder.html#withMessage(java.lang.String)">messages</a> of the current subject, and in some cases, they

@@ -117,7 +117,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <main role="main">
 <div class="header">
 <div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">com.google.common.truth</a></div>
-<h2 title="Class IterableSubject.UsingCorrespondence" class="title">Class IterableSubject.UsingCorrespondence&lt;A,&#8203;E&gt;</h2>
+<h2 title="Class IterableSubject.UsingCorrespondence" class="title">Class IterableSubject.UsingCorrespondence&lt;A extends @Nullable java.lang.Object,&#8203;E extends @Nullable java.lang.Object&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><a href="IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dd>
 </dl>
 <hr>
-<pre>public static class <span class="typeNameLabel">IterableSubject.UsingCorrespondence&lt;A,&#8203;E&gt;</span>
+<pre>public static class <span class="typeNameLabel">IterableSubject.UsingCorrespondence&lt;A extends @Nullable java.lang.Object,&#8203;E extends @Nullable java.lang.Object&gt;</span>
 extends java.lang.Object</pre>
 <div class="block">A partially specified check in which the actual elements (normally the elements of the <code>Iterable</code> under test) are compared to expected elements using a <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>. The
  expected elements are of type <code>E</code>. Call methods on this object to actually execute the
@@ -167,7 +167,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(E)">contains</a></span>&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(E)">contains</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
@@ -191,9 +191,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyOf(E,E,E...)">containsAnyOf</a></span>&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-             @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-             @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyOf(E,E,E...)">containsAnyOf</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+             <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+             <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
@@ -201,9 +201,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(E,E,E...)">containsAtLeast</a></span>&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-               @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-               @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(E,E,E...)">containsAtLeast</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+               <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+               <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
@@ -234,14 +234,14 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(E%5B%5D)">containsExactlyElementsIn</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(E%5B%5D)">containsExactlyElementsIn</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable []&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
@@ -262,9 +262,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneOf(E,E,E...)">containsNoneOf</a></span>&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
-              @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
-              @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;restOfExcluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneOf(E,E,E...)">containsNoneOf</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
+              <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
+              <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;restOfExcluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </td>
@@ -288,7 +288,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(E)">doesNotContain</a></span>&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(E)">doesNotContain</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</code></th>
 <td class="colLast">
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </td>
@@ -417,7 +417,7 @@ public final&nbsp;java.lang.String&nbsp;toString()</pre>
  <pre><code>
  assertThat(actualRecords)
      .comparingElementsUsing(RECORD_CORRESPONDENCE)
-     .displayingDiffsPairedBy(Record::getId)
+     .displayingDiffsPairedBy(MyRecord::getId)
      .containsExactlyElementsIn(expectedRecords);
  </code></pre>
 
@@ -502,7 +502,7 @@ public final&nbsp;java.lang.String&nbsp;toString()</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;contains&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;contains&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
 </li>
@@ -515,7 +515,7 @@ public final&nbsp;java.lang.String&nbsp;toString()</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContain</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContain&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContain&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</pre>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </li>
 </ul>
@@ -549,7 +549,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(@Nullable java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -567,7 +567,7 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable []&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -586,9 +586,9 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <h4>containsAtLeast</h4>
 <pre class="methodSignature">@SafeVarargs
 @CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                     @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                     @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+                                     <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+                                     <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -643,9 +643,9 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsAnyOf</h4>
 <pre class="methodSignature">@SafeVarargs
-public final&nbsp;void&nbsp;containsAnyOf&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</pre>
+public final&nbsp;void&nbsp;containsAnyOf&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+                                <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+                                <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
 </li>
@@ -683,9 +683,9 @@ public final&nbsp;void&nbsp;containsAnyOf&#8203;(@Nullable <a href="IterableSubj
 <li class="blockList">
 <h4>containsNoneOf</h4>
 <pre class="methodSignature">@SafeVarargs
-public final&nbsp;void&nbsp;containsNoneOf&#8203;(@Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
-                                 @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
-                                 @Nullable <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;restOfExcluded)</pre>
+public final&nbsp;void&nbsp;containsNoneOf&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
+                                 <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
+                                 <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;restOfExcluded)</pre>
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
  (Duplicates are irrelevant to this test, which fails if any of the subject elements
  correspond to any of the given elements.)</div>
