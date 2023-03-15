@@ -105,18 +105,7 @@
             <goals><goal>jar</goal></goals>
             <configuration>
               <classifier>gwt</classifier>
-              <classesDirectory>src/main/java</classesDirectory>
-              <includes>
-                <include>**/*.java</include>
-                <include>**/*.gwt.xml</include>
-              </includes>
-              <excludes>
-                <exclude>com/google/common/truth/ClassSubject.java</exclude>
-                <exclude>com/google/common/truth/Expect.java</exclude>
-                <exclude>com/google/common/truth/IteratingVerb.java</exclude>
-                <exclude>com/google/common/truth/ReflectionUtil.java</exclude>
-                <exclude>com/google/common/truth/codegen/**</exclude>
-              </excludes>
+              <classesDirectory>${project.build.directory}/gwt-sources</classesDirectory>
             </configuration>
           </execution>
         </executions>
@@ -152,6 +141,74 @@
               <!-- Keep these timeouts very large because, if we hit the timeout, the tests silently pass :( -->
               <testTimeOut>86400 <!-- seconds --></testTimeOut>
               <testMethodTimeout>1440 <!-- minutes --></testMethodTimeout>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- We need to strip "@Nullable" from the sources that we hand to GWT:
+           b/183648616. To do that, we have to make a copy of the original
+           source directory and add that directory as a Maven source root. But
+           the added root comes *after* the original root, so, in order to make
+           GWT choose those sources in preference to the originals, we need to
+           put them in a `super` directory.
+
+           TODO(b/183648616): Once we can use @Nullable from GWT, generate the
+           GWT jar from the original sources instead of these sources that we
+           strip @Nullable from. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/gwt-sources</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>copy-gwt-files</id>
+            <phase>generate-sources</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+              <target name="copy-gwt-resources">
+                <copy toDir="${project.build.directory}/gwt-sources">
+                  <fileset dir="${project.basedir}/src/main/java">
+                    <include name="**/super/**/*.java"/>
+                    <include name="**/*.gwt.xml"/>
+                  </fileset>
+                </copy>
+                <copy toDir="${project.build.directory}/gwt-sources/com/google/common/truth/super">
+                  <fileset dir="${project.basedir}/src/main/java">
+                    <!-- Don't put files under .../super/.../super/... -->
+                    <exclude name="**/super/**/*.java"/>
+                    <!-- Don't put the .gwt.xml under super -->
+                    <exclude name="**/*.gwt.xml"/>
+                  </fileset>
+                </copy>
+                <replace token="@Nullable" value="">
+                  <fileset dir="${project.build.directory}/gwt-sources">
+                    <include name="**/super/**/*.java"/>
+                  </fileset>
+                </replace>
+                <replace token="@NonNull" value="">
+                  <fileset dir="${project.build.directory}/gwt-sources">
+                    <include name="**/super/**/*.java"/>
+                  </fileset>
+                </replace>
+              </target>
             </configuration>
           </execution>
         </executions>
