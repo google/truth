@@ -22,7 +22,6 @@ import static com.google.common.collect.Multisets.immutableEntry;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ArrayListMultimap;
@@ -141,23 +140,20 @@ final class SubjectUtils {
   }
 
   private static final class NonHashingMultiset<E extends @Nullable Object> {
-    // This ought to be static, but the generics are easier when I can refer to <E>.
-    private final Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>> unwrapKey =
-        new Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>>() {
-          @Override
-          public Multiset.Entry<?> apply(Multiset.Entry<Wrapper<E>> input) {
-            return immutableEntry(input.getElement().get(), input.getCount());
-          }
-        };
+    /*
+     * This ought to be static, but the generics are easier when I can refer to <E>. We still want
+     * an Entry<?> so that entrySet() can return Iterable<Entry<?>> instead of Iterable<Entry<E>>.
+     * That way, it can be returned directly from DuplicateGroupedAndTyped.entrySet() without our
+     * having to generalize *its* return type to Iterable<? extends Entry<?>>.
+     */
+    private Multiset.Entry<?> unwrapKey(Multiset.Entry<Wrapper<E>> input) {
+      return immutableEntry(input.getElement().get(), input.getCount());
+    }
 
-    private final Multiset<Equivalence.Wrapper<E>> contents = LinkedHashMultiset.create();
+    private final Multiset<Wrapper<E>> contents = LinkedHashMultiset.create();
 
     void add(E element) {
       contents.add(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
-    }
-
-    boolean remove(E element) {
-      return contents.remove(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
     }
 
     int totalCopies() {
@@ -169,7 +165,7 @@ final class SubjectUtils {
     }
 
     Iterable<Multiset.Entry<?>> entrySet() {
-      return transform(contents.entrySet(), unwrapKey);
+      return transform(contents.entrySet(), this::unwrapKey);
     }
 
     String toStringWithBrackets() {

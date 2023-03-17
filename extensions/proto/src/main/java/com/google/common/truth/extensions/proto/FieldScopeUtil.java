@@ -35,12 +35,7 @@ final class FieldScopeUtil {
    */
   static Function<Optional<Descriptor>, String> fieldNumbersFunction(
       String fmt, Iterable<Integer> fieldNumbers) {
-    return new Function<Optional<Descriptor>, String>() {
-      @Override
-      public String apply(Optional<Descriptor> optDescriptor) {
-        return resolveFieldNumbers(optDescriptor, fmt, fieldNumbers);
-      }
-    };
+    return optDescriptor -> resolveFieldNumbers(optDescriptor, fmt, fieldNumbers);
   }
 
   /**
@@ -51,24 +46,14 @@ final class FieldScopeUtil {
    */
   static Function<Optional<Descriptor>, String> fieldScopeFunction(
       String fmt, FieldScope fieldScope) {
-    return new Function<Optional<Descriptor>, String>() {
-      @Override
-      public String apply(Optional<Descriptor> optDescriptor) {
-        return String.format(fmt, fieldScope.usingCorrespondenceString(optDescriptor));
-      }
-    };
+    return optDescriptor -> String.format(fmt, fieldScope.usingCorrespondenceString(optDescriptor));
   }
 
   /** Returns a function which concatenates the outputs of the two input functions. */
   static Function<Optional<Descriptor>, String> concat(
       Function<? super Optional<Descriptor>, String> function1,
       Function<? super Optional<Descriptor>, String> function2) {
-    return new Function<Optional<Descriptor>, String>() {
-      @Override
-      public String apply(Optional<Descriptor> optDescriptor) {
-        return function1.apply(optDescriptor) + function2.apply(optDescriptor);
-      }
-    };
+    return optDescriptor -> function1.apply(optDescriptor) + function2.apply(optDescriptor);
   }
 
   /**

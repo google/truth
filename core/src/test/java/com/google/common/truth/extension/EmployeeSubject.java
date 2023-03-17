@@ -34,17 +34,13 @@ public final class EmployeeSubject extends Subject {
 
   // User-defined entry point
   public static EmployeeSubject assertThat(@Nullable Employee employee) {
-    return assertAbout(EMPLOYEE_SUBJECT_FACTORY).that(employee);
+    return assertAbout(employees()).that(employee);
   }
 
   // Static method for getting the subject factory (for use with assertAbout())
   public static Subject.Factory<EmployeeSubject, Employee> employees() {
-    return EMPLOYEE_SUBJECT_FACTORY;
+    return EmployeeSubject::new;
   }
-
-  // Boiler-plate Subject.Factory for EmployeeSubject
-  private static final Subject.Factory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
-      EmployeeSubject::new;
 
   private final Employee actual;
 

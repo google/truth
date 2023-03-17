@@ -32,7 +32,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestRule;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
@@ -44,6 +43,8 @@ import org.junit.runners.model.Statement;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
+// We use ExpectedException so that we can test our code that runs after the test method completes.
+@SuppressWarnings({"ExpectedExceptionChecker", "deprecation"})
 public class ExpectTest {
   private final Expect oopsNotARule = Expect.create();
 
@@ -51,10 +52,8 @@ public class ExpectTest {
   private final ExpectedException thrown = ExpectedException.none();
 
   private final TestRule postTestWait =
-      new TestRule() {
-        @Override
-        public Statement apply(Statement base, Description description) {
-          return new Statement() {
+      (base, description) ->
+          new Statement() {
             @Override
             public void evaluate() throws Throwable {
               base.evaluate();
@@ -62,8 +61,6 @@ public class ExpectTest {
               taskToAwait.get();
             }
           };
-        }
-      };
 
   private final CountDownLatch testMethodComplete = new CountDownLatch(1);
 
@@ -74,14 +71,11 @@ public class ExpectTest {
 
   @Rule
   public final TestRule wrapper =
-      new TestRule() {
-        @Override
-        public Statement apply(Statement statement, Description description) {
-          statement = expect.apply(statement, description);
-          statement = postTestWait.apply(statement, description);
-          statement = thrown.apply(statement, description);
-          return statement;
-        }
+      (statement, description) -> {
+        statement = expect.apply(statement, description);
+        statement = postTestWait.apply(statement, description);
+        statement = thrown.apply(statement, description);
+        return statement;
       };
 
   @Test
@@ -189,13 +183,7 @@ public class ExpectTest {
 
   @Test
   public void bash() throws Exception {
-    Runnable task =
-        new Runnable() {
-          @Override
-          public void run() {
-            expect.that(3).isEqualTo(4);
-          }
-        };
+    Runnable task = () -> expect.that(3).isEqualTo(4);
     List<Future<?>> results = new ArrayList<>();
     ExecutorService executor = newFixedThreadPool(10);
     for (int i = 0; i < 1000; i++) {
@@ -213,15 +201,12 @@ public class ExpectTest {
     ExecutorService executor = newSingleThreadExecutor();
     taskToAwait =
         executor.submit(
-            new Runnable() {
-              @Override
-              public void run() {
-                awaitUninterruptibly(testMethodComplete);
-                try {
-                  expect.that(3);
-                  fail();
-                } catch (IllegalStateException expected) {
-                }
+            () -> {
+              awaitUninterruptibly(testMethodComplete);
+              try {
+                expect.that(3);
+                fail();
+              } catch (IllegalStateException expected) {
               }
             });
     executor.shutdown();
@@ -238,16 +223,13 @@ public class ExpectTest {
     IntegerSubject expectThat3 = expect.that(3);
     taskToAwait =
         executor.submit(
-            new Runnable() {
-              @Override
-              public void run() {
-                awaitUninterruptibly(testMethodComplete);
-                try {
-                  expectThat3.isEqualTo(4);
-                  fail();
-                } catch (IllegalStateException expected) {
-                  assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
-                }
+            () -> {
+              awaitUninterruptibly(testMethodComplete);
+              try {
+                expectThat3.isEqualTo(4);
+                fail();
+              } catch (IllegalStateException expected) {
+                assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
               }
             });
     executor.shutdown();

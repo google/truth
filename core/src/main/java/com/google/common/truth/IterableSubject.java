@@ -172,7 +172,7 @@ public class IterableSubject extends Subject {
             fact(
                 "though it did contain",
                 countDuplicatesAndAddTypeInfo(
-                    retainMatchingToString(actual, elementList /* itemsToCheck */))),
+                    retainMatchingToString(actual, /* itemsToCheck= */ elementList))),
             fullContents());
       } else {
         failWithActual("expected to contain", element);
@@ -229,7 +229,7 @@ public class IterableSubject extends Subject {
           fact(
               "though it did contain",
               countDuplicatesAndAddTypeInfo(
-                  retainMatchingToString(checkNotNull(this.actual), expected /* itemsToCheck */))),
+                  retainMatchingToString(checkNotNull(this.actual), /* itemsToCheck= */ expected))),
           fullContents());
     } else {
       failWithActual("expected to contain any of", expected);
@@ -240,6 +240,7 @@ public class IterableSubject extends Subject {
    * Checks that the subject contains at least one of the objects contained in the provided array or
    * fails.
    */
+  @SuppressWarnings("AvoidObjectArrays")
   public final void containsAnyIn(Object[] expected) {
     containsAnyIn(asList(expected));
   }
@@ -331,13 +332,14 @@ public class IterableSubject extends Subject {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
+  @SuppressWarnings("AvoidObjectArrays")
   public final Ordered containsAtLeastElementsIn(Object[] expected) {
     return containsAtLeastElementsIn(asList(expected));
   }
 
   private Ordered failAtLeast(Collection<?> expected, Collection<?> missingRawObjects) {
-    Collection<?> nearMissRawObjects =
-        retainMatchingToString(checkNotNull(actual), missingRawObjects /* itemsToCheck */);
+    List<?> nearMissRawObjects =
+        retainMatchingToString(checkNotNull(actual), /* itemsToCheck= */ missingRawObjects);
 
     ImmutableList.Builder<Fact> facts = ImmutableList.builder();
     facts.addAll(
@@ -415,6 +417,7 @@ public class IterableSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
+  @SuppressWarnings("AvoidObjectArrays")
   public final Ordered containsExactlyElementsIn(@Nullable Object @Nullable [] expected) {
     return containsExactlyElementsIn(asList(checkNotNull(expected)));
   }
@@ -468,12 +471,12 @@ public class IterableSubject extends Subject {
           return ALREADY_FAILED;
         }
         // Missing elements; elements that are not missing will be removed as we iterate.
-        Collection<@Nullable Object> missing = newArrayList();
+        List<@Nullable Object> missing = newArrayList();
         missing.add(requiredElement);
         Iterators.addAll(missing, requiredIter);
 
         // Extra elements that the subject had but shouldn't have.
-        Collection<@Nullable Object> extra = newArrayList();
+        List<@Nullable Object> extra = newArrayList();
 
         // Remove all actual elements from missing, and add any that weren't in missing
         // to extra.
@@ -711,7 +714,7 @@ public class IterableSubject extends Subject {
    */
   public final void containsNoneIn(Iterable<?> excluded) {
     Collection<?> actual = iterableToCollection(checkNotNull(this.actual));
-    Collection<@Nullable Object> present = new ArrayList<>();
+    List<@Nullable Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (actual.contains(item)) {
         present.add(item);
@@ -730,25 +733,16 @@ public class IterableSubject extends Subject {
    * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
    * equal any of the excluded.)
    */
+  @SuppressWarnings("AvoidObjectArrays")
   public final void containsNoneIn(@Nullable Object[] excluded) {
     containsNoneIn(asList(excluded));
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered IN_ORDER =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered IN_ORDER = () -> {};
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered ALREADY_FAILED =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered ALREADY_FAILED = () -> {};
 
   /**
    * Fails if the iterable is not strictly ordered, according to the natural ordering of its
@@ -1302,6 +1296,7 @@ public class IterableSubject extends Subject {
      * on the object returned by this method.
      */
     @CanIgnoreReturnValue
+    @SuppressWarnings("AvoidObjectArrays")
     public Ordered containsExactlyElementsIn(E @Nullable [] expected) {
       return containsExactlyElementsIn(asList(checkNotNull(expected)));
     }
@@ -1642,6 +1637,7 @@ public class IterableSubject extends Subject {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
+    @SuppressWarnings("AvoidObjectArrays")
     public Ordered containsAtLeastElementsIn(E[] expected) {
       return containsAtLeastElementsIn(asList(expected));
     }
@@ -1891,6 +1887,7 @@ public class IterableSubject extends Subject {
      * Checks that the subject contains at least one element that corresponds to at least one of the
      * expected elements.
      */
+    @SuppressWarnings("AvoidObjectArrays")
     public void containsAnyIn(E[] expected) {
       containsAnyIn(asList(expected));
     }
@@ -1971,6 +1968,7 @@ public class IterableSubject extends Subject {
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
+    @SuppressWarnings("AvoidObjectArrays")
     public void containsNoneIn(E[] excluded) {
       containsNoneIn(asList(excluded));
     }

@@ -55,7 +55,7 @@ public final class StreamSubject extends Subject {
   }
 
   public static Subject.Factory<StreamSubject, Stream<?>> streams() {
-    return (metadata, subject) -> new StreamSubject(metadata, subject);
+    return StreamSubject::new;
   }
 
   /** Fails if the subject is not empty. */

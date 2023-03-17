@@ -57,12 +57,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class MultimapSubject extends Subject {
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered ALREADY_FAILED =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered ALREADY_FAILED = () -> {};
 
   private final @Nullable Multimap<?, ?> actual;
 
@@ -118,7 +113,8 @@ public class MultimapSubject extends Subject {
     checkNotNull(actual);
     if (!actual.containsEntry(key, value)) {
       Map.Entry<@Nullable Object, @Nullable Object> entry = immutableEntry(key, value);
-      List<Map.Entry<@Nullable Object, @Nullable Object>> entryList = ImmutableList.of(entry);
+      ImmutableList<Map.Entry<@Nullable Object, @Nullable Object>> entryList =
+          ImmutableList.of(entry);
       // TODO(cpovirk): If the key is present but not with the right value, we could fail using
       // something like valuesForKey(key).contains(value). Consider whether this is worthwhile.
       if (hasMatchingToStringPair(actual.entries(), entryList)) {
@@ -326,7 +322,7 @@ public class MultimapSubject extends Subject {
     return containsAtLeastEntriesIn(accumulateMultimap(k0, v0, rest));
   }
 
-  private static Multimap<@Nullable Object, @Nullable Object> accumulateMultimap(
+  private static ListMultimap<@Nullable Object, @Nullable Object> accumulateMultimap(
       @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
@@ -448,6 +444,7 @@ public class MultimapSubject extends Subject {
     return false;
   }
 
+  @SuppressWarnings("EmptyList") // ImmutableList doesn't support nullable types
   private static <V extends @Nullable Object> Collection<V> get(
       Multimap<?, V> multimap, @Nullable Object key) {
     if (multimap.containsKey(key)) {
@@ -504,9 +501,12 @@ public class MultimapSubject extends Subject {
       ListMultimap<@Nullable Object, @Nullable Object> annotatedMultimap =
           LinkedListMultimap.create();
       for (Map.Entry<?, ?> entry : multimap.entries()) {
-        Object key = "".equals(entry.getKey()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
+        Object key =
+            Objects.equal(entry.getKey(), "") ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
         Object value =
-            "".equals(entry.getValue()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getValue();
+            Objects.equal(entry.getValue(), "")
+                ? HUMAN_UNDERSTANDABLE_EMPTY_STRING
+                : entry.getValue();
         annotatedMultimap.put(key, value);
       }
       return annotatedMultimap;
@@ -736,7 +736,7 @@ public class MultimapSubject extends Subject {
       return check()
           .about(iterableEntries())
           .that(checkNotNull(actual).entries())
-          .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
+          .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
     }
 
@@ -770,7 +770,7 @@ public class MultimapSubject extends Subject {
       return check()
           .about(iterableEntries())
           .that(checkNotNull(actual).entries())
-          .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
+          .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
           .containsAtLeastElementsIn(expectedMultimap.entries());
     }
 
@@ -812,27 +812,16 @@ public class MultimapSubject extends Subject {
     }
   }
 
-  private static final class EntryCorrespondence<
+  private static <
           K extends @Nullable Object, A extends @Nullable Object, E extends @Nullable Object>
-      extends Correspondence<Map.Entry<K, A>, Map.Entry<K, E>> {
-
-    private final Correspondence<? super A, ? super E> valueCorrespondence;
-
-    EntryCorrespondence(Correspondence<? super A, ? super E> valueCorrespondence) {
-      this.valueCorrespondence = valueCorrespondence;
-    }
-
-    @Override
-    public boolean compare(Map.Entry<K, A> actual, Map.Entry<K, E> expected) {
-      return Objects.equal(actual.getKey(), expected.getKey())
-          && valueCorrespondence.compare(actual.getValue(), expected.getValue());
-    }
-
-    @Override
-    public String toString() {
-      return lenientFormat(
-          "has a key that is equal to and a value that %s the key and value of",
-          valueCorrespondence);
-    }
+      Correspondence<Map.Entry<K, A>, Map.Entry<K, E>> entryCorrespondence(
+          Correspondence<? super A, ? super E> valueCorrespondence) {
+    return Correspondence.from(
+        (Map.Entry<K, A> actual, Map.Entry<K, E> expected) ->
+            Objects.equal(actual.getKey(), expected.getKey())
+                && valueCorrespondence.compare(actual.getValue(), expected.getValue()),
+        lenientFormat(
+            "has a key that is equal to and a value that %s the key and value of",
+            valueCorrespondence));
   }
 }

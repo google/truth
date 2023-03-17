@@ -21,9 +21,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +38,8 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
+// "Iterable" is specific enough to establish that we're testing IterableSubject.
+@SuppressWarnings("PreferredInterfaceType")
 public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
@@ -204,16 +204,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfWithOneShotIterable() {
-    Iterator<Object> iterator = asList((Object) 2, 1, "b").iterator();
-    Iterable<Object> iterable =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
-        };
+    List<Object> contents = asList(2, 1, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), "OneShotIterable");
 
-    assertThat(iterable).containsAnyOf(3, "a", 7, "b", 0);
+    assertThat(oneShot).containsAnyOf(3, "a", 7, "b", 0);
   }
 
   @Test
@@ -408,47 +402,44 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterable() {
-    Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
-    Iterator<Object> iterator = iterable.iterator();
-    Iterable<Object> oneShot =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
-
-          @Override
-          public String toString() {
-            return Iterables.toString(iterable);
-          }
-        };
+    List<Object> contents = asList(2, 1, null, 4, "a", 3, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), contents.toString());
 
     assertThat(oneShot).containsAtLeast(1, null, 3).inOrder();
   }
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterableWrongOrder() {
-    Iterator<Object> iterator = asList((Object) 2, 1, null, 4, "a", 3, "b").iterator();
-    Iterable<Object> iterable =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
+    List<Object> contents = asList(2, 1, null, 4, "a", 3, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), "BadIterable");
 
-          @Override
-          public String toString() {
-            return "BadIterable";
-          }
-        };
-
-    expectFailureWhenTestingThat(iterable).containsAtLeast(1, 3, (Object) null).inOrder();
+    expectFailureWhenTestingThat(oneShot).containsAtLeast(1, 3, (Object) null).inOrder();
     assertFailureKeys(
         "required elements were all found, but order was wrong",
         "expected order for required elements",
         "but was");
     assertFailureValue("expected order for required elements", "[1, 3, null]");
     assertFailureValue("but was", "BadIterable"); // TODO(b/231966021): Output its elements.
+  }
+
+  private static final class OneShotIterable<E> implements Iterable<E> {
+    private final Iterator<E> iterator;
+    private final String toString;
+
+    OneShotIterable(Iterator<E> iterator, String toString) {
+      this.iterator = iterator;
+      this.toString = toString;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+      return iterator;
+    }
+
+    @Override
+    public String toString() {
+      return toString;
+    }
   }
 
   @Test
@@ -977,6 +968,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("UndefinedEquals") // Iterable equality isn't defined, but null equality is
   public void nullEqualToNull() {
     assertThat((Iterable<?>) null).isEqualTo(null);
   }
@@ -1136,13 +1128,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("full contents", "[1, 10, 2, 20]");
   }
 
+  @SuppressWarnings("CompareProperty") // avoiding Java 8 API under Android
   private static final Comparator<String> COMPARE_AS_DECIMAL =
-      new Comparator<String>() {
-        @Override
-        public int compare(String a, String b) {
-          return Integer.valueOf(a).compareTo(Integer.valueOf(b));
-        }
-      };
+      (a, b) -> Integer.valueOf(a).compareTo(Integer.valueOf(b));
 
   private static class Foo {
     private final int x;
@@ -1158,13 +1146,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     }
   }
 
+  // TODO(cpovirk): Can we use the Java 7 Integer.compare under Android?
+  @SuppressWarnings({
+    "CompareDoubleTernary",
+    "CompareFloatTernary",
+    "CompareIntegerTernary",
+    "CompareLongTernary",
+    "CompareProperty",
+    "DoubleProperty_ExtractTernaryHead",
+    "FloatProperty_ExtractTernaryHead",
+    "IntegerProperty_ExtractTernaryHead",
+    "LongProperty_ExtractTernaryHead",
+  })
   private static final Comparator<Foo> FOO_COMPARATOR =
-      new Comparator<Foo>() {
-        @Override
-        public int compare(Foo a, Foo b) {
-          return (a.x < b.x) ? -1 : ((a.x > b.x) ? 1 : 0);
-        }
-      };
+      (a, b) -> (a.x < b.x) ? -1 : ((a.x > b.x) ? 1 : 0);
 
   @Test
   public void iterableOrderedByBaseClassComparator() {
@@ -1184,6 +1179,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // test of a mistaken call
   public void isNotIn() {
     ImmutableList<String> actual = ImmutableList.of("a");
 
@@ -1209,7 +1205,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings("IncompatibleArgumentType")
+  @SuppressWarnings({"IncompatibleArgumentType", "deprecation"}) // test of a mistaken call
   public void isNoneOf() {
     ImmutableList<String> actual = ImmutableList.of("a");
 

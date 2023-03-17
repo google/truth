@@ -67,14 +67,6 @@ import org.junit.runners.model.Statement;
  * {@link FailureStrategy#fail} only once.
  */
 public final class ExpectFailure implements Platform.JUnitTestRule {
-  private final FailureStrategy strategy =
-      new FailureStrategy() {
-        @Override
-        public void fail(AssertionError failure) {
-          captureFailure(failure);
-        }
-      };
-
   private boolean inRuleContext = false;
   private boolean failureExpected = false;
   private @Nullable AssertionError failure = null;
@@ -102,7 +94,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
           "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
     }
     failureExpected = true;
-    return StandardSubjectBuilder.forCustomFailureStrategy(strategy);
+    return StandardSubjectBuilder.forCustomFailureStrategy(this::captureFailure);
   }
 
   /**
@@ -180,14 +172,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   @CanIgnoreReturnValue
   public static <S extends Subject, A> AssertionError expectFailureAbout(
       Subject.Factory<S, A> factory, SimpleSubjectBuilderCallback<S, A> assertionCallback) {
-    // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
     return expectFailure(
-        new StandardSubjectBuilderCallback() {
-          @Override
-          public void invokeAssertion(StandardSubjectBuilder whenTesting) {
-            assertionCallback.invokeAssertion(whenTesting.about(factory));
-          }
-        });
+        whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory)));
   }
 
   /**

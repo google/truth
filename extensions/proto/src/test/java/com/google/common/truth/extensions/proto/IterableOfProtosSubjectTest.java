@@ -16,6 +16,8 @@
 
 package com.google.common.truth.extensions.proto;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Message;
@@ -487,12 +489,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     Message expectedInt4 = parse("o_int: 4 r_string: 'qux'");
 
     Function<Message, Integer> getInt =
-        new Function<Message, Integer>() {
-          @Override
-          public Integer apply(Message message) {
-            return (Integer) message.getField(getFieldDescriptor("o_int"));
-          }
-        };
+        message -> (Integer) message.getField(getFieldDescriptor("o_int"));
 
     expectFailureWhenTesting()
         .that(listOf(actualInt3, actualInt4))
@@ -520,13 +517,6 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   private Comparator<Message> compareByOIntAscending() {
-    return new Comparator<Message>() {
-      @Override
-      public int compare(Message message1, Message message2) {
-        return Integer.compare(
-            (Integer) message1.getField(getFieldDescriptor("o_int")),
-            (Integer) message2.getField(getFieldDescriptor("o_int")));
-      }
-    };
+    return comparing(message -> (Integer) message.getField(getFieldDescriptor("o_int")));
   }
 }

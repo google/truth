@@ -36,7 +36,6 @@ import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -428,13 +427,18 @@ public class Subject {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
-      String wrapped = Iterables.toString(stringableIterable(new Object[] {o}));
-      return wrapped.substring(1, wrapped.length() - 1);
+      return String.valueOf(arrayAsListRecursively(o));
     } else if (o instanceof Double) {
       return doubleToString((Double) o);
     } else if (o instanceof Float) {
       return floatToString((Float) o);
     } else {
+      // TODO(cpovirk): Consider renaming the called method to mention "NonArray."
+      /*
+       * TODO(cpovirk): Should the called method and arrayAsListRecursively(...) both call back into
+       * formatActualOrExpected for its handling of byte[] and float/double? Or is there some other
+       * restructuring of this set of methods that we should undertake?
+       */
       return stringValueOfNonFloatingPoint(o);
     }
   }
@@ -450,40 +454,30 @@ public class Subject {
 
   private static final char[] hexDigits = "0123456789ABCDEF".toCharArray();
 
-  private static Iterable<?> stringableIterable(Object[] array) {
-    return Iterables.transform(asList(array), STRINGIFY);
+  private static @Nullable Object arrayAsListRecursively(@Nullable Object input) {
+    if (input instanceof Object[]) {
+      return Lists.<@Nullable Object, @Nullable Object>transform(
+          asList((@Nullable Object[]) input), Subject::arrayAsListRecursively);
+    } else if (input instanceof boolean[]) {
+      return Booleans.asList((boolean[]) input);
+    } else if (input instanceof int[]) {
+      return Ints.asList((int[]) input);
+    } else if (input instanceof long[]) {
+      return Longs.asList((long[]) input);
+    } else if (input instanceof short[]) {
+      return Shorts.asList((short[]) input);
+    } else if (input instanceof byte[]) {
+      return Bytes.asList((byte[]) input);
+    } else if (input instanceof double[]) {
+      return doubleArrayAsString((double[]) input);
+    } else if (input instanceof float[]) {
+      return floatArrayAsString((float[]) input);
+    } else if (input instanceof char[]) {
+      return Chars.asList((char[]) input);
+    } else {
+      return input;
+    }
   }
-
-  private static final Function<@Nullable Object, @Nullable Object> STRINGIFY =
-      new Function<@Nullable Object, @Nullable Object>() {
-        @Override
-        public @Nullable Object apply(@Nullable Object input) {
-          if (input != null && input.getClass().isArray()) {
-            Iterable<?> iterable;
-            if (input.getClass() == boolean[].class) {
-              iterable = Booleans.asList((boolean[]) input);
-            } else if (input.getClass() == int[].class) {
-              iterable = Ints.asList((int[]) input);
-            } else if (input.getClass() == long[].class) {
-              iterable = Longs.asList((long[]) input);
-            } else if (input.getClass() == short[].class) {
-              iterable = Shorts.asList((short[]) input);
-            } else if (input.getClass() == byte[].class) {
-              iterable = Bytes.asList((byte[]) input);
-            } else if (input.getClass() == double[].class) {
-              iterable = doubleArrayAsString((double[]) input);
-            } else if (input.getClass() == float[].class) {
-              iterable = floatArrayAsString((float[]) input);
-            } else if (input.getClass() == char[].class) {
-              iterable = Chars.asList((char[]) input);
-            } else {
-              iterable = Arrays.asList((Object[]) input);
-            }
-            return Iterables.transform(iterable, STRINGIFY);
-          }
-          return input;
-        }
-      };
 
   /**
    * The result of comparing two objects for equality. This includes both the "equal"/"not-equal"
@@ -705,15 +699,10 @@ public class Subject {
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
     LazyMessage message = new LazyMessage(format, args);
-    Function<String, String> descriptionUpdate =
-        new Function<String, String>() {
-          @Override
-          public String apply(String input) {
-            return input + "." + message;
-          }
-        };
     return new StandardSubjectBuilder(
-        checkNotNull(metadata).updateForCheckCall(valuesAreSimilar, descriptionUpdate));
+        checkNotNull(metadata)
+            .updateForCheckCall(
+                valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));
   }
 
   /**

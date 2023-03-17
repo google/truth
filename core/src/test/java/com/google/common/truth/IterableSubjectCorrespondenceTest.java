@@ -56,6 +56,7 @@ import org.junit.runners.JUnit4;
 public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
+  // test of a mistaken call
   @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall", "deprecation"})
   public void equalsThrowsUSOE() {
     try {
@@ -75,7 +76,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings({"DoNotCall", "deprecation"})
+  @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
   public void hashCodeThrowsUSOE() {
     try {
       int unused =

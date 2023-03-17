@@ -261,7 +261,7 @@ public class MapSubject extends Subject {
   @CanIgnoreReturnValue
   private boolean containsEntriesInAnyOrder(Map<?, ?> expectedMap, boolean allowUnexpected) {
     MapDifference<@Nullable Object, @Nullable Object, @Nullable Object> diff =
-        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, EQUALITY);
+        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, Objects::equal);
     if (diff.isEmpty()) {
       return true;
     }
@@ -288,15 +288,6 @@ public class MapSubject extends Subject {
   private interface ValueTester<A extends @Nullable Object, E extends @Nullable Object> {
     boolean test(A actualValue, E expectedValue);
   }
-
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final ValueTester<@Nullable Object, @Nullable Object> EQUALITY =
-      new ValueTester<@Nullable Object, @Nullable Object>() {
-        @Override
-        public boolean test(@Nullable Object actualValue, @Nullable Object expectedValue) {
-          return Objects.equal(actualValue, expectedValue);
-        }
-      };
 
   private interface Differ<A extends @Nullable Object, E extends @Nullable Object> {
     @Nullable String diff(A actual, E expected);
@@ -476,20 +467,10 @@ public class MapSubject extends Subject {
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered IN_ORDER =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered IN_ORDER = () -> {};
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered ALREADY_FAILED =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered ALREADY_FAILED = () -> {};
 
   /**
    * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
@@ -773,14 +754,8 @@ public class MapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
     private <V extends E> Differ<A, V> differ(Correspondence.ExceptionStore exceptions) {
-      return new Differ<A, V>() {
-        @Override
-        public @Nullable String diff(A actual, V expected) {
-          return correspondence.safeFormatDiff(actual, expected, exceptions);
-        }
-      };
+      return (actual, expected) -> correspondence.safeFormatDiff(actual, expected, exceptions);
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
