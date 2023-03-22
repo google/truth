@@ -26,7 +26,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
-public abstract class ComparableSubject<T extends Comparable> extends Subject {
+// TODO(b/136040841): Consider further tightening this to the proper `extends Comparable<? super T>`
+public abstract class ComparableSubject<T extends Comparable<?>> extends Subject {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
@@ -59,8 +60,9 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
    * #isEqualTo(Object)}.
    */
+  @SuppressWarnings("unchecked")
   public void isEquivalentAccordingToCompareTo(@Nullable T expected) {
-    if (checkNotNull(actual).compareTo(expected) != 0) {
+    if (checkNotNull((Comparable<Object>) actual).compareTo(checkNotNull(expected)) != 0) {
       failWithActual("expected value that sorts equal to", expected);
     }
   }
@@ -71,8 +73,9 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
    * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
+  @SuppressWarnings("unchecked")
   public final void isGreaterThan(@Nullable T other) {
-    if (checkNotNull(actual).compareTo(other) <= 0) {
+    if (checkNotNull((Comparable<Object>) actual).compareTo(checkNotNull(other)) <= 0) {
       failWithActual("expected to be greater than", other);
     }
   }
@@ -83,8 +86,9 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
    * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost}.
    */
+  @SuppressWarnings("unchecked")
   public final void isLessThan(@Nullable T other) {
-    if (checkNotNull(actual).compareTo(other) >= 0) {
+    if (checkNotNull((Comparable<Object>) actual).compareTo(checkNotNull(other)) >= 0) {
       failWithActual("expected to be less than", other);
     }
   }
@@ -95,8 +99,9 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
    * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
+  @SuppressWarnings("unchecked")
   public final void isAtMost(@Nullable T other) {
-    if (checkNotNull(actual).compareTo(other) > 0) {
+    if (checkNotNull((Comparable<Object>) actual).compareTo(checkNotNull(other)) > 0) {
       failWithActual("expected to be at most", other);
     }
   }
@@ -107,8 +112,9 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
    * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
+  @SuppressWarnings("unchecked")
   public final void isAtLeast(@Nullable T other) {
-    if (checkNotNull(actual).compareTo(other) < 0) {
+    if (checkNotNull((Comparable<Object>) actual).compareTo(checkNotNull(other)) < 0) {
       failWithActual("expected to be at least", other);
     }
   }
