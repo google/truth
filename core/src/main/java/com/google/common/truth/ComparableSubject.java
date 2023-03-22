@@ -26,6 +26,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
+// TODO(b/136040841): Reconsider support for legacy types that extend raw Comparable.
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call

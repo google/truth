@@ -65,6 +65,7 @@ final class StackTraceCleaner {
   // TODO(b/135924708): Add this to the test runners so that we clean all stack traces, not just
   // those of exceptions originating in Truth.
   /** Cleans the stack trace on {@code throwable}, replacing the trace that was originally on it. */
+  @SuppressWarnings("SetAll") // not available under old versions of Android
   private void clean(Set<Throwable> seenThrowables) {
     // Stack trace cleaning can be disabled using a system property.
     if (isStackTraceCleaningDisabled()) {
@@ -102,7 +103,7 @@ final class StackTraceCleaner {
      * frames. Keep those frames around (though much of JUnit itself and related startup frames will
      * still be removed by the remainder of this method) so that the user sees a useful stack.
      */
-    if (!(stackIndex < endIndex)) {
+    if (stackIndex >= endIndex) {
       endIndex = stackFrames.length;
     }
 

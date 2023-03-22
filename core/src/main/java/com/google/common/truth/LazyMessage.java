@@ -23,9 +23,6 @@ import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 final class LazyMessage {
-  private static final String PLACEHOLDER_ERR =
-      "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";
-
   private final String format;
   private final @Nullable Object[] args;
 
@@ -33,7 +30,12 @@ final class LazyMessage {
     this.format = format;
     this.args = args;
     int placeholders = countPlaceholders(format);
-    checkArgument(placeholders == args.length, PLACEHOLDER_ERR, args.length, placeholders, format);
+    checkArgument(
+        placeholders == args.length,
+        "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"",
+        args.length,
+        placeholders,
+        format);
   }
 
   @Override

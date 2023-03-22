@@ -40,7 +40,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isEqualTo_Same() {
+  public void isEqualTo_same() {
     Object[] same = objectArray("A", 5L);
     assertThat(same).isEqualTo(same);
   }
@@ -104,20 +104,20 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrdering() {
+  public void isEqualTo_fail_unequalOrdering() {
     expectFailureWhenTestingThat(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
     assertFailureValue("differs at index", "[0]");
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_00() {
+  public void isEqualTo_fail_unequalOrderingMultiDimensional_00() {
     expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isEqualTo(new Object[][] {{5L}, {"A"}});
     assertFailureValue("differs at index", "[0][0]");
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_01() {
+  public void isEqualTo_fail_unequalOrderingMultiDimensional_01() {
     expectFailureWhenTestingThat(new Object[][] {{"A", "B"}, {5L}})
         .isEqualTo(new Object[][] {{"A"}, {5L}});
     assertFailureValue("wrong length for index", "[0]");
@@ -126,7 +126,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_11() {
+  public void isEqualTo_fail_unequalOrderingMultiDimensional_11() {
     expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isEqualTo(new Object[][] {{"A"}, {5L, 6L}});
     assertFailureValue("wrong length for index", "[1]");
@@ -135,35 +135,35 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_fail_notAnArray() {
     expectFailureWhenTestingThat(objectArray("A", 5L)).isEqualTo(new Object());
   }
 
   @Test
-  public void isNotEqualTo_SameLengths() {
+  public void isNotEqualTo_sameLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"C"}, {5L}});
   }
 
   @Test
-  public void isNotEqualTo_DifferentLengths() {
+  public void isNotEqualTo_differentLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A", "c"}, {5L}});
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A"}, {5L}, {"C"}});
   }
 
   @Test
-  public void isNotEqualTo_DifferentTypes() {
+  public void isNotEqualTo_differentTypes() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(new Object());
   }
 
   @Test
-  public void isNotEqualTo_FailEquals() {
+  public void isNotEqualTo_failEquals() {
     expectFailureWhenTestingThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
   }
 
   @Test
-  public void isNotEqualTo_FailEqualsMultiDimensional() {
+  public void isNotEqualTo_failEqualsMultiDimensional() {
     expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isNotEqualTo(new Object[][] {{"A"}, {5L}});
     assertFailureValue("expected not to be", "[[A], [5]]");
@@ -171,14 +171,14 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isNotEqualTo_FailSame() {
+  public void isNotEqualTo_failSame() {
     Object[] same = objectArray("A", 5L);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isNotEqualTo_FailSameMultiDimensional() {
+  public void isNotEqualTo_failSameMultiDimensional() {
     Object[][] same = new Object[][] {{"A"}, {5L}};
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
   }
@@ -201,7 +201,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void stringArrayIsEqualTo_Fail_UnequalLength() {
+  public void stringArrayIsEqualTo_fail_unequalLength() {
     expectFailureWhenTestingThat(objectArray("A", "B")).isEqualTo(objectArray("B"));
     assertFailureKeys("expected", "but was", "wrong length", "expected", "but was");
     assertFailureValueIndexed("expected", 1, "1");
@@ -209,7 +209,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void stringArrayIsEqualTo_Fail_UnequalLengthMultiDimensional() {
+  public void stringArrayIsEqualTo_fail_unequalLengthMultiDimensional() {
     expectFailureWhenTestingThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}});
     assertFailureKeys("expected", "but was", "wrong length", "expected", "but was");
     assertFailureValueIndexed("expected", 1, "1");
@@ -217,20 +217,20 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
+  public void stringArrayIsEqualTo_fail_unequalOrdering() {
     expectFailureWhenTestingThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
     assertFailureValue("differs at index", "[0]");
   }
 
   @Test
-  public void stringArrayIsEqualTo_Fail_UnequalOrderingMultiDimensional() {
+  public void stringArrayIsEqualTo_fail_unequalOrderingMultiDimensional() {
     expectFailureWhenTestingThat(new String[][] {{"A"}, {"B"}})
         .isEqualTo(new String[][] {{"B"}, {"A"}});
     assertFailureValue("differs at index", "[0][0]");
   }
 
   @Test
-  public void setArrayIsEqualTo_Fail_UnequalOrdering() {
+  public void setArrayIsEqualTo_fail_unequalOrdering() {
     expectFailureWhenTestingThat(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
         .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
     assertFailureValue("differs at index", "[0]");
@@ -245,7 +245,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void primitiveMultiDimensionalArrayIsEqualTo_Fail_UnequalOrdering() {
+  public void primitiveMultiDimensionalArrayIsEqualTo_fail_unequalOrdering() {
     expectFailureWhenTestingThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
         .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
     assertFailureValue("wrong length for index", "[2]");
@@ -260,7 +260,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void primitiveMultiDimensionalArrayIsNotEqualTo_Fail_Equal() {
+  public void primitiveMultiDimensionalArrayIsNotEqualTo_fail_equal() {
     expectFailureWhenTestingThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
         .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
   }
@@ -282,7 +282,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     return ts;
   }
 
-  private static Set[] objectArray(Set... ts) {
+  private static Set<?>[] objectArray(Set<?>... ts) {
     return ts;
   }
 

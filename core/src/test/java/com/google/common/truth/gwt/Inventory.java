@@ -53,7 +53,7 @@ public class Inventory {
   BigDecimalSubject bigDecimalSubject;
   BooleanSubject booleanSubject;
   ClassSubject classSubject;
-  ComparableSubject comparableSubject;
+  ComparableSubject<?> comparableSubject;
   DoubleSubject doubleSubject;
   FailureStrategy failureStrategy;
   FloatSubject floatSubject;
@@ -64,7 +64,7 @@ public class Inventory {
   MapSubject mapSubject;
   MultimapSubject multimapSubject;
   MultisetSubject multisetSubject;
-  ObjectArraySubject objectArraySubject;
+  ObjectArraySubject<?> objectArraySubject;
   Ordered ordered;
   PrimitiveBooleanArraySubject primitiveBooleanArraySubject;
   PrimitiveByteArraySubject primitiveByteArraySubject;
@@ -75,7 +75,7 @@ public class Inventory {
   PrimitiveLongArraySubject primitiveLongArraySubject;
   PrimitiveShortArraySubject primitiveShortArraySubject;
   StringSubject stringSubject;
-  Subject.Factory subjectFactory;
+  Subject.Factory<?, ?> subjectFactory;
   Subject subject;
   TableSubject tableSubject;
   ThrowableSubject throwableSubject;

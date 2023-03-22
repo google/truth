@@ -40,6 +40,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
+@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
 public final class LongStreamSubject extends Subject {
 
   private final List<?> actualList;
@@ -145,7 +146,7 @@ public final class LongStreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(long... varargs) {
-    return check().that(actualList).containsExactly(box(varargs));
+    return check().that(actualList).containsExactlyElementsIn(box(varargs));
   }
 
   /**

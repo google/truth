@@ -112,6 +112,7 @@ public class StandardSubjectBuilder {
     return new IterableSubject(metadata(), actual);
   }
 
+  @SuppressWarnings("AvoidObjectArrays")
   public final <T> ObjectArraySubject<T> that(@Nullable T @Nullable [] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }

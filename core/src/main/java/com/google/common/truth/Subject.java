@@ -91,12 +91,6 @@ public class Subject {
     SubjectT createSubject(FailureMetadata metadata, @Nullable ActualT actual);
   }
 
-  private static final FailureStrategy IGNORE_STRATEGY =
-      new FailureStrategy() {
-        @Override
-        public void fail(AssertionError failure) {}
-      };
-
   private final @Nullable FailureMetadata metadata;
   private final @Nullable Object actual;
   private final @Nullable String typeDescriptionOverride;
@@ -106,7 +100,7 @@ public class Subject {
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @Nullable Object actual) {
-    this(metadata, actual, /*typeDescriptionOverride=*/ null);
+    this(metadata, actual, /* typeDescriptionOverride= */ null);
   }
 
   /**
@@ -714,7 +708,7 @@ public class Subject {
    * returns {@code ignoreCheck().that(... a dummy exception ...)}.
    */
   protected final StandardSubjectBuilder ignoreCheck() {
-    return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
+    return StandardSubjectBuilder.forCustomFailureStrategy(failure -> {});
   }
 
   /**
