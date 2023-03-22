@@ -234,7 +234,6 @@ public class StringSubject extends ComparableSubject<String> {
   }
 
   /** Case insensitive propositions for string subjects. */
-  @SuppressWarnings("Casing_StringEqualsIgnoreCase") // intentional choice from API Review
   public final class CaseInsensitiveStringComparison {
     private CaseInsensitiveStringComparison() {}
 
@@ -327,11 +326,11 @@ public class StringSubject extends ComparableSubject<String> {
           subjectOffset <= subject.length() - string.length();
           subjectOffset++) {
         if (subject.regionMatches(
-            /* ignoreCase= */ true,
-            /* toffset= */ subjectOffset,
-            /* other= */ string,
-            /* ooffset= */ 0,
-            /* len= */ string.length())) {
+            /* ignoreCase = */ true,
+            /* toffset = */ subjectOffset,
+            /* other = */ string,
+            /* ooffset = */ 0,
+            /* len = */ string.length())) {
           return true;
         }
       }

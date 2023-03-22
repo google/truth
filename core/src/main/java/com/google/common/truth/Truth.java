@@ -74,18 +74,21 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class Truth {
   private Truth() {}
 
-  @SuppressWarnings("ConstantCaseForConstants") // Despite the "Builder" name, it's not mutable.
+  private static final FailureStrategy THROW_ASSERTION_ERROR =
+      new FailureStrategy() {
+        @Override
+        public void fail(AssertionError failure) {
+          throw failure;
+        }
+      };
+
   private static final StandardSubjectBuilder ASSERT =
-      StandardSubjectBuilder.forCustomFailureStrategy(
-          failure -> {
-            throw failure;
-          });
+      StandardSubjectBuilder.forCustomFailureStrategy(THROW_ASSERTION_ERROR);
 
   /**
    * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will
    * throw {@link AssertionError}.
    */
-  @SuppressWarnings("MemberName") // The underscore is a weird but intentional choice.
   public static StandardSubjectBuilder assert_() {
     return ASSERT;
   }
@@ -191,7 +194,6 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  @SuppressWarnings("AvoidObjectArrays")
   public static <T> ObjectArraySubject<T> assertThat(@Nullable T @Nullable [] actual) {
     return assert_().that(actual);
   }
@@ -297,7 +299,7 @@ public final class Truth {
     }
 
     static SimpleAssertionError createWithNoStack(String message) {
-      return createWithNoStack(message, /* cause= */ null);
+      return createWithNoStack(message, /*cause=*/ null);
     }
 
     @Override

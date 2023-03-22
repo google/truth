@@ -237,7 +237,8 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ false);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
+      return new MapInOrder(
+          expectedMap, /* allowUnexpected = */ false, /* correspondence = */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -251,7 +252,7 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ true);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
+      return new MapInOrder(expectedMap, /* allowUnexpected = */ true, /* correspondence = */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -276,7 +277,7 @@ public class MapSubject extends Subject {
     // present with the wrong value, which may be the closest we currently get to this.)
     failWithoutActual(
         ImmutableList.<Fact>builder()
-            .addAll(diff.describe(/* differ= */ null))
+            .addAll(diff.describe(/* differ = */ null))
             .add(simpleFact("---"))
             .add(fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMap))
             .add(butWas())
@@ -315,7 +316,6 @@ public class MapSubject extends Subject {
         K expectedKey = expectedEntry.getKey();
         E expectedValue = expectedEntry.getValue();
         if (actual.containsKey(expectedKey)) {
-          @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
           A actualValue = (A) unexpected.remove(expectedKey);
           if (!valueTester.test(actualValue, expectedValue)) {
             wrongValues.put(expectedKey, new ValueDifference<>(actualValue, expectedValue));
@@ -550,7 +550,6 @@ public class MapSubject extends Subject {
      * Fails if the map does not contain an entry with the given key and a value that corresponds to
      * the given value.
      */
-    @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
       if (checkNotNull(actual).containsKey(expectedKey)) {
         // Found matching key.
@@ -625,7 +624,6 @@ public class MapSubject extends Subject {
      * Fails if the map contains an entry with the given key and a value that corresponds to the
      * given value.
      */
-    @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
       if (checkNotNull(actual).containsKey(excludedKey)) {
         // Found matching key. Fail if the value matches, too.
@@ -709,7 +707,7 @@ public class MapSubject extends Subject {
           return ALREADY_FAILED;
         }
       }
-      return internalContainsEntriesIn(expectedMap, /* allowUnexpected= */ false);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ false);
     }
 
     /**
@@ -721,7 +719,7 @@ public class MapSubject extends Subject {
       if (expectedMap.isEmpty()) {
         return IN_ORDER;
       }
-      return internalContainsEntriesIn(expectedMap, /* allowUnexpected= */ true);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ true);
     }
 
     private <K extends @Nullable Object, V extends E> Ordered internalContainsEntriesIn(

@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
+import com.google.common.primitives.Ints;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,8 +36,6 @@ import org.junit.runners.JUnit4;
 public class ComparableSubjectTest extends BaseSubjectTestCase {
 
   @Test
-  // test of a mistaken call and of unnecessary use of isEquivalentAccordingToCompareTo
-  @SuppressWarnings({"deprecation", "IntegerComparison"})
   public void testNulls() {
     try {
       assertThat(6).isEquivalentAccordingToCompareTo(null);
@@ -106,11 +105,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
 
     @Override
     public int compareTo(StringComparedByLength other) {
-      /*
-       * Even though Integer.compare was added in Java 7, we use it even under old versions of
-       * Android, as discussed in IterableSubjectTest.
-       */
-      return Integer.compare(value.length(), other.value.length());
+      return Ints.compare(value.length(), other.value.length());
     }
 
     @Override
@@ -226,7 +221,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(new RawComparableType(3)).isLessThan(new RawComparableType(4));
   }
 
-  @SuppressWarnings({"ComparableType", "rawtypes"})
+  @SuppressWarnings("ComparableType")
   private static final class RawComparableType implements Comparable {
     private final int wrapped;
 

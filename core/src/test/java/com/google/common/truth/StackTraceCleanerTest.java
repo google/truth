@@ -97,7 +97,7 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void assertionsActuallyUseCleaner_comparisonFailure() {
+  public void assertionsActuallyUseCleaner_ComparisonFailure() {
     expectFailure.whenTesting().that("1").isEqualTo("2");
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
         .isEqualTo(getClass().getName());
@@ -453,7 +453,8 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
         0);
   }
 
-  private static class SelfReferencingThrowable extends Exception {
+  private static class SelfReferencingThrowable extends Throwable {
+
     SelfReferencingThrowable(String... classNames) {
       setStackTrace(createStackTrace(classNames));
     }

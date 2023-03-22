@@ -44,7 +44,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * behavior/{@code Subject} type?</a> in the Truth FAQ.
  */
 public final class Truth8 {
-  @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
     return assertAbout(OptionalSubject.optionals()).that(target);
   }

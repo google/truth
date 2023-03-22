@@ -21,7 +21,6 @@ import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MultimapSubject;
@@ -34,6 +33,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -90,12 +90,6 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
    * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
-  /*
-   * This is mostly safe because we only read from the map. And if it produces NPE/CCE immediately,
-   * that's no worse than many existing Collection implementations....
-   */
-  @SuppressWarnings("unchecked")
-  @Override
   public IterableOfProtosSubject<M> valuesForKey(@Nullable Object key) {
     return check("valuesForKey(%s)", key)
         .about(protos())
@@ -916,7 +910,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
     @Override
     @CanIgnoreReturnValue
     public Ordered containsExactly() {
-      return subject.usingCorrespondence(ImmutableList.of()).containsExactly();
+      return subject.usingCorrespondence(Collections.<M>emptyList()).containsExactly();
     }
 
     @Override
@@ -931,19 +925,14 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
       return subject.usingCorrespondence(expectedValues).containsExactly(k0, v0, rest);
     }
 
-    /*
-     * Calling this method is a mistake, so we delegate to a method whose implementation throws an
-     * exception to explain the mistake.
-     */
-    @SuppressWarnings({"DoNotCall", "deprecation"})
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public boolean equals(Object o) {
       return subject.equals(o);
     }
 
-    // (see equals() just above)
-    @SuppressWarnings({"DoNotCall", "deprecation"})
+    @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
     public int hashCode() {

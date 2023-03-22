@@ -26,7 +26,6 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.Iterables;
 import org.objectweb.asm.Opcodes;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.IOException;
@@ -92,7 +91,7 @@ final class ActualValueInference {
     try {
       stream = loader.getResourceAsStream(className.replace('.', '/') + ".class");
       // TODO(cpovirk): Disable inference if the bytecode version is newer than we've tested on?
-      new ClassReader(stream).accept(visitor, /* parsingOptions= */ 0);
+      new ClassReader(stream).accept(visitor, /*parsingOptions=*/ 0);
       ImmutableSet<StackEntry> actualsAtLine = visitor.actualValueAtLine.build().get(lineNumber);
       /*
        * It's very unlikely that more than one assertion would happen on the same line _but with
@@ -737,7 +736,7 @@ final class ActualValueInference {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-      if (opcode == Opcodes.INVOKESPECIAL && name.equals("<init>")) {
+      if (opcode == Opcodes.INVOKESPECIAL && "<init>".equals(name)) {
         int argumentSize = (Type.getArgumentsAndReturnSizes(desc) >> 2);
         InferredType receiverType = getOperandFromTop(argumentSize - 1).type();
         if (receiverType.isUninitialized()) {
@@ -961,7 +960,7 @@ final class ActualValueInference {
     }
 
     private void pushDescriptor(String desc) {
-      pushDescriptorAndMaybeProcessMethodCall(desc, /* invocation= */ null);
+      pushDescriptorAndMaybeProcessMethodCall(desc, /*invocation=*/ null);
     }
 
     /**
@@ -1081,7 +1080,7 @@ final class ActualValueInference {
     }
 
     private StackEntry top() {
-      return Iterables.getLast(operandStack);
+      return operandStack.get(operandStack.size() - 1);
     }
 
     /**
@@ -1247,15 +1246,18 @@ final class ActualValueInference {
     }
 
     /** The receiver of this call, if it is an instance call. */
-    abstract @Nullable StackEntry receiver();
+    @Nullable
+    abstract StackEntry receiver();
 
     /** The value being passed to this call if it is an {@code assertThat} or {@code that} call. */
-    abstract @Nullable StackEntry actualValue();
+    @Nullable
+    abstract StackEntry actualValue();
 
     /**
      * The value being passed to this call if it is a boxing call (e.g., {@code Integer.valueOf}).
      */
-    abstract @Nullable StackEntry boxingInput();
+    @Nullable
+    abstract StackEntry boxingInput();
 
     abstract String name();
 
@@ -1322,7 +1324,7 @@ final class ActualValueInference {
 
     /** Create a type for a value. */
     static InferredType create(String descriptor) {
-      if (descriptor.equals(UNINITIALIZED_PREFIX)) {
+      if (UNINITIALIZED_PREFIX.equals(descriptor)) {
         return UNINITIALIZED;
       }
       char firstChar = descriptor.charAt(0);
