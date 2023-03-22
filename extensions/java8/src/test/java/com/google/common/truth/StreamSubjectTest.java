@@ -212,17 +212,19 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAtLeast_inOrder_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsAtLeast("hello", "hell").inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(
-          expected,
-          "required elements were all found, but order was wrong",
-          "expected order for required elements",
-          "but was");
-      assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAtLeast("hello", "hell")
+                    .inOrder());
+    assertFailureKeys(
+        expected,
+        "required elements were all found, but order was wrong",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
   }
 
   @Test
@@ -249,19 +251,19 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAtLeastElementsIn_inOrder_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello"))
-          .containsAtLeastElementsIn(asList("hello", "hell"))
-          .inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(
-          expected,
-          "required elements were all found, but order was wrong",
-          "expected order for required elements",
-          "but was");
-      assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAtLeastElementsIn(asList("hello", "hell"))
+                    .inOrder());
+    assertFailureKeys(
+        expected,
+        "required elements were all found, but order was wrong",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
   }
 
   @Test
@@ -272,13 +274,11 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsExactly_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsExactly("hell");
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
-      assertFailureValue(expected, "expected", "[hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting -> whenTesting.that(Stream.of("hell", "hello")).containsExactly("hell"));
+    assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+    assertFailureValue(expected, "expected", "[hell]");
   }
 
   @Test
@@ -288,13 +288,15 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsExactly_inOrder_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsExactly("hello", "hell").inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
-      assertFailureValue(expected, "expected", "[hello, hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsExactly("hello", "hell")
+                    .inOrder());
+    assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
+    assertFailureValue(expected, "expected", "[hello, hell]");
   }
 
   @Test
@@ -305,13 +307,14 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsExactlyElementsIn(asList("hell"));
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
-      assertFailureValue(expected, "expected", "[hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsExactlyElementsIn(asList("hell")));
+    assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+    assertFailureValue(expected, "expected", "[hell]");
   }
 
   @Test
@@ -323,15 +326,15 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn_inOrder_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello"))
-          .containsExactlyElementsIn(asList("hello", "hell"))
-          .inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
-      assertFailureValue(expected, "expected", "[hello, hell]");
-    }
+    AssertionError expected =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsExactlyElementsIn(asList("hello", "hell"))
+                    .inOrder());
+    assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
+    assertFailureValue(expected, "expected", "[hello, hell]");
   }
 
   @Test
