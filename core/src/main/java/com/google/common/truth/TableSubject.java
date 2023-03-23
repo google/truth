@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.Table;
@@ -60,14 +61,26 @@ public final class TableSubject extends Subject {
   /** Fails if the table does not contain a mapping for the given row key and column key. */
   public void contains(@Nullable Object rowKey, @Nullable Object columnKey) {
     if (!checkNotNull(actual).contains(rowKey, columnKey)) {
-      fail("contains mapping for row/column", rowKey, columnKey);
+      /*
+       * TODO(cpovirk): Consider including information about whether any cell with the given row
+       * *or* column was present.
+       */
+      failWithActual(
+          simpleFact("expected to contain mapping for row-column key pair"),
+          fact("row key", rowKey),
+          fact("column key", columnKey));
     }
   }
 
   /** Fails if the table contains a mapping for the given row key and column key. */
   public void doesNotContain(@Nullable Object rowKey, @Nullable Object columnKey) {
     if (checkNotNull(actual).contains(rowKey, columnKey)) {
-      fail("does not contain mapping for row/column", rowKey, columnKey);
+      failWithoutActual(
+          simpleFact("expected not to contain mapping for row-column key pair"),
+          fact("row key", rowKey),
+          fact("column key", columnKey),
+          fact("but contained value", actual.get(rowKey, columnKey)),
+          fact("full contents", actual));
     }
   }
 
