@@ -294,6 +294,7 @@ public class MultimapSubject extends Subject {
 
   /** Fails if the multimap is not empty. */
   @CanIgnoreReturnValue
+  @SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
   public final Ordered containsExactly() {
     return check().about(iterableEntries()).that(checkNotNull(actual).entries()).containsExactly();
   }
@@ -725,6 +726,7 @@ public class MultimapSubject extends Subject {
      * public containsExactlyEntriesIn method. This is recommended by Effective Java item 31 (3rd
      * edition).
      */
+    @SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
     private <K extends @Nullable Object, V extends E> Ordered internalContainsExactlyEntriesIn(
         Multimap<K, V> expectedMultimap) {
       // Note: The non-fuzzy MultimapSubject.containsExactlyEntriesIn has a custom implementation
@@ -759,6 +761,7 @@ public class MultimapSubject extends Subject {
      * public containsAtLeastEntriesIn method. This is recommended by Effective Java item 31 (3rd
      * edition).
      */
+    @SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
     private <K extends @Nullable Object, V extends E> Ordered internalContainsAtLeastEntriesIn(
         Multimap<K, V> expectedMultimap) {
       // Note: The non-fuzzy MultimapSubject.containsAtLeastEntriesIn has a custom implementation

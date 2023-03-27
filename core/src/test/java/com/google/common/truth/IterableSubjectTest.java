@@ -48,6 +48,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings({"TruthIterableIsEmpty", "IsEmptyTruth"})
   public void hasSizeZero() {
     assertThat(ImmutableList.of()).hasSize(0);
   }
@@ -448,6 +449,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsAllElementsInWithVarArgsToContainsAtLeast")
   public void iterableContainsAtLeastElementsInIterable() {
     assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
 
@@ -458,6 +460,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsAllElementsInWithVarArgsToContainsAtLeast")
   public void iterableContainsAtLeastElementsInCanUseFactPerElement() {
     expectFailureWhenTestingThat(asList("abc"))
         .containsAtLeastElementsIn(asList("123\n456", "789"));
@@ -513,6 +516,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsNoneInWithVarArgsToContainsNoneOf")
   public void iterableContainsNoneInIterable() {
     assertThat(asList(1, 2, 3)).containsNoneIn(asList(4, 5, 6));
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
@@ -537,6 +541,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  // We tell people to call containsExactlyElementsIn, but we still test containsExactly.
+  @SuppressWarnings("ContainsExactlyVariadic")
   public void arrayContainsExactly() {
     ImmutableList<String> iterable = ImmutableList.of("a", "b");
     String[] array = {"a", "b"};
@@ -658,6 +664,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCode() {
     HashCodeThrower one = new HashCodeThrower();
     HashCodeThrower two = new HashCodeThrower();
@@ -702,17 +709,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyNone")
   public void iterableContainsExactlyElementsInInOrderPassesWithEmptyExpectedAndActual() {
     assertThat(ImmutableList.of()).containsExactlyElementsIn(ImmutableList.of()).inOrder();
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyNone")
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
     expectFailureWhenTestingThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
     assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInErrorMessageIsInOrder() {
     expectFailureWhenTestingThat(asList("foo OR bar"))
         .containsExactlyElementsIn(asList("foo", "bar"));
@@ -862,6 +872,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
     assertFailureValue("unexpected (1)", "4");
@@ -952,6 +963,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInIterable() {
     assertThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2));
 
@@ -1146,20 +1158,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  // TODO(cpovirk): Can we use the Java 7 Integer.compare under Android?
+  // We can't use Comparators.comparing under old versions of Android.
   @SuppressWarnings({
-    "CompareDoubleTernary",
-    "CompareFloatTernary",
-    "CompareIntegerTernary",
-    "CompareLongTernary",
     "CompareProperty",
     "DoubleProperty_ExtractTernaryHead",
     "FloatProperty_ExtractTernaryHead",
     "IntegerProperty_ExtractTernaryHead",
     "LongProperty_ExtractTernaryHead",
   })
-  private static final Comparator<Foo> FOO_COMPARATOR =
-      (a, b) -> (a.x < b.x) ? -1 : ((a.x > b.x) ? 1 : 0);
+  // Even though Integer.compare was added in Java 7, we use it even under old versions of Android,
+  // even without library desugaring on: It and a few other APIs are *always* desguared:
+  // https://r8.googlesource.com/r8/+/a7563f86014d44f961f40fc109ab1c1073f2ee4e/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java
+  // Now, if this code weren't in Truth's *tests*, then it would cause Animal Sniffer to complain.
+  // In that case, we might fall back to the deprecated Guava Ints.compare.
+  private static final Comparator<Foo> FOO_COMPARATOR = (a, b) -> Integer.compare(a.x, b.x);
 
   @Test
   public void iterableOrderedByBaseClassComparator() {

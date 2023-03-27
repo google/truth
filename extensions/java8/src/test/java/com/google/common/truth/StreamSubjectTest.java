@@ -36,14 +36,14 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
-  @SuppressWarnings("DoNotCall")
+  @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
   @Test
   public void testIsEqualTo() throws Exception {
     Stream<String> stream = Stream.of("hello");
     assertThrows(UnsupportedOperationException.class, () -> assertThat(stream).isEqualTo(stream));
   }
 
-  @SuppressWarnings("DoNotCall")
+  @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
   @Test
   public void testIsNotEqualTo() throws Exception {
     Stream<String> stream = Stream.of("hello");
@@ -270,6 +270,12 @@ public final class StreamSubjectTest {
   public void testContainsExactly() throws Exception {
     assertThat(Stream.of("hell", "hello")).containsExactly("hell", "hello");
     assertThat(Stream.of("hell", "hello")).containsExactly("hello", "hell");
+  }
+
+  @Test
+  public void testContainsExactly_null() throws Exception {
+    assertThat(Stream.of((Object) null)).containsExactly((Object) null);
+    assertThat(Stream.of((Object) null)).containsExactly((Object[]) null);
   }
 
   @Test

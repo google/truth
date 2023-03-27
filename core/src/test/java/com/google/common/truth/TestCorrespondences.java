@@ -92,7 +92,11 @@ final class TestCorrespondences {
       Correspondence.from(
           TestCorrespondences::equalsIgnoreCaseHalfNullSafe, "equals (ignoring case)");
 
-  @SuppressWarnings("Casing_StringEqualsIgnoreCase") // intentional choice from API Review
+  /*
+   * This is just an example for a test, and it's a convenient way to demonstrate the specific null
+   * behavior documented below.
+   */
+  @SuppressWarnings("Casing_StringEqualsIgnoreCase")
   private static boolean equalsIgnoreCaseHalfNullSafe(String actual, String expected) {
     if (actual == null && expected == null) {
       return true;

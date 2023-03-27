@@ -171,7 +171,7 @@ public class TableSubjectTest extends BaseSubjectTestCase {
     return Tables.immutableCell(row, col, val);
   }
 
-  private TableSubject expectFailureWhenTestingThat(Table actual) {
+  private TableSubject expectFailureWhenTestingThat(Table<?, ?, ?> actual) {
     return expectFailure.whenTesting().that(actual);
   }
 }

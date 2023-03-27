@@ -417,7 +417,11 @@ public class IterableSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  @SuppressWarnings("AvoidObjectArrays")
+  @SuppressWarnings({
+    "AvoidObjectArrays",
+    "ContainsExactlyElementsInUnnecessaryWrapperAroundArray",
+    "ContainsExactlyElementsInWithVarArgsToExactly"
+  })
   public final Ordered containsExactlyElementsIn(@Nullable Object @Nullable [] expected) {
     return containsExactlyElementsIn(asList(checkNotNull(expected)));
   }
@@ -2090,7 +2094,7 @@ public class IterableSubject extends Subject {
       }
     }
 
-    /** An description of a pairing between expected and actual values. N.B. This is mutable. */
+    /** A description of a pairing between expected and actual values. N.B. This is mutable. */
     private final class Pairing {
 
       /**

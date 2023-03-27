@@ -63,6 +63,8 @@ public class ThrowableSubject extends Subject {
    * cause. This method can be invoked repeatedly (e.g. {@code
    * assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect cause.
    */
+  // Any Throwable is fine, and we use plain Throwable to emphasize that it's not used "for real."
+  @SuppressWarnings("ShouldNotSubclass")
   public final ThrowableSubject hasCauseThat() {
     // provides a more helpful error message if hasCauseThat() methods are chained too deep
     // e.g. assertThat(new Exception()).hCT().hCT()....
@@ -76,6 +78,7 @@ public class ThrowableSubject extends Subject {
           .that(
               new Throwable() {
                 @Override
+                @SuppressWarnings("UnsynchronizedOverridesSynchronized")
                 public Throwable fillInStackTrace() {
                   setStackTrace(new StackTraceElement[0]); // for old versions of Android
                   return this;

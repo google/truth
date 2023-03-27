@@ -40,6 +40,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
+@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
 public final class StreamSubject extends Subject {
 
   private final List<?> actualList;
@@ -145,6 +146,11 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
+  /*
+   * We need to call containsExactly, not containsExactlyElementsIn, to get the handling we want for
+   * containsExactly(null).
+   */
+  @SuppressWarnings("ContainsExactlyVariadic")
   public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
     return check().that(actualList).containsExactly(varargs);
   }
