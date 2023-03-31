@@ -113,7 +113,7 @@ Truth and [Hamcrest] differ significantly. We prefer Truth because:
 -   Truth assertions are made with chained method calls, so IDEs can suggest the
     assertions appropriate for a given object.
 -   Hamcrest is a more general "matching" library, used not only for making
-    assertions but also for setting expections on mocking frameworks, with
+    assertions but also for setting expectations on mocking frameworks, with
     matchers composed together in arbitrary ways. But this flexibility requires
     complex generics and makes it hard for Hamcrest to produce readable failure
     messages.

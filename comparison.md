@@ -37,7 +37,7 @@ points:
 -   Truth assertions are made with chained method calls, so IDEs can suggest the
     assertions appropriate for a given object.
 -   Hamcrest is a more general "matching" library, used not only for making
-    assertions but also for setting expections on mocking frameworks, with
+    assertions but also for setting expectations on mocking frameworks, with
     matchers composed together in arbitrary ways. But this flexibility requires
     [complex generics](https://dev.to/mpeng3/matt-s-tidbits-64-digging-into-some-ham-crest-assertions-47o7)
     and makes it hard for Hamcrest to produce readable failure messages.
