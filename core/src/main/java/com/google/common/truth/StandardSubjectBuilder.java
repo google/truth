@@ -61,10 +61,9 @@ public class StandardSubjectBuilder {
     this.metadataDoNotReferenceDirectly = checkNotNull(metadata);
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
   public final <ComparableT extends Comparable<?>> ComparableSubject<ComparableT> that(
       @Nullable ComparableT actual) {
-    return new ComparableSubject(metadata(), actual) {};
+    return new ComparableSubject<ComparableT>(metadata(), actual) {};
   }
 
   public final BigDecimalSubject that(@Nullable BigDecimal actual) {
