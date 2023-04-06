@@ -82,6 +82,7 @@ import org.junit.runners.model.Statement;
  * <p>For more on this class, see <a href="https://truth.dev/expect">the documentation page</a>.
  */
 @GwtIncompatible("JUnit4")
+@J2ktIncompatible
 public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private static final class ExpectationGatherer implements FailureStrategy {

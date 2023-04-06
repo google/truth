@@ -41,6 +41,7 @@ import org.junit.AssumptionViolatedException;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtIncompatible("JUnit4")
+@J2ktIncompatible
 public final class TruthJUnit {
   @SuppressWarnings("ConstantCaseForConstants") // Despite the "Builder" name, it's not mutable.
   private static final StandardSubjectBuilder ASSUME =

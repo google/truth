@@ -26,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  */
 @GwtIncompatible("reflection")
+@J2ktIncompatible
 public final class ClassSubject extends Subject {
   private final @Nullable Class<?> actual;
 

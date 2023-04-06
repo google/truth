@@ -156,6 +156,7 @@ public final class Truth {
   }
 
   @GwtIncompatible("ClassSubject.java")
+  @J2ktIncompatible
   public static ClassSubject assertThat(@Nullable Class<?> actual) {
     return assert_().that(actual);
   }

@@ -31,6 +31,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** Utility that cleans stack traces to remove noise from common frameworks. */
 @GwtIncompatible
+@J2ktIncompatible
 final class StackTraceCleaner {
 
   static final String CLEANER_LINK = "https://goo.gl/aH3UyP";

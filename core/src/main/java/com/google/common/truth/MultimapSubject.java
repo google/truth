@@ -394,7 +394,7 @@ public class MultimapSubject extends Subject {
         Iterator<?> actualIterator = actualVals.iterator();
         for (Object value : expectedVals) {
           if (!advanceToFind(actualIterator, value)) {
-            keysWithValuesOutOfOrder.add(key);
+            boolean unused = keysWithValuesOutOfOrder.add(key);
             break;
           }
         }

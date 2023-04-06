@@ -75,6 +75,7 @@ public class StandardSubjectBuilder {
   }
 
   @GwtIncompatible("ClassSubject.java")
+  @J2ktIncompatible
   public final ClassSubject that(@Nullable Class<?> actual) {
     return new ClassSubject(metadata(), actual);
   }

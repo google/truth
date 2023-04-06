@@ -68,6 +68,7 @@ import org.objectweb.asm.Type;
  * this is all best-effort.
  */
 @GwtIncompatible
+@J2ktIncompatible
 final class ActualValueInference {
   /** <b>Call {@link Platform#inferDescription} rather than calling this directly.</b> */
   static @Nullable String describeActualValue(String className, String methodName, int lineNumber) {
@@ -152,6 +153,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class OpaqueEntry extends StackEntry {
     @Override
     public final String toString() {
@@ -171,6 +173,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class DescribedEntry extends StackEntry {
     @Override
     abstract String description();
@@ -196,6 +199,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class SubjectEntry extends StackEntry {
     @Override
     abstract StackEntry actualValue();
@@ -1226,6 +1230,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class FrameInfo {
 
     static FrameInfo create(ImmutableList<StackEntry> locals, ImmutableList<StackEntry> stack) {
@@ -1241,6 +1246,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class Invocation {
     static Builder builder(String name) {
       return new AutoValue_ActualValueInference_Invocation.Builder().setName(name);
@@ -1299,6 +1305,7 @@ final class ActualValueInference {
   @AutoValue
   @CopyAnnotations
   @GwtIncompatible
+  @J2ktIncompatible
   abstract static class InferredType {
 
     static final String UNINITIALIZED_PREFIX = "UNINIT@";

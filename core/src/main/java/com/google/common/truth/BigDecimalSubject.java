@@ -94,7 +94,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   }
 
   private void compareValues(@Nullable BigDecimal expected) {
-    if (checkNotNull(actual).compareTo(expected) != 0) {
+    if (checkNotNull(actual).compareTo(checkNotNull(expected)) != 0) {
       failWithoutActual(fact("expected", expected), butWas(), simpleFact("(scale is ignored)"));
     }
   }

@@ -186,6 +186,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   @Override
   @GwtIncompatible("org.junit.rules.TestRule")
+  @J2ktIncompatible
   public Statement apply(Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);

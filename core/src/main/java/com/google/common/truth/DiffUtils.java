@@ -36,10 +36,10 @@ final class DiffUtils {
   private final List<String> stringList = new ArrayList<>();
   // A map to record each unique string and its incremental id.
   private final Map<String, Integer> stringToId = new HashMap<>();
-  private int[] original;
-  private int[] revised;
+  private int[] original = new int[0];
+  private int[] revised = new int[0];
   // lcs[i][j] is the length of the longest common sequence of original[1..i] and revised[1..j].
-  private int[][] lcs;
+  private int[][] lcs = new int[0][0];
   private final List<Character> unifiedDiffType = new ArrayList<>();
   private final List<Integer> unifiedDiffContentId = new ArrayList<>();
   private final List<String> reducedUnifiedDiff = new ArrayList<>();
