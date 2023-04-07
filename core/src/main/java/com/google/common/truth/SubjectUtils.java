@@ -49,17 +49,17 @@ final class SubjectUtils {
 
   static final String HUMAN_UNDERSTANDABLE_EMPTY_STRING = "\"\" (empty String)";
 
-  static <T extends @Nullable Object> List<T> accumulate(T first, T second, T @Nullable ... rest) {
-    // rest should never be deliberately null, so assume that the caller passed null
+  static <T extends @Nullable Object> List<T> accumulate(T first, T second, T @Nullable ... additionalValues) {
+    // additionalValues should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
     // Javac makes the opposite inference, so handle that here.
-    List<T> items = new ArrayList<>(2 + ((rest == null) ? 1 : rest.length));
+    List<T> items = new ArrayList<>(2 + ((additionalValues == null) ? 1 : additionalValues.length));
     items.add(first);
     items.add(second);
-    if (rest == null) {
+    if (additionalValues == null) {
       items.add((T) null);
     } else {
-      items.addAll(Arrays.asList(rest));
+      items.addAll(Arrays.asList(additionalValues));
     }
     return items;
   }
@@ -90,7 +90,7 @@ final class SubjectUtils {
   }
 
   private static <T extends @Nullable Object> NonHashingMultiset<T> countDuplicatesToMultiset(
-      Iterable<T> items) {
+          Iterable<T> items) {
     // We use avoid hashing in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
     NonHashingMultiset<T> multiset = new NonHashingMultiset<>();
@@ -113,8 +113,8 @@ final class SubjectUtils {
     Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
 
     return homogeneousTypeName.isPresent()
-        ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
-        : countDuplicates(addTypeInfoToEveryItem(items));
+            ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
+            : countDuplicates(addTypeInfoToEveryItem(items));
   }
 
   /**
@@ -122,20 +122,20 @@ final class SubjectUtils {
    * adds type info if requested and (b) returns a richer object containing the data.
    */
   static DuplicateGroupedAndTyped countDuplicatesAndMaybeAddTypeInfoReturnObject(
-      Iterable<?> itemsIterable, boolean addTypeInfo) {
+          Iterable<?> itemsIterable, boolean addTypeInfo) {
     if (addTypeInfo) {
       Collection<?> items = iterableToCollection(itemsIterable);
       Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
 
       NonHashingMultiset<?> valuesWithCountsAndMaybeTypes =
-          homogeneousTypeName.isPresent()
-              ? countDuplicatesToMultiset(items)
-              : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
+              homogeneousTypeName.isPresent()
+                      ? countDuplicatesToMultiset(items)
+                      : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
       return new DuplicateGroupedAndTyped(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
     } else {
       return new DuplicateGroupedAndTyped(
-          countDuplicatesToMultiset(itemsIterable),
-          /* homogeneousTypeToDisplay= */ Optional.<String>absent());
+              countDuplicatesToMultiset(itemsIterable),
+              /* homogeneousTypeToDisplay= */ Optional.<String>absent());
     }
   }
 
@@ -183,17 +183,17 @@ final class SubjectUtils {
     }
 
     private static final Equivalence<Object> EQUALITY_WITHOUT_USING_HASH_CODE =
-        new Equivalence<Object>() {
-          @Override
-          protected boolean doEquivalent(Object a, Object b) {
-            return Objects.equal(a, b);
-          }
+            new Equivalence<Object>() {
+              @Override
+              protected boolean doEquivalent(Object a, Object b) {
+                return Objects.equal(a, b);
+              }
 
-          @Override
-          protected int doHash(Object o) {
-            return 0; // slow but hopefully not much worse than what we get with a flat list
-          }
-        };
+              @Override
+              protected int doHash(Object o) {
+                return 0; // slow but hopefully not much worse than what we get with a flat list
+              }
+            };
   }
 
   /**
@@ -210,7 +210,7 @@ final class SubjectUtils {
     final Optional<String> homogeneousTypeToDisplay;
 
     DuplicateGroupedAndTyped(
-        NonHashingMultiset<?> valuesAndMaybeTypes, Optional<String> homogeneousTypeToDisplay) {
+            NonHashingMultiset<?> valuesAndMaybeTypes, Optional<String> homogeneousTypeToDisplay) {
       this.valuesAndMaybeTypes = valuesAndMaybeTypes;
       this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
     }
@@ -230,8 +230,8 @@ final class SubjectUtils {
     @Override
     public String toString() {
       return homogeneousTypeToDisplay.isPresent()
-          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ")"
-          : valuesAndMaybeTypes.toString();
+              ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ")"
+              : valuesAndMaybeTypes.toString();
     }
   }
 
@@ -260,7 +260,7 @@ final class SubjectUtils {
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
   static List<@Nullable Object> retainMatchingToString(
-      Iterable<?> items, Iterable<?> itemsToCheck) {
+          Iterable<?> items, Iterable<?> itemsToCheck) {
     ListMultimap<String, @Nullable Object> stringValueToItemsToCheck = ArrayListMultimap.create();
     for (Object itemToCheck : itemsToCheck) {
       stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
@@ -300,7 +300,7 @@ final class SubjectUtils {
       Map.Entry<?, ?> entry = (Map.Entry<?, ?>) item;
       // Fix for interesting bug when entry.getValue() returns itself b/170390717
       String valueTypeName =
-          entry.getValue() == entry ? "Map.Entry" : objectToTypeName(entry.getValue());
+              entry.getValue() == entry ? "Map.Entry" : objectToTypeName(entry.getValue());
 
       return lenientFormat("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
     } else {

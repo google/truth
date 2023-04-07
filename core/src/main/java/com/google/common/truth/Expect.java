@@ -137,10 +137,10 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       }
       int numFailures = failures.size();
       StringBuilder message =
-          new StringBuilder()
-              .append(numFailures)
-              .append(numFailures > 1 ? " expectations" : " expectation")
-              .append(" failed:\n");
+              new StringBuilder()
+                      .append(numFailures)
+                      .append(numFailures > 1 ? " expectations" : " expectation")
+                      .append(" failed:\n");
       int countLength = String.valueOf(failures.size() + 1).length();
       int count = 0;
       for (AssertionError failure : failures) {
@@ -149,12 +149,12 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         message.append(padStart(String.valueOf(count), countLength, ' '));
         message.append(". ");
         if (count == 1) {
-          appendIndented(countLength, message, getStackTraceAsString(failure));
+          ExpectFailure.appendIndented(countLength, message, getStackTraceAsString(failure));
         } else {
-          appendIndented(
-              countLength,
-              message,
-              printSubsequentFailure(failures.get(0).getStackTrace(), failure));
+          ExpectFailure.appendIndented(
+                  countLength,
+                  message,
+                  printSubsequentFailure(failures.get(0).getStackTrace(), failure));
         }
         message.append("\n");
       }
@@ -164,13 +164,13 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
     // String.repeat is not available under Java 8 and old versions of Android.
     @SuppressWarnings({"StringsRepeat", "InlineMeInliner"})
-    private static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
-      int indent = countLength + 4; // "  " and ". "
-      builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
-    }
+//    private static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
+//      int indent = countLength + 4; // "  " and ". "
+//      builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
+//    }
 
     private String printSubsequentFailure(
-        StackTraceElement[] baseTraceFrames, AssertionError toPrint) {
+            StackTraceElement[] baseTraceFrames, AssertionError toPrint) {
       Exception e = new RuntimeException("__EXCEPTION_MARKER__", toPrint);
       e.setStackTrace(baseTraceFrames);
       String s = Throwables.getStackTraceAsString(e);
@@ -183,19 +183,19 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       switch (inRuleContext) {
         case BEFORE:
           throw new IllegalStateException(
-              "assertion made on Expect instance, but it's not enabled as a @Rule.", failure);
+                  "assertion made on Expect instance, but it's not enabled as a @Rule.", failure);
         case DURING:
           return;
         case AFTER:
           throw new IllegalStateException(
-              "assertion made on Expect instance, but its @Rule has already completed. Maybe "
-                  + "you're making assertions from a background thread and not waiting for them to "
-                  + "complete, or maybe you've shared an Expect instance across multiple tests? "
-                  + "We're throwing this exception to warn you that your assertion would have been "
-                  + "ignored. However, this exception might not cause any test to fail, or it "
-                  + "might cause some subsequent test to fail rather than the test that caused the "
-                  + "problem.",
-              failure);
+                  "assertion made on Expect instance, but its @Rule has already completed. Maybe "
+                          + "you're making assertions from a background thread and not waiting for them to "
+                          + "complete, or maybe you've shared an Expect instance across multiple tests? "
+                          + "We're throwing this exception to warn you that your assertion would have been "
+                          + "ignored. However, this exception might not cause any test to fail, or it "
+                          + "might cause some subsequent test to fail rather than the test that caused the "
+                          + "problem.",
+                  failure);
       }
       throw new AssertionError();
     }
@@ -211,9 +211,9 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     private void doLeaveRuleContext(Throwable caught) throws Throwable {
       if (hasFailures()) {
         String message =
-            caught instanceof AssumptionViolatedException
-                ? "Also, after those failures, an assumption was violated:"
-                : "Also, after those failures, an exception was thrown:";
+                caught instanceof AssumptionViolatedException
+                        ? "Also, after those failures, an assumption was violated:"
+                        : "Also, after those failures, an exception was thrown:";
         record(SimpleAssertionError.createWithNoStack(message, caught));
         throw SimpleAssertionError.createWithNoStack(this.toString());
       } else {

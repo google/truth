@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.base.Strings.repeat;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
@@ -91,10 +92,15 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     }
     if (failureExpected) {
       throw new AssertionError(
-          "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
+              "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
     }
     failureExpected = true;
     return StandardSubjectBuilder.forCustomFailureStrategy(this::captureFailure);
+  }
+
+  static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
+    int indent = countLength + 4; // "  " and ". "
+    builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
   }
 
   /**
@@ -119,8 +125,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   void ensureFailureCaught() {
     if (failureExpected && failure == null) {
       throw new AssertionError(
-          "ExpectFailure.whenTesting() invoked, but no failure was caught."
-              + Platform.EXPECT_FAILURE_WARNING_IF_GWT);
+              "ExpectFailure.whenTesting() invoked, but no failure was caught."
+                      + Platform.EXPECT_FAILURE_WARNING_IF_GWT);
     }
   }
 
@@ -140,9 +146,9 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     if (failure != null) {
       // TODO(diamondm) is it worthwhile to add the failures as suppressed exceptions?
       throw new AssertionError(
-          lenientFormat(
-              "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
-              Platform.getStackTraceAsString(failure), Platform.getStackTraceAsString(captured)));
+              lenientFormat(
+                      "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
+                      Platform.getStackTraceAsString(failure), Platform.getStackTraceAsString(captured)));
     }
     failure = captured;
   }
@@ -171,9 +177,9 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    */
   @CanIgnoreReturnValue
   public static <S extends Subject, A> AssertionError expectFailureAbout(
-      Subject.Factory<S, A> factory, SimpleSubjectBuilderCallback<S, A> assertionCallback) {
+          Subject.Factory<S, A> factory, SimpleSubjectBuilderCallback<S, A> assertionCallback) {
     return expectFailure(
-        whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory)));
+            whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory)));
   }
 
   /**

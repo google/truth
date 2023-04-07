@@ -16,13 +16,13 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.padEnd;
-import static java.lang.Math.max;
-
 import com.google.common.collect.ImmutableList;
-import java.io.Serializable;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.io.Serializable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Math.max;
 
 /**
  * A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz."
@@ -35,6 +35,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * href="https://truth.dev/failure_messages">our tips on writing failure messages</a>.
  */
 public final class Fact implements Serializable {
+
+  private static final FactFormattingStrategyFactory strategyFactory = new FactFormattingStrategyFactory();
+
   /**
    * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
@@ -101,28 +104,10 @@ public final class Fact implements Serializable {
       builder.append('\n');
     }
 
-    /*
-     * *Usually* the first fact is printed at the beginning of a new line. However, when this
-     * exception is the cause of another exception, that exception will print it starting after
-     * "Caused by: " on the same line. The other exception sometimes also reuses this message as its
-     * own message. In both of those scenarios, the first line doesn't start at column 0, so the
-     * horizontal alignment is thrown off.
-     *
-     * There's not much we can do about this, short of always starting with a newline (which would
-     * leave a blank line at the beginning of the message in the normal case).
-     */
+
     for (Fact fact : facts) {
-      if (fact.value == null) {
-        builder.append(fact.key);
-      } else if (seenNewlineInValue) {
-        builder.append(fact.key);
-        builder.append(":\n");
-        builder.append(indent(fact.value));
-      } else {
-        builder.append(padEnd(fact.key, longestKeyLength, ' '));
-        builder.append(": ");
-        builder.append(fact.value);
-      }
+      FactFormattingStrategy strategy = strategyFactory.getFactFormattingStrategy(fact, seenNewlineInValue);
+      builder.append(strategy.formatFact(fact, longestKeyLength));
       builder.append('\n');
     }
     if (builder.length() > 0) {
