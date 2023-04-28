@@ -197,9 +197,9 @@ final class Platform {
 
   @JsType(isNative = true, name = "RegExp", namespace = GLOBAL)
   private static class NativeRegExp {
-    public NativeRegExp(String pattern) {}
+    public NativeRegExp(@Nullable String pattern) {}
 
-    public native boolean test(String input);
+    public native boolean test(@Nullable String input);
   }
 
   @JsType(isNative = true, name = "Number", namespace = GLOBAL)
