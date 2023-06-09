@@ -20,7 +20,7 @@
       version without the -android and -jre suffixes) because that lets
       Dependabot update our Guava versions.
     -->
-    <guava.android.version>32.0.0-android</guava.android.version>
+    <guava.android.version>32.0.1-android</guava.android.version>
     <!--
       Also, we have this comment in between the 2 flavors of Guava. That's
       also to smooth the Dependabot update process: Dependabot generates a
