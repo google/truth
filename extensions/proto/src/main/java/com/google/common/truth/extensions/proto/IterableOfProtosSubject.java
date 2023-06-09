@@ -86,6 +86,9 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
 
   @Override
   protected String actualCustomStringRepresentation() {
+    if (actual == null) {
+      return "null";
+    }
     StringBuilder sb = new StringBuilder().append('[');
     boolean first = true;
     for (M element : actual) {
