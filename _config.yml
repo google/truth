@@ -24,7 +24,7 @@ exclude:
 sass:
   style: compressed
 
-googleAnalyticsId: UA-43772875-10
+googleAnalyticsId: G-ZNXX4CJW8S
 
 plugins:
   - jekyll-redirect-from
