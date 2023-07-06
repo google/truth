@@ -270,7 +270,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Object%5B%5D)">containsAnyIn</a></span>&#8203;(java.lang.Object[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Object%5B%5D)">containsAnyIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
  fails.</div>
@@ -296,14 +296,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Object[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
@@ -651,7 +651,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAnyIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(java.lang.Object[]&nbsp;expected)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsAnyIn&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
  fails.</div>
 </li>
@@ -699,7 +699,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Object[]&nbsp;expected)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
