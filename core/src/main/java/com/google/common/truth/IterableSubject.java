@@ -241,7 +241,7 @@ public class IterableSubject extends Subject {
    * fails.
    */
   @SuppressWarnings("AvoidObjectArrays")
-  public final void containsAnyIn(Object[] expected) {
+  public final void containsAnyIn(@Nullable Object[] expected) {
     containsAnyIn(asList(expected));
   }
 
@@ -333,7 +333,7 @@ public class IterableSubject extends Subject {
    */
   @CanIgnoreReturnValue
   @SuppressWarnings("AvoidObjectArrays")
-  public final Ordered containsAtLeastElementsIn(Object[] expected) {
+  public final Ordered containsAtLeastElementsIn(@Nullable Object[] expected) {
     return containsAtLeastElementsIn(asList(expected));
   }
 
