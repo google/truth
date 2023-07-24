@@ -138,7 +138,7 @@
             <goals><goal>test</goal></goals>
             <configuration>
               <mode>htmlunit</mode>
-              <htmlunit>FF38</htmlunit>
+              <htmlunit>FF</htmlunit>
               <productionMode>true</productionMode>
               <!-- Fix OutOfMemoryError in Travis. -->
               <extraJvmArgs>-Xms3500m -Xmx3500m -Xss1024k</extraJvmArgs>
