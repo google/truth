@@ -60,6 +60,41 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringIsBlankFail() {
+    expectFailureWhenTestingThat(" A ").isBlank();
+  }
+  @Test
+  public void stringIsBlankEmptyString() {
+    assertThat("").isBlank();
+  }
+  @Test
+  public void stringIsBlankStringWithWhiteSpaces() {
+    assertThat("\r \n\t  ").isBlank();
+  }
+  @Test
+  public void stringIsBlankNull() {
+    assertThat((String)null).isBlank();
+  }
+
+
+  @Test
+  public void stringIsNotBlank() {
+    assertThat(" A ").isNotBlank();
+  }
+  @Test
+  public void stringIsNotBlankFail() {
+    expectFailureWhenTestingThat("").isNotBlank();
+  }
+  @Test
+  public void stringIsNotBlankFailStringWithWhiteSpaces() {
+    expectFailureWhenTestingThat("\r \n\t  ").isNotBlank();
+  }
+  @Test
+  public void stringIsBlankFailNull() {
+    expectFailureWhenTestingThat(null).isNotBlank();
+  }
+
+  @Test
   public void stringIsEmpty() {
     assertThat("").isEmpty();
   }

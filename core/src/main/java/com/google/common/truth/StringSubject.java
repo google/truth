@@ -58,6 +58,21 @@ public class StringSubject extends ComparableSubject<String> {
     check("length()").that(checkNotNull(actual).length()).isEqualTo(expectedLength);
   }
 
+  /** Fails if the string is not null and contains any character other than the whitespace characters ' ','\r','\t','\n', etc. */
+  public void isBlank() {
+    if(actual !=null && !actual.trim().equals("")) {
+      failWithActual(simpleFact("expected blank string"));
+    }
+  }
+
+
+  /** Fails if the string is not null and contains any character other than the whitespace characters ' ','\r','\t','\n', etc. */
+  public void isNotBlank() {
+    if(actual == null || actual.trim().equals("")) {
+      failWithActual(simpleFact("expected non-blank string"));
+    }
+  }
+
   /** Fails if the string is not equal to the zero-length "empty string." */
   public void isEmpty() {
     if (actual == null) {
