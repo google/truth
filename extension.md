@@ -29,7 +29,6 @@ project. They include:
 
 *   [`Truth8`] for java8 types such as `java.util.Optional`
 *   [`ProtoTruth`] for `Message` style protocol buffers and lite versions
-*   [`Re2jSubjects`] for use with the RE2J library
 
 Other extensions that are not part of the Truth project itself include:
 
