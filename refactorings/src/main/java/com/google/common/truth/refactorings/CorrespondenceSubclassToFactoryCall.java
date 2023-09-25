@@ -31,6 +31,7 @@ import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.fixes.SuggestedFixes.compilesWithFix;
 import static com.google.errorprone.matchers.Description.NO_MATCH;
 import static com.google.errorprone.util.ASTHelpers.getDeclaredSymbol;
+import static com.google.errorprone.util.ASTHelpers.getEnclosedElements;
 import static com.google.errorprone.util.ASTHelpers.getSymbol;
 import static com.sun.source.tree.Tree.Kind.EXPRESSION_STATEMENT;
 import static com.sun.source.tree.Tree.Kind.IDENTIFIER;
@@ -644,7 +645,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
   private static boolean overrides(
       MethodSymbol potentialOverrider, String clazz, String method, VisitorState state) {
     Symbol overridable =
-        state.getTypeFromString(clazz).tsym.getEnclosedElements().stream()
+        getEnclosedElements(state.getTypeFromString(clazz).tsym).stream()
             .filter(s -> s.getKind() == METHOD)
             .filter(m -> m.getSimpleName().contentEquals(method))
             .collect(onlyElement());
