@@ -385,6 +385,96 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testAnyMessageComparingExpectedFieldsOnly() throws Exception {
+
+    String typeUrl =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+
+    Message message = parse("o_any_message { [" + typeUrl + "]: { o_int: 2 } }");
+    Message eqMessage =
+        parse("o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
+    Message diffMessage =
+        parse("o_any_message { [" + typeUrl + "]: { o_int: 3 r_string: \"bar\" } }");
+
+    expectThat(eqMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .comparingExpectedFieldsOnly()
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .comparingExpectedFieldsOnly()
+        .isNotEqualTo(message);
+  }
+
+  @Test
+  public void testInvalidAnyMessageComparingExpectedFieldsOnly() throws Exception {
+
+    Message message = parse("o_any_message { type_url: 'invalid-type' value: 'abc123' }");
+    Message eqMessage = parse("o_any_message { type_url: 'invalid-type' value: 'abc123' }");
+    Message diffMessage = parse("o_any_message { type_url: 'invalid-type' value: 'def456' }");
+
+    expectThat(eqMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .comparingExpectedFieldsOnly()
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .comparingExpectedFieldsOnly()
+        .isNotEqualTo(message);
+  }
+
+  @Test
+  public void testDifferentAnyMessagesComparingExpectedFieldsOnly() throws Exception {
+
+    // 'o_int' and 'o_float' have the same field numbers in both messages. However, to compare
+    // accurately, we incorporate the unpacked Descriptor type into the FieldNumberTree as well to
+    // disambiguate.
+    String typeUrl1 =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+    String typeUrl2 =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubSubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubSubTestMessage2";
+
+    Message message =
+        parse(
+            "r_any_message { ["
+                + typeUrl1
+                + "]: { o_int: 2 } } r_any_message { ["
+                + typeUrl2
+                + "]: { o_float: 3.1 } }");
+    Message eqMessage =
+        parse(
+            "r_any_message { ["
+                + typeUrl1
+                + "]: { o_int: 2 o_float: 1.9 } } r_any_message { ["
+                + typeUrl2
+                + "]: { o_int: 5 o_float: 3.1 } }");
+    Message diffMessage =
+        parse(
+            "r_any_message { ["
+                + typeUrl1
+                + "]: { o_int: 5 o_float: 3.1 } } r_any_message { ["
+                + typeUrl2
+                + "]: { o_int: 2 o_float: 1.9 } }");
+
+    expectThat(eqMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .ignoringRepeatedFieldOrder()
+        .comparingExpectedFieldsOnly()
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .ignoringRepeatedFieldOrder()
+        .comparingExpectedFieldsOnly()
+        .isNotEqualTo(message);
+  }
+
+  @Test
   public void testIgnoringAllButOneFieldOfSubMessage() {
     // Consider all of TestMessage, but none of o_sub_test_message, except
     // o_sub_test_message.o_int.

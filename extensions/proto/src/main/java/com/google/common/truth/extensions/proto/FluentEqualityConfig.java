@@ -273,7 +273,11 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     Builder builder = toBuilder().setHasExpectedMessages(true);
     if (compareExpectedFieldsOnly()) {
       builder.setCompareFieldsScope(
-          FieldScopeLogic.and(compareFieldsScope(), FieldScopes.fromSetFields(messages).logic()));
+          FieldScopeLogic.and(
+              compareFieldsScope(),
+              FieldScopeImpl.createFromSetFields(
+                      messages, useTypeRegistry(), useExtensionRegistry())
+                  .logic()));
     }
     return builder.build();
   }
