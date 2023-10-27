@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -216,13 +216,33 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromSetFields(com.google.protobuf.Message,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">fromSetFields</a></span>&#8203;(<a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message,
+             <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+             <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</code></th>
+<td class="colLast">
+<div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which is constrained to precisely those specific field paths that
+ are explicitly set in the message.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromSetFields(java.lang.Iterable)">fromSetFields</a></span>&#8203;(java.lang.Iterable&lt;? extends <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages)</code></th>
 <td class="colLast">
 <div class="block">Creates a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
  messages, with the same semantics as in <a href="#fromSetFields(com.google.protobuf.Message)"><code>fromSetFields(Message)</code></a>.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromSetFields(java.lang.Iterable,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">fromSetFields</a></span>&#8203;(java.lang.Iterable&lt;? extends <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages,
+             <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+             <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</code></th>
+<td class="colLast">
+<div class="block">Creates a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
+ messages, with the same semantics as in <a href="#fromSetFields(com.google.protobuf.Message)"><code>fromSetFields(Message)</code></a>.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptors(com.google.protobuf.Descriptors.FieldDescriptor,com.google.protobuf.Descriptors.FieldDescriptor...)">ignoringFieldDescriptors</a></span>&#8203;(<a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
                         <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code></th>
@@ -231,7 +251,7 @@ extends java.lang.Object</pre>
  the message.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFieldDescriptors(java.lang.Iterable)">ignoringFieldDescriptors</a></span>&#8203;(java.lang.Iterable&lt;<a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code></th>
 <td class="colLast">
@@ -239,7 +259,7 @@ extends java.lang.Object</pre>
  the message.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFields(int,int...)">ignoringFields</a></span>&#8203;(int&nbsp;firstFieldNumber,
               int...&nbsp;rest)</code></th>
@@ -248,7 +268,7 @@ extends java.lang.Object</pre>
  top level message type.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ignoringFields(java.lang.Iterable)">ignoringFields</a></span>&#8203;(java.lang.Iterable&lt;java.lang.Integer&gt;&nbsp;fieldNumbers)</code></th>
 <td class="colLast">
@@ -256,7 +276,7 @@ extends java.lang.Object</pre>
  top level message type.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>static <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#none()">none</a></span>()</code></th>
 <td class="colLast">
@@ -331,6 +351,62 @@ extends java.lang.Object</pre>
  *all* repeated <code>sub_messages</code>, including those beyond index 1.</div>
 </li>
 </ul>
+<a id="fromSetFields(com.google.protobuf.Message,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fromSetFields</h4>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fromSetFields&#8203;(<a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message,
+                                       <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+                                       <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</pre>
+<div class="block">Returns a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which is constrained to precisely those specific field paths that
+ are explicitly set in the message. Note that, for version 3 protobufs, such a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> will omit fields in the provided message which are set to default values.
+
+ <p>This can be used limit the scope of a comparison to a complex set of fields in a very brief
+ statement. Often, <code>message</code> is the expected half of a comparison about to be performed.
+
+ <p>Example usage:
+
+ <pre><code>
+ Foo actual = Foo.newBuilder().setBar(3).setBaz(4).build();
+ Foo expected = Foo.newBuilder().setBar(3).setBaz(5).build();
+ // Fails, because actual.getBaz() != expected.getBaz().
+ assertThat(actual).isEqualTo(expected);
+
+ Foo scope = Foo.newBuilder().setBar(2).build();
+ // Succeeds, because only the field 'bar' is compared.
+ assertThat(actual).withPartialScope(FieldScopes.fromSetFields(scope)).isEqualTo(expected);
+
+ </code></pre>
+
+ <p>The returned <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> does not respect repeated field indices nor map keys. For
+ example, if the provided message sets different field values for different elements of a
+ repeated field, like so:
+
+ <pre><code>
+ sub_message: {
+   foo: "foo"
+ }
+ sub_message: {
+   bar: "bar"
+ }
+ </code></pre>
+
+ <p>The <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> will contain <code>sub_message.foo</code> and <code>sub_message.bar</code> for
+ *all* repeated <code>sub_messages</code>, including those beyond index 1.
+
+ <p>If there are <code>google.protobuf.Any</code> protos anywhere within these messages, they will be
+ unpacked using the provided <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>TypeRegistry</code></a> and <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>ExtensionRegistry</code></a> to determine
+ which fields within them should be compared.</div>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.2</dd>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="ProtoFluentAssertion.html#unpackingAnyUsing(com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)"><code>ProtoFluentAssertion.unpackingAnyUsing(com.google.protobuf.TypeRegistry, com.google.protobuf.ExtensionRegistry)</code></a></dd>
+</dl>
+</li>
+</ul>
 <a id="fromSetFields(com.google.protobuf.Message,com.google.protobuf.Message,com.google.protobuf.Message...)">
 <!--   -->
 </a>
@@ -359,6 +435,32 @@ extends java.lang.Object</pre>
 
  <p>This can be thought of as the union of the <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>s for each individual message,
  or the <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> for the merge of all the messages. These are equivalent.</div>
+</li>
+</ul>
+<a id="fromSetFields(java.lang.Iterable,com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fromSetFields</h4>
+<pre class="methodSignature">public static&nbsp;<a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fromSetFields&#8203;(java.lang.Iterable&lt;? extends <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&gt;&nbsp;messages,
+                                       <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">TypeRegistry</a>&nbsp;typeRegistry,
+                                       <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">ExtensionRegistry</a>&nbsp;extensionRegistry)</pre>
+<div class="block">Creates a <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> covering the fields set in every message in the provided list of
+ messages, with the same semantics as in <a href="#fromSetFields(com.google.protobuf.Message)"><code>fromSetFields(Message)</code></a>.
+
+ <p>This can be thought of as the union of the <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>s for each individual message,
+ or the <a href="FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> for the merge of all the messages. These are equivalent.
+
+ <p>If there are <code>google.protobuf.Any</code> protos anywhere within these messages, they will be
+ unpacked using the provided <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/TypeRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>TypeRegistry</code></a> and <a href="https://protobuf.dev/reference/java/api-docs/com/google/protobuf/ExtensionRegistry.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>ExtensionRegistry</code></a> to determine
+ which fields within them should be compared.</div>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.2</dd>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="ProtoFluentAssertion.html#unpackingAnyUsing(com.google.protobuf.TypeRegistry,com.google.protobuf.ExtensionRegistry)"><code>ProtoFluentAssertion.unpackingAnyUsing(com.google.protobuf.TypeRegistry, com.google.protobuf.ExtensionRegistry)</code></a></dd>
+</dl>
 </li>
 </ul>
 <a id="ignoringFields(int,int...)">
