@@ -30,7 +30,7 @@
     -->
     <guava.jre.version>32.1.3-jre</guava.jre.version>
     <gwt.version>2.10.0</gwt.version>
-    <protobuf.version>3.25.0</protobuf.version>
+    <protobuf.version>3.25.1</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
