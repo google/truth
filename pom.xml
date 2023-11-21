@@ -264,9 +264,10 @@
           <version>1.23</version>
           <configuration>
             <signature>
-              <groupId>org.codehaus.mojo.signature</groupId>
-              <artifactId>java16-sun</artifactId>
-              <version>1.10</version>
+              <groupId>com.toasttab.android</groupId>
+              <artifactId>gummy-bears-api-19</artifactId>
+              <version>0.6.1</version>
+              <!-- TODO(cpovirk): In principle, it would make sense to *also* test compatibility with JDK 1.8, since Truth also has JRE users. -->
             </signature>
           </configuration>
           <executions>
