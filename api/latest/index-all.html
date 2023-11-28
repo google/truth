@@ -1149,6 +1149,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      <a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn(java.lang.Iterable)"><code>IterableSubject.UsingCorrespondence.containsExactlyElementsIn(Iterable)</code></a> instead.</div>
 </div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.TolerantLongComparison.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.TolerantLongComparison.html" title="class in com.google.common.truth">LongSubject.TolerantLongComparison</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>Object.equals(Object)</code> is not supported on TolerantLongComparison. If you
+     meant to compare longs, use <a href="com/google/common/truth/LongSubject.TolerantLongComparison.html#of(long)"><code>LongSubject.TolerantLongComparison.of(long)</code></a> instead.</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
@@ -1435,6 +1442,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>Object.hashCode()</code> is not supported on Truth types.</div>
+</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.TolerantLongComparison.html#hashCode()">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.TolerantLongComparison.html" title="class in com.google.common.truth">LongSubject.TolerantLongComparison</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>Object.hashCode()</code> is not supported on TolerantLongComparison</div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#hashCode()">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
@@ -2869,6 +2882,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Prepares for a check that the subject is a finite number not within the given tolerance of an
  expected value that will be provided in the next call in the fluent chain.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.html#isNotWithin(long)">isNotWithin(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
+<dd>
+<div class="block">Prepares for a check that the subject is a number not within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNull()">isNull()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails if the subject is not null.</div>
@@ -2918,6 +2936,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Prepares for a check that the subject is a finite number within the given tolerance of an
  expected value that will be provided in the next call in the fluent chain.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.html#isWithin(long)">isWithin(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
+<dd>
+<div class="block">Prepares for a check that the subject is a number within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/DoubleSubject.html#isZero()">isZero()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/DoubleSubject.html" title="class in com.google.common.truth">DoubleSubject</a></dt>
 <dd>
@@ -2985,6 +3008,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.html#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.lang.Long)">LongSubject(FailureMetadata, Long)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
 <dd>
 <div class="block">Constructor for use by subclasses.</div>
+</dd>
+<dt><a href="com/google/common/truth/LongSubject.TolerantLongComparison.html" title="class in com.google.common.truth"><span class="typeNameLink">LongSubject.TolerantLongComparison</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dd>
+<div class="block">A partially specified check about an approximate relationship to a <code>long</code> subject using a
+ tolerance.</div>
 </dd>
 </dl>
 <a id="I:M">
@@ -3088,6 +3116,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of(float)">of(float)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
+<dd>
+<div class="block">Fails if the subject was expected to be within the tolerance of the given value but was not
+ <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.TolerantLongComparison.html#of(long)">of(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.TolerantLongComparison.html" title="class in com.google.common.truth">LongSubject.TolerantLongComparison</a></dt>
 <dd>
 <div class="block">Fails if the subject was expected to be within the tolerance of the given value but was not
  <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
