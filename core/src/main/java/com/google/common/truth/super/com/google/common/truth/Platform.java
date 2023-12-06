@@ -268,5 +268,9 @@ final class Platform {
   static boolean kotlinRangeContains(Iterable<?> haystack, @Nullable Object needle) {
     throw new AssertionError(); // never called under GWT because isKotlinRange returns false
   }
+
+  static boolean classMetadataUnsupported() {
+    return String.class.getSuperclass() == null;
+  }
 }
 

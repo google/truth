@@ -362,4 +362,11 @@ final class Platform {
               throw newLinkageError(e);
             }
           });
+
+  static boolean classMetadataUnsupported() {
+    // https://github.com/google/truth/issues/198
+    // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
+    // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
+    return false;
+  }
 }

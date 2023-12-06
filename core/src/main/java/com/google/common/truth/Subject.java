@@ -299,7 +299,7 @@ public class Subject {
       return;
     }
     if (!isInstanceOfType(actual, clazz)) {
-      if (classMetadataUnsupported()) {
+      if (Platform.classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
                 + ", an instance of "
@@ -320,7 +320,7 @@ public class Subject {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
-    if (classMetadataUnsupported()) {
+    if (Platform.classMetadataUnsupported()) {
       throw new UnsupportedOperationException(
           "isNotInstanceOf is not supported under -XdisableClassMetadata");
     }
@@ -1183,13 +1183,6 @@ public class Subject {
             ? subjectClass.substring(0, subjectClass.length() - "Subject".length())
             : "Object";
     return UPPER_CAMEL.to(LOWER_CAMEL, actualClass);
-  }
-
-  private static boolean classMetadataUnsupported() {
-    // https://github.com/google/truth/issues/198
-    // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
-    // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
-    return String.class.getSuperclass() == null;
   }
 
   private void doFail(ImmutableList<Fact> facts) {
