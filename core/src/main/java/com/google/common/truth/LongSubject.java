@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -147,7 +147,7 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /** Ensures that the given tolerance is a non-negative value. */
-  static void checkTolerance(long tolerance) {
+  private static void checkTolerance(long tolerance) {
     checkArgument(tolerance >= 0, "tolerance (%s) cannot be negative", tolerance);
   }
 

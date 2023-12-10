@@ -41,6 +41,22 @@ final class MathUtil {
   }
 
   /**
+   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
+   * other.
+   */
+  /* package */ static boolean equalWithinTolerance(int left, int right, int tolerance) {
+    try {
+      // subtractExact is always desugared.
+      @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+      int absDiff = Math.abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= Math.abs(tolerance);
+    } catch (ArithmeticException e) {
+      // The numbers are so far apart their difference isn't even a int.
+      return false;
+    }
+  }
+
+  /**
    * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of
    * each other. Note that both this method and {@link #notEqualWithinTolerance} returns false if
    * either {@code left} or {@code right} is infinite or NaN.
