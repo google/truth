@@ -15,9 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -116,160 +119,124 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE);
   }
 
-  @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void testPrimitivesVsBoxedPrimitivesVsObject_int() {
-    int int42 = 42;
-    Integer integer42 = new Integer(42);
-    Object object42 = (Object) 42;
+  public void isWithinOf() {
+    assertThat(20000).isWithin(0).of(20000);
+    assertThat(20000).isWithin(1).of(20000);
+    assertThat(20000).isWithin(10000).of(20000);
+    assertThat(20000).isWithin(10000).of(30000);
+    assertThat(Integer.MIN_VALUE).isWithin(1).of(Integer.MIN_VALUE + 1);
+    assertThat(Integer.MAX_VALUE).isWithin(1).of(Integer.MAX_VALUE - 1);
+    assertThat(Integer.MAX_VALUE / 2).isWithin(Integer.MAX_VALUE).of(-Integer.MAX_VALUE / 2);
+    assertThat(-Integer.MAX_VALUE / 2).isWithin(Integer.MAX_VALUE).of(Integer.MAX_VALUE / 2);
 
-    assertThat(int42).isEqualTo(int42);
-    assertThat(integer42).isEqualTo(int42);
-    assertThat(object42).isEqualTo(int42);
-
-    assertThat(int42).isEqualTo(integer42);
-    assertThat(integer42).isEqualTo(integer42);
-    assertThat(object42).isEqualTo(integer42);
-
-    assertThat(int42).isEqualTo(object42);
-    assertThat(integer42).isEqualTo(object42);
-    assertThat(object42).isEqualTo(object42);
+    assertThatIsWithinFails(20000, 9999, 30000);
+    assertThatIsWithinFails(20000, 10000, 30001);
+    assertThatIsWithinFails(Integer.MIN_VALUE, 0, Integer.MAX_VALUE);
+    assertThatIsWithinFails(Integer.MAX_VALUE, 0, Integer.MIN_VALUE);
+    assertThatIsWithinFails(Integer.MIN_VALUE, 1, Integer.MIN_VALUE + 2);
+    assertThatIsWithinFails(Integer.MAX_VALUE, 1, Integer.MAX_VALUE - 2);
+    // Don't fall for rollover
+    assertThatIsWithinFails(Integer.MIN_VALUE, 1, Integer.MAX_VALUE);
+    assertThatIsWithinFails(Integer.MAX_VALUE, 1, Integer.MIN_VALUE);
   }
 
-  @SuppressWarnings("TruthSelfEquals")
-  @Test
-  public void testPrimitivesVsBoxedPrimitivesVsObject_long() {
-    long longPrim42 = 42;
-    Long long42 = new Long(42);
-    Object object42 = (Object) 42L;
-
-    assertThat(longPrim42).isEqualTo(longPrim42);
-    assertThat(long42).isEqualTo(longPrim42);
-    assertThat(object42).isEqualTo(longPrim42);
-
-    assertThat(longPrim42).isEqualTo(long42);
-    assertThat(long42).isEqualTo(long42);
-    assertThat(object42).isEqualTo(long42);
-
-    assertThat(longPrim42).isEqualTo(object42);
-    assertThat(long42).isEqualTo(object42);
-    assertThat(object42).isEqualTo(object42);
-  }
-
-  @Test
-  public void testAllCombinations_pass() {
-    assertThat(42).isEqualTo(42L);
-    assertThat(42).isEqualTo(new Long(42L));
-    assertThat(new Integer(42)).isEqualTo(42L);
-    assertThat(new Integer(42)).isEqualTo(new Long(42L));
-    assertThat(42L).isEqualTo(42);
-    assertThat(42L).isEqualTo(new Integer(42));
-    assertThat(new Long(42L)).isEqualTo(42);
-    assertThat(new Long(42L)).isEqualTo(new Integer(42));
-
-    assertThat(42).isEqualTo(42);
-    assertThat(42).isEqualTo(new Integer(42));
-    assertThat(new Integer(42)).isEqualTo(42);
-    assertThat(new Integer(42)).isEqualTo(new Integer(42));
-    assertThat(42L).isEqualTo(42L);
-    assertThat(42L).isEqualTo(new Long(42L));
-    assertThat(new Long(42L)).isEqualTo(42L);
-    assertThat(new Long(42L)).isEqualTo(new Long(42L));
+  private static void assertThatIsWithinFails(int actual, int tolerance, int expected) {
+    ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer>() {
+          @Override
+          public void invokeAssertion(SimpleSubjectBuilder<IntegerSubject, Integer> expect) {
+            expect.that(actual).isWithin(tolerance).of(expected);
+          }
+        };
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure)
+        .factKeys()
+        .containsExactly("expected", "but was", "outside tolerance")
+        .inOrder();
+    assertThat(failure).factValue("expected").isEqualTo(Integer.toString(expected));
+    assertThat(failure).factValue("but was").isEqualTo(Integer.toString(actual));
+    assertThat(failure).factValue("outside tolerance").isEqualTo(Integer.toString(tolerance));
   }
 
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_long() {
-    expectFailureWhenTestingThat(42).isNotEqualTo(42L);
+  public void isNotWithinOf() {
+    assertThatIsNotWithinFails(20000, 0, 20000);
+    assertThatIsNotWithinFails(20000, 1, 20000);
+    assertThatIsNotWithinFails(20000, 10000, 20000);
+    assertThatIsNotWithinFails(20000, 10000, 30000);
+    assertThatIsNotWithinFails(Integer.MIN_VALUE, 1, Integer.MIN_VALUE + 1);
+    assertThatIsNotWithinFails(Integer.MAX_VALUE, 1, Integer.MAX_VALUE - 1);
+    assertThatIsNotWithinFails(Integer.MAX_VALUE / 2, Integer.MAX_VALUE, -Integer.MAX_VALUE / 2);
+    assertThatIsNotWithinFails(-Integer.MAX_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE / 2);
+
+    assertThat(20000).isNotWithin(9999).of(30000);
+    assertThat(20000).isNotWithin(10000).of(30001);
+    assertThat(Integer.MIN_VALUE).isNotWithin(0).of(Integer.MAX_VALUE);
+    assertThat(Integer.MAX_VALUE).isNotWithin(0).of(Integer.MIN_VALUE);
+    assertThat(Integer.MIN_VALUE).isNotWithin(1).of(Integer.MIN_VALUE + 2);
+    assertThat(Integer.MAX_VALUE).isNotWithin(1).of(Integer.MAX_VALUE - 2);
+    // Don't fall for rollover
+    assertThat(Integer.MIN_VALUE).isNotWithin(1).of(Integer.MAX_VALUE);
+    assertThat(Integer.MAX_VALUE).isNotWithin(1).of(Integer.MIN_VALUE);
+  }
+
+  private static void assertThatIsNotWithinFails(int actual, int tolerance, int expected) {
+    ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer>() {
+          @Override
+          public void invokeAssertion(SimpleSubjectBuilder<IntegerSubject, Integer> expect) {
+            expect.that(actual).isNotWithin(tolerance).of(expected);
+          }
+        };
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factValue("expected not to be").isEqualTo(Integer.toString(expected));
+    assertThat(failure).factValue("within tolerance").isEqualTo(Integer.toString(tolerance));
   }
 
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_int() {
-    expectFailureWhenTestingThat(42).isNotEqualTo(42);
+  public void isWithinNegativeTolerance() {
+    isWithinNegativeToleranceThrowsIAE(0, -10, 5);
+    isWithinNegativeToleranceThrowsIAE(0, -10, 20);
+    isNotWithinNegativeToleranceThrowsIAE(0, -10, 5);
+    isNotWithinNegativeToleranceThrowsIAE(0, -10, 20);
   }
 
-  @Test
-  public void testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
-    expectFailureWhenTestingThat(42).isNotEqualTo((char) 42);
-    // 42 in ASCII is '*'
-    assertFailureValue("expected not to be", "*");
-    assertFailureValue("but was; string representation of actual value", "42");
+  private static void isWithinNegativeToleranceThrowsIAE(int actual, int tolerance, int expected) {
+    try {
+      assertThat(actual).isWithin(tolerance).of(expected);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
+    }
   }
 
-  @Test
-  public void testNumericPrimitiveTypes_isNotEqual_shouldFail_charToInt() {
-    // Uses Object overload rather than Integer.
-    expectFailure.whenTesting().that((char) 42).isNotEqualTo(42);
-    // 42 in ASCII is '*'
-    assertFailureValue("expected not to be", "42");
-    assertFailureValue("but was; string representation of actual value", "*");
+  private static void isNotWithinNegativeToleranceThrowsIAE(
+      int actual, int tolerance, int expected) {
+    try {
+      assertThat(actual).isNotWithin(tolerance).of(expected);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
+    }
   }
 
-  private static final Subject.Factory<Subject, Object> DEFAULT_SUBJECT_FACTORY =
-      new Subject.Factory<Subject, Object>() {
+  private static final Subject.Factory<IntegerSubject, Integer> INTEGER_SUBJECT_FACTORY =
+      new Subject.Factory<IntegerSubject, Integer>() {
         @Override
-        public Subject createSubject(FailureMetadata metadata, Object that) {
-          return new Subject(metadata, that);
+        public IntegerSubject createSubject(FailureMetadata metadata, Integer that) {
+          return new IntegerSubject(metadata, that);
         }
       };
 
-  private static void expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> callback) {
-    AssertionError unused = ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
-  }
-
-  @Test
-  public void testNumericPrimitiveTypes() {
-    byte byte42 = (byte) 42;
-    short short42 = (short) 42;
-    char char42 = (char) 42;
-    int int42 = 42;
-    long long42 = (long) 42;
-
-    ImmutableSet<Object> fortyTwos =
-        ImmutableSet.<Object>of(byte42, short42, char42, int42, long42);
-    for (Object actual : fortyTwos) {
-      for (Object expected : fortyTwos) {
-        assertThat(actual).isEqualTo(expected);
-      }
-    }
-
-    ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
-    for (Object actual : fortyTwosNoChar) {
-      for (Object expected : fortyTwosNoChar) {
-        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> actualFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
-              @Override
-              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
-                expect.that(actual).isNotEqualTo(expected);
-              }
-            };
-        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> expectedFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
-              @Override
-              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
-                expect.that(expected).isNotEqualTo(actual);
-              }
-            };
-        expectFailure(actualFirst);
-        expectFailure(expectedFirst);
-      }
-    }
-
-    byte byte41 = (byte) 41;
-    short short41 = (short) 41;
-    char char41 = (char) 41;
-    int int41 = 41;
-    long long41 = (long) 41;
-
-    ImmutableSet<Object> fortyOnes =
-        ImmutableSet.<Object>of(byte41, short41, char41, int41, long41);
-
-    for (Object first : fortyTwos) {
-      for (Object second : fortyOnes) {
-        assertThat(first).isNotEqualTo(second);
-        assertThat(second).isNotEqualTo(first);
-      }
-    }
+  @CanIgnoreReturnValue
+  private static AssertionError expectFailure(
+      SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback) {
+    return ExpectFailure.expectFailureAbout(INTEGER_SUBJECT_FACTORY, callback);
   }
 
   private IntegerSubject expectFailureWhenTestingThat(Integer actual) {
