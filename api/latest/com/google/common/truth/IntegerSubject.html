@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":42};
+var data = {"i0":42,"i1":10,"i2":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -162,6 +162,22 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <!--   -->
 </a>
 <h3>Nested Class Summary</h3>
+<table class="memberSummary">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colSecond" scope="col">Class</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static class&nbsp;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></span></code></th>
+<td class="colLast">
+<div class="block">A partially specified check about an approximate relationship to a <code>int</code> subject using a
+ tolerance.</div>
+</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a id="nested.classes.inherited.from.class.com.google.common.truth.Subject">
 <!--   -->
@@ -189,7 +205,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.lang.Integer)">IntegerSubject</a></span>&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-              @Nullable java.lang.Integer&nbsp;integer)</code></th>
+              @Nullable java.lang.Integer&nbsp;actual)</code></th>
 <td class="colLast">
 <div class="block">Constructor for use by subclasses.</div>
 </td>
@@ -219,6 +235,22 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Use <a href="Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead.</div>
 </div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotWithin(int)">isNotWithin</a></span>&#8203;(int&nbsp;tolerance)</code></th>
+<td class="colLast">
+<div class="block">Prepares for a check that the subject is a number not within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isWithin(int)">isWithin</a></span>&#8203;(int&nbsp;tolerance)</code></th>
+<td class="colLast">
+<div class="block">Prepares for a check that the subject is a number within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
 </td>
 </tr>
 </table>
@@ -266,7 +298,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <li class="blockList">
 <h4>IntegerSubject</h4>
 <pre>protected&nbsp;IntegerSubject&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-                         @Nullable java.lang.Integer&nbsp;integer)</pre>
+                         @Nullable java.lang.Integer&nbsp;actual)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="Subject.html#check(java.lang.String,java.lang.Object...)"><code>check(...)</code></a><code>.that(actual)</code>.</div>
 </li>
@@ -281,6 +313,42 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="isWithin(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isWithin</h4>
+<pre class="methodSignature">public&nbsp;<a href="IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a>&nbsp;isWithin&#8203;(int&nbsp;tolerance)</pre>
+<div class="block">Prepares for a check that the subject is a number within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>tolerance</code> - an inclusive upper bound on the difference between the subject and object
+     allowed by the check, which must be a non-negative value.</dd>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.2</dd>
+</dl>
+</li>
+</ul>
+<a id="isNotWithin(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isNotWithin</h4>
+<pre class="methodSignature">public&nbsp;<a href="IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a>&nbsp;isNotWithin&#8203;(int&nbsp;tolerance)</pre>
+<div class="block">Prepares for a check that the subject is a number not within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>tolerance</code> - an exclusive lower bound on the difference between the subject and object
+     allowed by the check, which must be a non-negative value.</dd>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.2</dd>
+</dl>
+</li>
+</ul>
 <a id="isEquivalentAccordingToCompareTo(java.lang.Integer)">
 <!--   -->
 </a>

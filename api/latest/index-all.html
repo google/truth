@@ -1141,6 +1141,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      meant to compare floats, use <a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of(float)"><code>FloatSubject.TolerantFloatComparison.of(float)</code></a> instead.</div>
 </div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>Object.equals(Object)</code> is not supported on TolerantIntegerComparison. If
+     you meant to compare ints, use <a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html#of(int)"><code>IntegerSubject.TolerantIntegerComparison.of(int)</code></a> instead.</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
@@ -1436,6 +1443,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>Object.hashCode()</code> is not supported on TolerantFloatComparison</div>
+</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html#hashCode()">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><code>Object.hashCode()</code> is not supported on TolerantIntegerComparison</div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#hashCode()">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
@@ -2346,6 +2359,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Constructor for use by subclasses.</div>
 </dd>
+<dt><a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth"><span class="typeNameLink">IntegerSubject.TolerantIntegerComparison</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dd>
+<div class="block">A partially specified check about an approximate relationship to a <code>int</code> subject using a
+ tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#intStreams()">intStreams()</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">IntStreamSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
@@ -2882,6 +2900,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Prepares for a check that the subject is a finite number not within the given tolerance of an
  expected value that will be provided in the next call in the fluent chain.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IntegerSubject.html#isNotWithin(int)">isNotWithin(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntegerSubject.html" title="class in com.google.common.truth">IntegerSubject</a></dt>
+<dd>
+<div class="block">Prepares for a check that the subject is a number not within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.html#isNotWithin(long)">isNotWithin(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
 <dd>
 <div class="block">Prepares for a check that the subject is a number not within the given tolerance of an expected
@@ -2936,6 +2959,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Prepares for a check that the subject is a finite number within the given tolerance of an
  expected value that will be provided in the next call in the fluent chain.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IntegerSubject.html#isWithin(int)">isWithin(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntegerSubject.html" title="class in com.google.common.truth">IntegerSubject</a></dt>
+<dd>
+<div class="block">Prepares for a check that the subject is a number within the given tolerance of an expected
+ value that will be provided in the next call in the fluent chain.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/LongSubject.html#isWithin(long)">isWithin(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
 <dd>
@@ -3116,6 +3144,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of(float)">of(float)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
+<dd>
+<div class="block">Fails if the subject was expected to be within the tolerance of the given value but was not
+ <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html#of(int)">of(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntegerSubject.TolerantIntegerComparison.html" title="class in com.google.common.truth">IntegerSubject.TolerantIntegerComparison</a></dt>
 <dd>
 <div class="block">Fails if the subject was expected to be within the tolerance of the given value but was not
  <i>or</i> if it was expected <i>not</i> to be within the tolerance but was.</div>
