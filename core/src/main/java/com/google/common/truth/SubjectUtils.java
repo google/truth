@@ -59,7 +59,7 @@ final class SubjectUtils {
     if (rest == null) {
       items.add((T) null);
     } else {
-      items.addAll(Arrays.asList(rest));
+      items.addAll(asList(rest));
     }
     return items;
   }
@@ -400,5 +400,10 @@ final class SubjectUtils {
 
   static <E> ImmutableList<E> sandwich(E first, E[] array, E last) {
     return new ImmutableList.Builder<E>().add(first).add(array).add(last).build();
+  }
+
+  @SuppressWarnings("nullness") // TODO: b/316358623 - Remove suppression after fixing checker
+  static <E extends @Nullable Object> List<E> asList(E... a) {
+    return Arrays.asList(a);
   }
 }
