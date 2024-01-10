@@ -26,6 +26,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Ben Douglass
  */
+@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
+@IgnoreJRERequirement
 public final class OptionalDoubleSubject extends Subject {
 
   private final OptionalDouble actual;

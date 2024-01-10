@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
@@ -229,7 +228,8 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> actual) {
+  public static GuavaOptionalSubject assertThat(
+      com.google.common.base.@Nullable Optional<?> actual) {
     return assert_().that(actual);
   }
 

@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
@@ -149,7 +148,7 @@ public class StandardSubjectBuilder {
     return new PrimitiveDoubleArraySubject(metadata(), actual, "array");
   }
 
-  public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
+  public final GuavaOptionalSubject that(com.google.common.base.@Nullable Optional<?> actual) {
     return new GuavaOptionalSubject(metadata(), actual, "optional");
   }
 

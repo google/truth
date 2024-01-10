@@ -43,6 +43,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
  * behavior/{@code Subject} type?</a> in the Truth FAQ.
  */
+// The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
+@SuppressWarnings("Java7ApiChecker")
 public final class Truth8 {
   @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
@@ -79,6 +81,7 @@ public final class Truth8 {
   // to support Java environments without java.nio.file such as Android and J2CL.
   @GwtIncompatible
   @J2ObjCIncompatible
+  @J2ktIncompatible
   public static PathSubject assertThat(@Nullable Path target) {
     return assertAbout(PathSubject.paths()).that(target);
   }

@@ -18,15 +18,15 @@ package com.google.common.truth;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * Propositions for {@link LongStream} subjects.
+ * Propositions for {@link Stream} subjects.
  *
  * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
  * provide more readable failure messages. You should not use this class if you intend to leave the
@@ -40,15 +40,18 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
-public final class LongStreamSubject extends Subject {
+@SuppressWarnings({
+  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
+  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
+})
+@IgnoreJRERequirement
+public final class StreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
+  StreamSubject(FailureMetadata failureMetadata, @Nullable Stream<?> stream) {
     super(failureMetadata, stream);
-    this.actualList =
-        (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
+    this.actualList = (stream == null) ? null : stream.collect(toCollection(ArrayList::new));
   }
 
   @Override
@@ -56,8 +59,8 @@ public final class LongStreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
-  public static Factory<LongStreamSubject, LongStream> longStreams() {
-    return LongStreamSubject::new;
+  public static Subject.Factory<StreamSubject, Stream<?>> streams() {
+    return StreamSubject::new;
   }
 
   /** Fails if the subject is not empty. */
@@ -81,12 +84,12 @@ public final class LongStreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain the given element. */
-  public void contains(long element) {
+  public void contains(@Nullable Object element) {
     check().that(actualList).contains(element);
   }
 
   /** Fails if the subject contains the given element. */
-  public void doesNotContain(long element) {
+  public void doesNotContain(@Nullable Object element) {
     check().that(actualList).doesNotContain(element);
   }
 
@@ -96,9 +99,9 @@ public final class LongStreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
-  public void containsAnyOf(long first, long second, long... rest) {
-    check().that(actualList).containsAnyOf(first, second, box(rest));
+  public void containsAnyOf(
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+    check().that(actualList).containsAnyOf(first, second, rest);
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
@@ -115,10 +118,10 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
    */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
-  public Ordered containsAtLeast(long first, long second, long... rest) {
-    return check().that(actualList).containsAtLeast(first, second, box(rest));
+  public Ordered containsAtLeast(
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+    return check().that(actualList).containsAtLeast(first, second, rest);
   }
 
   /**
@@ -135,6 +138,8 @@ public final class LongStreamSubject extends Subject {
     return check().that(actualList).containsAtLeastElementsIn(expected);
   }
 
+  // TODO(cpovirk): Add array overload of contains*ElementsIn methods? Also for int and long stream.
+
   /**
    * Fails if the subject does not contain exactly the given elements.
    *
@@ -145,8 +150,13 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(long... varargs) {
-    return check().that(actualList).containsExactlyElementsIn(box(varargs));
+  /*
+   * We need to call containsExactly, not containsExactlyElementsIn, to get the handling we want for
+   * containsExactly(null).
+   */
+  @SuppressWarnings("ContainsExactlyVariadic")
+  public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
+    return check().that(actualList).containsExactly(varargs);
   }
 
   /**
@@ -167,9 +177,9 @@ public final class LongStreamSubject extends Subject {
    * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
-  public void containsNoneOf(long first, long second, long... rest) {
-    check().that(actualList).containsNoneOf(first, second, box(rest));
+  public void containsNoneOf(
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+    check().that(actualList).containsNoneOf(first, second, rest);
   }
 
   /**
@@ -199,7 +209,7 @@ public final class LongStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInStrictOrder(Comparator<? super Long> comparator) {
+  public void isInStrictOrder(Comparator<?> comparator) {
     check().that(actualList).isInStrictOrder(comparator);
   }
 
@@ -220,15 +230,39 @@ public final class LongStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInOrder(Comparator<? super Long> comparator) {
+  public void isInOrder(Comparator<?> comparator) {
     check().that(actualList).isInOrder(comparator);
   }
 
-  private static Object[] box(long[] rest) {
-    return LongStream.of(rest).boxed().toArray(Long[]::new);
+  /**
+   * @deprecated {@code streamA.isEqualTo(streamB)} always fails, except when passed the exact same
+   *     stream reference
+   */
+  @Override
+  @DoNotCall(
+      "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
+          + " equality semantics")
+  @Deprecated
+  public void isEqualTo(@Nullable Object expected) {
+    throw new UnsupportedOperationException(
+        "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
+            + " equality semantics");
   }
 
-  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  /**
+   * @deprecated {@code streamA.isNotEqualTo(streamB)} always passes, except when passed the exact
+   *     same stream reference
+   */
+  @Override
+  @DoNotCall(
+      "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
+          + " equality semantics")
+  @Deprecated
+  public void isNotEqualTo(@Nullable Object unexpected) {
+    throw new UnsupportedOperationException(
+        "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
+            + " equality semantics");
+  }
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

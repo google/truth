@@ -21,12 +21,12 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * Propositions for {@link IntStream} subjects.
+ * Propositions for {@link LongStream} subjects.
  *
  * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
  * provide more readable failure messages. You should not use this class if you intend to leave the
@@ -40,12 +40,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
-public final class IntStreamSubject extends Subject {
+@SuppressWarnings({
+  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
+  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
+})
+@IgnoreJRERequirement
+public final class LongStreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private IntStreamSubject(FailureMetadata failureMetadata, @Nullable IntStream stream) {
+  LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
     super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
@@ -56,8 +60,8 @@ public final class IntStreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
-  public static Factory<IntStreamSubject, IntStream> intStreams() {
-    return IntStreamSubject::new;
+  public static Factory<LongStreamSubject, LongStream> longStreams() {
+    return LongStreamSubject::new;
   }
 
   /** Fails if the subject is not empty. */
@@ -81,12 +85,12 @@ public final class IntStreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain the given element. */
-  public void contains(int element) {
+  public void contains(long element) {
     check().that(actualList).contains(element);
   }
 
   /** Fails if the subject contains the given element. */
-  public void doesNotContain(int element) {
+  public void doesNotContain(long element) {
     check().that(actualList).doesNotContain(element);
   }
 
@@ -97,7 +101,7 @@ public final class IntStreamSubject extends Subject {
 
   /** Fails if the subject does not contain at least one of the given elements. */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
-  public void containsAnyOf(int first, int second, int... rest) {
+  public void containsAnyOf(long first, long second, long... rest) {
     check().that(actualList).containsAnyOf(first, second, box(rest));
   }
 
@@ -117,7 +121,7 @@ public final class IntStreamSubject extends Subject {
    */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
-  public Ordered containsAtLeast(int first, int second, int... rest) {
+  public Ordered containsAtLeast(long first, long second, long... rest) {
     return check().that(actualList).containsAtLeast(first, second, box(rest));
   }
 
@@ -145,7 +149,7 @@ public final class IntStreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(int... varargs) {
+  public Ordered containsExactly(long... varargs) {
     return check().that(actualList).containsExactlyElementsIn(box(varargs));
   }
 
@@ -168,7 +172,7 @@ public final class IntStreamSubject extends Subject {
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
-  public void containsNoneOf(int first, int second, int... rest) {
+  public void containsNoneOf(long first, long second, long... rest) {
     check().that(actualList).containsNoneOf(first, second, box(rest));
   }
 
@@ -199,7 +203,7 @@ public final class IntStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInStrictOrder(Comparator<? super Integer> comparator) {
+  public void isInStrictOrder(Comparator<? super Long> comparator) {
     check().that(actualList).isInStrictOrder(comparator);
   }
 
@@ -220,12 +224,12 @@ public final class IntStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInOrder(Comparator<? super Integer> comparator) {
+  public void isInOrder(Comparator<? super Long> comparator) {
     check().that(actualList).isInOrder(comparator);
   }
 
-  private static Object[] box(int[] rest) {
-    return IntStream.of(rest).boxed().toArray(Integer[]::new);
+  private static Object[] box(long[] rest) {
+    return LongStream.of(rest).boxed().toArray(Long[]::new);
   }
 
   // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?

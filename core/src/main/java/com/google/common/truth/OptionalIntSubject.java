@@ -18,26 +18,28 @@ package com.google.common.truth;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
-import java.util.OptionalLong;
+import java.util.OptionalInt;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalLong} subjects.
+ * Propositions for Java 8 {@link OptionalInt} subjects.
  *
  * @author Ben Douglass
  */
-public final class OptionalLongSubject extends Subject {
-  private final OptionalLong actual;
+@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
+@IgnoreJRERequirement
+public final class OptionalIntSubject extends Subject {
+  private final OptionalInt actual;
 
-  OptionalLongSubject(
+  OptionalIntSubject(
       FailureMetadata failureMetadata,
-      @Nullable OptionalLong subject,
+      @Nullable OptionalInt subject,
       @Nullable String typeDescription) {
     super(failureMetadata, subject, typeDescription);
     this.actual = subject;
   }
 
-  /** Fails if the {@link OptionalLong} is empty or the subject is null. */
+  /** Fails if the {@link OptionalInt} is empty or the subject is null. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -46,32 +48,32 @@ public final class OptionalLongSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalLong} is present or the subject is null. */
+  /** Fails if the {@link OptionalInt} is present or the subject is null. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
     } else if (actual.isPresent()) {
       failWithoutActual(
           simpleFact("expected to be empty"),
-          fact("but was present with value", actual.getAsLong()));
+          fact("but was present with value", actual.getAsInt()));
     }
   }
 
   /**
-   * Fails if the {@link OptionalLong} does not have the given value or the subject is null. More
-   * sophisticated comparisons can be done using {@code assertThat(optional.getAsLong())…}.
+   * Fails if the {@link OptionalInt} does not have the given value or the subject is null. More
+   * sophisticated comparisons can be done using {@code assertThat(optional.getAsInt())…}.
    */
-  public void hasValue(long expected) {
+  public void hasValue(int expected) {
     if (actual == null) {
       failWithActual("expected an optional with value", expected);
     } else if (!actual.isPresent()) {
       failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
     } else {
-      checkNoNeedToDisplayBothValues("getAsLong()").that(actual.getAsLong()).isEqualTo(expected);
+      checkNoNeedToDisplayBothValues("getAsInt()").that(actual.getAsInt()).isEqualTo(expected);
     }
   }
 
-  public static Subject.Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
-    return (metadata, subject) -> new OptionalLongSubject(metadata, subject, "optionalLong");
+  public static Subject.Factory<OptionalIntSubject, OptionalInt> optionalInts() {
+    return (metadata, subject) -> new OptionalIntSubject(metadata, subject, "optionalInt");
   }
 }
