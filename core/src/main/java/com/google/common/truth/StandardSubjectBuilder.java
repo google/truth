@@ -24,6 +24,8 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -166,6 +168,19 @@ public class StandardSubjectBuilder {
 
   public final TableSubject that(@Nullable Table<?, ?, ?> actual) {
     return new TableSubject(metadata(), actual);
+  }
+
+  @SuppressWarnings({
+    "Java7ApiChecker", // no more dangerous that wherever the user got the Optional
+    "NullableOptional", // Truth always accepts nulls, no matter the type
+  })
+  public final OptionalSubject that(@Nullable Optional<?> actual) {
+    return new OptionalSubject(metadata(), actual, "optional");
+  }
+
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
+  public final StreamSubject that(@Nullable Stream<?> actual) {
+    return new StreamSubject(metadata(), actual);
   }
 
   /**
