@@ -25,8 +25,6 @@ import com.google.common.collect.Ordering;
 import com.google.common.reflect.TypeToken;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Optional;
-import java.util.stream.Stream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -47,9 +45,6 @@ public class TruthAssertThatTest {
     ImmutableSortedSet<TypeToken<?>> verbTypes =
         FluentIterable.from(asList(StandardSubjectBuilder.class.getMethods()))
             .filter(input -> input.getName().equals("that"))
-            // TODO: b/166630734 - Remove this when we add the assertThat overloads.
-            .filter(input -> input.getParameterTypes()[0] != Optional.class)
-            .filter(input -> input.getParameterTypes()[0] != Stream.class)
             .transform(TruthAssertThatTest::methodToReturnTypeToken)
             .toSortedSet(Ordering.usingToString());
     ImmutableSortedSet<TypeToken<?>> truthTypes =

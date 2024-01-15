@@ -23,6 +23,8 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -246,6 +248,18 @@ public final class Truth {
   }
 
   public static TableSubject assertThat(@Nullable Table<?, ?, ?> actual) {
+    return assert_().that(actual);
+  }
+
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Optional
+  @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
+  public static <T> OptionalSubject assertThat(@Nullable Optional<T> actual) {
+    return assert_().that(actual);
+  }
+
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
+  @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
+  public static <T extends @Nullable Object> StreamSubject assertThat(@Nullable Stream<T> actual) {
     return assert_().that(actual);
   }
 
