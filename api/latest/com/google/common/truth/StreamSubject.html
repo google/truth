@@ -141,12 +141,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a></pre>
 <div class="block">Propositions for <code>Stream</code> subjects.
 
- <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
- provide more readable failure messages. You should not use this class if you intend to leave the
- stream un-consumed or if the stream is <i>very</i> large or infinite.
+ <p><b>Note:</b> When you perform an assertion based on the <i>contents</i> of the stream, or when
+ <i>any</i> assertion <i>fails</i>, the wrapped stream will be drained immediately into a private
+ collection to provide more readable failure messages. This consumes the stream. Take care if you
+ intend to leave the stream un-consumed or if the stream is <i>very</i> large or infinite.
 
- <p>If you intend to make multiple assertions on the same stream of data you should instead first
- collect the contents of the stream into a collection, and then assert directly on that.
+ <p>If you intend to make multiple assertions on the contents of the same stream, you should
+ instead first collect the contents of the stream into a collection and then assert directly on
+ that.
 
  <p>For very large or infinite streams you may want to first limit the
  stream before asserting on it.</div>
@@ -302,7 +304,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
-     stream reference</div>
+     stream reference.</div>
 </div>
 </td>
 </tr>
@@ -348,7 +350,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
-     same stream reference</div>
+     same stream reference.</div>
 </div>
 </td>
 </tr>
@@ -672,7 +674,9 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
-     stream reference</div>
+     stream reference. If you really want to test object identity, you can eliminate this
+     deprecation warning by using <a href="Subject.html#isSameInstanceAs(java.lang.Object)"><code>Subject.isSameInstanceAs(java.lang.Object)</code></a>. If you instead want to test the
+     contents of the stream, use <a href="#containsExactly(java.lang.Object...)"><code>containsExactly(java.lang.Object...)</code></a> or similar methods.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
@@ -712,7 +716,9 @@ public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)
 public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable java.lang.Object&nbsp;unexpected)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
-     same stream reference</div>
+     same stream reference. If you really want to test object identity, you can eliminate this
+     deprecation warning by using <a href="Subject.html#isNotSameInstanceAs(java.lang.Object)"><code>Subject.isNotSameInstanceAs(java.lang.Object)</code></a>. If you instead want to test the
+     contents of the stream, collect both streams to lists and perform assertions like <a href="Subject.html#isNotEqualTo(java.lang.Object)"><code>Subject.isNotEqualTo(java.lang.Object)</code></a> on them. In some cases, you may be able to use <a href="StreamSubject.html" title="class in com.google.common.truth"><code>StreamSubject</code></a> assertions like <a href="#doesNotContain(java.lang.Object)"><code>doesNotContain(java.lang.Object)</code></a>.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isNotEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for

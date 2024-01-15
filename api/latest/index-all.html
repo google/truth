@@ -2525,7 +2525,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
-     stream reference</div>
+     stream reference. If you really want to test object identity, you can eliminate this
+     deprecation warning by using <a href="com/google/common/truth/Subject.html#isSameInstanceAs(java.lang.Object)"><code>Subject.isSameInstanceAs(java.lang.Object)</code></a>. If you instead want to test the
+     contents of the stream, use <a href="com/google/common/truth/StreamSubject.html#containsExactly(java.lang.Object...)"><code>StreamSubject.containsExactly(java.lang.Object...)</code></a> or similar methods.</div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
@@ -2840,7 +2842,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
-     same stream reference</div>
+     same stream reference. If you really want to test object identity, you can eliminate this
+     deprecation warning by using <a href="com/google/common/truth/Subject.html#isNotSameInstanceAs(java.lang.Object)"><code>Subject.isNotSameInstanceAs(java.lang.Object)</code></a>. If you instead want to test the
+     contents of the stream, collect both streams to lists and perform assertions like <a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)"><code>Subject.isNotEqualTo(java.lang.Object)</code></a> on them. In some cases, you may be able to use <a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth"><code>StreamSubject</code></a> assertions like <a href="com/google/common/truth/StreamSubject.html#doesNotContain(java.lang.Object)"><code>StreamSubject.doesNotContain(java.lang.Object)</code></a>.</div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
