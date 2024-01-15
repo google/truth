@@ -15,12 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.StreamSubject.streams;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import java.util.stream.Stream;
@@ -33,22 +33,78 @@ import org.junit.runners.JUnit4;
  *
  * @author Kurt Alfred Kluever
  */
+// TODO: b/113905249 - Move this and other tests from extensions to core
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
-  @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
+  @SuppressWarnings("deprecation") // test of a possibly mistaken call
   @Test
-  public void testIsEqualTo() throws Exception {
+  public void testIsEqualToSameInstancePreviouslyConsumed() throws Exception {
     Stream<String> stream = Stream.of("hello");
-    assertThrows(UnsupportedOperationException.class, () -> assertThat(stream).isEqualTo(stream));
+    stream.forEach(e -> {}); // Consume it so that we can verify that isEqualTo still works
+    assertThat(stream).isEqualTo(stream);
   }
 
-  @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
+  @SuppressWarnings("deprecation") // test of a possibly mistaken call
   @Test
-  public void testIsNotEqualTo() throws Exception {
+  public void testIsEqualToSameInstanceDoesNotConsume() throws Exception {
     Stream<String> stream = Stream.of("hello");
-    assertThrows(
-        UnsupportedOperationException.class, () -> assertThat(stream).isNotEqualTo(stream));
+    assertThat(stream).isEqualTo(stream);
+    assertThat(stream).containsExactly("hello");
+  }
+
+  @SuppressWarnings({
+    "deprecation", // test of a possibly mistaken call
+    "StreamToString", // not very useful but the best we can do
+  })
+  @Test
+  public void testIsEqualToFailurePreviouslyConsumed() throws Exception {
+    Stream<String> stream = Stream.of("hello");
+    stream.forEach(e -> {}); // Consume it so that we can verify that isEqualTo still works
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(Stream.of("hello")));
+    assertThat(failure)
+        .factValue("but was")
+        .isEqualTo("Stream that has already been operated upon or closed: " + stream);
+    assertThat(failure)
+        .hasMessageThat()
+        .contains("Warning: Stream equality is based on object identity.");
+  }
+
+  @SuppressWarnings("deprecation") // test of a possibly mistaken call
+  @Test
+  public void testIsEqualToFailureNotPreviouslyConsumed() throws Exception {
+    Stream<String> stream = Stream.of("hello");
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(Stream.of("hello")));
+    assertThat(failure).factValue("but was").isEqualTo("[hello]");
+    assertThat(failure)
+        .hasMessageThat()
+        .contains("Warning: Stream equality is based on object identity.");
+  }
+
+  @SuppressWarnings({
+    "deprecation", // test of a possibly mistaken call
+    "StreamToString", // not very useful but the best we can do
+  })
+  @Test
+  public void testIsNotEqualToSameInstance() throws Exception {
+    Stream<String> stream = Stream.of("hello");
+    stream.forEach(e -> {}); // Consume it so that we can verify that isNotEqualTo still works
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(stream).isNotEqualTo(stream));
+    assertThat(failure).factKeys().containsExactly("expected not to be");
+    assertThat(failure)
+        .factValue("expected not to be")
+        .isEqualTo("Stream that has already been operated upon or closed: " + stream);
+  }
+
+  @SuppressWarnings("deprecation") // test of a possibly mistaken call
+  @Test
+  public void testIsNotEqualToOtherInstance() throws Exception {
+    Stream<String> stream = Stream.of("hello");
+    stream.forEach(e -> {}); // Consume it so that we can verify that isNotEqualTo still works
+    assertThat(stream).isNotEqualTo(Stream.of("hello"));
   }
 
   @Test

@@ -15,10 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Suppliers.memoize;
+import static com.google.common.truth.Fact.fact;
 import static java.util.stream.Collectors.toCollection;
 
+import com.google.common.base.Supplier;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.DoNotCall;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,35 +30,61 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * Propositions for {@link Stream} subjects.
  *
- * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
- * provide more readable failure messages. You should not use this class if you intend to leave the
- * stream un-consumed or if the stream is <i>very</i> large or infinite.
+ * <p><b>Note:</b> When you perform an assertion based on the <i>contents</i> of the stream, or when
+ * <i>any</i> assertion <i>fails</i>, the wrapped stream will be drained immediately into a private
+ * collection to provide more readable failure messages. This consumes the stream. Take care if you
+ * intend to leave the stream un-consumed or if the stream is <i>very</i> large or infinite.
  *
- * <p>If you intend to make multiple assertions on the same stream of data you should instead first
- * collect the contents of the stream into a collection, and then assert directly on that.
+ * <p>If you intend to make multiple assertions on the contents of the same stream, you should
+ * instead first collect the contents of the stream into a collection and then assert directly on
+ * that.
  *
  * <p>For very large or infinite streams you may want to first {@linkplain Stream#limit limit} the
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
  */
-@SuppressWarnings({
-  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
-  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
-})
+@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class StreamSubject extends Subject {
+  // Storing the FailureMetadata instance is not usually advisable.
+  private final FailureMetadata metadata;
+  private final Stream<?> actual;
+  private final Supplier<@Nullable List<?>> listSupplier;
 
-  private final List<?> actualList;
+  StreamSubject(
+      FailureMetadata metadata,
+      @Nullable Stream<?> actual,
+      Supplier<@Nullable List<?>> listSupplier) {
+    super(metadata, actual);
+    this.metadata = metadata;
+    this.actual = actual;
+    this.listSupplier = listSupplier;
+  }
 
-  StreamSubject(FailureMetadata failureMetadata, @Nullable Stream<?> stream) {
-    super(failureMetadata, stream);
-    this.actualList = (stream == null) ? null : stream.collect(toCollection(ArrayList::new));
+  StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
+    /*
+     * As discussed in the Javadoc, we're a *little* accommodating of streams that have already been
+     * collected (or are outright broken, like some mocks), and we avoid collecting the contents
+     * until we want them. So, if you want to perform an assertion like
+     * `assertThat(previousStream).isSameInstanceAs(firstStream)`, we'll let you do that, even if
+     * you've already collected the stream. This way, `assertThat(Stream)` works as well as
+     * `assertThat(Object)` for streams, following the usual rules of overloading. (This would also
+     * help if we someday make `assertThat(Object)` automatically delegate to `assertThat(Stream)`
+     * when passed a `Stream`.)
+     */
+    this(metadata, actual, memoize(listCollector(actual)));
   }
 
   @Override
   protected String actualCustomStringRepresentation() {
-    return String.valueOf(actualList);
+    List<?> asList;
+    try {
+      asList = listSupplier.get();
+    } catch (IllegalStateException e) {
+      return "Stream that has already been operated upon or closed: " + actual();
+    }
+    return String.valueOf(asList);
   }
 
   public static Subject.Factory<StreamSubject, Stream<?>> streams() {
@@ -65,12 +93,12 @@ public final class StreamSubject extends Subject {
 
   /** Fails if the subject is not empty. */
   public void isEmpty() {
-    check().that(actualList).isEmpty();
+    checkThatContentsList().isEmpty();
   }
 
   /** Fails if the subject is empty. */
   public void isNotEmpty() {
-    check().that(actualList).isNotEmpty();
+    checkThatContentsList().isNotEmpty();
   }
 
   /**
@@ -80,33 +108,33 @@ public final class StreamSubject extends Subject {
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
    */
   public void hasSize(int expectedSize) {
-    check().that(actualList).hasSize(expectedSize);
+    checkThatContentsList().hasSize(expectedSize);
   }
 
   /** Fails if the subject does not contain the given element. */
   public void contains(@Nullable Object element) {
-    check().that(actualList).contains(element);
+    checkThatContentsList().contains(element);
   }
 
   /** Fails if the subject contains the given element. */
   public void doesNotContain(@Nullable Object element) {
-    check().that(actualList).doesNotContain(element);
+    checkThatContentsList().doesNotContain(element);
   }
 
   /** Fails if the subject contains duplicate elements. */
   public void containsNoDuplicates() {
-    check().that(actualList).containsNoDuplicates();
+    checkThatContentsList().containsNoDuplicates();
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
   public void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    check().that(actualList).containsAnyOf(first, second, rest);
+    checkThatContentsList().containsAnyOf(first, second, rest);
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
   public void containsAnyIn(Iterable<?> expected) {
-    check().that(actualList).containsAnyIn(expected);
+    checkThatContentsList().containsAnyIn(expected);
   }
 
   /**
@@ -121,7 +149,7 @@ public final class StreamSubject extends Subject {
   @CanIgnoreReturnValue
   public Ordered containsAtLeast(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    return check().that(actualList).containsAtLeast(first, second, rest);
+    return checkThatContentsList().containsAtLeast(first, second, rest);
   }
 
   /**
@@ -135,7 +163,7 @@ public final class StreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
-    return check().that(actualList).containsAtLeastElementsIn(expected);
+    return checkThatContentsList().containsAtLeastElementsIn(expected);
   }
 
   // TODO(cpovirk): Add array overload of contains*ElementsIn methods? Also for int and long stream.
@@ -156,7 +184,7 @@ public final class StreamSubject extends Subject {
    */
   @SuppressWarnings("ContainsExactlyVariadic")
   public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
-    return check().that(actualList).containsExactly(varargs);
+    return checkThatContentsList().containsExactly(varargs);
   }
 
   /**
@@ -170,7 +198,7 @@ public final class StreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactlyElementsIn(Iterable<?> expected) {
-    return check().that(actualList).containsExactlyElementsIn(expected);
+    return checkThatContentsList().containsExactlyElementsIn(expected);
   }
 
   /**
@@ -179,7 +207,7 @@ public final class StreamSubject extends Subject {
    */
   public void containsNoneOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    check().that(actualList).containsNoneOf(first, second, rest);
+    checkThatContentsList().containsNoneOf(first, second, rest);
   }
 
   /**
@@ -187,7 +215,7 @@ public final class StreamSubject extends Subject {
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneIn(Iterable<?> excluded) {
-    check().that(actualList).containsNoneIn(excluded);
+    checkThatContentsList().containsNoneIn(excluded);
   }
 
   /**
@@ -199,7 +227,7 @@ public final class StreamSubject extends Subject {
    * @throws NullPointerException if any element is null
    */
   public void isInStrictOrder() {
-    check().that(actualList).isInStrictOrder();
+    checkThatContentsList().isInStrictOrder();
   }
 
   /**
@@ -210,7 +238,7 @@ public final class StreamSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   public void isInStrictOrder(Comparator<?> comparator) {
-    check().that(actualList).isInStrictOrder(comparator);
+    checkThatContentsList().isInStrictOrder(comparator);
   }
 
   /**
@@ -221,7 +249,7 @@ public final class StreamSubject extends Subject {
    * @throws NullPointerException if any element is null
    */
   public void isInOrder() {
-    check().that(actualList).isInOrder();
+    checkThatContentsList().isInOrder();
   }
 
   /**
@@ -231,38 +259,90 @@ public final class StreamSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   public void isInOrder(Comparator<?> comparator) {
-    check().that(actualList).isInOrder(comparator);
+    checkThatContentsList().isInOrder(comparator);
   }
 
   /**
    * @deprecated {@code streamA.isEqualTo(streamB)} always fails, except when passed the exact same
-   *     stream reference
+   *     stream reference. If you really want to test object identity, you can eliminate this
+   *     deprecation warning by using {@link #isSameInstanceAs}. If you instead want to test the
+   *     contents of the stream, use {@link #containsExactly} or similar methods.
    */
   @Override
-  @DoNotCall(
-      "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
-          + " equality semantics")
   @Deprecated
   public void isEqualTo(@Nullable Object expected) {
-    throw new UnsupportedOperationException(
-        "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
-            + " equality semantics");
+    /*
+     * We add a warning about stream equality. Doing so is a bit of a pain. (There might be a better
+     * way.)
+     *
+     * Calling Subject constructors directly is not generally advisable. I'm not sure if the
+     * metadata munging we perform is advisable, either....
+     *
+     * We do need to create a StreamSubject (rather than a plain Subject) in order to get our
+     * desired string representation (unless we edit Subject itself to create and expose a
+     * Supplier<List> when given a Stream...). And we have to call a special constructor to avoid
+     * re-collecting the stream.
+     */
+    new StreamSubject(
+            metadata.withMessage(
+                "%s",
+                new Object[] {
+                  "Warning: Stream equality is based on object identity. To compare Stream"
+                      + " contents, use methods like containsExactly."
+                }),
+            actual,
+            listSupplier)
+        .superIsEqualTo(expected);
+  }
+
+  private void superIsEqualTo(@Nullable Object expected) {
+    super.isEqualTo(expected);
   }
 
   /**
    * @deprecated {@code streamA.isNotEqualTo(streamB)} always passes, except when passed the exact
-   *     same stream reference
+   *     same stream reference. If you really want to test object identity, you can eliminate this
+   *     deprecation warning by using {@link #isNotSameInstanceAs}. If you instead want to test the
+   *     contents of the stream, collect both streams to lists and perform assertions like {@link
+   *     IterableSubject#isNotEqualTo} on them. In some cases, you may be able to use {@link
+   *     StreamSubject} assertions like {@link #doesNotContain}.
    */
   @Override
-  @DoNotCall(
-      "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
-          + " equality semantics")
   @Deprecated
   public void isNotEqualTo(@Nullable Object unexpected) {
-    throw new UnsupportedOperationException(
-        "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
-            + " equality semantics");
+    if (actual() == unexpected) {
+      /*
+       * We override the supermethod's message: That method would ask for both
+       * `String.valueOf(stream)` (for `unexpected`) and `actualCustomStringRepresentation()` (for
+       * `actual()`). The two strings are almost certain to differ, since `valueOf` is normally
+       * based on identity and `actualCustomStringRepresentation()` is based on contents. That can
+       * lead to a confusing error message.
+       *
+       * We could include isEqualTo's warning about Stream's identity-based equality here, too. But
+       * it doesn't seem necessary: The people we really want to warn are the people whose
+       * assertions *pass*. And we've already attempted to do that with deprecation.
+       */
+      failWithoutActual(
+          fact("expected not to be", actualCustomStringRepresentationForPackageMembersToCall()));
+      return;
+    }
+    /*
+     * But, if the objects aren't identical, we delegate to the supermethod (which checks equals())
+     * just in case someone has decided to override Stream.equals in a strange way. (I haven't
+     * checked whether this comes up in Google's codebase. I hope that it doesn't.)
+     */
+    super.isNotEqualTo(unexpected);
   }
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
+
+  // TODO: b/134064106 - Migrate off no-arg check (to a direct IterableSubject constructor call?)
+  @SuppressWarnings("deprecation")
+  private IterableSubject checkThatContentsList() {
+    return check().that(listSupplier.get());
+  }
+
+  private static Supplier<@Nullable List<?>> listCollector(@Nullable Stream<?> actual) {
+    return () -> actual == null ? null : actual.collect(toCollection(ArrayList::new));
+  }
 }
