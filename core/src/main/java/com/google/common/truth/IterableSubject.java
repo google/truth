@@ -97,7 +97,15 @@ public class IterableSubject extends Subject {
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> iterable) {
-    super(metadata, iterable);
+    this(metadata, iterable, null);
+  }
+
+  /** Constructor for use by package-private callers. */
+  IterableSubject(
+      FailureMetadata metadata,
+      @Nullable Iterable<?> iterable,
+      @Nullable String typeDescriptionOverride) {
+    super(metadata, iterable, typeDescriptionOverride);
     this.actual = iterable;
   }
 

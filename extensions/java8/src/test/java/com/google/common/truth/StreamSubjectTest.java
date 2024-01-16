@@ -158,8 +158,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testHasSize_fails() throws Exception {
-    AssertionError unused =
+    AssertionError failure =
         expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).hasSize(2));
+    assertThat(failure).factValue("value of").isEqualTo("stream.size()");
   }
 
   @Test

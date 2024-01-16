@@ -336,10 +336,16 @@ public final class StreamSubject extends Subject {
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 
-  // TODO: b/134064106 - Migrate off no-arg check (to a direct IterableSubject constructor call?)
-  @SuppressWarnings("deprecation")
   private IterableSubject checkThatContentsList() {
-    return check().that(listSupplier.get());
+    /*
+     * Calling Subject constructors directly is usually not advisable: It does not update the
+     * metadata, so the resultant failure message might say (for example) "value of: foo" when it
+     * should say "value of: foo.size()." However, in this specific case, that's exactly what we
+     * want: We're testing the contents of the stream, so we want a "value of" line for the stream,
+     * even though we happen to implement the contents check by delegating to IterableSubject.
+     */
+    return new IterableSubject(
+        metadata, listSupplier.get(), /* typeDescriptionOverride= */ "stream");
   }
 
   private static Supplier<@Nullable List<?>> listCollector(@Nullable Stream<?> actual) {
