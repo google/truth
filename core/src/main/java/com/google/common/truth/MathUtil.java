@@ -31,7 +31,7 @@ final class MathUtil {
   /* package */ static boolean equalWithinTolerance(long left, long right, long tolerance) {
     try {
       // subtractExact is always desugared.
-      @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+      @SuppressWarnings("Java7ApiChecker")
       long absDiff = Math.abs(subtractExact(left, right));
       return 0 <= absDiff && absDiff <= Math.abs(tolerance);
     } catch (ArithmeticException e) {
@@ -47,7 +47,7 @@ final class MathUtil {
   /* package */ static boolean equalWithinTolerance(int left, int right, int tolerance) {
     try {
       // subtractExact is always desugared.
-      @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+      @SuppressWarnings("Java7ApiChecker")
       int absDiff = Math.abs(subtractExact(left, right));
       return 0 <= absDiff && absDiff <= Math.abs(tolerance);
     } catch (ArithmeticException e) {
