@@ -39,6 +39,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
 @SuppressWarnings({
   "deprecation", // TODO(b/134064106): design an alternative to no-arg check()

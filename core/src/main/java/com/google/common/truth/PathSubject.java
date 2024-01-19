@@ -19,7 +19,11 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.nio.file.Path;
 
-/** Assertions for {@link Path} instances. */
+/**
+ * Assertions for {@link Path} instances.
+ *
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
+ */
 @GwtIncompatible
 @J2ObjCIncompatible
 @J2ktIncompatible

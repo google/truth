@@ -170,6 +170,10 @@ public class StandardSubjectBuilder {
     return new TableSubject(metadata(), actual);
   }
 
+  /**
+   * @since 1.3.0 (with access to {@link OptionalSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
   @SuppressWarnings({
     "Java7ApiChecker", // no more dangerous that wherever the user got the Optional
     "NullableOptional", // Truth always accepts nulls, no matter the type
@@ -178,6 +182,10 @@ public class StandardSubjectBuilder {
     return new OptionalSubject(metadata(), actual, "optional");
   }
 
+  /**
+   * @since 1.3.0 (with access to {@link StreamSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
   public final StreamSubject that(@Nullable Stream<?> actual) {
     return new StreamSubject(metadata(), actual);

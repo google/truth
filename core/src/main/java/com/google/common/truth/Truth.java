@@ -253,12 +253,18 @@ public final class Truth {
 
   @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Optional
   @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
+  /**
+   * @since 1.3.0 (present in {@link Truth8} since before 1.0)
+   */
   public static <T> OptionalSubject assertThat(@Nullable Optional<T> actual) {
     return assert_().that(actual);
   }
 
   @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
   @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
+  /**
+   * @since 1.3.0 (present in {@link Truth8} since before 1.0)
+   */
   public static <T extends @Nullable Object> StreamSubject assertThat(@Nullable Stream<T> actual) {
     return assert_().that(actual);
   }
