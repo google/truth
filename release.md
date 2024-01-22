@@ -21,14 +21,15 @@ documentation site.
 
 ## Edit the release info pinned to the git tag in GitHub
 
-GitHub will automatically create a new "release" (referenceable in the project's
-releases section) for each tag that is pushed. Once you have pushed the tag, go
-to https://github.com/google/truth/releases and click the "edit" button.
+Once you have pushed the tag, go to https://github.com/google/truth/tags, click
+the new tag, and click the "Create release from tag" button.
 
-Add in any changelog information for that release, and clean up the title
-which will, by default, simply be the tag name.  Make it all pretty.  If it
-is a pre-release/RC check the "pre-release" checkbox. Save your work, and
-the release will now be nicely documented.
+Add in any changelog information for that release, and clean up the title, which
+will, by default, simply be the tag name. Make it all pretty. Once the *Maven*
+release appears in
+https://repo1.maven.org/maven2/com/google/truth/truth/maven-metadata.xml, it's
+time to save your work, and the release will now be announced and nicely
+documented.
 
 > ***Note:*** Under the previous release, a link saying *x commits to master
 > since this release"* will take you to a handy filtered list of commits which
