@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalIntSubject.optionalInts;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 
 import java.util.OptionalInt;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void isPresent() {
-    assertThat(OptionalInt.of(1337)).isPresent();
+    Truth8.assertThat(OptionalInt.of(1337)).isPresent();
   }
 
   @Test
@@ -53,7 +52,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void isEmpty() {
-    assertThat(OptionalInt.empty()).isEmpty();
+    Truth8.assertThat(OptionalInt.empty()).isEmpty();
   }
 
   @Test
@@ -72,7 +71,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void hasValue() {
-    assertThat(OptionalInt.of(1337)).hasValue(1337);
+    Truth8.assertThat(OptionalInt.of(1337)).hasValue(1337);
   }
 
   @Test

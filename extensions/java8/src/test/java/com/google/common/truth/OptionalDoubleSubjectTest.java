@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalDoubleSubject.optionalDoubles;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 
 import java.util.OptionalDouble;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isPresent() {
-    assertThat(OptionalDouble.of(1337.0)).isPresent();
+    Truth8.assertThat(OptionalDouble.of(1337.0)).isPresent();
   }
 
   @Test
@@ -53,7 +52,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isEmpty() {
-    assertThat(OptionalDouble.empty()).isEmpty();
+    Truth8.assertThat(OptionalDouble.empty()).isEmpty();
   }
 
   @Test
@@ -72,7 +71,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void hasValue() {
-    assertThat(OptionalDouble.of(1337.0)).hasValue(1337.0);
+    Truth8.assertThat(OptionalDouble.of(1337.0)).hasValue(1337.0);
   }
 
   @Test

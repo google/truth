@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalLongSubject.optionalLongs;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 
 import java.util.OptionalLong;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void isPresent() {
-    assertThat(OptionalLong.of(1337L)).isPresent();
+    Truth8.assertThat(OptionalLong.of(1337L)).isPresent();
   }
 
   @Test
@@ -53,7 +52,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void isEmpty() {
-    assertThat(OptionalLong.empty()).isEmpty();
+    Truth8.assertThat(OptionalLong.empty()).isEmpty();
   }
 
   @Test
@@ -72,7 +71,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void hasValue() {
-    assertThat(OptionalLong.of(1337L)).hasValue(1337L);
+    Truth8.assertThat(OptionalLong.of(1337L)).hasValue(1337L);
   }
 
   @Test
