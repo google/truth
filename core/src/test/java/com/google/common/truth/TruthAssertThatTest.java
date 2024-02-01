@@ -26,11 +26,7 @@ import com.google.common.reflect.TypeToken;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.OptionalLong;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -52,10 +48,6 @@ public class TruthAssertThatTest {
         FluentIterable.from(asList(StandardSubjectBuilder.class.getMethods()))
             .filter(input -> input.getName().equals("that"))
             // TODO: b/166630734 - Remove this when we add the assertThat overloads.
-            .filter(input -> input.getParameterTypes()[0] != IntStream.class)
-            .filter(input -> input.getParameterTypes()[0] != LongStream.class)
-            .filter(input -> input.getParameterTypes()[0] != OptionalDouble.class)
-            .filter(input -> input.getParameterTypes()[0] != OptionalInt.class)
             .filter(input -> input.getParameterTypes()[0] != OptionalLong.class)
             .filter(input -> input.getParameterTypes()[0] != Path.class)
             .transform(TruthAssertThatTest::methodToReturnTypeToken)

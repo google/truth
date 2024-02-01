@@ -24,6 +24,10 @@ import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -251,23 +255,58 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Optional
-  @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
   /**
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
+  @SuppressWarnings({
+    "Java7ApiChecker", // no more dangerous than wherever the user got the Optional
+    "NullableOptional", // Truth always accepts nulls, no matter the type
+  })
   public static <T> OptionalSubject assertThat(@Nullable Optional<T> actual) {
     return assert_().that(actual);
   }
 
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
-  @GwtIncompatible // creates ambiguities (Eclipse bug 577808 or similar?)
   /**
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
+  public static OptionalIntSubject assertThat(@Nullable OptionalInt actual) {
+    return assert_().that(actual);
+  }
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
+  public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble actual) {
+    return assert_().that(actual);
+  }
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static <T extends @Nullable Object> StreamSubject assertThat(@Nullable Stream<T> actual) {
     return assert_().that(actual);
   }
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
+  public static IntStreamSubject assertThat(@Nullable IntStream actual) {
+    return assert_().that(actual);
+  }
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
+  public static LongStreamSubject assertThat(@Nullable LongStream actual) {
+    return assert_().that(actual);
+  }
+
+  // TODO(b/64757353): Add support for DoubleStream?
 
   /**
    * An {@code AssertionError} that (a) always supports a cause, even under old versions of Android
