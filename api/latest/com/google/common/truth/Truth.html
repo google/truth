@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":9,"i31":9,"i32":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":9,"i31":9,"i32":9,"i33":9,"i34":9,"i35":9,"i36":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -349,23 +349,43 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i29" class="rowColor">
+<td class="colFirst"><code>static <a href="OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.OptionalDouble)">assertThat</a></span>&#8203;(@Nullable java.util.OptionalDouble&nbsp;actual)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>static <a href="OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.OptionalInt)">assertThat</a></span>&#8203;(@Nullable java.util.OptionalInt&nbsp;actual)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>static <a href="IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.IntStream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.IntStream&nbsp;actual)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i32" class="altColor">
+<td class="colFirst"><code>static <a href="LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.LongStream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.LongStream&nbsp;actual)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>static &lt;T extends @Nullable java.lang.Object&gt;<br><a href="StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.Stream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.Stream&lt;T&gt;&nbsp;actual)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>static &lt;T&gt;&nbsp;<a href="ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a>&lt;T&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(T%5B%5D)">assertThat</a></span>&#8203;(@Nullable T @Nullable []&nbsp;actual)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>static <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertWithMessage(java.lang.String)">assertWithMessage</a></span>&#8203;(@Nullable java.lang.String&nbsp;messageToPrepend)</code></th>
 <td class="colLast">
 <div class="block">Begins an assertion that, if it fails, will prepend the given message to the failure message.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>static <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertWithMessage(java.lang.String,java.lang.Object...)">assertWithMessage</a></span>&#8203;(java.lang.String&nbsp;format,
                  @Nullable java.lang.Object...&nbsp;args)</code></th>
@@ -711,18 +731,76 @@ public static&nbsp;<a href="ClassSubject.html" title="class in com.google.common
 <ul class="blockList">
 <li class="blockList">
 <h4>assertThat</h4>
-<pre class="methodSignature"><a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true" title="class or interface in com.google.common.annotations" class="externalLink">@GwtIncompatible</a>
-public static&nbsp;&lt;T&gt;&nbsp;<a href="OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.Optional&lt;T&gt;&nbsp;actual)</pre>
+<pre class="methodSignature">public static&nbsp;&lt;T&gt;&nbsp;<a href="OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.Optional&lt;T&gt;&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.3.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
+</li>
+</ul>
+<a id="assertThat(java.util.OptionalInt)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assertThat</h4>
+<pre class="methodSignature">public static&nbsp;<a href="OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.OptionalInt&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.3.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
+</li>
+</ul>
+<a id="assertThat(java.util.OptionalDouble)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assertThat</h4>
+<pre class="methodSignature">public static&nbsp;<a href="OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.OptionalDouble&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
 </li>
 </ul>
 <a id="assertThat(java.util.stream.Stream)">
 <!--   -->
 </a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assertThat</h4>
+<pre class="methodSignature">public static&nbsp;&lt;T extends @Nullable java.lang.Object&gt;&nbsp;<a href="StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.Stream&lt;T&gt;&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
+</li>
+</ul>
+<a id="assertThat(java.util.stream.IntStream)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assertThat</h4>
+<pre class="methodSignature">public static&nbsp;<a href="IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.IntStream&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
+</li>
+</ul>
+<a id="assertThat(java.util.stream.LongStream)">
+<!--   -->
+</a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>assertThat</h4>
-<pre class="methodSignature"><a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true" title="class or interface in com.google.common.annotations" class="externalLink">@GwtIncompatible</a>
-public static&nbsp;&lt;T extends @Nullable java.lang.Object&gt;&nbsp;<a href="StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.Stream&lt;T&gt;&nbsp;actual)</pre>
+<pre class="methodSignature">public static&nbsp;<a href="LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.LongStream&nbsp;actual)</pre>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4.0 (present in <a href="Truth8.html" title="class in com.google.common.truth"><code>Truth8</code></a> since before 1.0)</dd>
+</dl>
 </li>
 </ul>
 </li>
