@@ -21,11 +21,14 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
+import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -278,6 +281,14 @@ public final class Truth {
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
+  public static OptionalLongSubject assertThat(@Nullable OptionalLong actual) {
+    return assert_().that(actual);
+  }
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble actual) {
     return assert_().that(actual);
   }
@@ -307,6 +318,16 @@ public final class Truth {
   }
 
   // TODO(b/64757353): Add support for DoubleStream?
+
+  /**
+   * @since 1.4.0 (present in {@link Truth8} since before 1.0)
+   */
+  @GwtIncompatible
+  @J2ObjCIncompatible
+  @J2ktIncompatible
+  public static PathSubject assertThat(@Nullable Path actual) {
+    return assert_().that(actual);
+  }
 
   /**
    * An {@code AssertionError} that (a) always supports a cause, even under old versions of Android
