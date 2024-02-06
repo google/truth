@@ -61,6 +61,11 @@ public final class IntStreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(intStreams()).that(stream)....}. Now, you can perform assertions
+   * like that without the {@code about(...)} call.
+   */
   public static Factory<IntStreamSubject, IntStream> intStreams() {
     return IntStreamSubject::new;
   }

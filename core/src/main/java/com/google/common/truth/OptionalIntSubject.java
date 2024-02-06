@@ -74,6 +74,11 @@ public final class OptionalIntSubject extends Subject {
     }
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(optionalInts()).that(optional)....}. Now, you can perform
+   * assertions like that without the {@code about(...)} call.
+   */
   public static Subject.Factory<OptionalIntSubject, OptionalInt> optionalInts() {
     return (metadata, subject) -> new OptionalIntSubject(metadata, subject, "optionalInt");
   }

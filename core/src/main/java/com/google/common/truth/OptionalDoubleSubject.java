@@ -81,6 +81,11 @@ public final class OptionalDoubleSubject extends Subject {
     }
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(optionalDoubles()).that(optional)....}. Now, you can perform
+   * assertions like that without the {@code about(...)} call.
+   */
   public static Subject.Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
     return (metadata, subject) -> new OptionalDoubleSubject(metadata, subject, "optionalDouble");
   }
