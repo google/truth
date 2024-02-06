@@ -207,7 +207,9 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>static <a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a>,&#8203;java.util.OptionalLong&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#optionalLongs()">optionalLongs</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Obsolete factory instance.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -278,6 +280,9 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <li class="blockList">
 <h4>optionalLongs</h4>
 <pre class="methodSignature">public static&nbsp;<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a>,&#8203;java.util.OptionalLong&gt;&nbsp;optionalLongs()</pre>
+<div class="block">Obsolete factory instance. This factory was previously necessary for assertions like <code>
+ assertWithMessage(...).about(optionalLongs()).that(optional)....</code>. Now, you can perform
+ assertions like that without the <code>about(...)</code> call.</div>
 </li>
 </ul>
 </li>

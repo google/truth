@@ -27,8 +27,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":41,"i1":41,"i2":41,"i3":41,"i4":41,"i5":41,"i6":41,"i7":41};
+var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -132,20 +132,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <hr>
-<pre>public final class <span class="typeNameLabel">Truth8</span>
+<pre>@Deprecated
+public final class <span class="typeNameLabel">Truth8</span>
 extends java.lang.Object</pre>
-<div class="block">The primary entry point for assertions about Java 8 types.
-
- <p>To use <a href="Truth.html#assertWithMessage(java.lang.String)"><code>Truth.assertWithMessage(java.lang.String)</code></a> with a Java 8 type, use <code>
- assertWithMessage(...).about(</code><a href="OptionalSubject.html#optionals()"><code>optionals()</code></a><code>).that(...)</code>
- (or similarly for the other types).
-
- <p>Likewise, to use different failure strategies like <a href="Expect.html" title="class in com.google.common.truth"><code>Expect</code></a>, use <code>
- expect.about(</code><a href="OptionalSubject.html#optionals()"><code>optionals()</code></a><code>).that(...)</code>.
-
- <p>For more information about combining different messages, failure strategies, and subjects, see
- <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
- behavior/<code>Subject</code> type?</a> in the Truth FAQ.</div>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Instead of this class's methods, use the identical methods declared in the main
+     <a href="Truth.html" title="class in com.google.common.truth"><code>Truth</code></a> class.</div>
+</div>
+<div class="block">The obsolete entry point for assertions about Java 8 types.</div>
 </li>
 </ul>
 </div>
@@ -160,7 +154,7 @@ extends java.lang.Object</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -169,42 +163,58 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static <a href="PathSubject.html" title="class in com.google.common.truth">PathSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.nio.file.Path)">assertThat</a></span>&#8203;(@Nullable java.nio.file.Path&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>static <a href="OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.Optional)">assertThat</a></span>&#8203;(@Nullable java.util.Optional&lt;?&gt;&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static <a href="OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.OptionalDouble)">assertThat</a></span>&#8203;(@Nullable java.util.OptionalDouble&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>static <a href="OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.OptionalInt)">assertThat</a></span>&#8203;(@Nullable java.util.OptionalInt&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>static <a href="OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.OptionalLong)">assertThat</a></span>&#8203;(@Nullable java.util.OptionalLong&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>static <a href="IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.IntStream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.IntStream&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>static <a href="LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.LongStream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.LongStream&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>static <a href="StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.util.stream.Stream)">assertThat</a></span>&#8203;(@Nullable java.util.stream.Stream&lt;?&gt;&nbsp;target)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
+&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -237,6 +247,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.Optional&lt;?&gt;&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.OptionalInt)">
@@ -246,6 +257,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.OptionalInt&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.OptionalLong)">
@@ -255,6 +267,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.OptionalLong&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.OptionalDouble)">
@@ -264,6 +277,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.OptionalDouble&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.stream.Stream)">
@@ -273,6 +287,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.Stream&lt;?&gt;&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.stream.IntStream)">
@@ -282,6 +297,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.IntStream&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.util.stream.LongStream)">
@@ -291,6 +307,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a>&nbsp;assertThat&#8203;(@Nullable java.util.stream.LongStream&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 <a id="assertThat(java.nio.file.Path)">
@@ -302,6 +319,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature"><a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true" title="class or interface in com.google.common.annotations" class="externalLink">@GwtIncompatible</a>
 @J2ObjCIncompatible
 public static&nbsp;<a href="PathSubject.html" title="class in com.google.common.truth">PathSubject</a>&nbsp;assertThat&#8203;(@Nullable java.nio.file.Path&nbsp;target)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </li>
 </ul>
 </li>
