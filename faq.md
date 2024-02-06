@@ -8,43 +8,27 @@ title: Truth FAQ
 
 ## How do I use Truth with the Java 8 types? {#java8}
 
-First, make sure you're depending on
-`com.google.truth.extensions:truth-java8-extension:<your truth version>`
+Assertions on Java 8
+types are available through overloads of `Truth.assertThat`, as well as
+overloads of the `that` method used in chains like
+`assertWithMessage(...).that(stream).isEmpty()`.
 
-You will usually need *both* of the following static imports:
+This also means that you no longer need a dependency on
+`com.google.truth.extensions:truth-java8-extension:`.
 
-```java
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
-...
-// This assertion uses Truth8.assertThat(Optional).
-Optional<String> javaUtilOptional = someStream.map(...).filter(...).findFirst();
-assertThat(javaUtilOptional).hasValue("duke");
+Assertions about other types (like protobuf types) still sometimes require that
+you use [the full fluent chain](#full-chain).
 
-// Other assertions will use the various Truth.assertThat(...) overloads.
-```
+## Why do I get a "`cannot find symbol .comparingExpectedFieldsOnly();`" error for a type that should have `comparingExpectedFieldsOnly`? {#missing-import}
 
-To use the Java 8 types with `assertWithMessage`, `expect`, or other entry
-points, use `about`. For example, for `Optional`:
+You need to static import the `assertThat` method for that type. (In this
+example, you probably need to import [`ProtoTruth.assertThat`].)
 
-```java
-import static com.google.common.truth.OptionalSubject.optionals;
-
-assertWithMessage(...).about(optionals()).that(javaUtilOptional).hasValue("duke");
-```
-
-For more information, read about [the full fluent chain](#full-chain).
-
-## Why do I get a "`cannot find symbol .hasValue("foo");`" error for a type that should have `hasValue`? {#missing-import}
-
-You need to static import the `assertThat` method for that type. (For example,
-you might need to [import the method for Java 8 types](#java8).)
-
-The error you're seeing is telling you that `hasValue` doesn't exist on the base
-`Subject` class, the one returned when you pass a type that Truth doesn't
-recognize to `Truth.assertThat`. Once you import the `assertThat` method that
-you want, your call will resolve to that method, and you'll have an instance of
-the type with the method you're looking for.
+The error you're seeing is telling you that `comparingExpectedFieldsOnly`
+doesn't exist on the base `Subject` class, the one returned when you pass a type
+that Truth doesn't recognize to `Truth.assertThat`. Once you import the
+`assertThat` method that you want, your call will resolve to that method, and
+you'll have an instance of the type with the method you're looking for.
 
 ## What if I have an import conflict with another `assertThat()` method? {#imports}
 
@@ -309,3 +293,4 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
 [Ask your question here]: http://stackoverflow.com/questions/ask?tags=google-truth
 [`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
+[`ProtoTruth.assertThat`]: https://truth.dev/api/latest/com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat(com.google.protobuf.Message)

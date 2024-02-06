@@ -58,18 +58,15 @@ Expect rule.
 
 ## What about non-standard test subjects (Truth extensions)?
 
-If you use [Truth extensions] such as [`ProtoTruth`] and [`Truth8`],
-`expect.that()` needs to know about the subject to provide the same methods:
+If you use [Truth extensions] such as [`ProtoTruth`], `expect.that()` needs to
+know about the subject to provide the same methods:
 
 ```java
-import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
-expect.about(optionals()).that(myOptional).hasValue(2);
 expect.about(protos()).that(myProto).isEqualToDefaultInstance();
 ```
 
 [Truth]: https://truth.dev
 [Truth extensions]: https://truth.dev/extension
 [`ProtoTruth`]: https://truth.dev/protobufs
-[`Truth8`]: faq#java8

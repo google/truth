@@ -27,7 +27,6 @@ we'll cover in the rest of this page.
 Some subjects aren't part of core Truth but can be found in other parts of the
 project. They include:
 
-*   [`Truth8`] for java8 types such as `java.util.Optional`
 *   [`ProtoTruth`] for `Message` style protocol buffers and lite versions
 
 Other extensions that are not part of the Truth project itself include:
@@ -181,7 +180,7 @@ There are four parts to the example:
 
         We recommend putting this method on your `Subject` class itself. Or, if
         your library defines multiple `Subject` subclasses, you may wish to
-        create a single class (like [`Truth8`]) that contains all your
+        create a single class (like [`ProtoTruth`]) that contains all your
         `assertThat` methods so that users can access them all with a single
         static import.
 
@@ -383,4 +382,3 @@ There are four parts to the example:
 [`Re2jSubjects`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/re2j/Re2jSubjects.html
 [`Subject.Factory`]:      https://truth.dev/api/latest/com/google/common/truth/Subject.Factory.html
 [`Subject`]:              https://truth.dev/api/latest/com/google/common/truth/Subject.html
-[`Truth8`]:               https://truth.dev/api/latest/com/google/common/truth/Truth8.html

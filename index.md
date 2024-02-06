@@ -144,9 +144,6 @@ dependencies {
 }
 ```
 
-To use the Java 8 extensions, also include
-`com.google.truth.extensions:truth-java8-extension:{{ site.version }}`.
-
 One warning: Truth depends on the "Android" version of [Guava], a subset of the
 "JRE" version. If your project uses the JRE version, be aware that your build
 system might select the Android version instead. If so, you may see "missing
@@ -161,9 +158,6 @@ checks for many kinds of bugs, including some we've seen in usages of Truth.
 ```java
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-
-// for assertions on Java 8 types (Streams and java.util.Optional)
-import static com.google.common.truth.Truth8.assertThat;
 ```
 
 ## 3. Write a test assertion:
