@@ -330,39 +330,16 @@ public final class Truth {
   }
 
   /**
-   * An {@code AssertionError} that (a) always supports a cause, even under old versions of Android
-   * and (b) omits "java.lang.AssertionError:" from the beginning of its toString() representation.
+   * An {@code AssertionError} that omits "java.lang.AssertionError:" from the beginning of its
+   * toString() representation.
    */
   // TODO(cpovirk): Consider eliminating this, adding its functionality to AssertionErrorWithFacts?
   @SuppressWarnings("OverrideThrowableToString") // We intentionally replace the normal format.
   static final class SimpleAssertionError extends AssertionError {
-    /** Separate cause field, in case initCause() fails. */
-    private final @Nullable Throwable cause;
-
     private SimpleAssertionError(String message, @Nullable Throwable cause) {
       super(checkNotNull(message));
-      this.cause = cause;
 
-      try {
-        initCause(cause);
-      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        /*
-         * initCause() throws under old versions of Android:
-         * https://issuetracker.google.com/issues/36945167
-         *
-         * Yes, it's *nice* if initCause() works:
-         *
-         * - It ensures that, if someone tries to call initCause() later, the call will fail loudly
-         *   rather than be silently ignored.
-         *
-         * - It populates the usual `Throwable.cause` field, where users of debuggers and other
-         *   tools are likely to look first.
-         *
-         * But if it doesn't work, that's fine: Most consumers of the cause should be retrieving it
-         * through getCause(), which we've overridden to return *our* `cause` field, which we've
-         * populated with the correct value.
-         */
-      }
+      initCause(cause);
     }
 
     static SimpleAssertionError create(String message, @Nullable Throwable cause) {
@@ -377,12 +354,6 @@ public final class Truth {
 
     static SimpleAssertionError createWithNoStack(String message) {
       return createWithNoStack(message, /* cause= */ null);
-    }
-
-    @Override
-    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-    public @Nullable Throwable getCause() {
-      return cause;
     }
 
     @Override
