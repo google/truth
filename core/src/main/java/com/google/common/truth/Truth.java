@@ -265,7 +265,7 @@ public final class Truth {
     "Java7ApiChecker", // no more dangerous than wherever the user got the Optional
     "NullableOptional", // Truth always accepts nulls, no matter the type
   })
-  public static <T> OptionalSubject assertThat(@Nullable Optional<T> actual) {
+  public static OptionalSubject assertThat(@Nullable Optional<?> actual) {
     return assert_().that(actual);
   }
 
@@ -297,7 +297,7 @@ public final class Truth {
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
-  public static <T extends @Nullable Object> StreamSubject assertThat(@Nullable Stream<T> actual) {
+  public static StreamSubject assertThat(@Nullable Stream<?> actual) {
     return assert_().that(actual);
   }
 
