@@ -74,6 +74,11 @@ public final class OptionalLongSubject extends Subject {
     }
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(optionalLongs()).that(optional)....}. Now, you can perform
+   * assertions like that without the {@code about(...)} call.
+   */
   public static Subject.Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
     return (metadata, subject) -> new OptionalLongSubject(metadata, subject, "optionalLong");
   }

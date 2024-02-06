@@ -61,6 +61,11 @@ public final class LongStreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(longStreams()).that(stream)....}. Now, you can perform assertions
+   * like that without the {@code about(...)} call.
+   */
   public static Factory<LongStreamSubject, LongStream> longStreams() {
     return LongStreamSubject::new;
   }

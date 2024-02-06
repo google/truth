@@ -88,6 +88,11 @@ public final class StreamSubject extends Subject {
     return String.valueOf(asList);
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(streams()).that(stream)....}. Now, you can perform assertions like
+   * that without the {@code about(...)} call.
+   */
   public static Subject.Factory<StreamSubject, Stream<?>> streams() {
     return StreamSubject::new;
   }

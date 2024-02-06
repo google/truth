@@ -30,19 +30,12 @@ import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * The primary entry point for assertions about Java 8 types.
+ * The obsolete entry point for assertions about Java 8 types.
  *
- * <p>To use {@link Truth#assertWithMessage} with a Java 8 type, use {@code
- * assertWithMessage(...).about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}
- * (or similarly for the other types).
- *
- * <p>Likewise, to use different failure strategies like {@link Expect}, use {@code
- * expect.about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}.
- *
- * <p>For more information about combining different messages, failure strategies, and subjects, see
- * <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
- * behavior/{@code Subject} type?</a> in the Truth FAQ.
+ * @deprecated Instead of this class's methods, use the identical methods declared in the main
+ *     {@link Truth} class.
  */
+@Deprecated
 // The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
 @SuppressWarnings("Java7ApiChecker")
 public final class Truth8 {
@@ -75,10 +68,6 @@ public final class Truth8 {
     return assertAbout(LongStreamSubject.longStreams()).that(target);
   }
 
-  // TODO(b/64757353): Add support for DoubleStream?
-
-  // Not actually a Java 8 feature, but for now this is the best option since core Truth still has
-  // to support Java environments without java.nio.file such as Android and J2CL.
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible
