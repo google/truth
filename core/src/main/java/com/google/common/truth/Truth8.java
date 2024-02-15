@@ -33,7 +33,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * The obsolete entry point for assertions about Java 8 types.
  *
  * @deprecated Instead of this class's methods, use the identical methods declared in the main
- *     {@link Truth} class.
+ *     {@link Truth} class. In most cases, you can <a
+ *     href="https://github.com/google/truth/releases/tag/v1.4.0">migrate</a> your whole project
+ *     mechanically: {@code git grep -l Truth8 | xargs perl -pi -e 's/\bTruth8\b/Truth/g;'}
+ *     Migration is important <i>if</i> you static import {@code assertThat}: If you do not migrate,
+ *     such static imports will become ambiguous in Truth 1.4.2, breaking your build.
  */
 @Deprecated
 // The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
