@@ -137,7 +137,10 @@ public final class <span class="typeNameLabel">Truth8</span>
 extends java.lang.Object</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Instead of this class's methods, use the identical methods declared in the main
-     <a href="Truth.html" title="class in com.google.common.truth"><code>Truth</code></a> class.</div>
+     <a href="Truth.html" title="class in com.google.common.truth"><code>Truth</code></a> class. In most cases, you can <a href="https://github.com/google/truth/releases/tag/v1.4.0">migrate</a> your whole project
+     mechanically: <code>git grep -l Truth8 | xargs perl -pi -e 's/\bTruth8\b/Truth/g;'</code>
+     Migration is important <i>if</i> you static import <code>assertThat</code>: If you do not migrate,
+     such static imports will become ambiguous in Truth 1.4.2, breaking your build.</div>
 </div>
 <div class="block">The obsolete entry point for assertions about Java 8 types.</div>
 </li>

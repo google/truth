@@ -3583,7 +3583,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Instead of this class's methods, use the identical methods declared in the main
-     <a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth"><code>Truth</code></a> class.</div>
+     <a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth"><code>Truth</code></a> class. In most cases, you can <a href="https://github.com/google/truth/releases/tag/v1.4.0">migrate</a> your whole project
+     mechanically: <code>git grep -l Truth8 | xargs perl -pi -e 's/\bTruth8\b/Truth/g;'</code>
+     Migration is important <i>if</i> you static import <code>assertThat</code>: If you do not migrate,
+     such static imports will become ambiguous in Truth 1.4.2, breaking your build.</div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/TruthFailureSubject.html#truthFailures()">truthFailures()</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a></dt>
