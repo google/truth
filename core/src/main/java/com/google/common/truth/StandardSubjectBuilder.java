@@ -121,7 +121,7 @@ public class StandardSubjectBuilder {
   }
 
   @SuppressWarnings("AvoidObjectArrays")
-  public final <T> ObjectArraySubject<T> that(@Nullable T @Nullable [] actual) {
+  public final <T extends @Nullable Object> ObjectArraySubject<T> that(T @Nullable [] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }
 

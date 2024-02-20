@@ -201,7 +201,8 @@ public final class Truth {
   }
 
   @SuppressWarnings("AvoidObjectArrays")
-  public static <T> ObjectArraySubject<T> assertThat(@Nullable T @Nullable [] actual) {
+  public static <T extends @Nullable Object> ObjectArraySubject<T> assertThat(
+      T @Nullable [] actual) {
     return assert_().that(actual);
   }
 

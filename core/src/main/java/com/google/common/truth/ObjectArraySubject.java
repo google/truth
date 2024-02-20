@@ -26,10 +26,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  */
 public final class ObjectArraySubject<T extends @Nullable Object> extends AbstractArraySubject {
-  private final @Nullable T @Nullable [] actual;
+  private final T @Nullable [] actual;
 
-  ObjectArraySubject(
-      FailureMetadata metadata, @Nullable T @Nullable [] o, @Nullable String typeDescription) {
+  ObjectArraySubject(FailureMetadata metadata, T @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }
