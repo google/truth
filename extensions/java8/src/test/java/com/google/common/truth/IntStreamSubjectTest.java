@@ -36,6 +36,7 @@ import org.junit.runners.JUnit4;
 public final class IntStreamSubjectTest {
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void testIsEqualTo() throws Exception {
     IntStream stream = IntStream.of(42);
     Truth8.assertThat(stream).isEqualTo(stream);
@@ -65,6 +66,7 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void testIsSameInstanceAs() throws Exception {
     IntStream stream = IntStream.of(1);
     Truth8.assertThat(stream).isSameInstanceAs(stream);

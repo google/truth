@@ -36,6 +36,7 @@ import org.junit.runners.JUnit4;
 public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void simpleEquality() {
     assertThat(4).isEqualTo(4);
   }

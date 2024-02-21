@@ -128,6 +128,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void stringEquality() {
     assertThat("abc").isEqualTo("abc");
   }

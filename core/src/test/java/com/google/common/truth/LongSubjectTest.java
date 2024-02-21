@@ -36,6 +36,7 @@ import org.junit.runners.JUnit4;
 public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void simpleEquality() {
     assertThat(4L).isEqualTo(4L);
   }

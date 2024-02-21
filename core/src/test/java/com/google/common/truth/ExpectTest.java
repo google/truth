@@ -79,6 +79,7 @@ public class ExpectTest {
       };
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectTrue() {
     expect.that(4).isEqualTo(4);
   }
@@ -175,6 +176,7 @@ public class ExpectTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void warnWhenExpectIsNotRule() {
     String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
     thrown.expectMessage(message);

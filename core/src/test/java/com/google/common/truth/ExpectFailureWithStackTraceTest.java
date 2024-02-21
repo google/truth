@@ -33,6 +33,7 @@ public class ExpectFailureWithStackTraceTest {
   @Rule public final FailingExpect failToExpect = new FailingExpect();
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectTwoFailures() {
     failToExpect.delegate.that(4).isNotEqualTo(4);
     failToExpect.delegate.that("abc").contains("x");

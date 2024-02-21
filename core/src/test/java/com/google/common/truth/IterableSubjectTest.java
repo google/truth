@@ -709,7 +709,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings("ContainsExactlyNone")
+  @SuppressWarnings({"ContainsExactlyNone", "TruthSelfEquals"})
   public void iterableContainsExactlyElementsInInOrderPassesWithEmptyExpectedAndActual() {
     assertThat(ImmutableList.of()).containsExactlyElementsIn(ImmutableList.of()).inOrder();
   }

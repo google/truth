@@ -52,6 +52,7 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   public void testInteger() {
     assertThat(457923).isEqualTo(457923);
     try {

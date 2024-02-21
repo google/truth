@@ -54,11 +54,13 @@ public class ExpectFailureTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_passesIfUnused() {
     assertThat(4).isEqualTo(4);
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsOnSuccess() {
     expectFailure.whenTesting().that(4).isEqualTo(4);
     try {
@@ -83,6 +85,7 @@ public class ExpectFailureTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsOnMultiplewhenTestings() {
     try {
       expectFailure.whenTesting().that(4).isEqualTo(4);
@@ -108,6 +111,7 @@ public class ExpectFailureTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsAfterTest() {
     try {
       expectFailure.whenTesting().that(4).isEqualTo(4);
@@ -121,6 +125,7 @@ public class ExpectFailureTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_whenTestingWithoutInContext_shouldFail() {
     ExpectFailure expectFailure = new ExpectFailure();
     try {

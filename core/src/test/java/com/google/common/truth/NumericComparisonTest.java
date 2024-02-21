@@ -73,6 +73,7 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void testAllCombinations_pass() {
     assertThat(42).isEqualTo(42L);
     assertThat(42).isEqualTo(Long.valueOf(42L));

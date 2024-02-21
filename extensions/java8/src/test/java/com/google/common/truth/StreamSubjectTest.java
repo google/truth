@@ -37,7 +37,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
-  @SuppressWarnings("deprecation") // test of a possibly mistaken call
+  @SuppressWarnings({"deprecation", "TruthSelfEquals"}) // test of a possibly mistaken call
   @Test
   public void testIsEqualToSameInstancePreviouslyConsumed() throws Exception {
     Stream<String> stream = Stream.of("hello");
@@ -45,7 +45,7 @@ public final class StreamSubjectTest {
     assertThat(stream).isEqualTo(stream);
   }
 
-  @SuppressWarnings("deprecation") // test of a possibly mistaken call
+  @SuppressWarnings({"deprecation", "TruthSelfEquals"}) // test of a possibly mistaken call
   @Test
   public void testIsEqualToSameInstanceDoesNotConsume() throws Exception {
     Stream<String> stream = Stream.of("hello");
@@ -124,6 +124,7 @@ public final class StreamSubjectTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void testIsSameInstanceAs() throws Exception {
     Stream<String> stream = Stream.of("hello");
     assertThat(stream).isSameInstanceAs(stream);

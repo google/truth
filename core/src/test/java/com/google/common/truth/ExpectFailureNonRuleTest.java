@@ -125,6 +125,7 @@ public class ExpectFailureNonRuleTest {
     }
 
     @Test
+    @SuppressWarnings("TruthSelfEquals")
     public void testExpect_throwInSubject_shouldPropagate() {
       expectFailure.whenTesting().that(4).isEqualTo(4); // No failure being caught
       long unused = throwingMethod();
