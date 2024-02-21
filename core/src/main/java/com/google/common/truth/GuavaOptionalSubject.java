@@ -30,10 +30,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  */
 public final class GuavaOptionalSubject extends Subject {
+  @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   private final @Nullable Optional<?> actual;
 
   GuavaOptionalSubject(
-      FailureMetadata metadata, @Nullable Optional<?> actual, @Nullable String typeDescription) {
+      FailureMetadata metadata,
+      @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
+          @Nullable Optional<?> actual,
+      @Nullable String typeDescription) {
     super(metadata, actual, typeDescription);
     this.actual = actual;
   }

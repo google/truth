@@ -30,11 +30,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class OptionalSubject extends Subject {
+  @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   private final @Nullable Optional<?> actual;
 
   OptionalSubject(
       FailureMetadata failureMetadata,
-      @Nullable Optional<?> subject,
+      @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
+          @Nullable Optional<?> subject,
       @Nullable String typeDescription) {
     super(failureMetadata, subject, typeDescription);
     this.actual = subject;
