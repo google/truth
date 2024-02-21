@@ -36,7 +36,7 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_int() {
     int int42 = 42;
-    Integer integer42 = new Integer(42);
+    Integer integer42 = 42;
     Object object42 = (Object) 42;
 
     assertThat(int42).isEqualTo(int42);
@@ -56,7 +56,7 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_long() {
     long longPrim42 = 42;
-    Long long42 = new Long(42);
+    Long long42 = (long) 42;
     Object object42 = (Object) 42L;
 
     assertThat(longPrim42).isEqualTo(longPrim42);
@@ -75,22 +75,22 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
   @Test
   public void testAllCombinations_pass() {
     assertThat(42).isEqualTo(42L);
-    assertThat(42).isEqualTo(new Long(42L));
-    assertThat(new Integer(42)).isEqualTo(42L);
-    assertThat(new Integer(42)).isEqualTo(new Long(42L));
+    assertThat(42).isEqualTo(Long.valueOf(42L));
+    assertThat(Integer.valueOf(42)).isEqualTo(42L);
+    assertThat(Integer.valueOf(42)).isEqualTo(Long.valueOf(42L));
     assertThat(42L).isEqualTo(42);
-    assertThat(42L).isEqualTo(new Integer(42));
-    assertThat(new Long(42L)).isEqualTo(42);
-    assertThat(new Long(42L)).isEqualTo(new Integer(42));
+    assertThat(42L).isEqualTo(Integer.valueOf(42));
+    assertThat(Long.valueOf(42L)).isEqualTo(42);
+    assertThat(Long.valueOf(42L)).isEqualTo(Integer.valueOf(42));
 
     assertThat(42).isEqualTo(42);
-    assertThat(42).isEqualTo(new Integer(42));
-    assertThat(new Integer(42)).isEqualTo(42);
-    assertThat(new Integer(42)).isEqualTo(new Integer(42));
+    assertThat(42).isEqualTo(Integer.valueOf(42));
+    assertThat(Integer.valueOf(42)).isEqualTo(42);
+    assertThat(Integer.valueOf(42)).isEqualTo(Integer.valueOf(42));
     assertThat(42L).isEqualTo(42L);
-    assertThat(42L).isEqualTo(new Long(42L));
-    assertThat(new Long(42L)).isEqualTo(42L);
-    assertThat(new Long(42L)).isEqualTo(new Long(42L));
+    assertThat(42L).isEqualTo(Long.valueOf(42L));
+    assertThat(Long.valueOf(42L)).isEqualTo(42L);
+    assertThat(Long.valueOf(42L)).isEqualTo(Long.valueOf(42L));
   }
 
   @Test
