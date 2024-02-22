@@ -29,26 +29,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
   private final ImmutableList<Fact> facts;
 
-  /** Separate cause field, in case initCause() fails. */
-  private final @Nullable Throwable cause;
-
   AssertionErrorWithFacts(
       ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
     super(makeMessage(messages, facts));
     this.facts = checkNotNull(facts);
 
-    this.cause = cause;
-    try {
-      initCause(cause);
-    } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-      // See Truth.SimpleAssertionError.
-    }
-  }
-
-  @Override
-  @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-  public @Nullable Throwable getCause() {
-    return cause;
+    initCause(cause);
   }
 
   @Override

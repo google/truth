@@ -165,31 +165,17 @@ final class Platform {
   abstract static class PlatformComparisonFailure extends ComparisonFailure {
     private final String message;
 
-    /** Separate cause field, in case initCause() fails. */
-    private final @Nullable Throwable cause;
-
     PlatformComparisonFailure(
         String message, String expected, String actual, @Nullable Throwable cause) {
       super(message, expected, actual);
       this.message = message;
-      this.cause = cause;
 
-      try {
-        initCause(cause);
-      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        // See Truth.SimpleAssertionError.
-      }
+      initCause(cause);
     }
 
     @Override
     public final String getMessage() {
       return message;
-    }
-
-    @Override
-    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-    public final @Nullable Throwable getCause() {
-      return cause;
     }
 
     // To avoid printing the class name before the message.
