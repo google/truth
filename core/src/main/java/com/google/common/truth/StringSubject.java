@@ -165,7 +165,6 @@ public class StringSubject extends ComparableSubject<String> {
 
   /** Fails if the string matches the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
-  @J2ktIncompatible
   public void doesNotMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -177,7 +176,6 @@ public class StringSubject extends ComparableSubject<String> {
 
   /** Fails if the string does not contain a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
-  @J2ktIncompatible
   public void containsMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -199,7 +197,6 @@ public class StringSubject extends ComparableSubject<String> {
 
   /** Fails if the string contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
-  @J2ktIncompatible
   public void doesNotContainMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
     if (actual == null) {
