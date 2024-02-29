@@ -35,7 +35,7 @@ public class OptionalSubjectTest {
 
   @Test
   public void isPresent() {
-    Truth8.assertThat(Optional.of("foo")).isPresent();
+    assertThat(Optional.of("foo")).isPresent();
   }
 
   @Test
@@ -56,7 +56,7 @@ public class OptionalSubjectTest {
 
   @Test
   public void isEmpty() {
-    Truth8.assertThat(Optional.empty()).isEmpty();
+    assertThat(Optional.empty()).isEmpty();
   }
 
   @Test
@@ -75,7 +75,7 @@ public class OptionalSubjectTest {
 
   @Test
   public void hasValue() {
-    Truth8.assertThat(Optional.of("foo")).hasValue("foo");
+    assertThat(Optional.of("foo")).hasValue("foo");
   }
 
   @Test
@@ -92,7 +92,7 @@ public class OptionalSubjectTest {
   @Test
   public void hasValue_npeWithNullParameter() {
     try {
-      Truth8.assertThat(Optional.of("foo")).hasValue(null);
+      assertThat(Optional.of("foo")).hasValue(null);
       fail("Expected NPE");
     } catch (NullPointerException expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Optional cannot have a null value.");

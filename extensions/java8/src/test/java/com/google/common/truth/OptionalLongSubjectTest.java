@@ -40,7 +40,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void isPresent() {
-    Truth8.assertThat(OptionalLong.of(1337L)).isPresent();
+    assertThat(OptionalLong.of(1337L)).isPresent();
   }
 
   @Test
@@ -52,7 +52,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void isEmpty() {
-    Truth8.assertThat(OptionalLong.empty()).isEmpty();
+    assertThat(OptionalLong.empty()).isEmpty();
   }
 
   @Test
@@ -71,7 +71,7 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void hasValue() {
-    Truth8.assertThat(OptionalLong.of(1337L)).hasValue(1337L);
+    assertThat(OptionalLong.of(1337L)).hasValue(1337L);
   }
 
   @Test

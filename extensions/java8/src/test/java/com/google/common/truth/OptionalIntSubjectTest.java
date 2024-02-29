@@ -40,7 +40,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void isPresent() {
-    Truth8.assertThat(OptionalInt.of(1337)).isPresent();
+    assertThat(OptionalInt.of(1337)).isPresent();
   }
 
   @Test
@@ -52,7 +52,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void isEmpty() {
-    Truth8.assertThat(OptionalInt.empty()).isEmpty();
+    assertThat(OptionalInt.empty()).isEmpty();
   }
 
   @Test
@@ -71,7 +71,7 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void hasValue() {
-    Truth8.assertThat(OptionalInt.of(1337)).hasValue(1337);
+    assertThat(OptionalInt.of(1337)).hasValue(1337);
   }
 
   @Test

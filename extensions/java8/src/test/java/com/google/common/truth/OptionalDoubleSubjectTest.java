@@ -40,7 +40,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isPresent() {
-    Truth8.assertThat(OptionalDouble.of(1337.0)).isPresent();
+    assertThat(OptionalDouble.of(1337.0)).isPresent();
   }
 
   @Test
@@ -52,7 +52,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isEmpty() {
-    Truth8.assertThat(OptionalDouble.empty()).isEmpty();
+    assertThat(OptionalDouble.empty()).isEmpty();
   }
 
   @Test
@@ -71,7 +71,7 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void hasValue() {
-    Truth8.assertThat(OptionalDouble.of(1337.0)).hasValue(1337.0);
+    assertThat(OptionalDouble.of(1337.0)).hasValue(1337.0);
   }
 
   @Test

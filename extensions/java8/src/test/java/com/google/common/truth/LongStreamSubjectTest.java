@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.LongStreamSubject.longStreams;
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
@@ -39,7 +40,7 @@ public final class LongStreamSubjectTest {
   @SuppressWarnings("TruthSelfEquals")
   public void testIsEqualTo() throws Exception {
     LongStream stream = LongStream.of(42);
-    Truth8.assertThat(stream).isEqualTo(stream);
+    assertThat(stream).isEqualTo(stream);
   }
 
   @Test
@@ -53,7 +54,7 @@ public final class LongStreamSubjectTest {
   public void testNullStream_fails() throws Exception {
     LongStream nullStream = null;
     try {
-      Truth8.assertThat(nullStream).isEmpty();
+      assertThat(nullStream).isEmpty();
       fail();
     } catch (NullPointerException expected) {
     }
@@ -62,19 +63,19 @@ public final class LongStreamSubjectTest {
   @Test
   public void testNullStreamIsNull() throws Exception {
     LongStream nullStream = null;
-    Truth8.assertThat(nullStream).isNull();
+    assertThat(nullStream).isNull();
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
   public void testIsSameInstanceAs() throws Exception {
     LongStream stream = LongStream.of(1);
-    Truth8.assertThat(stream).isSameInstanceAs(stream);
+    assertThat(stream).isSameInstanceAs(stream);
   }
 
   @Test
   public void testIsEmpty() throws Exception {
-    Truth8.assertThat(LongStream.of()).isEmpty();
+    assertThat(LongStream.of()).isEmpty();
   }
 
   @Test
@@ -85,7 +86,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testIsNotEmpty() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).isNotEmpty();
+    assertThat(LongStream.of(42)).isNotEmpty();
   }
 
   @Test
@@ -96,7 +97,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testHasSize() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).hasSize(1);
+    assertThat(LongStream.of(42)).hasSize(1);
   }
 
   @Test
@@ -107,7 +108,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoDuplicates() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).containsNoDuplicates();
+    assertThat(LongStream.of(42)).containsNoDuplicates();
   }
 
   @Test
@@ -119,7 +120,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContains() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).contains(42);
+    assertThat(LongStream.of(42)).contains(42);
   }
 
   @Test
@@ -130,7 +131,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAnyOf() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).containsAnyOf(42, 43);
+    assertThat(LongStream.of(42)).containsAnyOf(42, 43);
   }
 
   @Test
@@ -141,7 +142,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAnyIn() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).containsAnyIn(asList(42L, 43L));
+    assertThat(LongStream.of(42)).containsAnyIn(asList(42L, 43L));
   }
 
   @Test
@@ -153,7 +154,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testDoesNotContain() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).doesNotContain(43);
+    assertThat(LongStream.of(42)).doesNotContain(43);
   }
 
   @Test
@@ -164,7 +165,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoneOf() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).containsNoneOf(43, 44);
+    assertThat(LongStream.of(42)).containsNoneOf(43, 44);
   }
 
   @Test
@@ -175,7 +176,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoneIn() throws Exception {
-    Truth8.assertThat(LongStream.of(42)).containsNoneIn(asList(43, 44));
+    assertThat(LongStream.of(42)).containsNoneIn(asList(43, 44));
   }
 
   @Test
@@ -187,7 +188,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAtLeast() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43);
+    assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43);
   }
 
   @Test
@@ -199,7 +200,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAtLeast_inOrder() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43).inOrder();
+    assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43).inOrder();
   }
 
   @Test
@@ -218,7 +219,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAtLeastElementsIn() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L));
+    assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L));
   }
 
   @Test
@@ -243,7 +244,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAtLeastElementsIn_inOrder() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L)).inOrder();
+    assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L)).inOrder();
   }
 
   @Test
@@ -276,7 +277,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactly() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsExactly(42, 43);
+    assertThat(LongStream.of(42, 43)).containsExactly(42, 43);
   }
 
   @Test
@@ -289,7 +290,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactly_inOrder() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsExactly(42, 43).inOrder();
+    assertThat(LongStream.of(42, 43)).containsExactly(42, 43).inOrder();
   }
 
   @Test
@@ -304,8 +305,8 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L));
-    Truth8.assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(43L, 42L));
+    assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L));
+    assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(43L, 42L));
   }
 
   @Test
@@ -328,7 +329,7 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn_inOrder() throws Exception {
-    Truth8.assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L)).inOrder();
+    assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L)).inOrder();
   }
 
   @Test
@@ -357,14 +358,14 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn_inOrder_LongStream() throws Exception {
-    Truth8.assertThat(LongStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
+    assertThat(LongStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
   }
 
   @Test
   public void testIsInOrder() {
-    Truth8.assertThat(LongStream.of()).isInOrder();
-    Truth8.assertThat(LongStream.of(1)).isInOrder();
-    Truth8.assertThat(LongStream.of(1, 1, 2, 3, 3, 3, 4)).isInOrder();
+    assertThat(LongStream.of()).isInOrder();
+    assertThat(LongStream.of(1)).isInOrder();
+    assertThat(LongStream.of(1, 1, 2, 3, 3, 3, 4)).isInOrder();
   }
 
   @Test
@@ -375,9 +376,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testIsInStrictOrder() {
-    Truth8.assertThat(LongStream.of()).isInStrictOrder();
-    Truth8.assertThat(LongStream.of(1)).isInStrictOrder();
-    Truth8.assertThat(LongStream.of(1, 2, 3, 4)).isInStrictOrder();
+    assertThat(LongStream.of()).isInStrictOrder();
+    assertThat(LongStream.of(1)).isInStrictOrder();
+    assertThat(LongStream.of(1, 2, 3, 4)).isInStrictOrder();
   }
 
   @Test
