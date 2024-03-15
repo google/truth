@@ -964,7 +964,7 @@ final class ProtoTruthMessageDifferencer {
       FieldDescriptor fieldDescriptor, Object key, FieldDescriptor keyFieldDescriptor) {
     StringBuilder sb = new StringBuilder();
     try {
-      TextFormat.printFieldValue(keyFieldDescriptor, key, sb);
+      TextFormat.printer().printFieldValue(keyFieldDescriptor, key, sb);
     } catch (IOException impossible) {
       throw new AssertionError(impossible);
     }
