@@ -74,7 +74,7 @@ explaining why they appear where they do.
 
 ### [`FailureStrategy`]
 
-Quick refresher: The failure strategy tells Truth what to do what a check fails.
+Quick refresher: The failure strategy tells Truth what to do when a check fails.
 The most common strategy is [`assert_`], which means to throw an
 `AssertionError`, but others exist (e.g., [`expect`], [`assume`]).
 
@@ -123,29 +123,30 @@ test itself).
 ### Message
 
 The message doesn't go at the beginning, as discussed above. We chose to make it
-the second call, rather than putting it after `about` or after `that`:
+the second call, rather than putting it after `about` or `that`:
 
-After `about` isn't a good option because many assertion chains don't call
-`about`. Additionally, supporting it after `about` would mean supporting it on
-the `CustomSubjectBuilder` type, which would mean giving that type a self type,
-an additional complication on a type that's already difficult to understand.
+Putting it immediately after `about` isn't a good option because many assertion
+chains don't call `about`. Additionally, supporting it after `about` would mean
+supporting it on the `CustomSubjectBuilder` type, which would mean giving that
+type a self type, an additional complication on a type that's already difficult
+to understand.
 
-After `that` isn't a good option for three main reasons:
+Putting it immediately after `that` isn't a good option for three main reasons:
 
 First, messages are often long, so they break the flow of the assertion chain.
 We'd rather keep them out of the core of the assertion, `that(foo).isBar()`.
 
-Second, putting the message after `that` would require `Subject` to have a self
-type. Now, `Subject` *does* have a self type, but most subjects don't use it
-correctly, including many of Truth's built-in subjects. Additionally, it adds
-complexity. So we may still remove it.
+Second, putting the message immediately after `that` would require `Subject` to
+have a self type. This would add complexity, as already discussed in the context
+of `CustomSubjectBuilder`. In the case of `Subject`, the complexity is
+especially large for `Subject` classes that permit subtypes. Note also that
+users are likely to expect "`Subject<S>`" to mean "a `Subject` for assertions on
+type `S`" rather than "a `Subject` whose own type is `S`."
 
-Third, we'd need to avoid some of the other problems with `Subject.named`. It
-currently mutates the `Subject`, supports only a single name (rather than the
-multiple messages supported by `withMessage`), and is ignored by ~25% of
-assertion implementations. This may be fixable, probably by passing a
-`Subject.Factory` parameter to the `Subject` constructor, but it would further
-complicate things.
+Third, `Subject` instances would need a way to create new instances of
+themselves with a message added. This may be doable, probably by passing a
+`Subject.Factory` parameter to the `Subject` constructor. But it would further
+complicate things, again especially in the presence of subclasses.
 
 Note that the message can't come after the assertion itself because, if the
 assertion throws an exception, the `withMessage` call would never happen. (We
@@ -177,17 +178,15 @@ As noted above, this keeps the core of the assertion together:
 This is easiest to consider in reverse.
 
 The actual value is passed to the `Subject` constructor through the
-`Subject.Factory`. It doesn't need to be stored anywhere.
+`Subject.Factory`. It doesn't need to be stored anywhere along the way.
 
 The `Subject.Factory` is stored in the `SimpleSubjectBuilder` returned by
 `about`. Once it's invoked by `that`, it's never needed again.
 
-The message and `FailureStrategy` are the interesting part. Currently, we store
-the message by creating a wrapper `FailureStrategy` that prepends the message
-before calling the original strategy. We pass this `FailureStrategy` through the
-chain, all the way into the `Subject` and even into any derived subjects.
-Someday, we're likely to replace the `FailureStrategy` with a richer
-`FailureContext` type that is opaque to users.
+The interesting parts are the message and `FailureStrategy`. Those are bundled
+together into an instance of `FailureMetadata`. We pass this `FailureMetadata`
+through the chain, all the way into the `Subject` and even into any derived
+subjects.
 
 ## Shortcuts
 
