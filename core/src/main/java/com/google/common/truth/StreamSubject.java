@@ -92,8 +92,14 @@ public final class StreamSubject extends Subject {
    * Obsolete factory instance. This factory was previously necessary for assertions like {@code
    * assertWithMessage(...).about(streams()).that(stream)....}. Now, you can perform assertions like
    * that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(streams()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(streams()).that(...)}, use just {@code
+   *     assertThat(...)}.
    */
-  public static Subject.Factory<StreamSubject, Stream<?>> streams() {
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<StreamSubject, Stream<?>> streams() {
     return StreamSubject::new;
   }
 

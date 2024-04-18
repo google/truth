@@ -65,7 +65,13 @@ public final class LongStreamSubject extends Subject {
    * Obsolete factory instance. This factory was previously necessary for assertions like {@code
    * assertWithMessage(...).about(longStreams()).that(stream)....}. Now, you can perform assertions
    * like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(longStreams()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(longStreams()).that(...)}, use just {@code
+   *     assertThat(...)}.
    */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<LongStreamSubject, LongStream> longStreams() {
     return LongStreamSubject::new;
   }

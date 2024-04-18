@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.assertAbout;
-
 import com.google.common.annotations.GwtIncompatible;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.nio.file.Path;
@@ -40,43 +38,47 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *     such static imports will become ambiguous in Truth 1.4.2, breaking your build.
  */
 @Deprecated
-// The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
-@SuppressWarnings("Java7ApiChecker")
+@SuppressWarnings({
+  // The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
+  "Java7ApiChecker",
+  // Replacing "Truth.assertThat" with "assertThat" would produce an infinite loop.
+  "StaticImportPreferred",
+})
 public final class Truth8 {
   @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
-    return assertAbout(OptionalSubject.optionals()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
-    return assertAbout(OptionalIntSubject.optionalInts()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalLongSubject assertThat(@Nullable OptionalLong target) {
-    return assertAbout(OptionalLongSubject.optionalLongs()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
-    return assertAbout(OptionalDoubleSubject.optionalDoubles()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static StreamSubject assertThat(@Nullable Stream<?> target) {
-    return assertAbout(StreamSubject.streams()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static IntStreamSubject assertThat(@Nullable IntStream target) {
-    return assertAbout(IntStreamSubject.intStreams()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static LongStreamSubject assertThat(@Nullable LongStream target) {
-    return assertAbout(LongStreamSubject.longStreams()).that(target);
+    return Truth.assertThat(target);
   }
 
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible
   public static PathSubject assertThat(@Nullable Path target) {
-    return assertAbout(PathSubject.paths()).that(target);
+    return Truth.assertThat(target);
   }
 
   private Truth8() {}

@@ -36,8 +36,13 @@ public final class PathSubject extends Subject {
    * Obsolete factory instance. This factory was previously necessary for assertions like {@code
    * assertWithMessage(...).about(intStreams()).that(stream)....}. Now, you can perform assertions
    * like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(paths()).that(...)}, use just {@code that(...)}. Similarly,
+   *     instead of {@code assertAbout(paths()).that(...)}, use just {@code assertThat(...)}.
    */
-  public static Subject.Factory<PathSubject, Path> paths() {
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<PathSubject, Path> paths() {
     return PathSubject::new;
   }
 }

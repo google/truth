@@ -90,8 +90,14 @@ public final class OptionalSubject extends Subject {
    * Obsolete factory instance. This factory was previously necessary for assertions like {@code
    * assertWithMessage(...).about(paths()).that(path)....}. Now, you can perform assertions like
    * that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(optionals()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(optionals()).that(...)}, use just {@code
+   *     assertThat(...)}.
    */
-  public static Subject.Factory<OptionalSubject, Optional<?>> optionals() {
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<OptionalSubject, Optional<?>> optionals() {
     return (metadata, subject) -> new OptionalSubject(metadata, subject, "optional");
   }
 }
