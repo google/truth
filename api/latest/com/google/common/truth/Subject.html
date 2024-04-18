@@ -648,7 +648,7 @@ protected&nbsp;java.lang.String&nbsp;actualCustomStringRepresentation()</pre>
 <h4>ignoreCheck</h4>
 <pre class="methodSignature">protected final&nbsp;<a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;ignoreCheck()</pre>
 <div class="block">Begins a new call chain that ignores any failures. This is useful for subjects that normally
- delegate with to other subjects by using <a href="#check()"><code>check()</code></a> but have already reported a failure. In
+ delegate with to other subjects by using <code>check()</code> but have already reported a failure. In
  such cases it may still be necessary to return a <code>Subject</code> instance even though any
  subsequent assertions are meaningless. For example, if a user chains together more <a href="ThrowableSubject.html#hasCauseThat()"><code>ThrowableSubject.hasCauseThat()</code></a> calls than the actual exception has causes, <code>hasCauseThat</code>
  returns <code>ignoreCheck().that(... a dummy exception ...)</code>.</div>

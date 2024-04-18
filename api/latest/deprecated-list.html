@@ -286,18 +286,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IntStreamSubject.html#intStreams()">com.google.common.truth.IntStreamSubject.intStreams()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(intStreams()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(intStreams()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IterableSubject.html#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">com.google.common.truth.IterableSubject.isNoneOf&#8203;(Object, Object, Object...)</a></th>
 <td class="colLast">
 <div class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)"><code>IterableSubject.containsNoneOf(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a> instead.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IterableSubject.html#isNotIn(java.lang.Iterable)">com.google.common.truth.IterableSubject.isNotIn&#8203;(Iterable&lt;?&gt;)</a></th>
 <td class="colLast">
 <div class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneIn(java.lang.Iterable)"><code>IterableSubject.containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#equals(java.lang.Object)">com.google.common.truth.IterableSubject.UsingCorrespondence.equals&#8203;(Object)</a></th>
 <td class="colLast">
 <div class="deprecationComment"><code>Object.equals(Object)</code> is not supported on Truth subjects or intermediate
@@ -305,16 +313,24 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      <a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn(java.lang.Iterable)"><code>IterableSubject.UsingCorrespondence.containsExactlyElementsIn(Iterable)</code></a> instead.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#hashCode()">com.google.common.truth.IterableSubject.UsingCorrespondence.hashCode()</a></th>
 <td class="colLast">
 <div class="deprecationComment"><code>Object.hashCode()</code> is not supported on Truth types.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#toString()">com.google.common.truth.IterableSubject.UsingCorrespondence.toString()</a></th>
 <td class="colLast">
 <div class="deprecationComment"><code>Object.toString()</code> is not supported on Truth subjects.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/LongStreamSubject.html#longStreams()">com.google.common.truth.LongStreamSubject.longStreams()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(longStreams()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(longStreams()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -337,6 +353,45 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/OptionalDoubleSubject.html#optionalDoubles()">com.google.common.truth.OptionalDoubleSubject.optionalDoubles()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(optionalDoubles()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(optionalDoubles()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/OptionalIntSubject.html#optionalInts()">com.google.common.truth.OptionalIntSubject.optionalInts()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(optionalInts()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(optionalInts()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/OptionalLongSubject.html#optionalLongs()">com.google.common.truth.OptionalLongSubject.optionalLongs()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(optionalLongs()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(optionalLongs()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/OptionalSubject.html#optionals()">com.google.common.truth.OptionalSubject.optionals()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(optionals()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(optionals()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/PathSubject.html#paths()">com.google.common.truth.PathSubject.paths()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(paths()).that(...)</code>, use just <code>that(...)</code>. Similarly,
+     instead of <code>assertAbout(paths()).that(...)</code>, use just <code>assertThat(...)</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StreamSubject.html#isEqualTo(java.lang.Object)">com.google.common.truth.StreamSubject.isEqualTo&#8203;(Object)</a></th>
 <td class="colLast">
 <div class="deprecationComment"><code>streamA.isEqualTo(streamB)</code> always fails, except when passed the exact same
@@ -345,13 +400,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      contents of the stream, use <a href="com/google/common/truth/StreamSubject.html#containsExactly(java.lang.Object...)"><code>StreamSubject.containsExactly(java.lang.Object...)</code></a> or similar methods.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StreamSubject.html#isNotEqualTo(java.lang.Object)">com.google.common.truth.StreamSubject.isNotEqualTo&#8203;(Object)</a></th>
 <td class="colLast">
 <div class="deprecationComment"><code>streamA.isNotEqualTo(streamB)</code> always passes, except when passed the exact
      same stream reference. If you really want to test object identity, you can eliminate this
      deprecation warning by using <a href="com/google/common/truth/Subject.html#isNotSameInstanceAs(java.lang.Object)"><code>Subject.isNotSameInstanceAs(java.lang.Object)</code></a>. If you instead want to test the
      contents of the stream, collect both streams to lists and perform assertions like <a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)"><code>Subject.isNotEqualTo(java.lang.Object)</code></a> on them. In some cases, you may be able to use <a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth"><code>StreamSubject</code></a> assertions like <a href="com/google/common/truth/StreamSubject.html#doesNotContain(java.lang.Object)"><code>StreamSubject.doesNotContain(java.lang.Object)</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="com/google/common/truth/StreamSubject.html#streams()">com.google.common.truth.StreamSubject.streams()</a></th>
+<td class="colLast">
+<div class="deprecationComment">Instead of <code>about(streams()).that(...)</code>, use just <code>that(...)</code>.
+     Similarly, instead of <code>assertAbout(streams()).that(...)</code>, use just <code>
+     assertThat(...)</code>.</div>
 </td>
 </tr>
 <tr class="rowColor">
