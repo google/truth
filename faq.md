@@ -37,6 +37,14 @@ the right one for each call.
 
 If not, you can use one of the methods without static import.
 
+Also, note that if you define a method inside your test class named
+`assertThat`, you will *NOT* be able to static import `Truth.assertThat`.
+Similarly, if you extend `org.junit.Assert` (to avoid needing to static import
+JUnit's individual assertion methods), you also will not be able to use Truth
+with a static import (because `Assert` declares a method named `assertThat`).
+This is an
+[anti-pattern](https://errorprone.info/bugpattern/ExtendingJUnitAssert) anyways.
+
 ## Referencing a Truth subject directly is _generally_ an anti-pattern {#subject-references}
 
 If you find yourself referencing a Truth subject type, there's a good chance
