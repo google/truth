@@ -638,7 +638,11 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
                   .addAll(correspondence.describeForMapValues())
-                  .add(fact("but contained", immutableEntry(excludedKey, actualValue)))
+                  .add(
+                      fact(
+                          "but contained",
+                          Maps.<@Nullable Object, @Nullable A>immutableEntry(
+                              excludedKey, actualValue)))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
