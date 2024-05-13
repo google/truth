@@ -331,7 +331,9 @@ extends java.lang.Object</pre>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code>static <a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertThat(java.lang.Throwable)">assertThat</a></span>&#8203;(@Nullable java.lang.Throwable&nbsp;actual)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Begins an assertion about a <code>Throwable</code>.</div>
+</td>
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code>static <a href="BigDecimalSubject.html" title="class in com.google.common.truth">BigDecimalSubject</a></code></td>
@@ -542,6 +544,19 @@ public static&nbsp;<a href="ClassSubject.html" title="class in com.google.common
 <li class="blockList">
 <h4>assertThat</h4>
 <pre class="methodSignature">public static&nbsp;<a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a>&nbsp;assertThat&#8203;(@Nullable java.lang.Throwable&nbsp;actual)</pre>
+<div class="block">Begins an assertion about a <code>Throwable</code>.
+
+ <p>Truth does not provide its own support for calling a method and automatically catching an
+ expected exception, only for asserting on the exception after it has been caught. To catch the
+ exception, we suggest <a href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html?is-external=true#assertThrows-java.lang.Class-org.junit.function.ThrowingRunnable-" title="class or interface in org.junit" class="externalLink"><code>assertThrows</code></a> (JUnit), <a href="https://kotlinlang.org/api/latest/kotlin.test/kotlin.test/assert-fails-with.html"><code>
+ assertFailsWith</code></a> (<code>kotlin.test</code>), or similar functionality from your testing library
+ of choice.
+
+ <pre>
+ InvocationTargetException expected =
+     assertThrows(InvocationTargetException.class, () -> method.invoke(null));
+ assertThat(expected).hasCauseThat().isInstanceOf(IOException.class);
+ </pre></div>
 </li>
 </ul>
 <a id="assertThat(java.lang.Long)">

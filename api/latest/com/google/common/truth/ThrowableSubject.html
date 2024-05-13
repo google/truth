@@ -143,7 +143,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ThrowableSubject</span>
 extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a></pre>
-<div class="block">Propositions for <code>Throwable</code> subjects.</div>
+<div class="block">Propositions for <code>Throwable</code> subjects.
+
+ <p>Truth does not provide its own support for calling a method and automatically catching an
+ expected exception, only for asserting on the exception after it has been caught. To catch the
+ exception, we suggest <a href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html?is-external=true#assertThrows-java.lang.Class-org.junit.function.ThrowingRunnable-" title="class or interface in org.junit" class="externalLink"><code>assertThrows</code></a> (JUnit), <a href="https://kotlinlang.org/api/latest/kotlin.test/kotlin.test/assert-fails-with.html"><code>
+ assertFailsWith</code></a> (<code>kotlin.test</code>), or similar functionality from your testing library of
+ choice.
+
+ <pre>
+ InvocationTargetException expected =
+     assertThrows(InvocationTargetException.class, () -> method.invoke(null));
+ assertThat(expected).hasCauseThat().isInstanceOf(IOException.class);
+ </pre></div>
 <dl>
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Kurt Alfred Kluever</dd>
