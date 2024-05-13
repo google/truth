@@ -168,6 +168,23 @@ public final class Truth {
     return assert_().that(actual);
   }
 
+  /**
+   * Begins an assertion about a {@link Throwable}.
+   *
+   * <p>Truth does not provide its own support for calling a method and automatically catching an
+   * expected exception, only for asserting on the exception after it has been caught. To catch the
+   * exception, we suggest {@link org.junit.Assert#assertThrows(Class,
+   * org.junit.function.ThrowingRunnable) assertThrows} (JUnit), <a
+   * href="https://kotlinlang.org/api/latest/kotlin.test/kotlin.test/assert-fails-with.html">{@code
+   * assertFailsWith}</a> ({@code kotlin.test}), or similar functionality from your testing library
+   * of choice.
+   *
+   * <pre>
+   * InvocationTargetException expected =
+   *     assertThrows(InvocationTargetException.class, () -> method.invoke(null));
+   * assertThat(expected).hasCauseThat().isInstanceOf(IOException.class);
+   * </pre>
+   */
   public static ThrowableSubject assertThat(@Nullable Throwable actual) {
     return assert_().that(actual);
   }
