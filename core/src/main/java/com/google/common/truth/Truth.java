@@ -355,9 +355,7 @@ public final class Truth {
   @SuppressWarnings("OverrideThrowableToString") // We intentionally replace the normal format.
   static final class SimpleAssertionError extends AssertionError {
     private SimpleAssertionError(String message, @Nullable Throwable cause) {
-      super(checkNotNull(message));
-
-      initCause(cause);
+      super(checkNotNull(message), cause);
     }
 
     static SimpleAssertionError create(String message, @Nullable Throwable cause) {

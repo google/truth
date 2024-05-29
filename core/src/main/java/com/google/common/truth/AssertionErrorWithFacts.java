@@ -31,10 +31,8 @@ final class AssertionErrorWithFacts extends AssertionError implements ErrorWithF
 
   AssertionErrorWithFacts(
       ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
-    super(makeMessage(messages, facts));
+    super(makeMessage(messages, facts), cause);
     this.facts = checkNotNull(facts);
-
-    initCause(cause);
   }
 
   @Override
