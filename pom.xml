@@ -30,7 +30,7 @@
     -->
     <guava.jre.version>33.2.1-jre</guava.jre.version>
     <gwt.version>2.10.0</gwt.version>
-    <protobuf.version>4.27.0</protobuf.version>
+    <protobuf.version>4.27.1</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
@@ -128,7 +128,7 @@
       <dependency>
         <groupId>com.google.jsinterop</groupId>
         <artifactId>jsinterop-annotations</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
