@@ -52,7 +52,6 @@ import com.google.common.truth.TableSubject;
 import com.google.common.truth.ThrowableSubject;
 import com.google.common.truth.Truth;
 import com.google.common.truth.Truth8;
-import com.google.common.truth.TruthJUnit;
 
 /**
  * Static references to a variety of classes to force their loading during the {@link TruthGwtTest}.
@@ -96,5 +95,4 @@ public class Inventory {
   ThrowableSubject throwableSubject;
   Truth truth;
   Truth8 truth8;
-  TruthJUnit truthJUnit;
 }
