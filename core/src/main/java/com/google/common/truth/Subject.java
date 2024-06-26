@@ -53,7 +53,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An object that lets you perform checks on the value under test. For example, {@code Subject}
@@ -72,6 +73,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author David Saff
  * @author Christian Gruber
  */
+@NullMarked
 public class Subject {
   /**
    * In a fluent assertion chain, the argument to the common overload of {@link

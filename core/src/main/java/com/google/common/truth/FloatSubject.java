@@ -26,13 +26,15 @@ import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Float} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class FloatSubject extends ComparableSubject<Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 

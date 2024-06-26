@@ -42,7 +42,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Map} subjects.
@@ -50,6 +51,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public class MapSubject extends Subject {
   private final @Nullable Map<?, ?> actual;
 

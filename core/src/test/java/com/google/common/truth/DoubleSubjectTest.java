@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

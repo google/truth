@@ -23,7 +23,8 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
@@ -38,6 +39,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
  * caller tries to access the facts of an error that wasn't produced by Truth.
  */
+@NullMarked
 public final class TruthFailureSubject extends ThrowableSubject {
   static final Fact HOW_TO_TEST_KEYS_WITHOUT_VALUES =
       simpleFact(

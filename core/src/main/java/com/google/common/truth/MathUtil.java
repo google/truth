@@ -19,8 +19,10 @@ package com.google.common.truth;
 import static java.lang.Math.subtractExact;
 
 import com.google.common.primitives.Doubles;
+import org.jspecify.annotations.NullMarked;
 
 /** Math utilities to be shared by numeric subjects. */
+@NullMarked
 final class MathUtil {
   private MathUtil() {}
 

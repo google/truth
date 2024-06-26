@@ -25,7 +25,7 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The obsolete entry point for assertions about Java 8 types.

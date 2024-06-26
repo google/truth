@@ -26,13 +26,15 @@ import static com.google.common.truth.Platform.doubleToString;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Double} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class DoubleSubject extends ComparableSubject<Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 

@@ -36,7 +36,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Utility methods used in {@code Subject} implementors.
@@ -44,6 +45,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  * @author Jens Nyman
  */
+@NullMarked
 final class SubjectUtils {
   private SubjectUtils() {}
 

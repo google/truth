@@ -32,7 +32,8 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The primary entry point for <a href="https://truth.dev">Truth</a>, a library for fluent test
@@ -78,6 +79,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class Truth {
   private Truth() {}
 

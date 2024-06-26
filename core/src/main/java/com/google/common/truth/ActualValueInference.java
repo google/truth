@@ -33,7 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map.Entry;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Handle;
@@ -69,6 +70,7 @@ import org.objectweb.asm.Type;
  */
 @GwtIncompatible
 @J2ktIncompatible
+@NullMarked
 final class ActualValueInference {
   /** <b>Call {@link Platform#inferDescription} rather than calling this directly.</b> */
   static @Nullable String describeActualValue(String className, String methodName, int lineNumber) {

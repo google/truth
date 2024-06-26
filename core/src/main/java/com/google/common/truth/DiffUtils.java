@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * A custom implementation of the diff algorithm based on the solution described at
@@ -30,6 +31,7 @@ import java.util.Map;
  *
  * @author Yun Peng (pcloudy@google.com)
  */
+@NullMarked
 final class DiffUtils {
   // A list of unique strings appeared in compared texts.
   // The index of each string is its incremental Id.

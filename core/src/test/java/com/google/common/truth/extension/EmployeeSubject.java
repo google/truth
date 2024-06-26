@@ -23,7 +23,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.LongSubject;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}.

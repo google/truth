@@ -18,13 +18,15 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.primitives.Longs;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code long[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveLongArraySubject extends AbstractArraySubject {
   private final long @Nullable [] actual;
 

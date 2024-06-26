@@ -22,7 +22,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link CustomSubjectBuilder} which aggregates all Proto-related {@link

@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol

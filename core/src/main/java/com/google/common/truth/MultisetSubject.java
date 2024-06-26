@@ -19,13 +19,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Multiset;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Multiset} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class MultisetSubject extends IterableSubject {
 
   private final @Nullable Multiset<?> actual;

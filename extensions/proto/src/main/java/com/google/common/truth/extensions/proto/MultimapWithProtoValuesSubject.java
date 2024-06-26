@@ -35,7 +35,7 @@ import com.google.protobuf.TypeRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Truth subject for {@link Multimap}s with protocol buffers for values.

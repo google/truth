@@ -33,7 +33,8 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * In a fluent assertion chain, an object with which you can do any of the following:
@@ -53,6 +54,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>You won't extend this type. When you write a custom subject, see <a
  * href="https://truth.dev/extension">our doc on extensions</a>.
  */
+@NullMarked
 public class StandardSubjectBuilder {
   /**
    * Returns a new instance that invokes the given {@code FailureStrategy} when a check fails. Most

@@ -18,7 +18,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Comparable} typed subjects.
@@ -26,6 +27,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kurt Alfred Kluever
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
+@NullMarked
 // TODO(b/136040841): Consider further tightening this to the proper `extends Comparable<? super T>`
 public abstract class ComparableSubject<T extends Comparable<?>> extends Subject {
   /**

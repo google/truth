@@ -34,7 +34,7 @@ import com.google.protobuf.TypeRegistry;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Truth subject for the iterables of protocol buffers.

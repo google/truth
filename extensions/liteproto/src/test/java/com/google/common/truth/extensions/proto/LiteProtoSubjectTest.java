@@ -30,7 +30,7 @@ import com.google.protobuf.MessageLite;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

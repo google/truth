@@ -20,13 +20,15 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.math.BigDecimal;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link BigDecimal} typed subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final @Nullable BigDecimal actual;
 

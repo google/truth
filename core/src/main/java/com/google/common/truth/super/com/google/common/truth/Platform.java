@@ -23,7 +23,8 @@ import com.google.common.collect.ImmutableList;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 
 /**
@@ -32,6 +33,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
+@NullMarked
 final class Platform {
   private Platform() {}
 

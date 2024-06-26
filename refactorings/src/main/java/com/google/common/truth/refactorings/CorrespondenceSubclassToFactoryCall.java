@@ -83,7 +83,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.lang.model.element.Modifier;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Refactors some subclasses of {@code Correspondence} to instead call {@code Correspondence.from}.

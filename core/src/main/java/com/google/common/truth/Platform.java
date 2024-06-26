@@ -32,7 +32,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
 
@@ -42,6 +43,7 @@ import org.junit.rules.TestRule;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
+@NullMarked
 final class Platform {
   private Platform() {}
 

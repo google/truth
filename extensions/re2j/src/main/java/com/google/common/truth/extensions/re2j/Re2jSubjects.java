@@ -21,7 +21,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.re2j.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Truth subjects for re2j regular expressions.

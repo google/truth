@@ -18,13 +18,15 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.primitives.Shorts;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code short[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveShortArraySubject extends AbstractArraySubject {
   private final short @Nullable [] actual;
 

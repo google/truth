@@ -31,7 +31,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
@@ -65,6 +66,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Pete Gillin
  */
+@NullMarked
 public abstract class Correspondence<A extends @Nullable Object, E extends @Nullable Object> {
 
   /**

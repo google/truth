@@ -67,7 +67,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Iterable} subjects.
@@ -88,6 +89,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Pete Gillin
  */
 // Can't be final since MultisetSubject and SortedSetSubject extend it
+@NullMarked
 public class IterableSubject extends Subject {
 
   private final @Nullable Iterable<?> actual;

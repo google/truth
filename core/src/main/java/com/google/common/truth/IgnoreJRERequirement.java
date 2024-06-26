@@ -21,9 +21,11 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 
 import java.lang.annotation.Target;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Disables Animal Sniffer's checking of compatibility with older versions of Java/Android.
  */
 @Target({METHOD, CONSTRUCTOR, TYPE})
+@NullMarked
 @interface IgnoreJRERequirement {}

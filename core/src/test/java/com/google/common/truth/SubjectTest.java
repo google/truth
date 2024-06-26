@@ -42,7 +42,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

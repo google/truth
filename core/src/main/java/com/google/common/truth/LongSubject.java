@@ -20,7 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@code long} subjects.
@@ -29,6 +30,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public class LongSubject extends ComparableSubject<Long> {
 
   private final @Nullable Long actual;

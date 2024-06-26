@@ -71,9 +71,9 @@
         <version>${guava.android.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>3.44.0</version>
+        <groupId>org.jspecify</groupId>
+        <artifactId>jspecify</artifactId>
+        <version>0.3.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>

@@ -27,7 +27,7 @@ import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Truth subjects for the Lite version of Protocol Buffers.

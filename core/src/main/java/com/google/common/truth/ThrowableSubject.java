@@ -17,7 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Throwable} subjects.
@@ -38,6 +39,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public class ThrowableSubject extends Subject {
   private final @Nullable Throwable actual;
 

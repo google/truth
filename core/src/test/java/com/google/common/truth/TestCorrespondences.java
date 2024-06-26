@@ -23,7 +23,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /** {@link Correspondence} implementations for testing purposes. */
 final class TestCorrespondences {

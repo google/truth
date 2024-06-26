@@ -23,7 +23,8 @@ import static com.google.common.truth.Fact.simpleFact;
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for string subjects.
@@ -31,6 +32,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public class StringSubject extends ComparableSubject<String> {
   private final @Nullable String actual;
 

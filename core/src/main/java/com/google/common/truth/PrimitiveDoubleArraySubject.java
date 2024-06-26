@@ -23,13 +23,15 @@ import static com.google.common.truth.Correspondence.tolerance;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code double[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double @Nullable [] actual;
 
