@@ -302,7 +302,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </td>
 </tr>
 <tr id="i10" class="altColor">
-<td class="colFirst"><code>&lt;V&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;</code></td>
+<td class="colFirst"><code>&lt;V extends @Nullable java.lang.Object&gt;<br><a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">formattingDiffsUsing</a></span>&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super V,&#8203;? super V&gt;&nbsp;formatter)</code></th>
 <td class="colLast">
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual value (i.e.</div>
@@ -593,7 +593,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockListLast">
 <li class="blockList">
 <h4>formattingDiffsUsing</h4>
-<pre class="methodSignature">public final&nbsp;&lt;V&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super V,&#8203;? super V&gt;&nbsp;formatter)</pre>
+<pre class="methodSignature">public final&nbsp;&lt;V extends @Nullable java.lang.Object&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super V,&#8203;? super V&gt;&nbsp;formatter)</pre>
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual value (i.e. a value in the <code>Map</code> under test) and the value it is expected to be equal to, but isn't. The actual and
  expected values must be of type <code>V</code>. The check is actually executed by continuing the
  method chain. For example:

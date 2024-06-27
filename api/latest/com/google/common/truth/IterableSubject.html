@@ -370,7 +370,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </td>
 </tr>
 <tr id="i17" class="rowColor">
-<td class="colFirst"><code>&lt;T&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;</code></td>
+<td class="colFirst"><code>&lt;T extends @Nullable java.lang.Object&gt;<br><a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">formattingDiffsUsing</a></span>&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</code></th>
 <td class="colLast">
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e.</div>
@@ -936,7 +936,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;
 <ul class="blockListLast">
 <li class="blockList">
 <h4>formattingDiffsUsing</h4>
-<pre class="methodSignature">public&nbsp;&lt;T&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</pre>
+<pre class="methodSignature">public&nbsp;&lt;T extends @Nullable java.lang.Object&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</pre>
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e. an element of the
  <code>Iterable</code> under test) and the element it is expected to be equal to, but isn't. The
  actual and expected elements must be of type <code>T</code>. The check is actually executed by
