@@ -325,13 +325,13 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
    * diff-formatting functionality to it. See e.g. {@link IterableSubject#formattingDiffsUsing}.
    */
   @SuppressWarnings("unchecked") // safe covariant cast
-  static <T> Correspondence<T, T> equality() {
+  static <T extends @Nullable Object> Correspondence<T, T> equality() {
     return (Equality<T>) Equality.INSTANCE;
   }
 
-  private static final class Equality<T> extends Correspondence<T, T> {
+  private static final class Equality<T extends @Nullable Object> extends Correspondence<T, T> {
 
-    private static final Equality<Object> INSTANCE = new Equality<>();
+    private static final Equality<@Nullable Object> INSTANCE = new Equality<>();
 
     @Override
     public boolean compare(T actual, T expected) {

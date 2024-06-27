@@ -528,7 +528,7 @@ public class MapSubject extends Subject {
    *
    * @since 1.1
    */
-  public final <V> UsingCorrespondence<V, V> formattingDiffsUsing(
+  public final <V extends @Nullable Object> UsingCorrespondence<V, V> formattingDiffsUsing(
       DiffFormatter<? super V, ? super V> formatter) {
     return comparingValuesUsing(Correspondence.<V>equality().formattingDiffsUsing(formatter));
   }

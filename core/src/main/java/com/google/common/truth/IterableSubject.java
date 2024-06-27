@@ -950,7 +950,7 @@ public class IterableSubject extends Subject {
    *
    * @since 1.1
    */
-  public <T> UsingCorrespondence<T, T> formattingDiffsUsing(
+  public <T extends @Nullable Object> UsingCorrespondence<T, T> formattingDiffsUsing(
       DiffFormatter<? super T, ? super T> formatter) {
     return comparingElementsUsing(Correspondence.<T>equality().formattingDiffsUsing(formatter));
   }
