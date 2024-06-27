@@ -58,7 +58,7 @@ final class Platform {
   }
 
   /**
-   * Returns an array containing all of the exceptions that were suppressed to deliver the given
+   * Returns an array containing all the exceptions that were suppressed to deliver the given
    * exception. If suppressed exceptions are not supported (pre-Java 1.7), an empty array will be
    * returned.
    */
