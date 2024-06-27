@@ -205,24 +205,21 @@ extends java.lang.Object</pre>
                <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
                <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(E%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -429,7 +426,7 @@ public final&nbsp;java.lang.String&nbsp;toString()</pre>
 
  <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
  keyed by <code>keyFunction</code>, and if an unexpected element and a missing element have the
- same non-null key then the they are paired up. (Elements with null keys are not paired.) The
+ same non-null key then they are paired up. (Elements with null keys are not paired.) The
  failure message will show paired elements together, and a diff will be shown if the <a href="Correspondence.html#formatDiff(A,E)"><code>Correspondence.formatDiff(A, E)</code></a> method returns non-null.
 
  <p>The expected elements given in the assertion should be uniquely keyed by <code>
@@ -472,8 +469,8 @@ public final&nbsp;java.lang.String&nbsp;toString()</pre>
  <p>On assertions where it makes sense to do so, the elements are paired as follows: the
  unexpected elements are keyed by <code>actualKeyFunction</code>, the missing elements are keyed by
  <code>expectedKeyFunction</code>, and if an unexpected element and a missing element have the same
- non-null key then the they are paired up. (Elements with null keys are not paired.) The
- failure message will show paired elements together, and a diff will be shown if the <a href="Correspondence.html#formatDiff(A,E)"><code>Correspondence.formatDiff(A, E)</code></a> method returns non-null.
+ non-null key then they are paired up. (Elements with null keys are not paired.) The failure
+ message will show paired elements together, and a diff will be shown if the <a href="Correspondence.html#formatDiff(A,E)"><code>Correspondence.formatDiff(A, E)</code></a> method returns non-null.
 
  <p>The expected elements given in the assertion should be uniquely keyed by <code>
  expectedKeyFunction</code>. If multiple missing elements have the same key then the pairing will be
@@ -589,8 +586,8 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
                                      <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
                                      <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a> @Nullable ...&nbsp;rest)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.
+ that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
 
  <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
@@ -606,8 +603,8 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
 public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Iterable&lt;? extends <a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.
+ that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
 
  <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
@@ -625,8 +622,8 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
 public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(<a href="IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+<div class="block">Checks that the subject contains elements that correspond to all the expected elements, i.e.
+ that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
 
  <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
