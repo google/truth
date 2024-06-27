@@ -18,15 +18,15 @@ package com.google.common.truth;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.DoNotCall;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Stream} subjects.
+ * Propositions for {@link IntStream} subjects.
  *
  * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
  * provide more readable failure messages. You should not use this class if you intend to leave the
@@ -39,14 +39,21 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-public final class StreamSubject extends Subject {
+@SuppressWarnings({
+  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
+  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
+})
+@IgnoreJRERequirement
+public final class IntStreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private StreamSubject(FailureMetadata failureMetadata, @Nullable Stream<?> stream) {
+  IntStreamSubject(FailureMetadata failureMetadata, @Nullable IntStream stream) {
     super(failureMetadata, stream);
-    this.actualList = (stream == null) ? null : stream.collect(toCollection(ArrayList::new));
+    this.actualList =
+        (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
   }
 
   @Override
@@ -54,8 +61,19 @@ public final class StreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
-  public static Subject.Factory<StreamSubject, Stream<?>> streams() {
-    return (metadata, subject) -> new StreamSubject(metadata, subject);
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(intStreams()).that(stream)....}. Now, you can perform assertions
+   * like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(intStreams()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(intStreams()).that(...)}, use just {@code
+   *     assertThat(...)}.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<IntStreamSubject, IntStream> intStreams() {
+    return IntStreamSubject::new;
   }
 
   /** Fails if the subject is not empty. */
@@ -79,12 +97,12 @@ public final class StreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain the given element. */
-  public void contains(@Nullable Object element) {
+  public void contains(int element) {
     check().that(actualList).contains(element);
   }
 
   /** Fails if the subject contains the given element. */
-  public void doesNotContain(@Nullable Object element) {
+  public void doesNotContain(int element) {
     check().that(actualList).doesNotContain(element);
   }
 
@@ -94,9 +112,9 @@ public final class StreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
-  public void containsAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    check().that(actualList).containsAnyOf(first, second, rest);
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
+  public void containsAnyOf(int first, int second, int... rest) {
+    check().that(actualList).containsAnyOf(first, second, box(rest));
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
@@ -113,10 +131,10 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
    */
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
-  public Ordered containsAtLeast(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    return check().that(actualList).containsAtLeast(first, second, rest);
+  public Ordered containsAtLeast(int first, int second, int... rest) {
+    return check().that(actualList).containsAtLeast(first, second, box(rest));
   }
 
   /**
@@ -133,8 +151,6 @@ public final class StreamSubject extends Subject {
     return check().that(actualList).containsAtLeastElementsIn(expected);
   }
 
-  // TODO(cpovirk): Add array overload of contains*ElementsIn methods? Also for int and long stream.
-
   /**
    * Fails if the subject does not contain exactly the given elements.
    *
@@ -145,8 +161,8 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
-    return check().that(actualList).containsExactly(varargs);
+  public Ordered containsExactly(int... varargs) {
+    return check().that(actualList).containsExactlyElementsIn(box(varargs));
   }
 
   /**
@@ -167,9 +183,9 @@ public final class StreamSubject extends Subject {
    * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
-  public void containsNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
-    check().that(actualList).containsNoneOf(first, second, rest);
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
+  public void containsNoneOf(int first, int second, int... rest) {
+    check().that(actualList).containsNoneOf(first, second, box(rest));
   }
 
   /**
@@ -199,7 +215,7 @@ public final class StreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInStrictOrder(Comparator<?> comparator) {
+  public void isInStrictOrder(Comparator<? super Integer> comparator) {
     check().that(actualList).isInStrictOrder(comparator);
   }
 
@@ -220,39 +236,15 @@ public final class StreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInOrder(Comparator<?> comparator) {
+  public void isInOrder(Comparator<? super Integer> comparator) {
     check().that(actualList).isInOrder(comparator);
   }
 
-  /**
-   * @deprecated {@code streamA.isEqualTo(streamB)} always fails, except when passed the exact same
-   *     stream reference
-   */
-  @Override
-  @DoNotCall(
-      "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
-          + " equality semantics")
-  @Deprecated
-  public void isEqualTo(@Nullable Object expected) {
-    throw new UnsupportedOperationException(
-        "StreamSubject.isEqualTo() is not supported because Streams do not have well-defined"
-            + " equality semantics");
+  private static Object[] box(int[] rest) {
+    return IntStream.of(rest).boxed().toArray(Integer[]::new);
   }
 
-  /**
-   * @deprecated {@code streamA.isNotEqualTo(streamB)} always passes, except when passed the exact
-   *     same stream reference
-   */
-  @Override
-  @DoNotCall(
-      "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
-          + " equality semantics")
-  @Deprecated
-  public void isNotEqualTo(@Nullable Object unexpected) {
-    throw new UnsupportedOperationException(
-        "StreamSubject.isNotEqualTo() is not supported because Streams do not have well-defined"
-            + " equality semantics");
-  }
+  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

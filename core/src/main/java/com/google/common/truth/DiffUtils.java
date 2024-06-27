@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * A custom implementation of the diff algorithm based on the solution described at
@@ -30,16 +31,17 @@ import java.util.Map;
  *
  * @author Yun Peng (pcloudy@google.com)
  */
+@NullMarked
 final class DiffUtils {
   // A list of unique strings appeared in compared texts.
   // The index of each string is its incremental Id.
   private final List<String> stringList = new ArrayList<>();
   // A map to record each unique string and its incremental id.
   private final Map<String, Integer> stringToId = new HashMap<>();
-  private int[] original;
-  private int[] revised;
+  private int[] original = new int[0];
+  private int[] revised = new int[0];
   // lcs[i][j] is the length of the longest common sequence of original[1..i] and revised[1..j].
-  private int[][] lcs;
+  private int[][] lcs = new int[0][0];
   private final List<Character> unifiedDiffType = new ArrayList<>();
   private final List<Integer> unifiedDiffContentId = new ArrayList<>();
   private final List<String> reducedUnifiedDiff = new ArrayList<>();

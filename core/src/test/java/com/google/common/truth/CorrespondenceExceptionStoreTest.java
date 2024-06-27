@@ -104,7 +104,8 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
     assertThat(second.key).isEqualTo("first exception");
     assertThat(second.value)
         .matches( // an initial statement of the method that threw and the exception type:
-            "compare\\(null, 123\\) threw java.lang.NullPointerException"
+            "compare\\(null, 123\\) threw "
+                + "com.google.common.truth.TestCorrespondences\\$NullPointerExceptionFromWithin10Of"
                 // some whitespace:
                 + "\\s+"
                 // the start of a stack trace, with the correct class:

@@ -15,16 +15,20 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.primitives.Booleans;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code boolean[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
-  private final boolean[] actual;
+  private final boolean @Nullable [] actual;
 
   PrimitiveBooleanArraySubject(
       FailureMetadata metadata, boolean @Nullable [] o, @Nullable String typeDescription) {
@@ -33,6 +37,6 @@ public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Booleans.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Booleans.asList(checkNotNull(actual)));
   }
 }

@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Message;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Comparison methods, which enforce the rules set in prior calls to {@link

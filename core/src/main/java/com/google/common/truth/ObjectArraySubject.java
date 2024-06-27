@@ -15,24 +15,27 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code Object[]} and more generically {@code T[]}.
  *
  * @author Christian Gruber
  */
-public final class ObjectArraySubject<T> extends AbstractArraySubject {
-  private final T[] actual;
+@NullMarked
+public final class ObjectArraySubject<T extends @Nullable Object> extends AbstractArraySubject {
+  private final T @Nullable [] actual;
 
-  ObjectArraySubject(
-      FailureMetadata metadata, @Nullable T @Nullable [] o, @Nullable String typeDescription) {
+  ObjectArraySubject(FailureMetadata metadata, T @Nullable [] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(checkNotNull(actual)));
   }
 }

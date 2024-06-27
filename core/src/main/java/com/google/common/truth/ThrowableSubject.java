@@ -15,15 +15,33 @@
  */
 package com.google.common.truth;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Throwable} subjects.
  *
+ * <p>Truth does not provide its own support for calling a method and automatically catching an
+ * expected exception, only for asserting on the exception after it has been caught. To catch the
+ * exception, we suggest {@link org.junit.Assert#assertThrows(Class,
+ * org.junit.function.ThrowingRunnable) assertThrows} (JUnit), <a
+ * href="https://kotlinlang.org/api/latest/kotlin.test/kotlin.test/assert-fails-with.html">{@code
+ * assertFailsWith}</a> ({@code kotlin.test}), or similar functionality from your testing library of
+ * choice.
+ *
+ * <pre>
+ * InvocationTargetException expected =
+ *     assertThrows(InvocationTargetException.class, () -> method.invoke(null));
+ * assertThat(expected).hasCauseThat().isInstanceOf(IOException.class);
+ * </pre>
+ *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public class ThrowableSubject extends Subject {
-  private final Throwable actual;
+  private final @Nullable Throwable actual;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
@@ -53,7 +71,7 @@ public class ThrowableSubject extends Subject {
               "(Note from Truth: When possible, instead of asserting on the full message, assert"
                   + " about individual facts by using ExpectFailure.assertThat.)");
     }
-    return check.that(actual.getMessage());
+    return check.that(checkNotNull(actual).getMessage());
   }
 
   /**
@@ -61,6 +79,8 @@ public class ThrowableSubject extends Subject {
    * cause. This method can be invoked repeatedly (e.g. {@code
    * assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect cause.
    */
+  // Any Throwable is fine, and we use plain Throwable to emphasize that it's not used "for real."
+  @SuppressWarnings("ShouldNotSubclass")
   public final ThrowableSubject hasCauseThat() {
     // provides a more helpful error message if hasCauseThat() methods are chained too deep
     // e.g. assertThat(new Exception()).hCT().hCT()....
@@ -74,6 +94,7 @@ public class ThrowableSubject extends Subject {
           .that(
               new Throwable() {
                 @Override
+                @SuppressWarnings("UnsynchronizedOverridesSynchronized")
                 public Throwable fillInStackTrace() {
                   setStackTrace(new StackTraceElement[0]); // for old versions of Android
                   return this;

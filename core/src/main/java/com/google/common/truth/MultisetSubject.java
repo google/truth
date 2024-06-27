@@ -16,28 +16,31 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Multiset;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Multiset} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class MultisetSubject extends IterableSubject {
 
-  private final Multiset<?> actual;
+  private final @Nullable Multiset<?> actual;
 
   MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> multiset) {
-    super(metadata, multiset);
+    super(metadata, multiset, /* typeDescriptionOverride= */ "multiset");
     this.actual = multiset;
   }
 
   /** Fails if the element does not have the given count. */
   public final void hasCount(@Nullable Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
-    int actualCount = ((Multiset<?>) actual).count(element);
+    int actualCount = checkNotNull(actual).count(element);
     check("count(%s)", element).that(actualCount).isEqualTo(expectedCount);
   }
 }

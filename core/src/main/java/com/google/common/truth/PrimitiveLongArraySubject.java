@@ -15,16 +15,20 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.primitives.Longs;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code long[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveLongArraySubject extends AbstractArraySubject {
-  private final long[] actual;
+  private final long @Nullable [] actual;
 
   PrimitiveLongArraySubject(
       FailureMetadata metadata, long @Nullable [] o, @Nullable String typeDescription) {
@@ -33,6 +37,6 @@ public final class PrimitiveLongArraySubject extends AbstractArraySubject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Longs.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Longs.asList(checkNotNull(actual)));
   }
 }

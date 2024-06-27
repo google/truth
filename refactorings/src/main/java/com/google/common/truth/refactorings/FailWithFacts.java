@@ -40,6 +40,7 @@ import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.MethodInvocationTree;
 import java.util.List;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Migrates Truth subjects from the old {@code fail(String, Object)} to the new {@code
@@ -96,7 +97,7 @@ public final class FailWithFacts extends BugChecker implements MethodInvocationT
     return describeMatch(tree, fix.build());
   }
 
-  private static String newVerb(String oldVerb) {
+  private static @Nullable String newVerb(String oldVerb) {
     List<String> old = Splitter.on(whitespace()).splitToList(oldVerb);
     String first = old.get(0);
     if (CAPITAL_LETTER.matchesAnyOf(first)) {

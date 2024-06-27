@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google, Inc.
+ * Copyright (c) 2019 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth;
 
-import com.google.common.annotations.GwtIncompatible;
-import com.google.j2objc.annotations.J2ObjCIncompatible;
-import java.nio.file.Path;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 
-/** Assertions for {@link Path} instances. */
-@GwtIncompatible
-@J2ObjCIncompatible
-public final class PathSubject extends Subject {
-  private PathSubject(FailureMetadata failureMetadata, Path actual) {
-    super(failureMetadata, actual);
-  }
+import java.lang.annotation.Target;
+import org.jspecify.annotations.NullMarked;
 
-  public static Subject.Factory<PathSubject, Path> paths() {
-    return PathSubject::new;
-  }
-}
+/**
+ * Disables Animal Sniffer's checking of compatibility with older versions of Java/Android.
+ */
+@Target({METHOD, CONSTRUCTOR, TYPE})
+@NullMarked
+@interface IgnoreJRERequirement {}

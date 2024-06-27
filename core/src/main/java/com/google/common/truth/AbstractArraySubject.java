@@ -16,18 +16,21 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.lang.reflect.Array;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A common supertype for Array subjects, abstracting some common display and error infrastructure.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 abstract class AbstractArraySubject extends Subject {
-  private final Object actual;
+  private final @Nullable Object actual;
 
   AbstractArraySubject(
       FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescription) {
@@ -60,6 +63,6 @@ abstract class AbstractArraySubject extends Subject {
   }
 
   private int length() {
-    return Array.getLength(actual);
+    return Array.getLength(checkNotNull(actual));
   }
 }

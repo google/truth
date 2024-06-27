@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link LongStream} subjects.
@@ -39,12 +39,18 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
+@SuppressWarnings({
+  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
+  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
+})
+@IgnoreJRERequirement
 public final class LongStreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
+  LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
     super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
@@ -55,6 +61,17 @@ public final class LongStreamSubject extends Subject {
     return String.valueOf(actualList);
   }
 
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(longStreams()).that(stream)....}. Now, you can perform assertions
+   * like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(longStreams()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(longStreams()).that(...)}, use just {@code
+   *     assertThat(...)}.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<LongStreamSubject, LongStream> longStreams() {
     return LongStreamSubject::new;
   }
@@ -145,7 +162,7 @@ public final class LongStreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(long... varargs) {
-    return check().that(actualList).containsExactly(box(varargs));
+    return check().that(actualList).containsExactlyElementsIn(box(varargs));
   }
 
   /**

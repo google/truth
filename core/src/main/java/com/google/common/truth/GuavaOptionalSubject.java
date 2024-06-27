@@ -19,21 +19,26 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.base.Optional;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for Guava {@link Optional} subjects.
  *
- * <p>If you are looking for a {@code java.util.Optional} subject, please read
- * <a href="https://truth.dev/faq#java8">faq#java8</a>
+ * <p>If you are looking for a {@code java.util.Optional} subject, see {@link OptionalSubject}.
  *
  * @author Christian Gruber
  */
+@NullMarked
 public final class GuavaOptionalSubject extends Subject {
-  private final Optional<?> actual;
+  @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
+  private final @Nullable Optional<?> actual;
 
   GuavaOptionalSubject(
-      FailureMetadata metadata, @Nullable Optional<?> actual, @Nullable String typeDescription) {
+      FailureMetadata metadata,
+      @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
+          @Nullable Optional<?> actual,
+      @Nullable String typeDescription) {
     super(metadata, actual, typeDescription);
     this.actual = actual;
   }
@@ -67,7 +72,7 @@ public final class GuavaOptionalSubject extends Subject {
    * assertThat(myOptional.get()).contains("foo");
    * }</pre>
    */
-  public void hasValue(Object expected) {
+  public void hasValue(@Nullable Object expected) {
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }

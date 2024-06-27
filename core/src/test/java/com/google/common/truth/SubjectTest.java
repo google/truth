@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.SubjectTest.ForbidsEqualityChecksSubject.objectsForbiddingEqualityCheck;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
@@ -36,13 +37,12 @@ import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.testing.NullPointerTester;
-import com.google.common.truth.Subject.Factory;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -460,6 +460,10 @@ public class SubjectTest extends BaseSubjectTestCase {
     assertThat(a).isNotEqualTo(b);
   }
 
+  @SuppressWarnings({
+    "BoxedPrimitiveConstructor",
+    "deprecation"
+  }) // intentional check on non-identity objects
   @Test
   public void isNotEqualToFailureWithObjects() {
     Object o = new Integer(1);
@@ -494,16 +498,19 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(o).isNotEqualTo(o);
   }
 
+  @SuppressWarnings("IsInstanceString") // test is an intentional trivially true check
   @Test
   public void isInstanceOfExactType() {
     assertThat("a").isInstanceOf(String.class);
   }
 
+  @SuppressWarnings("IsInstanceInteger") // test is an intentional trivially true check
   @Test
   public void isInstanceOfSuperclass() {
     assertThat(3).isInstanceOf(Number.class);
   }
 
+  @SuppressWarnings("IsInstanceString") // test is an intentional trivially true check
   @Test
   public void isInstanceOfImplementedInterface() {
     if (isGwt()) {
@@ -553,6 +560,17 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that((Object) null).isInstanceOf(CharSequence.class);
   }
 
+  // false positive; actually an intentional trivially *false* check
+  @SuppressWarnings("IsInstanceInteger")
+  @Test
+  public void isInstanceOfPrimitiveType() {
+    try {
+      assertThat(1).isInstanceOf(int.class);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
   @Test
   public void isNotInstanceOfUnrelatedClass() {
     assertThat("a").isNotInstanceOf(Long.class);
@@ -596,6 +614,15 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
 
     expectFailure.whenTesting().that("a").isNotInstanceOf(CharSequence.class);
+  }
+
+  @Test
+  public void isNotInstanceOfPrimitiveType() {
+    try {
+      assertThat(1).isNotInstanceOf(int.class);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test
@@ -720,7 +747,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall"})
+  // test of a mistaken call
+  @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall", "deprecation"})
   public void equalsThrowsUSOE() {
     try {
       boolean unused = assertThat(5).equals(5);
@@ -737,7 +765,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings("DoNotCall")
+  // test of a mistaken call
+  @SuppressWarnings({"DoNotCall", "deprecation"})
   public void hashCodeThrowsUSOE() {
     try {
       int unused = assertThat(5).hashCode();
@@ -753,8 +782,8 @@ public class SubjectTest extends BaseSubjectTestCase {
     assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
 
-  private static <T> Iterable<T> oneShotIterable(final T... values) {
-    final Iterator<T> iterator = Iterators.forArray(values);
+  private static <T> Iterable<T> oneShotIterable(T... values) {
+    Iterator<T> iterator = Iterators.forArray(values);
     return new Iterable<T>() {
       @Override
       public Iterator<T> iterator() {
@@ -769,6 +798,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("TruthIncompatibleType") // test of a mistaken call
   public void disambiguationWithSameToString() {
     expectFailure.whenTesting().that(new StringBuilder("foo")).isEqualTo(new StringBuilder("foo"));
     assertFailureKeys("expected", "but was");
@@ -797,7 +827,11 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private static final class ForbidsEqualityChecksSubject extends Subject {
+  static final class ForbidsEqualityChecksSubject extends Subject {
+    static Factory<ForbidsEqualityChecksSubject, Object> objectsForbiddingEqualityCheck() {
+      return ForbidsEqualityChecksSubject::new;
+    }
+
     ForbidsEqualityChecksSubject(FailureMetadata metadata, @Nullable Object actual) {
       super(metadata, actual);
     }
@@ -813,16 +847,6 @@ public class SubjectTest extends BaseSubjectTestCase {
     public void isNotEqualTo(@Nullable Object unexpected) {
       throw new UnsupportedOperationException();
     }
-  }
-
-  private static Subject.Factory<ForbidsEqualityChecksSubject, Object>
-      objectsForbiddingEqualityCheck() {
-    return new Factory<ForbidsEqualityChecksSubject, Object>() {
-      @Override
-      public ForbidsEqualityChecksSubject createSubject(FailureMetadata metadata, Object actual) {
-        return new ForbidsEqualityChecksSubject(metadata, actual);
-      }
-    };
   }
 
   private static boolean isAndroid() {

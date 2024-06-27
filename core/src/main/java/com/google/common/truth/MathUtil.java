@@ -16,11 +16,47 @@
 
 package com.google.common.truth;
 
+import static java.lang.Math.subtractExact;
+
 import com.google.common.primitives.Doubles;
+import org.jspecify.annotations.NullMarked;
 
 /** Math utilities to be shared by numeric subjects. */
+@NullMarked
 final class MathUtil {
   private MathUtil() {}
+
+  /**
+   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
+   * other.
+   */
+  /* package */ static boolean equalWithinTolerance(long left, long right, long tolerance) {
+    try {
+      // subtractExact is always desugared.
+      @SuppressWarnings("Java7ApiChecker")
+      long absDiff = Math.abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= Math.abs(tolerance);
+    } catch (ArithmeticException e) {
+      // The numbers are so far apart their difference isn't even a long.
+      return false;
+    }
+  }
+
+  /**
+   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
+   * other.
+   */
+  /* package */ static boolean equalWithinTolerance(int left, int right, int tolerance) {
+    try {
+      // subtractExact is always desugared.
+      @SuppressWarnings("Java7ApiChecker")
+      int absDiff = Math.abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= Math.abs(tolerance);
+    } catch (ArithmeticException e) {
+      // The numbers are so far apart their difference isn't even a int.
+      return false;
+    }
+  }
 
   /**
    * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of

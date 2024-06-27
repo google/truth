@@ -23,15 +23,17 @@ import static com.google.common.truth.Correspondence.tolerance;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code double[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
-  private final double[] actual;
+  private final double @Nullable [] actual;
 
   PrimitiveDoubleArraySubject(
       FailureMetadata metadata, double @Nullable [] o, @Nullable String typeDescription) {
@@ -65,7 +67,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
    */
   // TODO(cpovirk): Move some or all of this Javadoc to the supertype, maybe deleting this override?
   @Override
-  public void isEqualTo(Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     super.isEqualTo(expected);
   }
 
@@ -84,7 +86,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
    * </ul>
    */
   @Override
-  public void isNotEqualTo(Object expected) {
+  public void isNotEqualTo(@Nullable Object expected) {
     super.isNotEqualTo(expected);
   }
 
@@ -234,7 +236,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private IterableSubject iterableSubject() {
     return checkNoNeedToDisplayBothValues("asList()")
         .about(iterablesWithCustomDoubleToString())
-        .that(Doubles.asList(actual));
+        .that(Doubles.asList(checkNotNull(actual)));
   }
 
   /*
@@ -248,7 +250,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private Factory<IterableSubject, Iterable<?>> iterablesWithCustomDoubleToString() {
     return new Factory<IterableSubject, Iterable<?>>() {
       @Override
-      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+      public IterableSubject createSubject(FailureMetadata metadata, @Nullable Iterable<?> actual) {
         return new IterableSubjectWithInheritedToString(metadata, actual);
       }
     };
@@ -256,7 +258,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
 
   private final class IterableSubjectWithInheritedToString extends IterableSubject {
 
-    IterableSubjectWithInheritedToString(FailureMetadata metadata, Iterable<?> actual) {
+    IterableSubjectWithInheritedToString(FailureMetadata metadata, @Nullable Iterable<?> actual) {
       super(metadata, actual);
     }
 

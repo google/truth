@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -88,10 +89,16 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void containsFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    expectFailureWhenTestingThat(table).contains("row", "row");
+    expectFailureWhenTestingThat(table).contains("row", "otherCol");
     assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
+        .factKeys()
+        .containsExactly(
+            "expected to contain mapping for row-column key pair",
+            "row key",
+            "column key",
+            "but was");
+    assertThat(expectFailure.getFailure()).factValue("row key").isEqualTo("row");
+    assertThat(expectFailure.getFailure()).factValue("column key").isEqualTo("otherCol");
   }
 
   @Test
@@ -108,10 +115,16 @@ public class TableSubjectTest extends BaseSubjectTestCase {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     expectFailureWhenTestingThat(table).doesNotContain("row", "col");
     assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{row={col=val}}> does not contain mapping for "
-                + "row/column <row> <col>");
+        .factKeys()
+        .containsExactly(
+            "expected not to contain mapping for row-column key pair",
+            "row key",
+            "column key",
+            "but contained value",
+            "full contents");
+    assertThat(expectFailure.getFailure()).factValue("row key").isEqualTo("row");
+    assertThat(expectFailure.getFailure()).factValue("column key").isEqualTo("col");
+    assertThat(expectFailure.getFailure()).factValue("but contained value").isEqualTo("val");
   }
 
   @Test
@@ -158,7 +171,7 @@ public class TableSubjectTest extends BaseSubjectTestCase {
     return Tables.immutableCell(row, col, val);
   }
 
-  private TableSubject expectFailureWhenTestingThat(Table actual) {
+  private TableSubject expectFailureWhenTestingThat(Table<?, ?, ?> actual) {
     return expectFailure.whenTesting().that(actual);
   }
 }

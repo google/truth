@@ -4,11 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
   <groupId>com.google.truth</groupId>
   <artifactId>truth-parent</artifactId>
   <version>HEAD-SNAPSHOT</version>
@@ -18,18 +13,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- Properties for plugins for which pluginManagement hasn't been working for us. -->
-    <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
-    <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
-
     <!-- Properties for multiple-artifact deps. -->
-    <auto-value.version>1.9</auto-value.version>
+    <auto-value.version>1.11.0</auto-value.version>
     <!--
       We have a separate property for each flavor of Guava (instead of a shared
       version without the -android and -jre suffixes) because that lets
       Dependabot update our Guava versions.
     -->
-    <guava.android.version>31.1-android</guava.android.version>
+    <guava.android.version>33.2.1-android</guava.android.version>
     <!--
       Also, we have this comment in between the 2 flavors of Guava. That's
       also to smooth the Dependabot update process: Dependabot generates a
@@ -37,15 +28,18 @@
       time, one gets submitted before the other, and
       the other ends up with a merge conflict. That requires reapprovals.
     -->
-    <guava.jre.version>31.1-jre</guava.jre.version>
-    <gwt.version>2.9.0</gwt.version>
-    <protobuf.version>3.21.6</protobuf.version>
+    <guava.jre.version>33.2.1-jre</guava.jre.version>
+    <gwt.version>2.10.0</gwt.version>
+    <protobuf.version>4.27.1</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
-    <os-maven-plugin.version>1.7.0</os-maven-plugin.version>
+    <os-maven-plugin.version>1.7.1</os-maven-plugin.version>
+
+    <!-- Default to no additional options (for Java 8). Overridden by a profile. -->
+    <conditionalJavadoc9PlusOptions></conditionalJavadoc9PlusOptions>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -77,9 +71,9 @@
         <version>${guava.android.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>3.25.0</version>
+        <groupId>org.jspecify</groupId>
+        <artifactId>jspecify</artifactId>
+        <version>0.3.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -107,20 +101,9 @@
         <version>${guava.android.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.testing.compile</groupId>
-        <artifactId>compile-testing</artifactId>
-        <version>0.19</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <groupId>com.google.errorprone</groupId>
         <artifactId>error_prone_annotations</artifactId>
-        <version>2.15.0</version>
+        <version>2.28.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
@@ -140,7 +123,7 @@
       <dependency>
         <groupId>org.ow2.asm</groupId>
         <artifactId>asm</artifactId>
-        <version>9.3</version>
+        <version>9.7</version>
       </dependency>
       <dependency>
         <groupId>com.google.jsinterop</groupId>
@@ -217,6 +200,18 @@
     <connection>scm:git:git@github.com:google/truth.git</connection>
     <url>scm:git:git@github.com:google/truth.git</url>
   </scm>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
   <build>
     <pluginManagement>
       <plugins>
@@ -229,19 +224,15 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
+          <version>3.7.0</version>
           <configuration>
             <additionalOptions>
-              <additionalOption>--frames</additionalOption>
-              <additionalOption>-Xdoclint:-html</additionalOption>
+              <additionalOption>-Xdoclint:-html ${conditionalJavadoc9PlusOptions}</additionalOption>
             </additionalOptions>
-            <additionalJOptions>
-              <additionalJOption>--no-module-directories</additionalJOption>
-            </additionalJOptions>
             <doctitle>Truth ${project.version}</doctitle>
             <windowtitle>Truth ${project.version}</windowtitle>
             <quiet>true</quiet>
@@ -254,7 +245,7 @@
             <links>
               <!-- TODO(cpovirk): Link to the version that we depend on? -->
               <link>https://guava.dev/releases/snapshot-jre/api/docs</link>
-              <link>https://developers.google.com/protocol-buffers/docs/reference/java</link>
+              <link>https://protobuf.dev/reference/java/api-docs/</link>
               <link>https://junit.org/junit4/javadoc/latest/</link>
               <link>https://docs.oracle.com/javase/7/docs/api/</link>
             </links>
@@ -265,17 +256,19 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.3.0</version> <!-- work around ubuntu bug -->
+          <version>3.4.2</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <version>1.22</version>
+          <version>1.23</version>
           <configuration>
+            <annotations>com.google.common.truth.IgnoreJRERequirement</annotations>
             <signature>
-              <groupId>org.codehaus.mojo.signature</groupId>
-              <artifactId>java16-sun</artifactId>
-              <version>1.10</version>
+              <groupId>com.toasttab.android</groupId>
+              <artifactId>gummy-bears-api-19</artifactId>
+              <version>0.6.1</version>
+              <!-- TODO(cpovirk): In principle, it would make sense to *also* test compatibility with JDK 1.8, since Truth also has JRE users. -->
             </signature>
           </configuration>
           <executions>
@@ -290,23 +283,28 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <version>3.13.0</version>
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
+            <parameters>true</parameters>
           </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>3.2.4</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${maven-enforcer-plugin.version}</version>
+          <version>3.5.0</version>
           <executions>
             <execution>
               <id>enforce</id>
@@ -343,26 +341,69 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <!--
-        Force a version >2.7 for this parent project. If we use the current
-        default of 2.7, Maven ignores this parent project's configuration when
-        running maven-javadoc-plugin in children during releases.
-        -->
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
-      </plugin>
-      <!--
-        Similar. Without this, Maven tries to run maven-enforcer-plugin 1.0,
-        and it fails to construct an instance of the rule class, apparently
-        because of a mismatch between the new Maven APIs and the old Enforcer
-        APIs.
-        -->
-      <plugin>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>${maven-enforcer-plugin.version}</version>
-      </plugin>
-    </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>sonatype-oss-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals><goal>sign</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals><goal>jar</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-docs</id>
+                <goals><goal>jar</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--
+          Passes JDK 11-12-specific `no-module-directories` flag to Javadoc tool,
+          which is required to make symbol search work correctly in the generated
+          pages.
+
+          This flag does not exist on 9-10 and 13+ (https://bugs.openjdk.java.net/browse/JDK-8215582).
+
+          Consider removing it once our release and test scripts are migrated to a recent JDK (17+).
+       -->
+      <id>javadocs-jdk11-12</id>
+      <activation>
+        <jdk>[11,13)</jdk>
+      </activation>
+      <properties>
+        <maven-javadoc-plugin.additionalJOptions>--no-module-directories</maven-javadoc-plugin.additionalJOptions>
+      </properties>
+    </profile>
+    <profile>
+      <id>javadocs-jdk9plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <conditionalJavadocOptions>--frames</conditionalJavadocOptions>
+      </properties>
+    </profile>
+  </profiles>
 </project>

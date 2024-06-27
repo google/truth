@@ -17,17 +17,26 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static org.junit.Assert.assertThrows;
+import static org.junit.runner.Description.createTestDescription;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
-import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.model.Statement;
 
 /** Tests for {@link ActualValueInference}. */
 @GwtIncompatible // Inference doesn't work under GWT.
 @RunWith(JUnit4.class)
+/*
+ * We declare a single `failure` variable in each method, and many methods assign to it multiple
+ * times. We declare it without initializing it so that every assignment to it can look the same as
+ * every other (rather than having an initial combined initialization+assignment that looks slightly
+ * different.
+ */
+@SuppressWarnings("InitializeInline")
 public final class ActualValueInferenceTest {
   @Test
   public void simple() {
@@ -115,9 +124,7 @@ public final class ActualValueInferenceTest {
 
     failure =
         expectFailure(
-            whenTesting -> {
-              whenTesting.that(makeException()).hasMessageThat().isEqualTo("b");
-            });
+            whenTesting -> whenTesting.that(makeException()).hasMessageThat().isEqualTo("b"));
     assertThat(failure).factValue("value of").isEqualTo("makeException().getMessage()");
   }
 
@@ -180,6 +187,26 @@ public final class ActualValueInferenceTest {
     assertThat(failure).factKeys().doesNotContain("value of");
   }
 
+  @Test
+  public void expect() {
+    Expect expect = Expect.create();
+    Statement testMethod =
+        new Statement() {
+          @Override
+          public void evaluate() {
+            expect.that(staticNoArg()).isEqualTo("b");
+          }
+        };
+    Statement wrapped = expect.apply(testMethod, createTestDescription("MyTest", "myMethod"));
+    AssertionError failure = assertThrows(AssertionError.class, wrapped::evaluate);
+    /*
+     * We can't use factValue here because Expect throws a plain wrapper AssertionError, not the
+     * original ErrorWithFacts. We could in theory change that someday, perhaps as part of a
+     * followup to https://github.com/google/truth/issues/543, but it seems unlikely.
+     */
+    assertThat(failure).hasMessageThat().contains("staticNoArg()");
+  }
+
   static String staticNoArg() {
     return "a";
   }
@@ -196,7 +223,7 @@ public final class ActualValueInferenceTest {
     return "a";
   }
 
-  List<Integer> oneTwoThree() {
+  ImmutableList<Integer> oneTwoThree() {
     return ImmutableList.of(1, 2, 3);
   }
 

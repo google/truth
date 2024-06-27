@@ -22,21 +22,22 @@ import static com.google.common.collect.Multisets.immutableEntry;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Utility methods used in {@code Subject} implementors.
@@ -44,22 +45,23 @@ import java.util.Map;
  * @author Christian Gruber
  * @author Jens Nyman
  */
+@NullMarked
 final class SubjectUtils {
   private SubjectUtils() {}
 
   static final String HUMAN_UNDERSTANDABLE_EMPTY_STRING = "\"\" (empty String)";
 
-  static <T> List<T> accumulate(T first, T second, T... rest) {
+  static <T extends @Nullable Object> List<T> accumulate(T first, T second, T @Nullable ... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
     // Javac makes the opposite inference, so handle that here.
-    List<T> items = new ArrayList<T>(2 + ((rest == null) ? 1 : rest.length));
+    List<T> items = new ArrayList<>(2 + ((rest == null) ? 1 : rest.length));
     items.add(first);
     items.add(second);
     if (rest == null) {
-      items.add(null);
+      items.add((T) null);
     } else {
-      items.addAll(Arrays.asList(rest));
+      items.addAll(asList(rest));
     }
     return items;
   }
@@ -89,7 +91,8 @@ final class SubjectUtils {
     return (count > 1) ? item + " [" + count + " copies]" : item;
   }
 
-  private static <T> NonHashingMultiset<T> countDuplicatesToMultiset(Iterable<T> items) {
+  private static <T extends @Nullable Object> NonHashingMultiset<T> countDuplicatesToMultiset(
+      Iterable<T> items) {
     // We use avoid hashing in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
     NonHashingMultiset<T> multiset = new NonHashingMultiset<>();
@@ -138,24 +141,21 @@ final class SubjectUtils {
     }
   }
 
-  private static final class NonHashingMultiset<E> {
-    // This ought to be static, but the generics are easier when I can refer to <E>.
-    private final Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>> unwrapKey =
-        new Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>>() {
-          @Override
-          public Multiset.Entry<?> apply(Multiset.Entry<Wrapper<E>> input) {
-            return immutableEntry(input.getElement().get(), input.getCount());
-          }
-        };
+  private static final class NonHashingMultiset<E extends @Nullable Object> {
+    /*
+     * This ought to be static, but the generics are easier when I can refer to <E>. We still want
+     * an Entry<?> so that entrySet() can return Iterable<Entry<?>> instead of Iterable<Entry<E>>.
+     * That way, it can be returned directly from DuplicateGroupedAndTyped.entrySet() without our
+     * having to generalize *its* return type to Iterable<? extends Entry<?>>.
+     */
+    private Multiset.Entry<?> unwrapKey(Multiset.Entry<Wrapper<E>> input) {
+      return immutableEntry(input.getElement().get(), input.getCount());
+    }
 
-    private final Multiset<Equivalence.Wrapper<E>> contents = LinkedHashMultiset.create();
+    private final Multiset<Wrapper<E>> contents = LinkedHashMultiset.create();
 
     void add(E element) {
       contents.add(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
-    }
-
-    boolean remove(E element) {
-      return contents.remove(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
     }
 
     int totalCopies() {
@@ -167,7 +167,7 @@ final class SubjectUtils {
     }
 
     Iterable<Multiset.Entry<?>> entrySet() {
-      return transform(contents.entrySet(), unwrapKey);
+      return transform(contents.entrySet(), this::unwrapKey);
     }
 
     String toStringWithBrackets() {
@@ -261,13 +261,14 @@ final class SubjectUtils {
    *
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
-  static List<Object> retainMatchingToString(Iterable<?> items, Iterable<?> itemsToCheck) {
-    ListMultimap<String, Object> stringValueToItemsToCheck = ArrayListMultimap.create();
+  static List<@Nullable Object> retainMatchingToString(
+      Iterable<?> items, Iterable<?> itemsToCheck) {
+    ListMultimap<String, @Nullable Object> stringValueToItemsToCheck = ArrayListMultimap.create();
     for (Object itemToCheck : itemsToCheck) {
       stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
     }
 
-    List<Object> result = Lists.newArrayList();
+    List<@Nullable Object> result = Lists.newArrayList();
     for (Object item : items) {
       for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
         if (!Objects.equal(itemToCheck, item)) {
@@ -292,7 +293,7 @@ final class SubjectUtils {
     return !retainMatchingToString(items1, items2).isEmpty();
   }
 
-  static String objectToTypeName(Object item) {
+  static String objectToTypeName(@Nullable Object item) {
     // TODO(cpovirk): Merge this with the code in Subject.failEqualityCheck().
     if (item == null) {
       // The name "null type" comes from the interface javax.lang.model.type.NullType.
@@ -342,7 +343,7 @@ final class SubjectUtils {
     return itemsWithTypeInfo;
   }
 
-  static <T> Collection<T> iterableToCollection(Iterable<T> iterable) {
+  static <T extends @Nullable Object> Collection<T> iterableToCollection(Iterable<T> iterable) {
     if (iterable instanceof Collection) {
       // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
       // iterable, right? I sure hope so.
@@ -352,7 +353,7 @@ final class SubjectUtils {
     }
   }
 
-  static <T> List<T> iterableToList(Iterable<T> iterable) {
+  static <T extends @Nullable Object> List<T> iterableToList(Iterable<T> iterable) {
     if (iterable instanceof List) {
       return (List<T>) iterable;
     } else {
@@ -366,7 +367,7 @@ final class SubjectUtils {
    *
    * <p>Returns the given iterable if it contains no empty strings.
    */
-  static <T> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
+  static <T extends @Nullable Object> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
     if (Iterables.contains(items, "")) {
       List<T> annotatedItems = Lists.newArrayList();
       for (T item : items) {
@@ -401,5 +402,10 @@ final class SubjectUtils {
 
   static <E> ImmutableList<E> sandwich(E first, E[] array, E last) {
     return new ImmutableList.Builder<E>().add(first).add(array).add(last).build();
+  }
+
+  @SuppressWarnings("nullness") // TODO: b/316358623 - Remove suppression after fixing checker
+  static <E extends @Nullable Object> List<E> asList(E... a) {
+    return Arrays.asList(a);
   }
 }

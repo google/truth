@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Google, Inc.
+ * Copyright (c) 2017 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,22 @@
  */
 package com.google.common.truth;
 
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
+import static com.google.common.truth.Truth.assertThat;
 
-import java.lang.annotation.Target;
-import org.jspecify.annotations.NullMarked;
+import junit.framework.TestCase;
 
-@Target({METHOD, FIELD, CONSTRUCTOR})
-@NullMarked
-@interface UsedByReflection {}
+/**
+ * JUnit3 tests for {@link StackTraceCleaner}.
+ *
+ * <p>The "main" tests are in {@link StackTraceCleanerTest}.
+ */
+public class StackTraceCleanerJUnit3Test extends TestCase {
+  public void testSimple() {
+    try {
+      assertThat(0).isEqualTo(1);
+      throw new Error();
+    } catch (AssertionError failure) {
+      assertThat(failure.getStackTrace()).hasLength(1);
+    }
+  }
+}

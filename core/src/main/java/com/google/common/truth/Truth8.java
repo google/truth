@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.assertAbout;
-
 import com.google.common.annotations.GwtIncompatible;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.nio.file.Path;
@@ -27,59 +25,60 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
- * The primary entry point for assertions about Java 8 types.
+ * The obsolete entry point for assertions about Java 8 types.
  *
- * <p>To use {@link Truth#assertWithMessage} with a Java 8 type, use {@code
- * assertWithMessage(...).about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}
- * (or similarly for the other types).
- *
- * <p>Likewise, to use different failure strategies like {@link Expect}, use {@code
- * expect.about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}.
- *
- * <p>For more information about combining different messages, failure strategies, and subjects, see
- * <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
- * behavior/{@code Subject} type?</a> in the Truth FAQ.
+ * @deprecated Instead of this class's methods, use the identical methods declared in the main
+ *     {@link Truth} class. In most cases, you can <a
+ *     href="https://github.com/google/truth/releases/tag/v1.4.0">migrate</a> your whole project
+ *     mechanically: {@code git grep -l Truth8 | xargs perl -pi -e 's/\bTruth8\b/Truth/g;'}
+ *     Migration is important <i>if</i> you static import {@code assertThat}: If you do not migrate,
+ *     such static imports will become ambiguous in Truth 1.4.2, breaking your build.
  */
+@Deprecated
+@SuppressWarnings({
+  // The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
+  "Java7ApiChecker",
+  // Replacing "Truth.assertThat" with "assertThat" would produce an infinite loop.
+  "StaticImportPreferred",
+})
 public final class Truth8 {
+  @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
-    return assertAbout(OptionalSubject.optionals()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
-    return assertAbout(OptionalIntSubject.optionalInts()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalLongSubject assertThat(@Nullable OptionalLong target) {
-    return assertAbout(OptionalLongSubject.optionalLongs()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
-    return assertAbout(OptionalDoubleSubject.optionalDoubles()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static StreamSubject assertThat(@Nullable Stream<?> target) {
-    return assertAbout(StreamSubject.streams()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static IntStreamSubject assertThat(@Nullable IntStream target) {
-    return assertAbout(IntStreamSubject.intStreams()).that(target);
+    return Truth.assertThat(target);
   }
 
   public static LongStreamSubject assertThat(@Nullable LongStream target) {
-    return assertAbout(LongStreamSubject.longStreams()).that(target);
+    return Truth.assertThat(target);
   }
 
-  // TODO(b/64757353): Add support for DoubleStream?
-
-  // Not actually a Java 8 feature, but for now this is the best option since core Truth still has
-  // to support Java environments without java.nio.file such as Android and J2CL.
   @GwtIncompatible
   @J2ObjCIncompatible
+  @J2ktIncompatible
   public static PathSubject assertThat(@Nullable Path target) {
-    return assertAbout(PathSubject.paths()).that(target);
+    return Truth.assertThat(target);
   }
 
   private Truth8() {}

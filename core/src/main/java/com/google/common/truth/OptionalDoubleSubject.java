@@ -19,13 +19,16 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.util.OptionalDouble;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for Java 8 {@link OptionalDouble} subjects.
  *
  * @author Ben Douglass
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
+@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
+@IgnoreJRERequirement
 public final class OptionalDoubleSubject extends Subject {
 
   private final OptionalDouble actual;
@@ -78,7 +81,18 @@ public final class OptionalDoubleSubject extends Subject {
     }
   }
 
-  public static Subject.Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(optionalDoubles()).that(optional)....}. Now, you can perform
+   * assertions like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(optionalDoubles()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(optionalDoubles()).that(...)}, use just {@code
+   *     assertThat(...)}.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
     return (metadata, subject) -> new OptionalDoubleSubject(metadata, subject, "optionalDouble");
   }
 }

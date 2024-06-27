@@ -34,7 +34,7 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A specification for a {@link ProtoTruthMessageDifferencer} for comparing two individual
@@ -273,7 +273,11 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     Builder builder = toBuilder().setHasExpectedMessages(true);
     if (compareExpectedFieldsOnly()) {
       builder.setCompareFieldsScope(
-          FieldScopeLogic.and(compareFieldsScope(), FieldScopes.fromSetFields(messages).logic()));
+          FieldScopeLogic.and(
+              compareFieldsScope(),
+              FieldScopeImpl.createFromSetFields(
+                      messages, useTypeRegistry(), useExtensionRegistry())
+                  .logic()));
     }
     return builder.build();
   }
@@ -365,7 +369,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   }
 
   final <M extends Message> Correspondence<M, M> toCorrespondence(
-      final Optional<Descriptor> optDescriptor) {
+      Optional<Descriptor> optDescriptor) {
     checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return Correspondence.from(
             // If we were allowed lambdas, this would be:

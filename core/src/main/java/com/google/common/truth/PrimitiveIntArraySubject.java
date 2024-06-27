@@ -15,16 +15,20 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.primitives.Ints;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Subject for {@code int[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@NullMarked
 public final class PrimitiveIntArraySubject extends AbstractArraySubject {
-  private final int[] actual;
+  private final int @Nullable [] actual;
 
   PrimitiveIntArraySubject(
       FailureMetadata metadata, int @Nullable [] o, @Nullable String typeDescription) {
@@ -33,6 +37,6 @@ public final class PrimitiveIntArraySubject extends AbstractArraySubject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(actual));
+    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(checkNotNull(actual)));
   }
 }

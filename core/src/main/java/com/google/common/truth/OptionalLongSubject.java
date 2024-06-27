@@ -19,13 +19,16 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.util.OptionalLong;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for Java 8 {@link OptionalLong} subjects.
  *
  * @author Ben Douglass
+ * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
+@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
+@IgnoreJRERequirement
 public final class OptionalLongSubject extends Subject {
   private final OptionalLong actual;
 
@@ -71,7 +74,18 @@ public final class OptionalLongSubject extends Subject {
     }
   }
 
-  public static Subject.Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
+  /**
+   * Obsolete factory instance. This factory was previously necessary for assertions like {@code
+   * assertWithMessage(...).about(optionalLongs()).that(optional)....}. Now, you can perform
+   * assertions like that without the {@code about(...)} call.
+   *
+   * @deprecated Instead of {@code about(optionalLongs()).that(...)}, use just {@code that(...)}.
+   *     Similarly, instead of {@code assertAbout(optionalLongs()).that(...)}, use just {@code
+   *     assertThat(...)}.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
+  public static Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
     return (metadata, subject) -> new OptionalLongSubject(metadata, subject, "optionalLong");
   }
 }

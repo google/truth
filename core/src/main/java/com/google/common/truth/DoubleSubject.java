@@ -26,17 +26,19 @@ import static com.google.common.truth.Platform.doubleToString;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Double} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class DoubleSubject extends ComparableSubject<Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  private final Double actual;
+  private final @Nullable Double actual;
 
   DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
     super(metadata, actual);
@@ -104,7 +106,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public TolerantDoubleComparison isWithin(final double tolerance) {
+  public TolerantDoubleComparison isWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
@@ -143,7 +145,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
    *     Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public TolerantDoubleComparison isNotWithin(final double tolerance) {
+  public TolerantDoubleComparison isNotWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
@@ -201,7 +203,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Double other) {
+  public final void isEquivalentAccordingToCompareTo(@Nullable Double other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 

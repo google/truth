@@ -15,10 +15,13 @@
  */
 package com.google.common.truth.extensions.re2j;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.re2j.Pattern;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Truth subjects for re2j regular expressions.
@@ -51,26 +54,27 @@ public final class Re2jSubjects {
     private static final Subject.Factory<Re2jStringSubject, String> FACTORY =
         new Subject.Factory<Re2jStringSubject, String>() {
           @Override
-          public Re2jStringSubject createSubject(FailureMetadata failureMetadata, String target) {
+          public Re2jStringSubject createSubject(
+              FailureMetadata failureMetadata, @Nullable String target) {
             return new Re2jStringSubject(failureMetadata, target);
           }
         };
 
-    private final String actual;
+    private final @Nullable String actual;
 
-    private Re2jStringSubject(FailureMetadata failureMetadata, String subject) {
+    private Re2jStringSubject(FailureMetadata failureMetadata, @Nullable String subject) {
       super(failureMetadata, subject);
       this.actual = subject;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return quote(actual);
+      return quote(checkNotNull(actual));
     }
 
     /** Fails if the string does not match the given regex. */
     public void matches(String regex) {
-      if (!Pattern.matches(regex, actual)) {
+      if (!Pattern.matches(regex, checkNotNull(actual))) {
         failWithActual("expected to match ", regex);
       }
     }
@@ -78,14 +82,14 @@ public final class Re2jSubjects {
     /** Fails if the string does not match the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void matches(Pattern regex) {
-      if (!regex.matcher(actual).matches()) {
+      if (!regex.matcher(checkNotNull(actual)).matches()) {
         failWithActual("expected to match ", regex);
       }
     }
 
     /** Fails if the string matches the given regex. */
     public void doesNotMatch(String regex) {
-      if (Pattern.matches(regex, actual)) {
+      if (Pattern.matches(regex, checkNotNull(actual))) {
         failWithActual("expected to fail to match", regex);
       }
     }
@@ -93,7 +97,7 @@ public final class Re2jSubjects {
     /** Fails if the string matches the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotMatch(Pattern regex) {
-      if (regex.matcher(actual).matches()) {
+      if (regex.matcher(checkNotNull(actual)).matches()) {
         failWithActual("expected to fail to match", regex);
       }
     }
@@ -101,14 +105,14 @@ public final class Re2jSubjects {
     /** Fails if the string does not contain a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void containsMatch(Pattern pattern) {
-      if (!pattern.matcher(actual).find()) {
+      if (!pattern.matcher(checkNotNull(actual)).find()) {
         failWithActual("expected to contain a match for", pattern);
       }
     }
 
     /** Fails if the string does not contain a match on the given regex. */
     public void containsMatch(String regex) {
-      if (!doContainsMatch(actual, regex)) {
+      if (!doContainsMatch(checkNotNull(actual), regex)) {
         failWithActual("expected to contain a match for", regex);
       }
     }
@@ -116,14 +120,14 @@ public final class Re2jSubjects {
     /** Fails if the string contains a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotContainMatch(Pattern pattern) {
-      if (pattern.matcher(actual).find()) {
+      if (pattern.matcher(checkNotNull(actual)).find()) {
         failWithActual("expected not to contain a match for", pattern);
       }
     }
 
     /** Fails if the string contains a match on the given regex. */
     public void doesNotContainMatch(String regex) {
-      if (doContainsMatch(actual, regex)) {
+      if (doContainsMatch(checkNotNull(actual), regex)) {
         failWithActual("expected not to contain a match for", regex);
       }
     }

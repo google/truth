@@ -22,9 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -39,16 +37,7 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 
   private static final Correspondence<Object, Object> INSTANCE =
-      Correspondence.from(
-          // If we were allowed to use lambdas, this would be:
-          // (a, e) -> false,
-          new Correspondence.BinaryPredicate<Object, Object>() {
-            @Override
-            public boolean apply(@Nullable Object actual, @Nullable Object expected) {
-              return false;
-            }
-          },
-          "has example property");
+      Correspondence.from((a, e) -> false, "has example property");
 
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -73,16 +62,7 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the 'from' factory method.
 
   private static final Correspondence<String, String> STRING_PREFIX_EQUALITY =
-      // If we were allowed to use method references here, this would be:
-      // Correspondence.from(String::startsWith, "starts with");
-      Correspondence.from(
-          new Correspondence.BinaryPredicate<String, String>() {
-            @Override
-            public boolean apply(String actual, String expected) {
-              return actual.startsWith(expected);
-            }
-          },
-          "starts with");
+      Correspondence.from(String::startsWith, "starts with");
 
   @Test
   public void testFrom_compare() {
@@ -149,33 +129,13 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the 'transform' factory methods.
 
   private static final Correspondence<String, Integer> LENGTHS =
-      // If we were allowed to use method references here, this would be:
-      // Correspondence.transforming(String::length, "has a length of");
-      Correspondence.transforming(
-          new Function<String, Integer>() {
-            @Override
-            public Integer apply(String str) {
-              return str.length();
-            }
-          },
-          "has a length of");
+      Correspondence.transforming(String::length, "has a length of");
 
   private static final Correspondence<String, Integer> HYPHEN_INDEXES =
-      // If we were allowed to use lambdas here, this would be:
-      // Correspondence.transforming(
-      //     str -> {
-      //       int index = str.indexOf('-');
-      //       return (index >= 0) ? index : null;
-      //     },
-      //     "has a hyphen at an index of");
-      // (Or else perhaps we'd pull out a method for the lambda body and use a method reference?)
       Correspondence.transforming(
-          new Function<String, Integer>() {
-            @Override
-            public @Nullable Integer apply(String str) {
-              int index = str.indexOf('-');
-              return (index >= 0) ? index : null;
-            }
+          str -> {
+            int index = str.indexOf('-');
+            return (index >= 0) ? index : null;
           },
           "has a hyphen at an index of");
 
@@ -269,32 +229,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   }
 
   private static final Correspondence<String, String> HYPHENS_MATCH_COLONS =
-      // If we were allowed to use lambdas here, this would be:
-      // Correspondence.transforming(
-      //     str -> {
-      //       int index = str.indexOf('-');
-      //       return (index >= 0) ? index : null;
-      //     },
-      //     str -> {
-      //       int index = str.indexOf(':');
-      //       return (index >= 0) ? index : null;
-      //     },
-      //     "has a hyphen at the same index as the colon in");
-      // (Or else perhaps we'd pull out a method for the lambda bodies?)
       Correspondence.transforming(
-          new Function<String, Integer>() {
-            @Override
-            public @Nullable Integer apply(String str) {
-              int index = str.indexOf('-');
-              return (index >= 0) ? index : null;
-            }
+          str -> {
+            int index = str.indexOf('-');
+            return (index >= 0) ? index : null;
           },
-          new Function<String, Integer>() {
-            @Override
-            public @Nullable Integer apply(String str) {
-              int index = str.indexOf(':');
-              return (index >= 0) ? index : null;
-            }
+          str -> {
+            int index = str.indexOf(':');
+            return (index >= 0) ? index : null;
           },
           "has a hyphen at the same index as the colon in");
 
@@ -567,24 +509,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of formattingDiffsUsing.
 
   private static final Correspondence<String, Integer> LENGTHS_WITH_DIFF =
-      // If we were allowed to use method references and lambdas here, this would be:
-      // Correspondence.transforming(String::length, "has a length of")
-      //     .formattingDiffsUsing((a, e) -> Integer.toString(a.length() - e));
-      Correspondence.transforming(
-              new Function<String, Integer>() {
-                @Override
-                public Integer apply(String str) {
-                  return str.length();
-                }
-              },
-              "has a length of")
-          .formattingDiffsUsing(
-              new Correspondence.DiffFormatter<String, Integer>() {
-                @Override
-                public String formatDiff(String actualString, Integer expectedLength) {
-                  return Integer.toString(actualString.length() - expectedLength);
-                }
-              });
+      Correspondence.transforming(String::length, "has a length of")
+          .formattingDiffsUsing((a, e) -> Integer.toString(a.length() - e));
 
   @Test
   public void testFormattingDiffsUsing_compare() {

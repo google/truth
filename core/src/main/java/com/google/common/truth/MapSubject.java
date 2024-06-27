@@ -42,7 +42,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Map} subjects.
@@ -50,8 +51,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public class MapSubject extends Subject {
-  private final Map<?, ?> actual;
+  private final @Nullable Map<?, ?> actual;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
@@ -80,14 +82,14 @@ public class MapSubject extends Subject {
 
   /** Fails if the map is not empty. */
   public final void isEmpty() {
-    if (!actual.isEmpty()) {
+    if (!checkNotNull(actual).isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the map is empty. */
   public final void isNotEmpty() {
-    if (actual.isEmpty()) {
+    if (checkNotNull(actual).isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -95,25 +97,26 @@ public class MapSubject extends Subject {
   /** Fails if the map does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    check("size()").that(actual.size()).isEqualTo(expectedSize);
+    check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the map does not contain the given key. */
   public final void containsKey(@Nullable Object key) {
-    check("keySet()").that(actual.keySet()).contains(key);
+    check("keySet()").that(checkNotNull(actual).keySet()).contains(key);
   }
 
   /** Fails if the map contains the given key. */
   public final void doesNotContainKey(@Nullable Object key) {
-    check("keySet()").that(actual.keySet()).doesNotContain(key);
+    check("keySet()").that(checkNotNull(actual).keySet()).doesNotContain(key);
   }
 
   /** Fails if the map does not contain the given entry. */
   public final void containsEntry(@Nullable Object key, @Nullable Object value) {
-    Map.Entry<Object, Object> entry = immutableEntry(key, value);
+    Map.Entry<@Nullable Object, @Nullable Object> entry = immutableEntry(key, value);
+    checkNotNull(actual);
     if (!actual.entrySet().contains(entry)) {
-      List<Object> keyList = singletonList(key);
-      List<Object> valueList = singletonList(value);
+      List<@Nullable Object> keyList = singletonList(key);
+      List<@Nullable Object> valueList = singletonList(value);
       if (actual.containsKey(key)) {
         Object actualValue = actual.get(key);
         /*
@@ -138,7 +141,7 @@ public class MapSubject extends Subject {
                     retainMatchingToString(actual.keySet(), /* itemsToCheck= */ keyList))),
             fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsValue(value)) {
-        Set<Object> keys = new LinkedHashSet<>();
+        Set<@Nullable Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
@@ -168,7 +171,7 @@ public class MapSubject extends Subject {
   /** Fails if the map contains the given entry. */
   public final void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     checkNoNeedToDisplayBothValues("entrySet()")
-        .that(actual.entrySet())
+        .that(checkNotNull(actual).entrySet())
         .doesNotContain(immutableEntry(key, value));
   }
 
@@ -198,7 +201,7 @@ public class MapSubject extends Subject {
     return containsAtLeastEntriesIn(accumulateMap("containsAtLeast", k0, v0, rest));
   }
 
-  private static Map<Object, Object> accumulateMap(
+  private static Map<@Nullable Object, @Nullable Object> accumulateMap(
       String functionName, @Nullable Object k0, @Nullable Object v0, @Nullable Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
@@ -206,9 +209,9 @@ public class MapSubject extends Subject {
             + "(i.e., the number of key/value parameters (%s) must be even).",
         rest.length + 2);
 
-    Map<Object, Object> expectedMap = Maps.newLinkedHashMap();
+    Map<@Nullable Object, @Nullable Object> expectedMap = Maps.newLinkedHashMap();
     expectedMap.put(k0, v0);
-    Multiset<Object> keys = LinkedHashMultiset.create();
+    Multiset<@Nullable Object> keys = LinkedHashMultiset.create();
     keys.add(k0);
     for (int i = 0; i < rest.length; i += 2) {
       Object key = rest[i];
@@ -227,7 +230,7 @@ public class MapSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
-      if (actual.isEmpty()) {
+      if (checkNotNull(actual).isEmpty()) {
         return IN_ORDER;
       } else {
         isEmpty(); // fails
@@ -236,8 +239,7 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ false);
     if (containsAnyOrder) {
-      return new MapInOrder(
-          expectedMap, /* allowUnexpected = */ false, /* correspondence = */ null);
+      return new MapInOrder(expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -251,7 +253,7 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ true);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected = */ true, /* correspondence = */ null);
+      return new MapInOrder(expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -259,8 +261,8 @@ public class MapSubject extends Subject {
 
   @CanIgnoreReturnValue
   private boolean containsEntriesInAnyOrder(Map<?, ?> expectedMap, boolean allowUnexpected) {
-    MapDifference<Object, Object, Object> diff =
-        MapDifference.create(actual, expectedMap, allowUnexpected, EQUALITY);
+    MapDifference<@Nullable Object, @Nullable Object, @Nullable Object> diff =
+        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, Objects::equal);
     if (diff.isEmpty()) {
       return true;
     }
@@ -276,7 +278,7 @@ public class MapSubject extends Subject {
     // present with the wrong value, which may be the closest we currently get to this.)
     failWithoutActual(
         ImmutableList.<Fact>builder()
-            .addAll(diff.describe(/* differ = */ null))
+            .addAll(diff.describe(/* differ= */ null))
             .add(simpleFact("---"))
             .add(fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMap))
             .add(butWas())
@@ -284,37 +286,30 @@ public class MapSubject extends Subject {
     return false;
   }
 
-  private interface ValueTester<A, E> {
-    boolean test(@Nullable A actualValue, @Nullable E expectedValue);
+  private interface ValueTester<A extends @Nullable Object, E extends @Nullable Object> {
+    boolean test(A actualValue, E expectedValue);
   }
 
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final ValueTester<Object, Object> EQUALITY =
-      new ValueTester<Object, Object>() {
-        @Override
-        public boolean test(@Nullable Object actualValue, @Nullable Object expectedValue) {
-          return Objects.equal(actualValue, expectedValue);
-        }
-      };
-
-  private interface Differ<A, E> {
-    String diff(A actual, E expected);
+  private interface Differ<A extends @Nullable Object, E extends @Nullable Object> {
+    @Nullable String diff(A actual, E expected);
   }
 
   // This is mostly like the MapDifference code in com.google.common.collect, generalized to remove
   // the requirement that the values of the two maps are of the same type and are compared with a
   // symmetric Equivalence.
-  private static class MapDifference<K, A, E> {
+  private static class MapDifference<
+      K extends @Nullable Object, A extends @Nullable Object, E extends @Nullable Object> {
     private final Map<K, E> missing;
     private final Map<K, A> unexpected;
     private final Map<K, ValueDifference<A, E>> wrongValues;
     private final Set<K> allKeys;
 
-    static <K, A, E> MapDifference<K, A, E> create(
-        Map<? extends K, ? extends A> actual,
-        Map<? extends K, ? extends E> expected,
-        boolean allowUnexpected,
-        ValueTester<? super A, ? super E> valueTester) {
+    static <K extends @Nullable Object, A extends @Nullable Object, E extends @Nullable Object>
+        MapDifference<K, A, E> create(
+            Map<? extends K, ? extends A> actual,
+            Map<? extends K, ? extends E> expected,
+            boolean allowUnexpected,
+            ValueTester<? super A, ? super E> valueTester) {
       Map<K, A> unexpected = new LinkedHashMap<>(actual);
       Map<K, E> missing = new LinkedHashMap<>();
       Map<K, ValueDifference<A, E>> wrongValues = new LinkedHashMap<>();
@@ -322,7 +317,8 @@ public class MapSubject extends Subject {
         K expectedKey = expectedEntry.getKey();
         E expectedValue = expectedEntry.getValue();
         if (actual.containsKey(expectedKey)) {
-          A actualValue = unexpected.remove(expectedKey);
+          @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
+          A actualValue = (A) unexpected.remove(expectedKey);
           if (!valueTester.test(actualValue, expectedValue)) {
             wrongValues.put(expectedKey, new ValueDifference<>(actualValue, expectedValue));
           }
@@ -390,11 +386,11 @@ public class MapSubject extends Subject {
     }
   }
 
-  private static class ValueDifference<A, E> {
+  private static class ValueDifference<A extends @Nullable Object, E extends @Nullable Object> {
     private final A actual;
     private final E expected;
 
-    ValueDifference(@Nullable A actual, @Nullable E expected) {
+    ValueDifference(A actual, E expected) {
       this.actual = actual;
       this.expected = expected;
     }
@@ -417,7 +413,7 @@ public class MapSubject extends Subject {
     }
   }
 
-  private static String maybeAddType(Object object, boolean includeTypes) {
+  private static String maybeAddType(@Nullable Object object, boolean includeTypes) {
     return includeTypes
         ? lenientFormat("%s (%s)", object, objectToTypeName(object))
         : String.valueOf(object);
@@ -447,6 +443,7 @@ public class MapSubject extends Subject {
     @Override
     public void inOrder() {
       // We're using the fact that Sets.intersection keeps the order of the first set.
+      checkNotNull(actual);
       List<?> expectedKeyOrder =
           Lists.newArrayList(Sets.intersection(expectedMap.keySet(), actual.keySet()));
       List<?> actualKeyOrder =
@@ -472,20 +469,10 @@ public class MapSubject extends Subject {
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered IN_ORDER =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered IN_ORDER = () -> {};
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Ordered ALREADY_FAILED =
-      new Ordered() {
-        @Override
-        public void inOrder() {}
-      };
+  private static final Ordered ALREADY_FAILED = () -> {};
 
   /**
    * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
@@ -509,8 +496,9 @@ public class MapSubject extends Subject {
    * encounter an actual value that is not of type {@code A} or an expected value that is not of
    * type {@code E}.
    */
-  public final <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
-      Correspondence<? super A, ? super E> correspondence) {
+  public final <A extends @Nullable Object, E extends @Nullable Object>
+      UsingCorrespondence<A, E> comparingValuesUsing(
+          Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(correspondence);
   }
 
@@ -540,7 +528,7 @@ public class MapSubject extends Subject {
    *
    * @since 1.1
    */
-  public final <V> UsingCorrespondence<V, V> formattingDiffsUsing(
+  public final <V extends @Nullable Object> UsingCorrespondence<V, V> formattingDiffsUsing(
       DiffFormatter<? super V, ? super V> formatter) {
     return comparingValuesUsing(Correspondence.<V>equality().formattingDiffsUsing(formatter));
   }
@@ -552,7 +540,7 @@ public class MapSubject extends Subject {
    *
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    */
-  public final class UsingCorrespondence<A, E> {
+  public final class UsingCorrespondence<A extends @Nullable Object, E extends @Nullable Object> {
 
     private final Correspondence<? super A, ? super E> correspondence;
 
@@ -564,18 +552,19 @@ public class MapSubject extends Subject {
      * Fails if the map does not contain an entry with the given key and a value that corresponds to
      * the given value.
      */
-    public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
-      if (actual.containsKey(expectedKey)) {
+    @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
+    public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
+      if (checkNotNull(actual).containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-        if (correspondence.safeCompare(actualValue, expectedValue, exceptions)) {
+        if (correspondence.safeCompare((A) actualValue, expectedValue, exceptions)) {
           // The expected key had the expected value. There's no need to check exceptions here,
           // because if Correspondence.compare() threw then safeCompare() would return false.
           return;
         }
         // Found matching key with non-matching value.
-        String diff = correspondence.safeFormatDiff(actualValue, expectedValue, exceptions);
+        String diff = correspondence.safeFormatDiff((A) actualValue, expectedValue, exceptions);
         if (diff != null) {
           failWithoutActual(
               ImmutableList.<Fact>builder()
@@ -600,7 +589,7 @@ public class MapSubject extends Subject {
         }
       } else {
         // Did not find matching key. Look for the matching value with a different key.
-        Set<Object> keys = new LinkedHashSet<>();
+        Set<@Nullable Object> keys = new LinkedHashSet<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (Map.Entry<?, A> actualEntry : getCastSubject().entrySet()) {
           if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
@@ -638,19 +627,24 @@ public class MapSubject extends Subject {
      * Fails if the map contains an entry with the given key and a value that corresponds to the
      * given value.
      */
-    public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
-      if (actual.containsKey(excludedKey)) {
+    @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
+    public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
+      if (checkNotNull(actual).containsKey(excludedKey)) {
         // Found matching key. Fail if the value matches, too.
         A actualValue = getCastSubject().get(excludedKey);
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-        if (correspondence.safeCompare(actualValue, excludedValue, exceptions)) {
+        if (correspondence.safeCompare((A) actualValue, excludedValue, exceptions)) {
           // The matching key had a matching value. There's no need to check exceptions here,
           // because if Correspondence.compare() threw then safeCompare() would return false.
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
                   .addAll(correspondence.describeForMapValues())
-                  .add(fact("but contained", immutableEntry(excludedKey, actualValue)))
+                  .add(
+                      fact(
+                          "but contained",
+                          Maps.<@Nullable Object, @Nullable A>immutableEntry(
+                              excludedKey, actualValue)))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
@@ -714,14 +708,14 @@ public class MapSubject extends Subject {
     @CanIgnoreReturnValue
     public Ordered containsExactlyEntriesIn(Map<?, ? extends E> expectedMap) {
       if (expectedMap.isEmpty()) {
-        if (actual.isEmpty()) {
+        if (checkNotNull(actual).isEmpty()) {
           return IN_ORDER;
         } else {
           isEmpty(); // fails
           return ALREADY_FAILED;
         }
       }
-      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ false);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected= */ false);
     }
 
     /**
@@ -733,13 +727,13 @@ public class MapSubject extends Subject {
       if (expectedMap.isEmpty()) {
         return IN_ORDER;
       }
-      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ true);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected= */ true);
     }
 
-    private <K, V extends E> Ordered internalContainsEntriesIn(
+    private <K extends @Nullable Object, V extends E> Ordered internalContainsEntriesIn(
         Map<K, V> expectedMap, boolean allowUnexpected) {
-      final Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-      MapDifference<Object, A, V> diff =
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
+      MapDifference<@Nullable Object, A, V> diff =
           MapDifference.create(
               getCastSubject(),
               expectedMap,
@@ -768,19 +762,13 @@ public class MapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-    private <V extends E> Differ<A, V> differ(final Correspondence.ExceptionStore exceptions) {
-      return new Differ<A, V>() {
-        @Override
-        public String diff(A actual, V expected) {
-          return correspondence.safeFormatDiff(actual, expected, exceptions);
-        }
-      };
+    private <V extends E> Differ<A, V> differ(Correspondence.ExceptionStore exceptions) {
+      return (actual, expected) -> correspondence.safeFormatDiff(actual, expected, exceptions);
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Map<?, A> getCastSubject() {
-      return (Map<?, A>) actual;
+      return (Map<?, A>) checkNotNull(actual);
     }
   }
 }

@@ -23,7 +23,9 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.SimpleAssertionError;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
@@ -65,15 +67,8 @@ import org.junit.runners.model.Statement;
  * also checks that the assertion you're testing uses the supplied {@link FailureStrategy} and calls
  * {@link FailureStrategy#fail} only once.
  */
+@NullMarked
 public final class ExpectFailure implements Platform.JUnitTestRule {
-  private final FailureStrategy strategy =
-      new FailureStrategy() {
-        @Override
-        public void fail(AssertionError failure) {
-          captureFailure(failure);
-        }
-      };
-
   private boolean inRuleContext = false;
   private boolean failureExpected = false;
   private @Nullable AssertionError failure = null;
@@ -101,7 +96,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
           "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
     }
     failureExpected = true;
-    return StandardSubjectBuilder.forCustomFailureStrategy(strategy);
+    return StandardSubjectBuilder.forCustomFailureStrategy(this::captureFailure);
   }
 
   /**
@@ -161,6 +156,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * <p>{@code AssertionError failure = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
    */
+  @CanIgnoreReturnValue
   public static AssertionError expectFailure(StandardSubjectBuilderCallback assertionCallback) {
     ExpectFailure expectFailure = new ExpectFailure();
     expectFailure.enterRuleContext(); // safe since this instance doesn't leave this method
@@ -175,30 +171,25 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
    */
+  @CanIgnoreReturnValue
   public static <S extends Subject, A> AssertionError expectFailureAbout(
-      final Subject.Factory<S, A> factory,
-      final SimpleSubjectBuilderCallback<S, A> assertionCallback) {
-    // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
+      Subject.Factory<S, A> factory, SimpleSubjectBuilderCallback<S, A> assertionCallback) {
     return expectFailure(
-        new StandardSubjectBuilderCallback() {
-          @Override
-          public void invokeAssertion(StandardSubjectBuilder whenTesting) {
-            assertionCallback.invokeAssertion(whenTesting.about(factory));
-          }
-        });
+        whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory)));
   }
 
   /**
    * Creates a subject for asserting about the given {@link AssertionError}, usually one produced by
    * Truth.
    */
-  public static TruthFailureSubject assertThat(AssertionError actual) {
+  public static TruthFailureSubject assertThat(@Nullable AssertionError actual) {
     return assertAbout(truthFailures()).that(actual);
   }
 
   @Override
   @GwtIncompatible("org.junit.rules.TestRule")
-  public Statement apply(final Statement base, Description description) {
+  @J2ktIncompatible
+  public Statement apply(Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);
     return new Statement() {

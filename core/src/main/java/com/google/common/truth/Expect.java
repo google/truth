@@ -30,7 +30,8 @@ import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.TestRule;
@@ -73,7 +74,7 @@ import org.junit.runners.model.Statement;
  *       by a method like {@code executor.submit(...)}. It might also include checking for
  *       unexpected log messages
  *       or reading metrics that count failures.) If your tests already check for exceptions from a
- *       thread, then that will any cover exception from plain {@code assertThat}.
+ *       thread, then that will cover any exception from plain {@code assertThat}.
  * </ul>
  *
  * <p>To record failures for the purpose of testing that an assertion fails when it should, see
@@ -82,11 +83,13 @@ import org.junit.runners.model.Statement;
  * <p>For more on this class, see <a href="https://truth.dev/expect">the documentation page</a>.
  */
 @GwtIncompatible("JUnit4")
+@J2ktIncompatible
+@NullMarked
 public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private static final class ExpectationGatherer implements FailureStrategy {
     @GuardedBy("this")
-    private final List<AssertionError> failures = new ArrayList<AssertionError>();
+    private final List<AssertionError> failures = new ArrayList<>();
 
     @GuardedBy("this")
     private TestPhase inRuleContext = BEFORE;
@@ -136,8 +139,10 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       }
       int numFailures = failures.size();
       StringBuilder message =
-          new StringBuilder(
-              numFailures + (numFailures > 1 ? " expectations" : " expectation") + " failed:\n");
+          new StringBuilder()
+              .append(numFailures)
+              .append(numFailures > 1 ? " expectations" : " expectation")
+              .append(" failed:\n");
       int countLength = String.valueOf(failures.size() + 1).length();
       int count = 0;
       for (AssertionError failure : failures) {
@@ -159,6 +164,8 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       return message.toString();
     }
 
+    // String.repeat is not available under Java 8 and old versions of Android.
+    @SuppressWarnings({"StringsRepeat", "InlineMeInliner"})
     private static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
       int indent = countLength + 4; // "  " and ". "
       builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
@@ -245,7 +252,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   }
 
   @Override
-  public Statement apply(final Statement base, Description description) {
+  public Statement apply(Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);
     return new Statement() {

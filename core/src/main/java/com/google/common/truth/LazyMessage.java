@@ -20,20 +20,24 @@ import static com.google.common.base.Strings.lenientFormat;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 final class LazyMessage {
-  private static final String PLACEHOLDER_ERR =
-      "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";
-
   private final String format;
-  private final Object[] args;
+  private final @Nullable Object[] args;
 
   LazyMessage(String format, @Nullable Object... args) {
     this.format = format;
     this.args = args;
     int placeholders = countPlaceholders(format);
-    checkArgument(placeholders == args.length, PLACEHOLDER_ERR, args.length, placeholders, format);
+    checkArgument(
+        placeholders == args.length,
+        "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"",
+        args.length,
+        placeholders,
+        format);
   }
 
   @Override

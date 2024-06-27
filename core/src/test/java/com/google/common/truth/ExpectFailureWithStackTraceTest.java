@@ -33,6 +33,7 @@ public class ExpectFailureWithStackTraceTest {
   @Rule public final FailingExpect failToExpect = new FailingExpect();
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectTwoFailures() {
     failToExpect.delegate.that(4).isNotEqualTo(4);
     failToExpect.delegate.that("abc").contains("x");
@@ -44,7 +45,7 @@ public class ExpectFailureWithStackTraceTest {
 
     @Override
     public Statement apply(Statement base, Description description) {
-      final Statement s = delegate.apply(base, description);
+      Statement s = delegate.apply(base, description);
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {

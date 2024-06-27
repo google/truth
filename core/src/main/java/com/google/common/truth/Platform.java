@@ -15,12 +15,16 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Throwables.throwIfUnchecked;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Constructor;
@@ -28,7 +32,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
 
@@ -38,6 +43,7 @@ import org.junit.rules.TestRule;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
+@NullMarked
 final class Platform {
   private Platform() {}
 
@@ -59,13 +65,16 @@ final class Platform {
   static Throwable[] getSuppressed(Throwable throwable) {
     try {
       Method getSuppressed = throwable.getClass().getMethod("getSuppressed");
-      return (Throwable[]) getSuppressed.invoke(throwable);
+      return (Throwable[]) checkNotNull(getSuppressed.invoke(throwable));
     } catch (NoSuchMethodException e) {
       return new Throwable[0];
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+      // We're calling a public method on a public class.
+      throw newLinkageError(e);
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+      throwIfUnchecked(e.getCause());
+      // getSuppressed has no `throws` clause.
+      throw newLinkageError(e);
     }
   }
 
@@ -78,7 +87,7 @@ final class Platform {
    * the value passed to {@code assertThat} or {@code that}, as distinct from any later actual
    * values produced by chaining calls like {@code hasMessageThat}.
    */
-  static String inferDescription() {
+  static @Nullable String inferDescription() {
     if (isInferDescriptionDisabled()) {
       return null;
     }
@@ -158,20 +167,12 @@ final class Platform {
   abstract static class PlatformComparisonFailure extends ComparisonFailure {
     private final String message;
 
-    /** Separate cause field, in case initCause() fails. */
-    private final @Nullable Throwable cause;
-
     PlatformComparisonFailure(
         String message, String expected, String actual, @Nullable Throwable cause) {
       super(message, expected, actual);
       this.message = message;
-      this.cause = cause;
 
-      try {
-        initCause(cause);
-      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        // See Truth.SimpleAssertionError.
-      }
+      initCause(cause);
     }
 
     @Override
@@ -179,17 +180,11 @@ final class Platform {
       return message;
     }
 
-    @Override
-    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-    public final Throwable getCause() {
-      return cause;
-    }
-
     // To avoid printing the class name before the message.
     // TODO(cpovirk): Write a test that fails without this. Ditto for SimpleAssertionError.
     @Override
     public final String toString() {
-      return getLocalizedMessage();
+      return checkNotNull(getLocalizedMessage());
     }
   }
 
@@ -202,7 +197,7 @@ final class Platform {
   }
 
   /** Turns a non-double, non-float object into a string. */
-  static String stringValueOfNonFloatingPoint(Object o) {
+  static String stringValueOfNonFloatingPoint(@Nullable Object o) {
     return String.valueOf(o);
   }
 
@@ -213,7 +208,7 @@ final class Platform {
 
   /** Tests if current platform is Android. */
   static boolean isAndroid() {
-    return System.getProperty("java.runtime.name").contains("Android");
+    return checkNotNull(System.getProperty("java.runtime.name", "")).contains("Android");
   }
 
   /**
@@ -298,5 +293,68 @@ final class Platform {
     LinkageError error = new LinkageError(cause.toString());
     error.initCause(cause);
     return error;
+  }
+
+  static boolean isKotlinRange(Iterable<?> iterable) {
+    return closedRangeClassIfAvailable.get() != null
+        && closedRangeClassIfAvailable.get().isInstance(iterable);
+    // (If the class isn't available, then nothing could be an instance of ClosedRange.)
+  }
+
+  // Not using lambda here because of wrong nullability type inference in this case.
+  private static final Supplier<@Nullable Class<?>> closedRangeClassIfAvailable =
+      Suppliers.<@Nullable Class<?>>memoize(
+          () -> {
+            try {
+              return Class.forName("kotlin.ranges.ClosedRange");
+              /*
+               * TODO(cpovirk): Consider looking up the Method we'll need here, too: If it's not
+               * present (maybe because Proguard stripped it, similar to cl/462826082), then we
+               * don't want our caller to continue on to call kotlinRangeContains, since it won't
+               * be able to give an answer about what ClosedRange.contains will return.
+               * (Alternatively, we could make kotlinRangeContains contain its own fallback to
+               * Iterables.contains. Conceivably its first fallback could even be to try reading
+               * `start` and `endInclusive` from the ClosedRange instance, but even then, we'd
+               * want to check in advance whether we're able to access those.)
+               */
+            } catch (ClassNotFoundException notAvailable) {
+              return null;
+            }
+          });
+
+  static boolean kotlinRangeContains(Iterable<?> haystack, @Nullable Object needle) {
+    try {
+      return (boolean) closedRangeContainsMethod.get().invoke(haystack, needle);
+    } catch (InvocationTargetException e) {
+      if (e.getCause() instanceof ClassCastException) {
+        // icky but no worse than what we normally do for isIn(Iterable)
+        return false;
+      }
+      throwIfUnchecked(e.getCause());
+      // That method has no `throws` clause.
+      throw newLinkageError(e.getCause());
+    } catch (IllegalAccessException e) {
+      // We're calling a public method on a public class.
+      throw newLinkageError(e);
+    }
+  }
+
+  private static final Supplier<Method> closedRangeContainsMethod =
+      memoize(
+          () -> {
+            try {
+              return checkNotNull(closedRangeClassIfAvailable.get())
+                  .getMethod("contains", Comparable.class);
+            } catch (NoSuchMethodException e) {
+              // That method exists. (But see the discussion at closedRangeClassIfAvailable above.)
+              throw newLinkageError(e);
+            }
+          });
+
+  static boolean classMetadataUnsupported() {
+    // https://github.com/google/truth/issues/198
+    // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
+    // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
+    return false;
   }
 }

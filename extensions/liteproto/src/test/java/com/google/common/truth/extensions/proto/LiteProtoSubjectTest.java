@@ -16,19 +16,21 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.extensions.proto.LiteProtoTruth.liteProtos;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Expect;
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.common.truth.Subject;
 import com.google.protobuf.MessageLite;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -174,34 +176,37 @@ public class LiteProtoSubjectTest {
 
   @Test
   public void testIsEqualTo_failure() {
-    try {
-      assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherValue());
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(e, ".*expected:.*\"foo\".*");
-      expectNoRegex(e, ".*but was:.*\"foo\".*");
-    }
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(config.nonEmptyMessage())
+                    .isEqualTo(config.nonEmptyMessageOfOtherValue()));
+    expectRegex(e, ".*expected:.*\"foo\".*");
+    expectNoRegex(e, ".*but was:.*\"foo\".*");
 
-    try {
-      assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherType());
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(
-          e,
-          "Not true that \\(.*\\) proto is equal to the expected \\(.*\\) object\\.\\s*"
-              + "They are not of the same class\\.");
-    }
+    e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(config.nonEmptyMessage())
+                    .isEqualTo(config.nonEmptyMessageOfOtherType()));
+    expectRegex(
+        e,
+        "Not true that \\(.*\\) proto is equal to the expected \\(.*\\) object\\.\\s*"
+            + "They are not of the same class\\.");
 
-    try {
-      assertThat(config.nonEmptyMessage()).isNotEqualTo(config.equivalentNonEmptyMessage());
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(
-          e,
-          String.format(
-              "Not true that protos are different\\.\\s*Both are \\(%s\\) <.*optional_int: 3.*>\\.",
-              Pattern.quote(config.nonEmptyMessage().getClass().getName())));
-    }
+    e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(config.nonEmptyMessage())
+                    .isNotEqualTo(config.equivalentNonEmptyMessage()));
+    expectRegex(
+        e,
+        String.format(
+            "Not true that protos are different\\.\\s*Both are \\(%s\\) <.*optional_int: 3.*>\\.",
+            Pattern.quote(config.nonEmptyMessage().getClass().getName())));
   }
 
   @Test
@@ -215,15 +220,16 @@ public class LiteProtoSubjectTest {
       return;
     }
 
-    try {
-      assertThat(config.messageWithoutRequiredFields().get()).hasAllRequiredFields();
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(
-          e,
-          "expected to have all required fields set\\s*but was: .*\\(Lite runtime could not"
-              + " determine which fields were missing.\\)");
-    }
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(config.messageWithoutRequiredFields().get())
+                    .hasAllRequiredFields());
+    expectRegex(
+        e,
+        "expected to have all required fields set\\s*but was: .*\\(Lite runtime could not"
+            + " determine which fields were missing.\\)");
   }
 
   @Test
@@ -238,27 +244,24 @@ public class LiteProtoSubjectTest {
 
   @Test
   public void testDefaultInstance_failure() {
-    try {
-      assertThat(config.nonEmptyMessage()).isEqualToDefaultInstance();
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(
-          e,
-          "Not true that <.*optional_int:\\s*3.*> is a default proto instance\\.\\s*"
-              + "It has set values\\.");
-    }
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(config.nonEmptyMessage()).isEqualToDefaultInstance());
+    expectRegex(
+        e,
+        "Not true that <.*optional_int:\\s*3.*> is a default proto instance\\.\\s*"
+            + "It has set values\\.");
 
-    try {
-      assertThat(config.defaultInstance()).isNotEqualToDefaultInstance();
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      expectRegex(
-          e,
-          String.format(
-              "Not true that \\(%s\\) <.*\\[empty proto\\].*> is not a default "
-                  + "proto instance\\.\\s*It has no set values\\.",
-              Pattern.quote(config.defaultInstance().getClass().getName())));
-    }
+    e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(config.defaultInstance()).isNotEqualToDefaultInstance());
+    expectRegex(
+        e,
+        String.format(
+            "Not true that \\(%s\\) <.*\\[empty proto\\].*> is not a default "
+                + "proto instance\\.\\s*It has no set values\\.",
+            Pattern.quote(config.defaultInstance().getClass().getName())));
   }
 
   @Test
@@ -272,21 +275,19 @@ public class LiteProtoSubjectTest {
   public void testSerializedSize_failure() {
     int size = config.nonEmptyMessage().getSerializedSize();
 
-    try {
-      assertThat(config.nonEmptyMessage()).serializedSize().isGreaterThan(size);
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
-      assertThat(e).factValue("liteProto was").containsMatch("optional_int:\\s*3");
-    }
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(config.nonEmptyMessage()).serializedSize().isGreaterThan(size));
+    assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
+    assertThat(e).factValue("liteProto was").containsMatch("optional_int:\\s*3");
 
-    try {
-      assertThat(config.defaultInstance()).serializedSize().isGreaterThan(0);
-      fail("Should have failed.");
-    } catch (AssertionError e) {
-      assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
-      assertThat(e).factValue("liteProto was").contains("[empty proto]");
-    }
+    e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(config.defaultInstance()).serializedSize().isGreaterThan(0));
+    assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
+    assertThat(e).factValue("liteProto was").contains("[empty proto]");
   }
 
   private void expectRegex(AssertionError e, String regex) {
@@ -295,5 +296,10 @@ public class LiteProtoSubjectTest {
 
   private void expectNoRegex(AssertionError e, String regex) {
     expect.that(e).hasMessageThat().doesNotMatch(Pattern.compile(regex, Pattern.DOTALL));
+  }
+
+  private static AssertionError expectFailure(
+      SimpleSubjectBuilderCallback<LiteProtoSubject, MessageLite> assertionCallback) {
+    return expectFailureAbout(liteProtos(), assertionCallback);
   }
 }

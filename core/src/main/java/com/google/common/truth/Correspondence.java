@@ -22,7 +22,7 @@ import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.getStackTraceAsString;
-import static java.util.Arrays.asList;
+import static com.google.common.truth.SubjectUtils.asList;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -31,7 +31,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
@@ -65,7 +66,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Pete Gillin
  */
-public abstract class Correspondence<A, E> {
+@NullMarked
+public abstract class Correspondence<A extends @Nullable Object, E extends @Nullable Object> {
 
   /**
    * Constructs a {@link Correspondence} that compares actual and expected elements using the given
@@ -112,7 +114,7 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "contains"}, {@code "is an instance of"}, or {@code "is equivalent to"}
    */
-  public static <A, E> Correspondence<A, E> from(
+  public static <A extends @Nullable Object, E extends @Nullable Object> Correspondence<A, E> from(
       BinaryPredicate<A, E> predicate, String description) {
     return new FromBinaryPredicate<>(predicate, description);
   }
@@ -126,7 +128,7 @@ public abstract class Correspondence<A, E> {
    * you should almost never see {@code BinaryPredicate} used as the type of a field or variable, or
    * a return type.
    */
-  public interface BinaryPredicate<A, E> {
+  public interface BinaryPredicate<A extends @Nullable Object, E extends @Nullable Object> {
 
     /**
      * Returns whether or not the actual and expected values satisfy the condition defined by this
@@ -135,7 +137,9 @@ public abstract class Correspondence<A, E> {
     boolean apply(A actual, E expected);
   }
 
-  private static final class FromBinaryPredicate<A, E> extends Correspondence<A, E> {
+  private static final class FromBinaryPredicate<
+          A extends @Nullable Object, E extends @Nullable Object>
+      extends Correspondence<A, E> {
     private final BinaryPredicate<A, E> predicate;
     private final String description;
 
@@ -191,8 +195,9 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "has an ID of"}
    */
-  public static <A, E> Correspondence<A, E> transforming(
-      Function<A, ? extends E> actualTransform, String description) {
+  public static <A extends @Nullable Object, E extends @Nullable Object>
+      Correspondence<A, E> transforming(
+          Function<A, ? extends E> actualTransform, String description) {
     return new Transforming<>(actualTransform, identity(), description);
   }
 
@@ -238,12 +243,14 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "has the same ID as"}
    */
-  public static <A, E> Correspondence<A, E> transforming(
-      Function<A, ?> actualTransform, Function<E, ?> expectedTransform, String description) {
+  public static <A extends @Nullable Object, E extends @Nullable Object>
+      Correspondence<A, E> transforming(
+          Function<A, ?> actualTransform, Function<E, ?> expectedTransform, String description) {
     return new Transforming<>(actualTransform, expectedTransform, description);
   }
 
-  private static final class Transforming<A, E> extends Correspondence<A, E> {
+  private static final class Transforming<A extends @Nullable Object, E extends @Nullable Object>
+      extends Correspondence<A, E> {
 
     private final Function<? super A, ?> actualTransform;
     private final Function<? super E, ?> expectedTransform;
@@ -318,13 +325,13 @@ public abstract class Correspondence<A, E> {
    * diff-formatting functionality to it. See e.g. {@link IterableSubject#formattingDiffsUsing}.
    */
   @SuppressWarnings("unchecked") // safe covariant cast
-  static <T> Correspondence<T, T> equality() {
+  static <T extends @Nullable Object> Correspondence<T, T> equality() {
     return (Equality<T>) Equality.INSTANCE;
   }
 
-  private static final class Equality<T> extends Correspondence<T, T> {
+  private static final class Equality<T extends @Nullable Object> extends Correspondence<T, T> {
 
-    private static final Equality<Object> INSTANCE = new Equality<>();
+    private static final Equality<@Nullable Object> INSTANCE = new Equality<>();
 
     @Override
     public boolean compare(T actual, T expected) {
@@ -395,7 +402,7 @@ public abstract class Correspondence<A, E> {
    * Correspondence#formattingDiffsUsing}. As a result, you should almost never see {@code
    * DiffFormatter} used as the type of a field or variable, or a return type.
    */
-  public interface DiffFormatter<A, E> {
+  public interface DiffFormatter<A extends @Nullable Object, E extends @Nullable Object> {
 
     /**
      * Returns a {@link String} describing the difference between the {@code actual} and {@code
@@ -405,7 +412,8 @@ public abstract class Correspondence<A, E> {
     String formatDiff(A actual, E expected);
   }
 
-  private static class FormattingDiffs<A, E> extends Correspondence<A, E> {
+  private static class FormattingDiffs<A extends @Nullable Object, E extends @Nullable Object>
+      extends Correspondence<A, E> {
 
     private final Correspondence<A, E> delegate;
     private final DiffFormatter<? super A, ? super E> formatter;
@@ -525,9 +533,10 @@ public abstract class Correspondence<A, E> {
 
     private final Exception exception;
     private final String methodName;
-    private final List<Object> methodArguments;
+    private final List<@Nullable Object> methodArguments;
 
-    StoredException(Exception exception, String methodName, List<Object> methodArguments) {
+    StoredException(
+        Exception exception, String methodName, List<@Nullable Object> methodArguments) {
       this.exception = checkNotNull(exception);
       this.methodName = checkNotNull(methodName);
       this.methodArguments = checkNotNull(methodArguments);
@@ -552,9 +561,9 @@ public abstract class Correspondence<A, E> {
   static final class ExceptionStore {
 
     private final String argumentLabel;
-    private StoredException firstCompareException = null;
-    private StoredException firstPairingException = null;
-    private StoredException firstFormatDiffException = null;
+    private @Nullable StoredException firstCompareException = null;
+    private @Nullable StoredException firstPairingException = null;
+    private @Nullable StoredException firstFormatDiffException = null;
 
     static ExceptionStore forIterable() {
       return new ExceptionStore("elements");
@@ -580,7 +589,10 @@ public abstract class Correspondence<A, E> {
      *     exception was encountered
      */
     void addCompareException(
-        Class<?> callingClass, Exception exception, Object actual, Object expected) {
+        Class<?> callingClass,
+        Exception exception,
+        @Nullable Object actual,
+        @Nullable Object expected) {
       if (firstCompareException == null) {
         truncateStackTrace(exception, callingClass);
         firstCompareException = new StoredException(exception, "compare", asList(actual, expected));
@@ -597,7 +609,8 @@ public abstract class Correspondence<A, E> {
      * @param actual The {@code actual} argument to the {@code apply} call during which the
      *     exception was encountered
      */
-    void addActualKeyFunctionException(Class<?> callingClass, Exception exception, Object actual) {
+    void addActualKeyFunctionException(
+        Class<?> callingClass, Exception exception, @Nullable Object actual) {
       if (firstPairingException == null) {
         truncateStackTrace(exception, callingClass);
         firstPairingException =
@@ -616,7 +629,7 @@ public abstract class Correspondence<A, E> {
      *     exception was encountered
      */
     void addExpectedKeyFunctionException(
-        Class<?> callingClass, Exception exception, Object expected) {
+        Class<?> callingClass, Exception exception, @Nullable Object expected) {
       if (firstPairingException == null) {
         truncateStackTrace(exception, callingClass);
         firstPairingException =
@@ -636,7 +649,10 @@ public abstract class Correspondence<A, E> {
      *     exception was encountered
      */
     void addFormatDiffException(
-        Class<?> callingClass, Exception exception, Object actual, Object expected) {
+        Class<?> callingClass,
+        Exception exception,
+        @Nullable Object actual,
+        @Nullable Object expected) {
       if (firstFormatDiffException == null) {
         truncateStackTrace(exception, callingClass);
         firstFormatDiffException =

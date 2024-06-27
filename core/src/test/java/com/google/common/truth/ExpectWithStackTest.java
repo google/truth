@@ -123,7 +123,7 @@ public class ExpectWithStackTest {
 
   private static final class TestRuleVerifier implements TestRule {
     private final TestRule ruleToVerify;
-    private ErrorVerifier errorVerifier = NO_VERIFIER;
+    private ErrorVerifier errorVerifier = error -> {};
 
     TestRuleVerifier(TestRule ruleToVerify) {
       this.ruleToVerify = ruleToVerify;
@@ -134,7 +134,7 @@ public class ExpectWithStackTest {
     }
 
     @Override
-    public Statement apply(final Statement base, final Description description) {
+    public Statement apply(Statement base, Description description) {
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {
@@ -151,10 +151,4 @@ public class ExpectWithStackTest {
   interface ErrorVerifier {
     void verify(AssertionError error);
   }
-
-  private static final ErrorVerifier NO_VERIFIER =
-      new ErrorVerifier() {
-        @Override
-        public void verify(AssertionError expected) {}
-      };
 }

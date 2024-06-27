@@ -29,8 +29,8 @@
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker-qual</artifactId>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
@@ -46,6 +46,15 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>../..</directory>
+        <includes>
+          <include>LICENSE</include>
+        </includes>
+        <targetPath>META-INF</targetPath>
+      </resource>
+    </resources>
     <extensions>
       <extension>
         <groupId>kr.motd.maven</groupId>

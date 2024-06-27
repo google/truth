@@ -29,7 +29,8 @@ import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An opaque, immutable object containing state from the previous calls in the fluent assertion
@@ -51,6 +52,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * using their {@link CustomSubjectBuilder#metadata()} method to get an instance to pass to the
  * constructor.)
  */
+@NullMarked
 public final class FailureMetadata {
   static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
     return new FailureMetadata(
@@ -68,7 +70,7 @@ public final class FailureMetadata {
     }
 
     static Step checkCall(
-        OldAndNewValuesAreSimilar valuesAreSimilar,
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar,
         @Nullable Function<String, String> descriptionUpdate) {
       return new Step(null, descriptionUpdate, valuesAreSimilar);
     }
@@ -167,7 +169,6 @@ public final class FailureMetadata {
   }
 
   void failEqualityCheck(
-      ImmutableList<Fact> headFacts,
       ImmutableList<Fact> tailFacts,
       String expected,
       String actual) {
@@ -175,10 +176,7 @@ public final class FailureMetadata {
         makeComparisonFailure(
             evaluateAll(messages),
             makeComparisonFailureFacts(
-                concat(description(), headFacts),
-                concat(tailFacts, rootUnlessThrowable()),
-                expected,
-                actual),
+                description(), concat(tailFacts, rootUnlessThrowable()), expected, actual),
             expected,
             actual,
             rootCause()));
@@ -242,7 +240,7 @@ public final class FailureMetadata {
       }
 
       if (description == null) {
-        description = step.subject.typeDescription();
+        description = checkNotNull(step.subject).typeDescription();
       }
     }
     return descriptionIsInteresting
@@ -291,7 +289,7 @@ public final class FailureMetadata {
       }
 
       if (rootSubject == null) {
-        if (step.subject.actual() instanceof Throwable) {
+        if (checkNotNull(step.subject).actual() instanceof Throwable) {
           /*
            * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
            * so we don't need to include it again in the message.
@@ -310,8 +308,9 @@ public final class FailureMetadata {
         ? ImmutableList.of(
             fact(
                 // TODO(cpovirk): Use inferDescription() here when appropriate? But it can be long.
-                rootSubject.subject.typeDescription() + " was",
-                rootSubject.subject.actualCustomStringRepresentationForPackageMembersToCall()))
+                checkNotNull(checkNotNull(rootSubject).subject).typeDescription() + " was",
+                checkNotNull(checkNotNull(rootSubject).subject)
+                    .actualCustomStringRepresentationForPackageMembersToCall()))
         : ImmutableList.<Fact>of();
   }
 
@@ -321,7 +320,7 @@ public final class FailureMetadata {
    */
   private @Nullable Throwable rootCause() {
     for (Step step : steps) {
-      if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
+      if (!step.isCheckCall() && checkNotNull(step.subject).actual() instanceof Throwable) {
         return (Throwable) step.subject.actual();
       }
     }

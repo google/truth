@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -25,6 +27,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Helper routines related to <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">graph
@@ -32,6 +35,7 @@ import java.util.Queue;
  *
  * @author Pete Gillin
  */
+@NullMarked
 final class GraphMatching {
 
   /**
@@ -142,7 +146,7 @@ final class GraphMatching {
       // Now proceed with the BFS.
       while (!queue.isEmpty()) {
         U lhs = queue.remove();
-        int layer = layers.get(lhs);
+        int layer = checkNotNull(layers.get(lhs));
         // If the BFS has proceeded past a layer in which a free RHS vertex was found, stop.
         if (freeRhsVertexLayer.isPresent() && layer > freeRhsVertexLayer.get()) {
           break;
@@ -164,7 +168,7 @@ final class GraphMatching {
             // that new LHS vertex yet, add it to the next layer. (If the edge from the LHS to the
             // RHS was matched then the matched edge from the RHS to the LHS will lead back to the
             // current LHS vertex, which has definitely been visited, so we correctly do nothing.)
-            U nextLhs = matching.inverse().get(rhs);
+            U nextLhs = checkNotNull(matching.inverse().get(rhs));
             if (!layers.containsKey(nextLhs)) {
               layers.put(nextLhs, layer + 1);
               queue.add(nextLhs);
@@ -223,7 +227,7 @@ final class GraphMatching {
       // rather than using all the paths at the end of the phase. As explained above, the effect of
       // this is that we automatically find only the disjoint set of paths, as required. This is,
       // fact, the approach taken in the pseudocode of the wikipedia article (at time of writing).
-      int layer = layers.get(lhs);
+      int layer = checkNotNull(layers.get(lhs));
       if (layer > freeRhsVertexLayer) {
         // We've gone past the target layer, so we're not going to find what we're looking for.
         return false;
@@ -240,7 +244,7 @@ final class GraphMatching {
         } else {
           // We found a non-free RHS vertex. Follow the matched edge from that RHS vertex to find
           // the next LHS vertex.
-          U nextLhs = matching.inverse().get(rhs);
+          U nextLhs = checkNotNull(matching.inverse().get(rhs));
           if (layers.containsKey(nextLhs) && layers.get(nextLhs) == layer + 1) {
             // The next LHS vertex is in the next layer of the BFS, so we can use this path for our
             // DFS. Recurse into the DFS.

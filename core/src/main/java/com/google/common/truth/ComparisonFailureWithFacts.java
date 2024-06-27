@@ -21,12 +21,14 @@ import static com.google.common.truth.Fact.makeMessage;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Platform.PlatformComparisonFailure;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An {@link AssertionError} (usually a JUnit {@code ComparisonFailure}, but not under GWT) composed
  * of structured {@link Fact} instances and other string messages.
  */
+@NullMarked
 final class ComparisonFailureWithFacts extends PlatformComparisonFailure implements ErrorWithFacts {
   private final ImmutableList<Fact> facts;
 

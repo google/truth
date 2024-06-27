@@ -26,17 +26,19 @@ import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link Float} subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class FloatSubject extends ComparableSubject<Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
-  private final Float actual;
+  private final @Nullable Float actual;
   private final DoubleSubject asDouble;
 
   FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
@@ -112,7 +114,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public TolerantFloatComparison isWithin(final float tolerance) {
+  public TolerantFloatComparison isWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
@@ -151,7 +153,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
    *     Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public TolerantFloatComparison isNotWithin(final float tolerance) {
+  public TolerantFloatComparison isNotWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
@@ -209,7 +211,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Float other) {
+  public final void isEquivalentAccordingToCompareTo(@Nullable Float other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 

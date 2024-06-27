@@ -28,7 +28,9 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
+import com.google.protobuf.TypeRegistry;
 import java.util.List;
 
 /**
@@ -62,13 +64,17 @@ abstract class FieldScopeImpl extends FieldScope {
   // Instantiation methods.
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  static FieldScope createFromSetFields(Message message) {
+  static FieldScope createFromSetFields(
+      Message message, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     return create(
-        FieldScopeLogic.partialScope(message),
+        FieldScopeLogic.partialScope(message, typeRegistry, extensionRegistry),
         Functions.constant(String.format("FieldScopes.fromSetFields({%s})", message.toString())));
   }
 
-  static FieldScope createFromSetFields(Iterable<? extends Message> messages) {
+  static FieldScope createFromSetFields(
+      Iterable<? extends Message> messages,
+      TypeRegistry typeRegistry,
+      ExtensionRegistry extensionRegistry) {
     if (emptyOrAllNull(messages)) {
       return create(
           FieldScopeLogic.none(),
@@ -82,7 +88,8 @@ abstract class FieldScopeImpl extends FieldScope {
         getDescriptors(messages));
 
     return create(
-        FieldScopeLogic.partialScope(messages, optDescriptor.get()),
+        FieldScopeLogic.partialScope(
+            messages, optDescriptor.get(), typeRegistry, extensionRegistry),
         Functions.constant(String.format("FieldScopes.fromSetFields(%s)", formatList(messages))));
   }
 

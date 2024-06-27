@@ -26,7 +26,8 @@ import static java.lang.Math.max;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Contains part of the code responsible for creating a JUnit {@code ComparisonFailure} (if
@@ -42,6 +43,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * different implementation under GWT/j2cl, where {@code ComparisonFailure} is also unavailable but
  * we can't just recover from that at runtime.
  */
+@NullMarked
 final class ComparisonFailures {
   static ImmutableList<Fact> makeComparisonFailureFacts(
       ImmutableList<Fact> headFacts,

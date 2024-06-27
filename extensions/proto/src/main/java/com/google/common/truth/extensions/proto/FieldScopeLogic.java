@@ -28,7 +28,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.ForOverride;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
+import com.google.protobuf.TypeRegistry;
 import java.util.List;
 
 /**
@@ -267,14 +269,21 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
   }
 
-  static FieldScopeLogic partialScope(Message message) {
+  static FieldScopeLogic partialScope(
+      Message message, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     return new RootPartialScopeLogic(
-        FieldNumberTree.fromMessage(message), message.toString(), message.getDescriptorForType());
+        FieldNumberTree.fromMessage(message, typeRegistry, extensionRegistry),
+        message.toString(),
+        message.getDescriptorForType());
   }
 
-  static FieldScopeLogic partialScope(Iterable<? extends Message> messages, Descriptor descriptor) {
+  static FieldScopeLogic partialScope(
+      Iterable<? extends Message> messages,
+      Descriptor descriptor,
+      TypeRegistry typeRegistry,
+      ExtensionRegistry extensionRegistry) {
     return new RootPartialScopeLogic(
-        FieldNumberTree.fromMessages(messages),
+        FieldNumberTree.fromMessages(messages, typeRegistry, extensionRegistry),
         Joiner.on(", ").useForNull("null").join(messages),
         descriptor);
   }
@@ -304,11 +313,18 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
 
     @Override
     final FieldScopeResult policyFor(Descriptor rootDescriptor, SubScopeId subScopeId) {
-      if (subScopeId.kind() == SubScopeId.Kind.UNKNOWN_FIELD_DESCRIPTOR) {
-        return FieldScopeResult.EXCLUDED_RECURSIVELY;
+      FieldDescriptor fieldDescriptor = null;
+      switch (subScopeId.kind()) {
+        case FIELD_DESCRIPTOR:
+          fieldDescriptor = subScopeId.fieldDescriptor();
+          break;
+        case UNPACKED_ANY_VALUE_TYPE:
+          fieldDescriptor = AnyUtils.valueFieldDescriptor();
+          break;
+        case UNKNOWN_FIELD_DESCRIPTOR:
+          return FieldScopeResult.EXCLUDED_RECURSIVELY;
       }
 
-      FieldDescriptor fieldDescriptor = subScopeId.fieldDescriptor();
       if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
         return FieldScopeResult.of(/* included = */ true, isRecursive);
       }

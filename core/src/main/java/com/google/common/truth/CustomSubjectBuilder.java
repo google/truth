@@ -18,6 +18,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.jspecify.annotations.NullMarked;
+
 /**
  * In a fluent assertion chain, exposes one or more "custom" {@code that} methods, which accept a
  * value under test and return a {@link Subject}.
@@ -34,6 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder} is necessary, and it
  * links to further instructions.
  */
+@NullMarked
 public abstract class CustomSubjectBuilder {
   /**
    * In a fluent assertion chain, the argument to the "custom" overload of {@link

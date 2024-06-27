@@ -21,9 +21,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +38,8 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
+// "Iterable" is specific enough to establish that we're testing IterableSubject.
+@SuppressWarnings("PreferredInterfaceType")
 public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
@@ -48,6 +48,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings({"TruthIterableIsEmpty", "IsEmptyTruth"})
   public void hasSizeZero() {
     assertThat(ImmutableList.of()).hasSize(0);
   }
@@ -204,16 +205,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfWithOneShotIterable() {
-    final Iterator<Object> iterator = asList((Object) 2, 1, "b").iterator();
-    Iterable<Object> iterable =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
-        };
+    List<Object> contents = asList(2, 1, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), "OneShotIterable");
 
-    assertThat(iterable).containsAnyOf(3, "a", 7, "b", 0);
+    assertThat(oneShot).containsAnyOf(3, "a", 7, "b", 0);
   }
 
   @Test
@@ -408,41 +403,18 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterable() {
-    final Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
-    final Iterator<Object> iterator = iterable.iterator();
-    Iterable<Object> oneShot =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
-
-          @Override
-          public String toString() {
-            return Iterables.toString(iterable);
-          }
-        };
+    List<Object> contents = asList(2, 1, null, 4, "a", 3, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), contents.toString());
 
     assertThat(oneShot).containsAtLeast(1, null, 3).inOrder();
   }
 
   @Test
   public void iterableContainsAtLeastInOrderWithOneShotIterableWrongOrder() {
-    final Iterator<Object> iterator = asList((Object) 2, 1, null, 4, "a", 3, "b").iterator();
-    Iterable<Object> iterable =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
+    List<Object> contents = asList(2, 1, null, 4, "a", 3, "b");
+    Iterable<Object> oneShot = new OneShotIterable<>(contents.iterator(), "BadIterable");
 
-          @Override
-          public String toString() {
-            return "BadIterable";
-          }
-        };
-
-    expectFailureWhenTestingThat(iterable).containsAtLeast(1, 3, (Object) null).inOrder();
+    expectFailureWhenTestingThat(oneShot).containsAtLeast(1, 3, (Object) null).inOrder();
     assertFailureKeys(
         "required elements were all found, but order was wrong",
         "expected order for required elements",
@@ -451,12 +423,33 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("but was", "BadIterable"); // TODO(b/231966021): Output its elements.
   }
 
+  private static final class OneShotIterable<E> implements Iterable<E> {
+    private final Iterator<E> iterator;
+    private final String toString;
+
+    OneShotIterable(Iterator<E> iterator, String toString) {
+      this.iterator = iterator;
+      this.toString = toString;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+      return iterator;
+    }
+
+    @Override
+    public String toString() {
+      return toString;
+    }
+  }
+
   @Test
   public void iterableContainsAtLeastInOrderWrongOrderAndMissing() {
     expectFailureWhenTestingThat(asList(1, 2)).containsAtLeast(2, 1, 3).inOrder();
   }
 
   @Test
+  @SuppressWarnings("ContainsAllElementsInWithVarArgsToContainsAtLeast")
   public void iterableContainsAtLeastElementsInIterable() {
     assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
 
@@ -467,6 +460,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsAllElementsInWithVarArgsToContainsAtLeast")
   public void iterableContainsAtLeastElementsInCanUseFactPerElement() {
     expectFailureWhenTestingThat(asList("abc"))
         .containsAtLeastElementsIn(asList("123\n456", "789"));
@@ -522,6 +516,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsNoneInWithVarArgsToContainsNoneOf")
   public void iterableContainsNoneInIterable() {
     assertThat(asList(1, 2, 3)).containsNoneIn(asList(4, 5, 6));
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
@@ -546,6 +541,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  // We tell people to call containsExactlyElementsIn, but we still test containsExactly.
+  @SuppressWarnings("ContainsExactlyVariadic")
   public void arrayContainsExactly() {
     ImmutableList<String> iterable = ImmutableList.of("a", "b");
     String[] array = {"a", "b"};
@@ -667,6 +664,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCode() {
     HashCodeThrower one = new HashCodeThrower();
     HashCodeThrower two = new HashCodeThrower();
@@ -711,17 +709,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings({"ContainsExactlyNone", "TruthSelfEquals"})
   public void iterableContainsExactlyElementsInInOrderPassesWithEmptyExpectedAndActual() {
     assertThat(ImmutableList.of()).containsExactlyElementsIn(ImmutableList.of()).inOrder();
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyNone")
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
     expectFailureWhenTestingThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
     assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInErrorMessageIsInOrder() {
     expectFailureWhenTestingThat(asList("foo OR bar"))
         .containsExactlyElementsIn(asList("foo", "bar"));
@@ -871,6 +872,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
     assertFailureValue("unexpected (1)", "4");
@@ -914,7 +916,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyInOrderWithOneShotIterable() {
-    final Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
+    Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override
@@ -927,7 +929,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyInOrderWithOneShotIterableWrongOrder() {
-    final Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
+    Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
           @Override
@@ -961,6 +963,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("ContainsExactlyElementsInWithVarArgsToExactly")
   public void iterableContainsExactlyElementsInIterable() {
     assertThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2));
 
@@ -977,6 +980,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("UndefinedEquals") // Iterable equality isn't defined, but null equality is
   public void nullEqualToNull() {
     assertThat((Iterable<?>) null).isEqualTo(null);
   }
@@ -1136,13 +1140,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("full contents", "[1, 10, 2, 20]");
   }
 
+  @SuppressWarnings("CompareProperty") // avoiding Java 8 API under Android
   private static final Comparator<String> COMPARE_AS_DECIMAL =
-      new Comparator<String>() {
-        @Override
-        public int compare(String a, String b) {
-          return Integer.valueOf(a).compareTo(Integer.valueOf(b));
-        }
-      };
+      (a, b) -> Integer.valueOf(a).compareTo(Integer.valueOf(b));
 
   private static class Foo {
     private final int x;
@@ -1158,13 +1158,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private static final Comparator<Foo> FOO_COMPARATOR =
-      new Comparator<Foo>() {
-        @Override
-        public int compare(Foo a, Foo b) {
-          return (a.x < b.x) ? -1 : ((a.x > b.x) ? 1 : 0);
-        }
-      };
+  // We can't use Comparators.comparing under old versions of Android.
+  @SuppressWarnings({
+    "CompareProperty",
+    "DoubleProperty_ExtractTernaryHead",
+    "FloatProperty_ExtractTernaryHead",
+    "IntegerProperty_ExtractTernaryHead",
+    "LongProperty_ExtractTernaryHead",
+  })
+  // Even though Integer.compare was added in Java 7, we use it even under old versions of Android,
+  // even without library desugaring on: It and a few other APIs are *always* desguared:
+  // https://r8.googlesource.com/r8/+/a7563f86014d44f961f40fc109ab1c1073f2ee4e/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java
+  // Now, if this code weren't in Truth's *tests*, then it would cause Animal Sniffer to complain.
+  // In that case, we might fall back to the deprecated Guava Ints.compare.
+  private static final Comparator<Foo> FOO_COMPARATOR = (a, b) -> Integer.compare(a.x, b.x);
 
   @Test
   public void iterableOrderedByBaseClassComparator() {
@@ -1184,6 +1191,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // test of a mistaken call
   public void isNotIn() {
     ImmutableList<String> actual = ImmutableList.of("a");
 
@@ -1209,7 +1217,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @SuppressWarnings("IncompatibleArgumentType")
+  @SuppressWarnings({"IncompatibleArgumentType", "deprecation"}) // test of a mistaken call
   public void isNoneOf() {
     ImmutableList<String> actual = ImmutableList.of("a");
 

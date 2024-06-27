@@ -15,19 +15,22 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.math.BigDecimal;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Propositions for {@link BigDecimal} typed subjects.
  *
  * @author Kurt Alfred Kluever
  */
+@NullMarked
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
-  private final BigDecimal actual;
+  private final @Nullable BigDecimal actual;
 
   BigDecimalSubject(FailureMetadata metadata, @Nullable BigDecimal actual) {
     super(metadata, actual);
@@ -88,12 +91,12 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
    * #isEqualTo(Object)}.
    */
   @Override
-  public void isEquivalentAccordingToCompareTo(BigDecimal expected) {
+  public void isEquivalentAccordingToCompareTo(@Nullable BigDecimal expected) {
     compareValues(expected);
   }
 
-  private void compareValues(BigDecimal expected) {
-    if (actual.compareTo(expected) != 0) {
+  private void compareValues(@Nullable BigDecimal expected) {
+    if (checkNotNull(actual).compareTo(checkNotNull(expected)) != 0) {
       failWithoutActual(fact("expected", expected), butWas(), simpleFact("(scale is ignored)"));
     }
   }

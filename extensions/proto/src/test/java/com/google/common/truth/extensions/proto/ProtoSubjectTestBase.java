@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 
 /** Base class for testing {@link ProtoSubject} methods. */
@@ -139,6 +139,10 @@ public class ProtoSubjectTestBase {
 
   protected final ExtensionRegistry getExtensionRegistry() {
     return extensionRegistry;
+  }
+
+  protected final Message clone(Message in) {
+    return in.toBuilder().build();
   }
 
   protected Message parse(String textProto) {

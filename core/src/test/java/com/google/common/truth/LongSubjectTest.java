@@ -15,8 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,6 +36,7 @@ import org.junit.runners.JUnit4;
 public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void simpleEquality() {
     assertThat(4L).isEqualTo(4L);
   }
@@ -127,6 +132,140 @@ public class LongSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(2L).isAtMost(1);
     assertThat(2L).isAtMost(2);
     assertThat(2L).isAtMost(3);
+  }
+
+  @Test
+  public void isWithinOf() {
+    assertThat(20000L).isWithin(0L).of(20000L);
+    assertThat(20000L).isWithin(1L).of(20000L);
+    assertThat(20000L).isWithin(10000L).of(20000L);
+    assertThat(20000L).isWithin(10000L).of(30000L);
+    assertThat(Long.MIN_VALUE).isWithin(1L).of(Long.MIN_VALUE + 1);
+    assertThat(Long.MAX_VALUE).isWithin(1L).of(Long.MAX_VALUE - 1);
+    assertThat(Long.MAX_VALUE / 2).isWithin(Long.MAX_VALUE).of(-Long.MAX_VALUE / 2);
+    assertThat(-Long.MAX_VALUE / 2).isWithin(Long.MAX_VALUE).of(Long.MAX_VALUE / 2);
+
+    assertThatIsWithinFails(20000L, 9999L, 30000L);
+    assertThatIsWithinFails(20000L, 10000L, 30001L);
+    assertThatIsWithinFails(Long.MIN_VALUE, 0L, Long.MAX_VALUE);
+    assertThatIsWithinFails(Long.MAX_VALUE, 0L, Long.MIN_VALUE);
+    assertThatIsWithinFails(Long.MIN_VALUE, 1L, Long.MIN_VALUE + 2);
+    assertThatIsWithinFails(Long.MAX_VALUE, 1L, Long.MAX_VALUE - 2);
+    // Don't fall for rollover
+    assertThatIsWithinFails(Long.MIN_VALUE, 1L, Long.MAX_VALUE);
+    assertThatIsWithinFails(Long.MAX_VALUE, 1L, Long.MIN_VALUE);
+  }
+
+  private static void assertThatIsWithinFails(long actual, long tolerance, long expected) {
+    ExpectFailure.SimpleSubjectBuilderCallback<LongSubject, Long> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<LongSubject, Long>() {
+          @Override
+          public void invokeAssertion(SimpleSubjectBuilder<LongSubject, Long> expect) {
+            expect.that(actual).isWithin(tolerance).of(expected);
+          }
+        };
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure)
+        .factKeys()
+        .containsExactly("expected", "but was", "outside tolerance")
+        .inOrder();
+    assertThat(failure).factValue("expected").isEqualTo(Long.toString(expected));
+    assertThat(failure).factValue("but was").isEqualTo(Long.toString(actual));
+    assertThat(failure).factValue("outside tolerance").isEqualTo(Long.toString(tolerance));
+  }
+
+  @Test
+  public void isNotWithinOf() {
+    assertThatIsNotWithinFails(20000L, 0L, 20000L);
+    assertThatIsNotWithinFails(20000L, 1L, 20000L);
+    assertThatIsNotWithinFails(20000L, 10000L, 20000L);
+    assertThatIsNotWithinFails(20000L, 10000L, 30000L);
+    assertThatIsNotWithinFails(Long.MIN_VALUE, 1L, Long.MIN_VALUE + 1);
+    assertThatIsNotWithinFails(Long.MAX_VALUE, 1L, Long.MAX_VALUE - 1);
+    assertThatIsNotWithinFails(Long.MAX_VALUE / 2, Long.MAX_VALUE, -Long.MAX_VALUE / 2);
+    assertThatIsNotWithinFails(-Long.MAX_VALUE / 2, Long.MAX_VALUE, Long.MAX_VALUE / 2);
+
+    assertThat(20000L).isNotWithin(9999L).of(30000L);
+    assertThat(20000L).isNotWithin(10000L).of(30001L);
+    assertThat(Long.MIN_VALUE).isNotWithin(0L).of(Long.MAX_VALUE);
+    assertThat(Long.MAX_VALUE).isNotWithin(0L).of(Long.MIN_VALUE);
+    assertThat(Long.MIN_VALUE).isNotWithin(1L).of(Long.MIN_VALUE + 2);
+    assertThat(Long.MAX_VALUE).isNotWithin(1L).of(Long.MAX_VALUE - 2);
+    // Don't fall for rollover
+    assertThat(Long.MIN_VALUE).isNotWithin(1L).of(Long.MAX_VALUE);
+    assertThat(Long.MAX_VALUE).isNotWithin(1L).of(Long.MIN_VALUE);
+  }
+
+  private static void assertThatIsNotWithinFails(long actual, long tolerance, long expected) {
+    ExpectFailure.SimpleSubjectBuilderCallback<LongSubject, Long> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<LongSubject, Long>() {
+          @Override
+          public void invokeAssertion(SimpleSubjectBuilder<LongSubject, Long> expect) {
+            expect.that(actual).isNotWithin(tolerance).of(expected);
+          }
+        };
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factValue("expected not to be").isEqualTo(Long.toString(expected));
+    assertThat(failure).factValue("within tolerance").isEqualTo(Long.toString(tolerance));
+  }
+
+  @Test
+  public void isWithinIntegers() {
+    assertThat(20000L).isWithin(0).of(20000);
+    assertThat(20000L).isWithin(1).of(20000);
+    assertThat(20000L).isWithin(10000).of(20000);
+    assertThat(20000L).isWithin(10000).of(30000);
+
+    assertThat(20000L).isNotWithin(0).of(200000);
+    assertThat(20000L).isNotWithin(1).of(200000);
+    assertThat(20000L).isNotWithin(10000).of(200000);
+    assertThat(20000L).isNotWithin(10000).of(300000);
+  }
+
+  @Test
+  public void isWithinNegativeTolerance() {
+    isWithinNegativeToleranceThrowsIAE(0L, -10, 5);
+    isWithinNegativeToleranceThrowsIAE(0L, -10, 20);
+    isNotWithinNegativeToleranceThrowsIAE(0L, -10, 5);
+    isNotWithinNegativeToleranceThrowsIAE(0L, -10, 20);
+  }
+
+  private static void isWithinNegativeToleranceThrowsIAE(
+      long actual, long tolerance, long expected) {
+    try {
+      assertThat(actual).isWithin(tolerance).of(expected);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
+    }
+  }
+
+  private static void isNotWithinNegativeToleranceThrowsIAE(
+      long actual, long tolerance, long expected) {
+    try {
+      assertThat(actual).isNotWithin(tolerance).of(expected);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
+    }
+  }
+
+  private static final Subject.Factory<LongSubject, Long> LONG_SUBJECT_FACTORY =
+      new Subject.Factory<LongSubject, Long>() {
+        @Override
+        public LongSubject createSubject(FailureMetadata metadata, Long that) {
+          return new LongSubject(metadata, that);
+        }
+      };
+
+  @CanIgnoreReturnValue
+  private static AssertionError expectFailure(
+      SimpleSubjectBuilderCallback<LongSubject, Long> callback) {
+    return ExpectFailure.expectFailureAbout(LONG_SUBJECT_FACTORY, callback);
   }
 
   private LongSubject expectFailureWhenTestingThat(Long actual) {

@@ -52,6 +52,7 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   public void testInteger() {
     assertThat(457923).isEqualTo(457923);
     try {
@@ -133,10 +134,11 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
   }
 
   public void testObjectArray() {
-    Set[] setOfString = {new HashSet<String>(asList("foo", "bar", "bash"))};
+    Set<?>[] setOfString = {new HashSet<String>(asList("foo", "bar", "bash"))};
     assertThat(setOfString).asList().contains(new HashSet<String>(asList("foo", "bar", "bash")));
   }
 
+  @SuppressWarnings("IsInstanceIterable") // test of an intentionally trivially true assertion
   public void testDefault() {
     assertThat(new Object()).isNotNull();
     assertThat(new ArrayList<String>()).isInstanceOf(AbstractList.class);

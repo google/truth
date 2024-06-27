@@ -18,14 +18,23 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
+import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.Map;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * In a fluent assertion chain, an object with which you can do any of the following:
@@ -45,6 +54,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>You won't extend this type. When you write a custom subject, see <a
  * href="https://truth.dev/extension">our doc on extensions</a>.
  */
+@NullMarked
 public class StandardSubjectBuilder {
   /**
    * Returns a new instance that invokes the given {@code FailureStrategy} when a check fails. Most
@@ -61,10 +71,9 @@ public class StandardSubjectBuilder {
     this.metadataDoNotReferenceDirectly = checkNotNull(metadata);
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
   public final <ComparableT extends Comparable<?>> ComparableSubject<ComparableT> that(
       @Nullable ComparableT actual) {
-    return new ComparableSubject(metadata(), actual) {};
+    return new ComparableSubject<ComparableT>(metadata(), actual) {};
   }
 
   public final BigDecimalSubject that(@Nullable BigDecimal actual) {
@@ -76,6 +85,7 @@ public class StandardSubjectBuilder {
   }
 
   @GwtIncompatible("ClassSubject.java")
+  @J2ktIncompatible
   public final ClassSubject that(@Nullable Class<?> actual) {
     return new ClassSubject(metadata(), actual);
   }
@@ -112,7 +122,8 @@ public class StandardSubjectBuilder {
     return new IterableSubject(metadata(), actual);
   }
 
-  public final <T> ObjectArraySubject<T> that(@Nullable T @Nullable [] actual) {
+  @SuppressWarnings("AvoidObjectArrays")
+  public final <T extends @Nullable Object> ObjectArraySubject<T> that(T @Nullable [] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }
 
@@ -148,7 +159,7 @@ public class StandardSubjectBuilder {
     return new PrimitiveDoubleArraySubject(metadata(), actual, "array");
   }
 
-  public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
+  public final GuavaOptionalSubject that(com.google.common.base.@Nullable Optional<?> actual) {
     return new GuavaOptionalSubject(metadata(), actual, "optional");
   }
 
@@ -166,6 +177,89 @@ public class StandardSubjectBuilder {
 
   public final TableSubject that(@Nullable Table<?, ?, ?> actual) {
     return new TableSubject(metadata(), actual);
+  }
+
+  /**
+   * @since 1.3.0 (with access to {@link OptionalSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings({
+    "Java7ApiChecker", // no more dangerous that wherever the user got the Optional
+    "NullableOptional", // Truth always accepts nulls, no matter the type
+  })
+  public final OptionalSubject that(@Nullable Optional<?> actual) {
+    return new OptionalSubject(metadata(), actual, "optional");
+  }
+
+  /**
+   * @since 1.4.0 (with access to {@link OptionalIntSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings(
+      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalInt
+  public final OptionalIntSubject that(@Nullable OptionalInt actual) {
+    return new OptionalIntSubject(metadata(), actual, "optionalInt");
+  }
+
+  /**
+   * @since 1.4.0 (with access to {@link OptionalLongSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings(
+      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalLong
+  public final OptionalLongSubject that(@Nullable OptionalLong actual) {
+    return new OptionalLongSubject(metadata(), actual, "optionalLong");
+  }
+
+  /**
+   * @since 1.4.0 (with access to {@link OptionalDoubleSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings(
+      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalDouble
+  public final OptionalDoubleSubject that(@Nullable OptionalDouble actual) {
+    return new OptionalDoubleSubject(metadata(), actual, "optionalDouble");
+  }
+
+  /**
+   * @since 1.3.0 (with access to {@link StreamSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
+  public final StreamSubject that(@Nullable Stream<?> actual) {
+    return new StreamSubject(metadata(), actual);
+  }
+
+  /**
+   * @since 1.4.0 (with access to {@link IntStreamSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the IntStream
+  public final IntStreamSubject that(@Nullable IntStream actual) {
+    return new IntStreamSubject(metadata(), actual);
+  }
+
+  /**
+   * @since 1.4.0 (with access to {@link LongStreamSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @SuppressWarnings(
+      "Java7ApiChecker") // no more dangerous that wherever the user got the LongStream
+  public final LongStreamSubject that(@Nullable LongStream actual) {
+    return new LongStreamSubject(metadata(), actual);
+  }
+
+  // TODO(b/64757353): Add support for DoubleStream?
+
+  /**
+   * @since 1.4.0 (with access to {@link PathSubject} previously part of {@code
+   *     truth-java8-extension})
+   */
+  @GwtIncompatible
+  @J2ObjCIncompatible
+  @J2ktIncompatible
+  public final PathSubject that(@Nullable Path actual) {
+    return new PathSubject(metadata(), actual);
   }
 
   /**

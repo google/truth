@@ -19,11 +19,15 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
+import static com.google.common.truth.Platform.isKotlinRange;
+import static com.google.common.truth.Platform.kotlinRangeContains;
 import static com.google.common.truth.Platform.stringValueOfNonFloatingPoint;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
@@ -32,7 +36,6 @@ import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -50,7 +53,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An object that lets you perform checks on the value under test. For example, {@code Subject}
@@ -69,6 +73,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author David Saff
  * @author Christian Gruber
  */
+@NullMarked
 public class Subject {
   /**
    * In a fluent assertion chain, the argument to the common overload of {@link
@@ -85,18 +90,11 @@ public class Subject {
    */
   public interface Factory<SubjectT extends Subject, ActualT> {
     /** Creates a new {@link Subject}. */
-    SubjectT createSubject(FailureMetadata metadata, ActualT actual);
+    SubjectT createSubject(FailureMetadata metadata, @Nullable ActualT actual);
   }
 
-  private static final FailureStrategy IGNORE_STRATEGY =
-      new FailureStrategy() {
-        @Override
-        public void fail(AssertionError failure) {}
-      };
-
-  private final FailureMetadata metadata;
-  private final Object actual;
-  private String customName = null;
+  private final @Nullable FailureMetadata metadata;
+  private final @Nullable Object actual;
   private final @Nullable String typeDescriptionOverride;
 
   /**
@@ -104,7 +102,7 @@ public class Subject {
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @Nullable Object actual) {
-    this(metadata, actual, /*typeDescriptionOverride=*/ null);
+    this(metadata, actual, /* typeDescriptionOverride= */ null);
   }
 
   /**
@@ -119,8 +117,10 @@ public class Subject {
    * obfuscated names.
    */
   Subject(
-      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
-    this.metadata = metadata.updateForSubject(this);
+      @Nullable FailureMetadata metadata,
+      @Nullable Object actual,
+      @Nullable String typeDescriptionOverride) {
+    this.metadata = metadata == null ? null : metadata.updateForSubject(this);
     this.actual = actual;
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
@@ -300,8 +300,8 @@ public class Subject {
       failWithActual("expected instance of", clazz.getName());
       return;
     }
-    if (!Platform.isInstanceOfType(actual, clazz)) {
-      if (classMetadataUnsupported()) {
+    if (!isInstanceOfType(actual, clazz)) {
+      if (Platform.classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
                 + ", an instance of "
@@ -322,14 +322,14 @@ public class Subject {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
-    if (classMetadataUnsupported()) {
+    if (Platform.classMetadataUnsupported()) {
       throw new UnsupportedOperationException(
           "isNotInstanceOf is not supported under -XdisableClassMetadata");
     }
     if (actual == null) {
       return; // null is not an instance of clazz.
     }
-    if (Platform.isInstanceOfType(actual, clazz)) {
+    if (isInstanceOfType(actual, clazz)) {
       failWithActual("expected not to be an instance of", clazz.getName());
       /*
        * TODO(cpovirk): Consider including actual.getClass() if it's not clazz itself but only a
@@ -338,11 +338,31 @@ public class Subject {
     }
   }
 
+  private static boolean isInstanceOfType(Object instance, Class<?> clazz) {
+    checkArgument(
+        !clazz.isPrimitive(),
+        "Cannot check instanceof for primitive type %s. Pass the wrapper class instead.",
+        clazz.getSimpleName());
+    /*
+     * TODO(cpovirk): Make the message include `Primitives.wrap(clazz).getSimpleName()` once that
+     * method is available in a public guava-gwt release that we depend on.
+     */
+    return Platform.isInstanceOfType(instance, clazz);
+  }
+
   /** Fails unless the subject is equal to any element in the given iterable. */
-  public void isIn(Iterable<?> iterable) {
-    if (!Iterables.contains(iterable, actual)) {
+  public void isIn(@Nullable Iterable<?> iterable) {
+    checkNotNull(iterable);
+    if (!contains(iterable, actual)) {
       failWithActual("expected any of", iterable);
     }
+  }
+
+  private static boolean contains(Iterable<?> haystack, @Nullable Object needle) {
+    if (isKotlinRange(haystack)) {
+      return kotlinRangeContains(haystack, needle);
+    }
+    return Iterables.contains(haystack, needle);
   }
 
   /** Fails unless the subject is equal to any of the given elements. */
@@ -352,7 +372,8 @@ public class Subject {
   }
 
   /** Fails if the subject is equal to any element in the given iterable. */
-  public void isNotIn(Iterable<?> iterable) {
+  public void isNotIn(@Nullable Iterable<?> iterable) {
+    checkNotNull(iterable);
     if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
@@ -365,7 +386,7 @@ public class Subject {
   }
 
   /** Returns the actual value under test. */
-  final Object actual() {
+  final @Nullable Object actual() {
     return actual;
   }
 
@@ -402,13 +423,18 @@ public class Subject {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
-      String wrapped = Iterables.toString(stringableIterable(new Object[] {o}));
-      return wrapped.substring(1, wrapped.length() - 1);
+      return String.valueOf(arrayAsListRecursively(o));
     } else if (o instanceof Double) {
       return doubleToString((Double) o);
     } else if (o instanceof Float) {
       return floatToString((Float) o);
     } else {
+      // TODO(cpovirk): Consider renaming the called method to mention "NonArray."
+      /*
+       * TODO(cpovirk): Should the called method and arrayAsListRecursively(...) both call back into
+       * formatActualOrExpected for its handling of byte[] and float/double? Or is there some other
+       * restructuring of this set of methods that we should undertake?
+       */
       return stringValueOfNonFloatingPoint(o);
     }
   }
@@ -424,40 +450,30 @@ public class Subject {
 
   private static final char[] hexDigits = "0123456789ABCDEF".toCharArray();
 
-  private static Iterable<?> stringableIterable(Object[] array) {
-    return Iterables.transform(asList(array), STRINGIFY);
+  private static @Nullable Object arrayAsListRecursively(@Nullable Object input) {
+    if (input instanceof Object[]) {
+      return Lists.<@Nullable Object, @Nullable Object>transform(
+          asList((@Nullable Object[]) input), Subject::arrayAsListRecursively);
+    } else if (input instanceof boolean[]) {
+      return Booleans.asList((boolean[]) input);
+    } else if (input instanceof int[]) {
+      return Ints.asList((int[]) input);
+    } else if (input instanceof long[]) {
+      return Longs.asList((long[]) input);
+    } else if (input instanceof short[]) {
+      return Shorts.asList((short[]) input);
+    } else if (input instanceof byte[]) {
+      return Bytes.asList((byte[]) input);
+    } else if (input instanceof double[]) {
+      return doubleArrayAsString((double[]) input);
+    } else if (input instanceof float[]) {
+      return floatArrayAsString((float[]) input);
+    } else if (input instanceof char[]) {
+      return Chars.asList((char[]) input);
+    } else {
+      return input;
+    }
   }
-
-  private static final Function<Object, Object> STRINGIFY =
-      new Function<Object, Object>() {
-        @Override
-        public Object apply(@Nullable Object input) {
-          if (input != null && input.getClass().isArray()) {
-            Iterable<?> iterable;
-            if (input.getClass() == boolean[].class) {
-              iterable = Booleans.asList((boolean[]) input);
-            } else if (input.getClass() == int[].class) {
-              iterable = Ints.asList((int[]) input);
-            } else if (input.getClass() == long[].class) {
-              iterable = Longs.asList((long[]) input);
-            } else if (input.getClass() == short[].class) {
-              iterable = Shorts.asList((short[]) input);
-            } else if (input.getClass() == byte[].class) {
-              iterable = Bytes.asList((byte[]) input);
-            } else if (input.getClass() == double[].class) {
-              iterable = doubleArrayAsString((double[]) input);
-            } else if (input.getClass() == float[].class) {
-              iterable = floatArrayAsString((float[]) input);
-            } else if (input.getClass() == char[].class) {
-              iterable = Chars.asList((char[]) input);
-            } else {
-              iterable = Arrays.asList((Object[]) input);
-            }
-            return Iterables.transform(iterable, STRINGIFY);
-          }
-          return input;
-        }
-      };
 
   /**
    * The result of comparing two objects for equality. This includes both the "equal"/"not-equal"
@@ -493,7 +509,7 @@ public class Subject {
 
     private final @Nullable ImmutableList<Fact> facts;
 
-    private ComparisonResult(ImmutableList<Fact> facts) {
+    private ComparisonResult(@Nullable ImmutableList<Fact> facts) {
       this.facts = facts;
     }
 
@@ -598,7 +614,7 @@ public class Subject {
     }
   }
 
-  private static boolean gwtSafeObjectEquals(Object actual, Object expected) {
+  private static boolean gwtSafeObjectEquals(@Nullable Object actual, @Nullable Object expected) {
     if (actual instanceof Double && expected instanceof Double) {
       return Double.doubleToLongBits((Double) actual) == Double.doubleToLongBits((Double) expected);
     } else if (actual instanceof Float && expected instanceof Float) {
@@ -634,7 +650,7 @@ public class Subject {
    */
   @Deprecated
   final StandardSubjectBuilder check() {
-    return new StandardSubjectBuilder(metadata.updateForCheckCall());
+    return new StandardSubjectBuilder(checkNotNull(metadata).updateForCheckCall());
   }
 
   /**
@@ -665,28 +681,24 @@ public class Subject {
    * @param format a template with {@code %s} placeholders
    * @param args the arguments to be inserted into those placeholders
    */
-  protected final StandardSubjectBuilder check(String format, Object... args) {
+  protected final StandardSubjectBuilder check(String format, @Nullable Object... args) {
     return doCheck(OldAndNewValuesAreSimilar.DIFFERENT, format, args);
   }
 
   // TODO(b/134064106): Figure out a public API for this.
 
-  final StandardSubjectBuilder checkNoNeedToDisplayBothValues(String format, Object... args) {
+  final StandardSubjectBuilder checkNoNeedToDisplayBothValues(
+      String format, @Nullable Object... args) {
     return doCheck(OldAndNewValuesAreSimilar.SIMILAR, format, args);
   }
 
   private StandardSubjectBuilder doCheck(
-      OldAndNewValuesAreSimilar valuesAreSimilar, String format, Object[] args) {
-    final LazyMessage message = new LazyMessage(format, args);
-    Function<String, String> descriptionUpdate =
-        new Function<String, String>() {
-          @Override
-          public String apply(String input) {
-            return input + "." + message;
-          }
-        };
+      OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
+    LazyMessage message = new LazyMessage(format, args);
     return new StandardSubjectBuilder(
-        metadata.updateForCheckCall(valuesAreSimilar, descriptionUpdate));
+        checkNotNull(metadata)
+            .updateForCheckCall(
+                valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));
   }
 
   /**
@@ -698,7 +710,7 @@ public class Subject {
    * returns {@code ignoreCheck().that(... a dummy exception ...)}.
    */
   protected final StandardSubjectBuilder ignoreCheck() {
-    return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
+    return StandardSubjectBuilder.forCustomFailureStrategy(failure -> {});
   }
 
   /**
@@ -783,7 +795,7 @@ public class Subject {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  final void fail(String verb, Object... messageParts) {
+  final void fail(String verb, @Nullable Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that <");
     message.append(actualCustomStringRepresentation()).append("> ").append(verb);
     for (Object part : messageParts) {
@@ -807,12 +819,12 @@ public class Subject {
    * Special version of {@link #failEqualityCheck} for use from {@link IterableSubject}, documented
    * further there.
    */
-  final void failEqualityCheckForEqualsWithoutDescription(Object expected) {
+  final void failEqualityCheckForEqualsWithoutDescription(@Nullable Object expected) {
     failEqualityCheck(EqualityCheck.EQUAL, expected, ComparisonResult.differentNoDescription());
   }
 
   private void failEqualityCheck(
-      EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
+      EqualityCheck equalityCheck, @Nullable Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);
     String actualClass = actual == null ? "(null reference)" : actual.getClass().getName();
@@ -860,8 +872,8 @@ public class Subject {
       }
     } else {
       if (equalityCheck == EqualityCheck.EQUAL && actual != null && expected != null) {
-        metadata.failEqualityCheck(
-            nameAsFacts(), difference.factsOrEmpty(), expectedString, actualString);
+        checkNotNull(metadata)
+            .failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
       } else {
         failEqualityCheckNoComparisonFailure(
             difference,
@@ -875,7 +887,7 @@ public class Subject {
    * Checks whether the actual and expected values are strings that match except for trailing
    * whitespace. If so, reports a failure and returns true.
    */
-  private boolean tryFailForTrailingWhitespaceOnly(Object expected) {
+  private boolean tryFailForTrailingWhitespaceOnly(@Nullable Object expected) {
     if (!(actual instanceof String) || !(expected instanceof String)) {
       return false;
     }
@@ -944,7 +956,7 @@ public class Subject {
    * Checks whether the actual and expected values are empty strings. If so, reports a failure and
    * returns true.
    */
-  private boolean tryFailForEmptyString(Object expected) {
+  private boolean tryFailForEmptyString(@Nullable Object expected) {
     if (!(actual instanceof String) || !(expected instanceof String)) {
       return false;
     }
@@ -1039,8 +1051,7 @@ public class Subject {
    */
   @Deprecated
   final void failWithoutSubject(String check) {
-    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failWithoutActual(simpleFact(lenientFormat("Not true that %s %s", strSubject, check)));
+    failWithoutActual(simpleFact(lenientFormat("Not true that the subject %s", check)));
   }
 
   /**
@@ -1176,24 +1187,7 @@ public class Subject {
     return UPPER_CAMEL.to(LOWER_CAMEL, actualClass);
   }
 
-  private static boolean classMetadataUnsupported() {
-    // https://github.com/google/truth/issues/198
-    // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
-    // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
-    return String.class.getSuperclass() == null;
-  }
-
   private void doFail(ImmutableList<Fact> facts) {
-    metadata.fail(prependNameIfAny(facts));
-  }
-
-  private ImmutableList<Fact> prependNameIfAny(ImmutableList<Fact> facts) {
-    return concat(nameAsFacts(), facts);
-  }
-
-  private ImmutableList<Fact> nameAsFacts() {
-    return customName == null
-        ? ImmutableList.<Fact>of()
-        : ImmutableList.of(fact("name", customName));
+    checkNotNull(metadata).fail(facts);
   }
 }

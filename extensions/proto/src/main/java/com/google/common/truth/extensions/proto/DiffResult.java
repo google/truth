@@ -557,6 +557,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         case UNKNOWN_FIELD_DESCRIPTOR:
           printFieldValue(subScopeId.unknownFieldDescriptor(), o, sb);
           return;
+        case UNPACKED_ANY_VALUE_TYPE:
+          printFieldValue(AnyUtils.valueFieldDescriptor(), o, sb);
+          return;
       }
       throw new AssertionError(subScopeId.kind());
     }

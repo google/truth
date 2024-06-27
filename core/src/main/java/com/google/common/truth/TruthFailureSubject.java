@@ -23,7 +23,8 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
@@ -38,6 +39,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
  * caller tries to access the facts of an error that wasn't produced by Truth.
  */
+@NullMarked
 public final class TruthFailureSubject extends ThrowableSubject {
   static final Fact HOW_TO_TEST_KEYS_WITHOUT_VALUES =
       simpleFact(
@@ -55,12 +57,13 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private static final Factory<TruthFailureSubject, AssertionError> FACTORY =
       new Factory<TruthFailureSubject, AssertionError>() {
         @Override
-        public TruthFailureSubject createSubject(FailureMetadata metadata, AssertionError actual) {
+        public TruthFailureSubject createSubject(
+            FailureMetadata metadata, @Nullable AssertionError actual) {
           return new TruthFailureSubject(metadata, actual, "failure");
         }
       };
 
-  private final AssertionError actual;
+  private final @Nullable AssertionError actual;
 
   TruthFailureSubject(
       FailureMetadata metadata, @Nullable AssertionError actual, @Nullable String typeDescription) {
@@ -71,7 +74,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   /** Returns a subject for the list of fact keys. */
   public IterableSubject factKeys() {
     if (!(actual instanceof ErrorWithFacts)) {
-      failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
+      failWithActual(simpleFact("expected a failure thrown by Truth's failure API"));
       return ignoreCheck().that(ImmutableList.of());
     }
     ErrorWithFacts error = (ErrorWithFacts) actual;
@@ -124,7 +127,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private StringSubject doFactValue(String key, @Nullable Integer index) {
     checkNotNull(key);
     if (!(actual instanceof ErrorWithFacts)) {
-      failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
+      failWithActual(simpleFact("expected a failure thrown by Truth's failure API"));
       return ignoreCheck().that("");
     }
     ErrorWithFacts error = (ErrorWithFacts) actual;

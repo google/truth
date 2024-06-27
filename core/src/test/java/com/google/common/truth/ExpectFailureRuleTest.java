@@ -38,11 +38,13 @@ public class ExpectFailureRuleTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_passesIfUnused() {
     assertThat(4).isEqualTo(4);
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsAfterTest() {
     expectFailure.whenTesting().that(4).isEqualTo(4);
     thrown.expectMessage("ExpectFailure.whenTesting() invoked, but no failure was caught.");
@@ -55,6 +57,7 @@ public class ExpectFailureRuleTest {
   }
 
   @Test
+  @SuppressWarnings("TruthSelfEquals")
   public void expectFail_throwAfterSubject_shouldPropagateOriginalException() {
     expectFailure.whenTesting().that(2).isEqualTo(2);
     thrown.expectMessage("Throwing deliberately");
