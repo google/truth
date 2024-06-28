@@ -24,7 +24,7 @@
     </dependency>
     <!-- Required only to test the -gwt sub-artifact. -->
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
       <scope>test</scope>
     </dependency>

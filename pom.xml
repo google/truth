@@ -81,7 +81,7 @@
         <version>4.13.2</version>
       </dependency>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>org.gwtproject</groupId>
         <artifactId>gwt-user</artifactId>
         <version>${gwt.version}</version>
       </dependency>
