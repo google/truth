@@ -10,18 +10,14 @@
     <version>HEAD-SNAPSHOT</version>
   </parent>
   <artifactId>truth-java8-extension</artifactId>
-  <name>Truth Extension for Java8</name>
+  <name>Obsolete Truth Extension for Java8</name>
   <description>
-    An extension for the Truth test assertion framework supporting Java8 types and structures
+    Obsolete, empty artifact that merely pulls in the main `truth` artifact: Assertions for Java 8 types are now part of that main artifact.
   </description>
   <dependencies>
     <dependency>
       <groupId>com.google.truth</groupId>
       <artifactId>truth</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jspecify</groupId>
-      <artifactId>jspecify</artifactId>
     </dependency>
   </dependencies>
   <build>
