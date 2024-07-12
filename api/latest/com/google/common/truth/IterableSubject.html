@@ -141,8 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code><a href="extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></code>, <code><a href="MultisetSubject.html" title="class in com.google.common.truth">MultisetSubject</a></code></dd>
 </dl>
 <hr>
-<pre>@NullMarked
-public class <span class="typeNameLabel">IterableSubject</span>
+<pre>public class <span class="typeNameLabel">IterableSubject</span>
 extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a></pre>
 <div class="block">Propositions for <code>Iterable</code> subjects.
 
@@ -297,14 +296,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all the expected elements or fails.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Object%5B%5D)">containsAtLeastElementsIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks that the actual iterable contains at least all the expected elements or fails.</div>
 </td>
@@ -339,18 +338,18 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Object%5B%5D)">containsNoneIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;excluded)</code></th>
 <td class="colLast">
-<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded array
- or fails.</div>
+<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
+ iterable or fails.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Object%5B%5D)">containsNoneIn</a></span>&#8203;(@Nullable java.lang.Object[]&nbsp;excluded)</code></th>
 <td class="colLast">
-<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
- iterable or fails.</div>
+<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded array
+ or fails.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
@@ -683,7 +682,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</pre>
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expectedIterable)</pre>
 <div class="block">Checks that the actual iterable contains at least all the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -784,7 +783,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>containsNoneIn</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsNoneIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;excluded)</pre>
 <div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
  iterable or fails. (Duplicates are irrelevant to this test, which fails if any of the actual
  elements equal any of the excluded.)</div>

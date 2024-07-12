@@ -210,7 +210,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Iterable)">containsAnyIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAnyIn(java.lang.Iterable)">containsAnyIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject does not contain at least one of the given elements.</div>
 </td>
@@ -235,21 +235,21 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeastElementsIn(java.lang.Iterable)">containsAtLeastElementsIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject does not contain all of the given elements.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(int...)">containsExactly</a></span>&#8203;(int...&nbsp;varargs)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(int...)">containsExactly</a></span>&#8203;(int @Nullable ...&nbsp;varargs)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject does not contain exactly the given elements.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactlyElementsIn(java.lang.Iterable)">containsExactlyElementsIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject does not contain exactly the given elements.</div>
 </td>
@@ -263,7 +263,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsNoneIn(java.lang.Iterable)">containsNoneIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;excluded)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject contains any of the given elements.</div>
 </td>
@@ -495,7 +495,7 @@ public static&nbsp;<a href="Subject.Factory.html" title="interface in com.google
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAnyIn</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;containsAnyIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;containsAnyIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Fails if the subject does not contain at least one of the given elements.</div>
 </li>
 </ul>
@@ -525,7 +525,7 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsAtLeastElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Fails if the subject does not contain all of the given elements. If an element appears more
  than once in the given elements, then it must appear at least that number of times in the
  actual elements.
@@ -542,7 +542,7 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(int...&nbsp;varargs)</pre>
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(int @Nullable ...&nbsp;varargs)</pre>
 <div class="block">Fails if the subject does not contain exactly the given elements.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
@@ -559,7 +559,7 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Fails if the subject does not contain exactly the given elements.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
@@ -588,7 +588,7 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <ul class="blockList">
 <li class="blockList">
 <h4>containsNoneIn</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;containsNoneIn&#8203;(java.lang.Iterable&lt;?&gt;&nbsp;excluded)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;containsNoneIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;excluded)</pre>
 <div class="block">Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
  test, which fails if any of the actual elements equal any of the excluded.)</div>
 </li>
