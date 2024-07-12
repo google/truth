@@ -20,8 +20,6 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 
 import java.lang.annotation.Target;
-import org.jspecify.annotations.NullMarked;
 
 @Target({METHOD, FIELD, CONSTRUCTOR})
-@NullMarked
 @interface UsedByReflection {}

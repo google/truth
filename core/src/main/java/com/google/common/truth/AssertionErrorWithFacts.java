@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.makeMessage;
 
 import com.google.common.collect.ImmutableList;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -27,7 +26,6 @@ import org.jspecify.annotations.Nullable;
  * messages.
  */
 @SuppressWarnings("OverrideThrowableToString") // We intentionally hide the class name.
-@NullMarked
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
   private final ImmutableList<Fact> facts;
 

@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.lang.reflect.Array;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -28,7 +27,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@NullMarked
 abstract class AbstractArraySubject extends Subject {
   private final @Nullable Object actual;
 

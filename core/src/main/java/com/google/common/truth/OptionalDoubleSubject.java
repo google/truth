@@ -31,7 +31,7 @@ import org.jspecify.annotations.Nullable;
 @IgnoreJRERequirement
 public final class OptionalDoubleSubject extends Subject {
 
-  private final OptionalDouble actual;
+  private final @Nullable OptionalDouble actual;
 
   OptionalDoubleSubject(
       FailureMetadata failureMetadata,

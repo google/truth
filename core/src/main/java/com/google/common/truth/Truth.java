@@ -32,7 +32,6 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -79,7 +78,6 @@ import org.jspecify.annotations.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@NullMarked
 public final class Truth {
   private Truth() {}
 

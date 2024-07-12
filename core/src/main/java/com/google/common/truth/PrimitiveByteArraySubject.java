@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.primitives.Bytes;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -26,7 +25,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@NullMarked
 public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   private final byte @Nullable [] actual;
 

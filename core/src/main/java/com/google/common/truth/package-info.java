@@ -29,6 +29,8 @@
  * other docs.
  */
 @CheckReturnValue
+@NullMarked
 package com.google.common.truth;
 
 import com.google.errorprone.annotations.CheckReturnValue;
+import org.jspecify.annotations.NullMarked;

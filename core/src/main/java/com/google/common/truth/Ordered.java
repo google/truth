@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Returned by calls like {@link IterableSubject#containsExactly}, {@code Ordered} lets the caller
@@ -27,7 +26,6 @@ import org.jspecify.annotations.NullMarked;
  * assertThat(supportedCharsets).containsExactly("UTF-8", "US-ASCII").inOrder(); // does check order
  * }</pre>
  */
-@NullMarked
 public interface Ordered {
 
   /**

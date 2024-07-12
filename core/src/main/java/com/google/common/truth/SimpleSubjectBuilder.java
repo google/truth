@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -32,7 +31,6 @@ import org.jspecify.annotations.Nullable;
  * <p>You won't extend this type. When you write a custom subject, see <a
  * href="https://truth.dev/extension">our doc on extensions</a>.
  */
-@NullMarked
 public final class SimpleSubjectBuilder<SubjectT extends Subject, ActualT> {
   private final FailureMetadata metadata;
   private final Subject.Factory<SubjectT, ActualT> subjectFactory;

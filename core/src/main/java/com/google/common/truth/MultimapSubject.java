@@ -46,7 +46,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -55,7 +54,6 @@ import org.jspecify.annotations.Nullable;
  * @author Daniel Ploch
  * @author Kurt Alfred Kluever
  */
-@NullMarked
 public class MultimapSubject extends Subject {
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */

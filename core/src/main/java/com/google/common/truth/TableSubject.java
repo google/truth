@@ -23,7 +23,6 @@ import static com.google.common.truth.Fact.simpleFact;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -31,7 +30,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@NullMarked
 public final class TableSubject extends Subject {
   private final @Nullable Table<?, ?, ?> actual;
 

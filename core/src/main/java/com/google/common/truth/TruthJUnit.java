@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import org.jspecify.annotations.NullMarked;
 import org.junit.AssumptionViolatedException;
 
 /**
@@ -40,7 +39,6 @@ import org.junit.AssumptionViolatedException;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@NullMarked
 @com.google.common.annotations.GwtIncompatible("JUnit4")
 public final class TruthJUnit {
   @SuppressWarnings("ConstantCaseForConstants") // Despite the "Builder" name, it's not mutable.

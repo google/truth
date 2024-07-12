@@ -27,7 +27,6 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Helper routines related to <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">graph
@@ -35,7 +34,6 @@ import org.jspecify.annotations.NullMarked;
  *
  * @author Pete Gillin
  */
-@NullMarked
 final class GraphMatching {
 
   /**

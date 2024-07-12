@@ -17,13 +17,11 @@
 package com.google.common.truth;
 
 import com.google.common.collect.ImmutableList;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Supertype of Truth's {@link AssertionError} subclasses that are created from a list of {@link
  * Fact} instances.
  */
-@NullMarked
 interface ErrorWithFacts {
   ImmutableList<Fact> facts();
 }

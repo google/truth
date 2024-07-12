@@ -22,7 +22,6 @@ import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -35,7 +34,6 @@ import org.jspecify.annotations.Nullable;
  * <p>If you are writing a custom {@code Subject}, see <a
  * href="https://truth.dev/failure_messages">our tips on writing failure messages</a>.
  */
-@NullMarked
 public final class Fact implements Serializable {
   /**
    * Creates a fact with the given key and value, which will be printed in a format like "key:

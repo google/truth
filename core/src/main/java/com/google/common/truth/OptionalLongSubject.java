@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 @SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class OptionalLongSubject extends Subject {
-  private final OptionalLong actual;
+  private final @Nullable OptionalLong actual;
 
   OptionalLongSubject(
       FailureMetadata failureMetadata,

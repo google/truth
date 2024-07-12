@@ -30,7 +30,6 @@ import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ErrorCollector;
@@ -84,7 +83,6 @@ import org.junit.runners.model.Statement;
  */
 @GwtIncompatible("JUnit4")
 @J2ktIncompatible
-@NullMarked
 public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private static final class ExpectationGatherer implements FailureStrategy {

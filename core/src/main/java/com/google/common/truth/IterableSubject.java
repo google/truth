@@ -67,7 +67,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -89,7 +88,6 @@ import org.jspecify.annotations.Nullable;
  * @author Pete Gillin
  */
 // Can't be final since MultisetSubject and SortedSetSubject extend it
-@NullMarked
 public class IterableSubject extends Subject {
 
   private final @Nullable Iterable<?> actual;
@@ -283,7 +281,7 @@ public class IterableSubject extends Subject {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
+  public final Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(checkNotNull(this.actual));
     Collection<?> expected = iterableToCollection(expectedIterable);
 
@@ -727,8 +725,9 @@ public class IterableSubject extends Subject {
    * iterable or fails. (Duplicates are irrelevant to this test, which fails if any of the actual
    * elements equal any of the excluded.)
    */
-  public final void containsNoneIn(Iterable<?> excluded) {
+  public final void containsNoneIn(@Nullable Iterable<?> excluded) {
     Collection<?> actual = iterableToCollection(checkNotNull(this.actual));
+    checkNotNull(excluded); // TODO(cpovirk): Produce a better exception message.
     List<@Nullable Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (actual.contains(item)) {

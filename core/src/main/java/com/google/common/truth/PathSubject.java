@@ -18,6 +18,7 @@ package com.google.common.truth;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.nio.file.Path;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Assertions for {@link Path} instances.
@@ -28,7 +29,7 @@ import java.nio.file.Path;
 @J2ObjCIncompatible
 @J2ktIncompatible
 public final class PathSubject extends Subject {
-  PathSubject(FailureMetadata failureMetadata, Path actual) {
+  PathSubject(FailureMetadata failureMetadata, @Nullable Path actual) {
     super(failureMetadata, actual);
   }
 

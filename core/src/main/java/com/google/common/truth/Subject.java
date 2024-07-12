@@ -53,7 +53,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -73,7 +72,6 @@ import org.jspecify.annotations.Nullable;
  * @author David Saff
  * @author Christian Gruber
  */
-@NullMarked
 public class Subject {
   /**
    * In a fluent assertion chain, the argument to the common overload of {@link

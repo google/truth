@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Defines what to do when a check fails.
@@ -54,7 +53,6 @@ import org.jspecify.annotations.NullMarked;
  * StandardSubjectBuilder#forCustomFailureStrategy
  * StandardSubjectBuilder.forCustomFailureStrategy(STRATEGY)}.
  */
-@NullMarked
 public interface FailureStrategy {
   /**
    * Handles a failure. The parameter is an {@code AssertionError} or subclass thereof, and it

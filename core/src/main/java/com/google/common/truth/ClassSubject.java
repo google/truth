@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -26,7 +25,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@NullMarked
 @GwtIncompatible("reflection")
 @J2ktIncompatible
 public final class ClassSubject extends Subject {

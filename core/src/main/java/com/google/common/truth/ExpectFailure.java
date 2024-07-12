@@ -24,7 +24,6 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -67,7 +66,6 @@ import org.junit.runners.model.Statement;
  * also checks that the assertion you're testing uses the supplied {@link FailureStrategy} and calls
  * {@link FailureStrategy#fail} only once.
  */
-@NullMarked
 public final class ExpectFailure implements Platform.JUnitTestRule {
   private boolean inRuleContext = false;
   private boolean failureExpected = false;

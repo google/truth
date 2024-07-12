@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -48,7 +49,7 @@ import org.jspecify.annotations.Nullable;
 @IgnoreJRERequirement
 public final class LongStreamSubject extends Subject {
 
-  private final List<?> actualList;
+  private final @Nullable List<?> actualList;
 
   LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
     super(failureMetadata, stream);
@@ -118,7 +119,7 @@ public final class LongStreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
-  public void containsAnyIn(Iterable<?> expected) {
+  public void containsAnyIn(@Nullable Iterable<?> expected) {
     check().that(actualList).containsAnyIn(expected);
   }
 
@@ -147,7 +148,7 @@ public final class LongStreamSubject extends Subject {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
+  public Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expected) {
     return check().that(actualList).containsAtLeastElementsIn(expected);
   }
 
@@ -161,7 +162,19 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(long... varargs) {
+  public Ordered containsExactly(long @Nullable ... varargs) {
+    /*
+     * We declare a parameter type that lets callers pass a nullable array, even though the
+     * assertion will fail if the array is ever actually null. This can be convenient if the
+     * expected value comes from a nullable source (e.g., a map lookup): Users would otherwise have
+     * to use {@code requireNonNull} or {@code !!} or similar, all to address a compile error
+     * warning about a runtime failure that might never happen—a runtime failure that Truth could
+     * produce a better exception message for, since it could make the message express that the
+     * caller is performing a containsExactly assertion.
+     *
+     * TODO(cpovirk): Actually produce such a better exception message.
+     */
+    checkNotNull(varargs);
     return check().that(actualList).containsExactlyElementsIn(box(varargs));
   }
 
@@ -175,7 +188,7 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactlyElementsIn(Iterable<?> expected) {
+  public Ordered containsExactlyElementsIn(@Nullable Iterable<?> expected) {
     return check().that(actualList).containsExactlyElementsIn(expected);
   }
 
@@ -192,7 +205,7 @@ public final class LongStreamSubject extends Subject {
    * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
-  public void containsNoneIn(Iterable<?> excluded) {
+  public void containsNoneIn(@Nullable Iterable<?> excluded) {
     check().that(actualList).containsNoneIn(excluded);
   }
 

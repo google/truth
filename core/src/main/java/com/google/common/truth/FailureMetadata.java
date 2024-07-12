@@ -29,7 +29,6 @@ import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -52,7 +51,6 @@ import org.jspecify.annotations.Nullable;
  * using their {@link CustomSubjectBuilder#metadata()} method to get an instance to pass to the
  * constructor.)
  */
-@NullMarked
 public final class FailureMetadata {
   static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
     return new FailureMetadata(

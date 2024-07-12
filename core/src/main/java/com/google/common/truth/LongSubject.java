@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -30,7 +29,6 @@ import org.jspecify.annotations.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  * @author Kurt Alfred Kluever
  */
-@NullMarked
 public class LongSubject extends ComparableSubject<Long> {
 
   private final @Nullable Long actual;

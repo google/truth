@@ -31,7 +31,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -66,7 +65,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Pete Gillin
  */
-@NullMarked
 public abstract class Correspondence<A extends @Nullable Object, E extends @Nullable Object> {
 
   /**

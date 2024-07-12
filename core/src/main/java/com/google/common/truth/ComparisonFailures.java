@@ -26,7 +26,6 @@ import static java.lang.Math.max;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -43,7 +42,6 @@ import org.jspecify.annotations.Nullable;
  * different implementation under GWT/j2cl, where {@code ComparisonFailure} is also unavailable but
  * we can't just recover from that at runtime.
  */
-@NullMarked
 final class ComparisonFailures {
   static ImmutableList<Fact> makeComparisonFailureFacts(
       ImmutableList<Fact> headFacts,

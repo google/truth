@@ -50,7 +50,7 @@ import org.jspecify.annotations.Nullable;
 public final class StreamSubject extends Subject {
   // Storing the FailureMetadata instance is not usually advisable.
   private final FailureMetadata metadata;
-  private final Stream<?> actual;
+  private final @Nullable Stream<?> actual;
   private final Supplier<@Nullable List<?>> listSupplier;
 
   StreamSubject(
@@ -145,7 +145,7 @@ public final class StreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
-  public void containsAnyIn(Iterable<?> expected) {
+  public void containsAnyIn(@Nullable Iterable<?> expected) {
     checkThatContentsList().containsAnyIn(expected);
   }
 
@@ -174,7 +174,7 @@ public final class StreamSubject extends Subject {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
+  public Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expected) {
     return checkThatContentsList().containsAtLeastElementsIn(expected);
   }
 
@@ -209,7 +209,7 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactlyElementsIn(Iterable<?> expected) {
+  public Ordered containsExactlyElementsIn(@Nullable Iterable<?> expected) {
     return checkThatContentsList().containsExactlyElementsIn(expected);
   }
 
@@ -226,7 +226,7 @@ public final class StreamSubject extends Subject {
    * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
-  public void containsNoneIn(Iterable<?> excluded) {
+  public void containsNoneIn(@Nullable Iterable<?> excluded) {
     checkThatContentsList().containsNoneIn(excluded);
   }
 

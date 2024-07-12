@@ -27,13 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /** Utility that cleans stack traces to remove noise from common frameworks. */
 @GwtIncompatible
 @J2ktIncompatible
-@NullMarked
 final class StackTraceCleaner {
 
   static final String CLEANER_LINK = "https://goo.gl/aH3UyP";

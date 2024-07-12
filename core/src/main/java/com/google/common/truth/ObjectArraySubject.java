@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -26,7 +25,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Christian Gruber
  */
-@NullMarked
 public final class ObjectArraySubject<T extends @Nullable Object> extends AbstractArraySubject {
   private final T @Nullable [] actual;
 
