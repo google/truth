@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.google.truth</groupId>
     <artifactId>truth-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>1.4.4</version>
   </parent>
   <groupId>com.google.truth.extensions</groupId>
   <artifactId>truth-extensions-parent</artifactId>
