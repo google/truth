@@ -34,6 +34,7 @@ import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
@@ -587,7 +588,7 @@ public class MultimapSubject extends Subject {
                       .add(
                           fact(
                               "found match (but failing because of exception)",
-                              immutableEntry(expectedKey, actualValue)))
+                              Maps.<@Nullable Object, A>immutableEntry(expectedKey, actualValue)))
                       .add(
                           fact(
                               "full contents",
