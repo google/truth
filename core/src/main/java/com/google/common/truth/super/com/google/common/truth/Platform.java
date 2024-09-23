@@ -140,14 +140,14 @@ final class Platform {
     return ((NativeNumber) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
   }
 
-  @JsType(isNative = true, namespace = "proto.im")
+  @JsType(isNative = true, namespace = "jspb")
   private static class Message {
     public native String serialize();
   }
 
-  @JsMethod(namespace = "proto.im.debug")
+  @JsMethod(namespace = "jspb.debug")
   private static native Object dump(Message msg) /*-{
-    // Emtpy stub to make GWT happy. This will never get executed under GWT.
+    // Empty stub to make GWT happy. This will never get executed under GWT.
     throw new Error();
   }-*/;
 
