@@ -17,7 +17,6 @@
 package com.google.common.truth.refactorings;
 
 import com.google.errorprone.CompilationTestHelper;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -25,15 +24,11 @@ import org.junit.runners.JUnit4;
 /** @author cpovirk@google.com (Chris Povirk) */
 @RunWith(JUnit4.class)
 public class FailWithFactsTest {
-  private CompilationTestHelper compilationHelper;
-
-  @Before
-  public void setUp() {
-    compilationHelper = CompilationTestHelper.newInstance(FailWithFacts.class, getClass());
-  }
+  private final CompilationTestHelper compilationHelper =
+      CompilationTestHelper.newInstance(FailWithFacts.class, getClass());
 
   @Test
   public void testPositiveCase() {
-    compilationHelper.addSourceFile("FailWithFactsPositiveCases.java").doTest();
+    compilationHelper.addSourceFile("testdata/FailWithFactsPositiveCases.java").doTest();
   }
 }

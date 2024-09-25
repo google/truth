@@ -41,37 +41,37 @@ public class CorrespondenceSubclassToFactoryCallTest {
   @Test
   public void testPositiveCase() {
     compilationHelper
-        .addSourceFile("CorrespondenceSubclassToFactoryCallPositiveCases.java")
+        .addSourceFile("testdata/CorrespondenceSubclassToFactoryCallPositiveCases.java")
         .doTest();
   }
 
   @Test
   public void testPositiveCase2() {
     compilationHelper
-        .addSourceFile("CorrespondenceSubclassToFactoryCallPositiveCases2.java")
+        .addSourceFile("testdata/CorrespondenceSubclassToFactoryCallPositiveCases2.java")
         .doTest();
   }
 
   @Test
   public void testNegativeCase() {
     compilationHelper
-        .addSourceFile("CorrespondenceSubclassToFactoryCallNegativeCases.java")
+        .addSourceFile("testdata/CorrespondenceSubclassToFactoryCallNegativeCases.java")
         .doTest();
   }
 
   @Test
   public void refactoring() {
     refactoringHelper
-        .addInput("CorrespondenceSubclassToFactoryCallPositiveCases.java")
-        .addOutput("CorrespondenceSubclassToFactoryCallPositiveCases_expected.java")
+        .addInput("testdata/CorrespondenceSubclassToFactoryCallPositiveCases.java")
+        .addOutput("testdata/CorrespondenceSubclassToFactoryCallPositiveCases_expected.java")
         .doTest();
   }
 
   @Test
   public void refactoring2() {
     refactoringHelper
-        .addInput("CorrespondenceSubclassToFactoryCallPositiveCases2.java")
-        .addOutput("CorrespondenceSubclassToFactoryCallPositiveCases2_expected.java")
+        .addInput("testdata/CorrespondenceSubclassToFactoryCallPositiveCases2.java")
+        .addOutput("testdata/CorrespondenceSubclassToFactoryCallPositiveCases2_expected.java")
         .doTest();
   }
 }
