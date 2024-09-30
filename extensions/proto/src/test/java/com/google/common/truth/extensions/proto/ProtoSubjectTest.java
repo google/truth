@@ -556,6 +556,30 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testComparingExpectedFieldsOnly_anyMessage() {
+    String typeUrl =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+
+    Message message = parse("o_any_message: { [" + typeUrl + "]: {r_string: \"foo\"} }");
+    Message diffMessage =
+        parse("o_any_message: { [" + typeUrl + "]: {o_int: 3 r_string: \"foo\"} }");
+
+    expectThat(diffMessage)
+        .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+        .comparingExpectedFieldsOnly()
+        .isEqualTo(message);
+
+    expectFailureWhenTesting().that(message).comparingExpectedFieldsOnly().isEqualTo(diffMessage);
+    if (isProto3()) {
+      expectThatFailure().hasMessageThat().contains("modified: o_any_message.value.o_int: 3 -> 0");
+    } else {
+      expectThatFailure().hasMessageThat().contains("deleted: o_any_message.value.o_int: 3");
+    }
+  }
+
+  @Test
   public void testIgnoringExtraRepeatedFieldElements_respectingOrder() {
     Message message = parse("r_string: 'foo' r_string: 'bar'");
     Message eqMessage = parse("r_string: 'foo' r_string: 'foobar' r_string: 'bar'");
