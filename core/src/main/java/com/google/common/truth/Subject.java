@@ -261,7 +261,12 @@ public class Subject {
     }
   }
 
-  /** Fails if the subject is not the same instance as the given object. */
+  /**
+   * Fails if the value under test is not the same instance as the given object.
+   *
+   * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
+   * same instance as anything else.
+   */
   public final void isSameInstanceAs(@Nullable Object expected) {
     if (actual != expected) {
       failEqualityCheck(
@@ -277,7 +282,12 @@ public class Subject {
     }
   }
 
-  /** Fails if the subject is the same instance as the given object. */
+  /**
+   * Fails if the value under test is the same instance as the given object.
+   *
+   * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
+   * same instance as anything else.
+   */
   public final void isNotSameInstanceAs(@Nullable Object unexpected) {
     if (actual == unexpected) {
       /*
