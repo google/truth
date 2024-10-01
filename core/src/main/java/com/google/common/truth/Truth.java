@@ -149,19 +149,23 @@ public final class Truth {
     return assert_().about(factory);
   }
 
+  /** Begins an assertion about a {@link Comparable}. */
   public static <ComparableT extends Comparable<?>> ComparableSubject<ComparableT> assertThat(
       @Nullable ComparableT actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link BigDecimal}. */
   public static BigDecimalSubject assertThat(@Nullable BigDecimal actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about an {@link Object}. */
   public static Subject assertThat(@Nullable Object actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Class}. */
   @GwtIncompatible("ClassSubject.java")
   @J2ktIncompatible
   public static ClassSubject assertThat(@Nullable Class<?> actual) {
@@ -189,94 +193,117 @@ public final class Truth {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Long}. */
   public static LongSubject assertThat(@Nullable Long actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Double}. */
   public static DoubleSubject assertThat(@Nullable Double actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Float}. */
   public static FloatSubject assertThat(@Nullable Float actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about an {@link Integer}. */
   public static IntegerSubject assertThat(@Nullable Integer actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Boolean}. */
   public static BooleanSubject assertThat(@Nullable Boolean actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link String}. */
   public static StringSubject assertThat(@Nullable String actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about an {@link Iterable}. */
   public static IterableSubject assertThat(@Nullable Iterable<?> actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about an {@link Object} array. */
   @SuppressWarnings("AvoidObjectArrays")
   public static <T extends @Nullable Object> ObjectArraySubject<T> assertThat(
       T @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link boolean} array. */
   public static PrimitiveBooleanArraySubject assertThat(boolean @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link short} array. */
   public static PrimitiveShortArraySubject assertThat(short @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about an {@link int} array. */
   public static PrimitiveIntArraySubject assertThat(int @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link long} array. */
   public static PrimitiveLongArraySubject assertThat(long @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link byte} array. */
   public static PrimitiveByteArraySubject assertThat(byte @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link char} array. */
   public static PrimitiveCharArraySubject assertThat(char @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link float} array. */
   public static PrimitiveFloatArraySubject assertThat(float @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link double} array. */
   public static PrimitiveDoubleArraySubject assertThat(double @Nullable [] actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a Guava {@link com.google.common.base.Optional}. */
   public static GuavaOptionalSubject assertThat(
       com.google.common.base.@Nullable Optional<?> actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Map}. */
   public static MapSubject assertThat(@Nullable Map<?, ?> actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Multimap}. */
   public static MultimapSubject assertThat(@Nullable Multimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Multiset}. */
   public static MultisetSubject assertThat(@Nullable Multiset<?> actual) {
     return assert_().that(actual);
   }
 
+  /** Begins an assertion about a {@link Table}. */
   public static TableSubject assertThat(@Nullable Table<?, ?, ?> actual) {
     return assert_().that(actual);
   }
 
   /**
+   * Begins an assertion about an {@link Optional}.
+   *
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings({
@@ -288,6 +315,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about an {@link OptionalInt}.
+   *
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -296,6 +325,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about an {@link OptionalLong}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -304,6 +335,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about an {@link OptionalDouble}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -312,6 +345,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about a {@link Stream}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -320,6 +355,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about an {@link IntStream}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -328,6 +365,8 @@ public final class Truth {
   }
 
   /**
+   * Begins an assertion about a {@link LongStream}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
@@ -338,6 +377,8 @@ public final class Truth {
   // TODO(b/64757353): Add support for DoubleStream?
 
   /**
+   * Begins an assertion about a {@link Path}.
+   *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
   @GwtIncompatible

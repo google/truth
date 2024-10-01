@@ -123,19 +123,19 @@ public class Subject {
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
 
-  /** Fails if the subject is not null. */
+  /** Checks that the value under test is null. */
   public void isNull() {
     standardIsEqualTo(null);
   }
 
-  /** Fails if the subject is null. */
+  /** Checks that the value under test is not null. */
   public void isNotNull() {
     standardIsNotEqualTo(null);
   }
 
   /**
-   * Fails if the subject is not equal to the given object. For the purposes of this comparison, two
-   * objects are equal if any of the following is true:
+   * Checks that the value under test is equal to the given object. For the purposes of this
+   * comparison, two objects are equal if any of the following is true:
    *
    * <ul>
    *   <li>they are equal according to {@link Objects#equal}
@@ -176,8 +176,8 @@ public class Subject {
   }
 
   /**
-   * Fails if the subject is equal to the given object. The meaning of equality is the same as for
-   * the {@link #isEqualTo} method.
+   * Checks that the value under test is not equal to the given object. The meaning of equality is
+   * the same as for the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object unexpected) {
     standardIsNotEqualTo(unexpected);
@@ -262,7 +262,7 @@ public class Subject {
   }
 
   /**
-   * Fails if the value under test is not the same instance as the given object.
+   * Checks that the value under test is the same instance as the given object.
    *
    * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
    * same instance as anything else.
@@ -283,7 +283,7 @@ public class Subject {
   }
 
   /**
-   * Fails if the value under test is the same instance as the given object.
+   * Checks that the value under test is not the same instance as the given object.
    *
    * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
    * same instance as anything else.
@@ -299,7 +299,7 @@ public class Subject {
     }
   }
 
-  /** Fails if the subject is not an instance of the given class. */
+  /** Checks that the value under test is an instance of the given class. */
   public void isInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
@@ -325,7 +325,7 @@ public class Subject {
     }
   }
 
-  /** Fails if the subject is an instance of the given class. */
+  /** Checks that the value under test is not an instance of the given class. */
   public void isNotInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
@@ -358,7 +358,7 @@ public class Subject {
     return Platform.isInstanceOfType(instance, clazz);
   }
 
-  /** Fails unless the subject is equal to any element in the given iterable. */
+  /** Checks that the value under test is equal to any element in the given iterable. */
   public void isIn(@Nullable Iterable<?> iterable) {
     checkNotNull(iterable);
     if (!contains(iterable, actual)) {
@@ -373,13 +373,13 @@ public class Subject {
     return Iterables.contains(haystack, needle);
   }
 
-  /** Fails unless the subject is equal to any of the given elements. */
+  /** Checks that the value under test is equal to any of the given elements. */
   public void isAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     isIn(accumulate(first, second, rest));
   }
 
-  /** Fails if the subject is equal to any element in the given iterable. */
+  /** Checks that the value under test is not equal to any element in the given iterable. */
   public void isNotIn(@Nullable Iterable<?> iterable) {
     checkNotNull(iterable);
     if (Iterables.contains(iterable, actual)) {
@@ -387,7 +387,7 @@ public class Subject {
     }
   }
 
-  /** Fails if the subject is equal to any of the given elements. */
+  /** Checks that the value under test is not equal to any of the given elements. */
   public void isNoneOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     isNotIn(accumulate(first, second, rest));
@@ -782,7 +782,7 @@ public class Subject {
    * Assembles a failure message and passes such to the FailureStrategy
    *
    * @param verb the check being asserted
-   * @param other the value against which the subject is compared
+   * @param other the value against which the value under test is compared
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
    *     #failWithActual(String, Object)}. However, if you want to preserve your exact failure
    *     message as a migration aid, you can inline this method (and then inline the resulting
@@ -797,7 +797,7 @@ public class Subject {
    * Assembles a failure message and passes such to the FailureStrategy
    *
    * @param verb the check being asserted
-   * @param messageParts the expectations against which the subject is compared
+   * @param messageParts the expectations against which the value under test is compared
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
    *     #failWithActual(Fact, Fact...)}. However, if you want to preserve your exact failure
    *     message as a migration aid, you can inline this method.
@@ -1011,9 +1011,9 @@ public class Subject {
    * Assembles a failure message and passes it to the FailureStrategy
    *
    * @param verb the check being asserted
-   * @param expected the expectations against which the subject is compared
+   * @param expected the expectations against which the value under test is compared
    * @param failVerb the failure of the check being asserted
-   * @param actual the actual value the subject was compared against
+   * @param actual the actual value that the value under test was compared against
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
    *     #failWithActual(Fact, Fact...)}. However, if you want to preserve your exact failure
    *     message as a migration aid, you can inline this method.
@@ -1032,12 +1032,12 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message with an alternative representation of the wrapped subject and
-   * passes it to the FailureStrategy
+   * Assembles a failure message with an alternative representation of the wrapped value under test
+   * and passes it to the FailureStrategy
    *
    * @param verb the check being asserted
    * @param expected the expected value of the check
-   * @param actual the custom representation of the subject to be reported in the failure.
+   * @param actual the custom representation of the value under test to be reported in the failure.
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
    *     #failWithoutActual(Fact, Fact...)}. However, if you want to preserve your exact failure
    *     message as a migration aid, you can inline this method.
@@ -1092,7 +1092,8 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message without a given subject and passes it to the FailureStrategy
+   * Assembles a failure message without a given value under test and passes it to the
+   * FailureStrategy.
    *
    * @param check the check being asserted
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
