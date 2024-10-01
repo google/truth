@@ -326,7 +326,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not equal to the given object.</div>
+<div class="block">Checks that the value under test is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
@@ -397,8 +397,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <h4>isEqualTo</h4>
 <pre class="methodSignature">public final&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;other)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
- objects are equal if any of the following is true:
+<div class="block">Checks that the value under test is equal to the given object. For the purposes of this
+ comparison, two objects are equal if any of the following is true:
 
  <ul>
    <li>they are equal according to <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal(java.lang.Object,java.lang.Object)" title="class or interface in com.google.common.base" class="externalLink"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>

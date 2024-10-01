@@ -394,7 +394,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not equal to the given object.</div>
+<div class="block">Checks that the value under test is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i21" class="rowColor">
@@ -536,8 +536,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <h4>isEqualTo</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
- objects are equal if any of the following is true:
+<div class="block">Checks that the value under test is equal to the given object. For the purposes of this
+ comparison, two objects are equal if any of the following is true:
 
  <ul>
    <li>they are equal according to <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal(java.lang.Object,java.lang.Object)" title="class or interface in com.google.common.base" class="externalLink"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
@@ -881,7 +881,7 @@ public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable java.lang.Object&nbsp;first,
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)"><code>containsNoneOf(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a> instead.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is equal to any of the given elements.</div>
+<div class="block">Checks that the value under test is not equal to any of the given elements.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="Subject.html#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></code>&nbsp;in class&nbsp;<code><a href="Subject.html" title="class in com.google.common.truth">Subject</a></code></dd>
@@ -900,7 +900,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;
 <div class="deprecationComment">You probably meant to call <a href="#containsNoneIn(java.lang.Iterable)"><code>containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isNotIn(java.lang.Iterable)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is equal to any element in the given iterable.</div>
+<div class="block">Checks that the value under test is not equal to any element in the given iterable.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="Subject.html#isNotIn(java.lang.Iterable)">isNotIn</a></code>&nbsp;in class&nbsp;<code><a href="Subject.html" title="class in com.google.common.truth">Subject</a></code></dd>

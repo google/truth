@@ -303,28 +303,28 @@ extends java.lang.Object</pre>
        @Nullable java.lang.Object&nbsp;second,
        @Nullable java.lang.Object @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
-<div class="block">Fails unless the subject is equal to any of the given elements.</div>
+<div class="block">Checks that the value under test is equal to any of the given elements.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not equal to the given object.</div>
+<div class="block">Checks that the value under test is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isIn(java.lang.Iterable)">isIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
-<div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
+<div class="block">Checks that the value under test is equal to any element in the given iterable.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInstanceOf(java.lang.Class)">isInstanceOf</a></span>&#8203;(java.lang.Class&lt;?&gt;&nbsp;clazz)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not an instance of the given class.</div>
+<div class="block">Checks that the value under test is an instance of the given class.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
@@ -333,56 +333,56 @@ extends java.lang.Object</pre>
         @Nullable java.lang.Object&nbsp;second,
         @Nullable java.lang.Object @Nullable ...&nbsp;rest)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is equal to any of the given elements.</div>
+<div class="block">Checks that the value under test is not equal to any of the given elements.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(@Nullable java.lang.Object&nbsp;unexpected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is equal to the given object.</div>
+<div class="block">Checks that the value under test is not equal to the given object.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is equal to any element in the given iterable.</div>
+<div class="block">Checks that the value under test is not equal to any element in the given iterable.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotInstanceOf(java.lang.Class)">isNotInstanceOf</a></span>&#8203;(java.lang.Class&lt;?&gt;&nbsp;clazz)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is an instance of the given class.</div>
+<div class="block">Checks that the value under test is not an instance of the given class.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotNull()">isNotNull</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is null.</div>
+<div class="block">Checks that the value under test is not null.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotSameInstanceAs(java.lang.Object)">isNotSameInstanceAs</a></span>&#8203;(@Nullable java.lang.Object&nbsp;unexpected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is the same instance as the given object.</div>
+<div class="block">Checks that the value under test is not the same instance as the given object.</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNull()">isNull</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not null.</div>
+<div class="block">Checks that the value under test is null.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isSameInstanceAs(java.lang.Object)">isSameInstanceAs</a></span>&#8203;(@Nullable java.lang.Object&nbsp;expected)</code></th>
 <td class="colLast">
-<div class="block">Fails if the subject is not the same instance as the given object.</div>
+<div class="block">Checks that the value under test is the same instance as the given object.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -447,7 +447,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNull</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNull()</pre>
-<div class="block">Fails if the subject is not null.</div>
+<div class="block">Checks that the value under test is null.</div>
 </li>
 </ul>
 <a id="isNotNull()">
@@ -457,7 +457,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNotNull</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNotNull()</pre>
-<div class="block">Fails if the subject is null.</div>
+<div class="block">Checks that the value under test is not null.</div>
 </li>
 </ul>
 <a id="isEqualTo(java.lang.Object)">
@@ -467,8 +467,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isEqualTo</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
-<div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
- objects are equal if any of the following is true:
+<div class="block">Checks that the value under test is equal to the given object. For the purposes of this
+ comparison, two objects are equal if any of the following is true:
 
  <ul>
    <li>they are equal according to <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal(java.lang.Object,java.lang.Object)" title="class or interface in com.google.common.base" class="externalLink"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
@@ -497,8 +497,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNotEqualTo</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable java.lang.Object&nbsp;unexpected)</pre>
-<div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
- the <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
+<div class="block">Checks that the value under test is not equal to the given object. The meaning of equality is
+ the same as for the <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
 </li>
 </ul>
 <a id="isSameInstanceAs(java.lang.Object)">
@@ -508,7 +508,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isSameInstanceAs</h4>
 <pre class="methodSignature">public final&nbsp;void&nbsp;isSameInstanceAs&#8203;(@Nullable java.lang.Object&nbsp;expected)</pre>
-<div class="block">Fails if the subject is not the same instance as the given object.</div>
+<div class="block">Checks that the value under test is the same instance as the given object.
+
+ <p>This method considers <code>null</code> to be "the same instance as" <code>null</code> and not the
+ same instance as anything else.</div>
 </li>
 </ul>
 <a id="isNotSameInstanceAs(java.lang.Object)">
@@ -518,7 +521,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNotSameInstanceAs</h4>
 <pre class="methodSignature">public final&nbsp;void&nbsp;isNotSameInstanceAs&#8203;(@Nullable java.lang.Object&nbsp;unexpected)</pre>
-<div class="block">Fails if the subject is the same instance as the given object.</div>
+<div class="block">Checks that the value under test is not the same instance as the given object.
+
+ <p>This method considers <code>null</code> to be "the same instance as" <code>null</code> and not the
+ same instance as anything else.</div>
 </li>
 </ul>
 <a id="isInstanceOf(java.lang.Class)">
@@ -528,7 +534,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isInstanceOf</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isInstanceOf&#8203;(java.lang.Class&lt;?&gt;&nbsp;clazz)</pre>
-<div class="block">Fails if the subject is not an instance of the given class.</div>
+<div class="block">Checks that the value under test is an instance of the given class.</div>
 </li>
 </ul>
 <a id="isNotInstanceOf(java.lang.Class)">
@@ -538,7 +544,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNotInstanceOf</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNotInstanceOf&#8203;(java.lang.Class&lt;?&gt;&nbsp;clazz)</pre>
-<div class="block">Fails if the subject is an instance of the given class.</div>
+<div class="block">Checks that the value under test is not an instance of the given class.</div>
 </li>
 </ul>
 <a id="isIn(java.lang.Iterable)">
@@ -548,7 +554,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isIn</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
-<div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
+<div class="block">Checks that the value under test is equal to any element in the given iterable.</div>
 </li>
 </ul>
 <a id="isAnyOf(java.lang.Object,java.lang.Object,java.lang.Object...)">
@@ -560,7 +566,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;isAnyOf&#8203;(@Nullable java.lang.Object&nbsp;first,
                     @Nullable java.lang.Object&nbsp;second,
                     @Nullable java.lang.Object @Nullable ...&nbsp;rest)</pre>
-<div class="block">Fails unless the subject is equal to any of the given elements.</div>
+<div class="block">Checks that the value under test is equal to any of the given elements.</div>
 </li>
 </ul>
 <a id="isNotIn(java.lang.Iterable)">
@@ -570,7 +576,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isNotIn</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNotIn&#8203;(@Nullable java.lang.Iterable&lt;?&gt;&nbsp;iterable)</pre>
-<div class="block">Fails if the subject is equal to any element in the given iterable.</div>
+<div class="block">Checks that the value under test is not equal to any element in the given iterable.</div>
 </li>
 </ul>
 <a id="isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">
@@ -582,7 +588,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable java.lang.Object&nbsp;first,
                      @Nullable java.lang.Object&nbsp;second,
                      @Nullable java.lang.Object @Nullable ...&nbsp;rest)</pre>
-<div class="block">Fails if the subject is equal to any of the given elements.</div>
+<div class="block">Checks that the value under test is not equal to any of the given elements.</div>
 </li>
 </ul>
 <a id="actualCustomStringRepresentation()">

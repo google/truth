@@ -694,8 +694,8 @@ public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable java.lang.Object&nbsp;expected)
      contents of the stream, use <a href="#containsExactly(java.lang.Object...)"><code>containsExactly(java.lang.Object...)</code></a> or similar methods.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
- objects are equal if any of the following is true:
+<div class="block">Checks that the value under test is equal to the given object. For the purposes of this
+ comparison, two objects are equal if any of the following is true:
 
  <ul>
    <li>they are equal according to <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal(java.lang.Object,java.lang.Object)" title="class or interface in com.google.common.base" class="externalLink"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
@@ -736,8 +736,8 @@ public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable java.lang.Object&nbsp;unexpe
      contents of the stream, collect both streams to lists and perform assertions like <a href="Subject.html#isNotEqualTo(java.lang.Object)"><code>Subject.isNotEqualTo(java.lang.Object)</code></a> on them. In some cases, you may be able to use <a href="StreamSubject.html" title="class in com.google.common.truth"><code>StreamSubject</code></a> assertions like <a href="#doesNotContain(java.lang.Object)"><code>doesNotContain(java.lang.Object)</code></a>.</div>
 </div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isNotEqualTo(java.lang.Object)">Subject</a></code></span></div>
-<div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
- the <a href="Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(java.lang.Object)</code></a> method.</div>
+<div class="block">Checks that the value under test is not equal to the given object. The meaning of equality is
+ the same as for the <a href="Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(java.lang.Object)</code></a> method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="Subject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="Subject.html" title="class in com.google.common.truth">Subject</a></code></dd>
