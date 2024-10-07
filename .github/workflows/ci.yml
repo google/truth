@@ -24,7 +24,7 @@ jobs:
       - name: 'Check out repository'
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: 'Cache local Maven repository'
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
@@ -54,7 +54,7 @@ jobs:
       - name: 'Check out repository'
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: 'Cache local Maven repository'
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
@@ -83,7 +83,7 @@ jobs:
       - name: 'Check out repository'
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: 'Cache local Maven repository'
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
