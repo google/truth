@@ -208,10 +208,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * A "functional interface" for {@link #expectFailure expectFailure()} to invoke and capture
    * failures.
    *
-   * <p>Java 8+ users should pass a lambda to {@code .expectFailure()} rather than directly
-   * implement this interface. Java 7+ users can define an {@code @Rule ExpectFailure} instance
-   * instead, however if you prefer the {@code .expectFailure()} pattern you can use this interface
-   * to pass in an anonymous class.
+   * <p>Users should pass a lambda to {@code .expectFailure()} rather than directly implement this
+   * interface.
    */
   public interface StandardSubjectBuilderCallback {
     void invokeAssertion(StandardSubjectBuilder whenTesting);
@@ -221,10 +219,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * A "functional interface" for {@link #expectFailureAbout expectFailureAbout()} to invoke and
    * capture failures.
    *
-   * <p>Java 8+ users should pass a lambda to {@code .expectFailureAbout()} rather than directly
-   * implement this interface. Java 7+ users can define an {@code @Rule ExpectFailure} instance
-   * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
-   * interface to pass in an anonymous class.
+   * <p>Users should pass a lambda to {@code .expectFailureAbout()} rather than directly implement
+   * this interface.
    */
   public interface SimpleSubjectBuilderCallback<S extends Subject, A> {
     void invokeAssertion(SimpleSubjectBuilder<S, A> whenTesting);
