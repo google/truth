@@ -59,14 +59,6 @@ final class Platform {
     return compile(regex).test(subject);
   }
 
-  /**
-   * Returns an array containing all the exceptions that were suppressed to deliver the given
-   * exception. Delegates to the getSuppressed() method on Throwable that is available in Java 1.7+
-   */
-  static Throwable[] getSuppressed(Throwable throwable) {
-    return throwable.getSuppressed();
-  }
-
   static void cleanStackTrace(Throwable throwable) {
     // Do nothing. See notes in StackTraceCleanerTest.
   }

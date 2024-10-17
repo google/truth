@@ -151,7 +151,7 @@ final class StackTraceCleaner {
     if (throwable.getCause() != null) {
       new StackTraceCleaner(throwable.getCause()).clean(seenThrowables);
     }
-    for (Throwable suppressed : Platform.getSuppressed(throwable)) {
+    for (Throwable suppressed : throwable.getSuppressed()) {
       new StackTraceCleaner(suppressed).clean(seenThrowables);
     }
   }

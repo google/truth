@@ -55,27 +55,6 @@ final class Platform {
     return Pattern.compile(regex).matcher(actual).find();
   }
 
-  /**
-   * Returns an array containing all the exceptions that were suppressed to deliver the given
-   * exception. If suppressed exceptions are not supported (pre-Java 1.7), an empty array will be
-   * returned.
-   */
-  static Throwable[] getSuppressed(Throwable throwable) {
-    try {
-      Method getSuppressed = throwable.getClass().getMethod("getSuppressed");
-      return (Throwable[]) checkNotNull(getSuppressed.invoke(throwable));
-    } catch (NoSuchMethodException e) {
-      return new Throwable[0];
-    } catch (IllegalAccessException e) {
-      // We're calling a public method on a public class.
-      throw newLinkageError(e);
-    } catch (InvocationTargetException e) {
-      throwIfUnchecked(e.getCause());
-      // getSuppressed has no `throws` clause.
-      throw newLinkageError(e);
-    }
-  }
-
   static void cleanStackTrace(Throwable throwable) {
     StackTraceCleaner.cleanStackTrace(throwable);
   }
