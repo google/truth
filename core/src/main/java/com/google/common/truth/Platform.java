@@ -108,8 +108,8 @@ final class Platform {
         | LinkageError
         | RuntimeException e) {
       // Some possible reasons:
-      // - Inside Google, we omit ActualValueInference entirely under Android.
-      // - Outside Google, someone is running without ASM on the classpath.
+      // - Someone has omitted ASM from the classpath.
+      // - An optimizer has stripped ActualValueInference (though it's unusual to optimize tests).
       // - There's a bug.
       // - We don't handle a new bytecode feature.
       // TODO(cpovirk): Log a warning, at least for non-ClassNotFoundException, non-LinkageError?
