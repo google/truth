@@ -136,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject.DoubleArrayAsIterable</a></span></code></th>
 <td class="colLast">
 <div class="block">A partially specified check for doing assertions on the array similar to the assertions
- supported for <code>Iterable</code> subjects, in which the elements of the array under test are
+ supported for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> subjects, in which the elements of the array under test are
  compared to expected elements using either exact or tolerant double equality: see <a href="../PrimitiveDoubleArraySubject.html#usingExactEquality()"><code>PrimitiveDoubleArraySubject.usingExactEquality()</code></a> and <a href="../PrimitiveDoubleArraySubject.html#usingTolerance(double)"><code>PrimitiveDoubleArraySubject.usingTolerance(double)</code></a>.</div>
 </td>
 </tr>
@@ -145,7 +145,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../PrimitiveFloatArraySubject.FloatArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveFloatArraySubject.FloatArrayAsIterable</a></span></code></th>
 <td class="colLast">
 <div class="block">A partially specified check for doing assertions on the array similar to the assertions
- supported for <code>Iterable</code> subjects, in which the elements of the array under test are
+ supported for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> subjects, in which the elements of the array under test are
  compared to expected elements using either exact or tolerant float equality: see <a href="../PrimitiveFloatArraySubject.html#usingExactEquality()"><code>PrimitiveFloatArraySubject.usingExactEquality()</code></a> and <a href="../PrimitiveFloatArraySubject.html#usingTolerance(double)"><code>PrimitiveFloatArraySubject.usingTolerance(double)</code></a>.</div>
 </td>
 </tr>
@@ -160,10 +160,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><code>&lt;A extends @Nullable java.lang.Object,&#8203;E extends @Nullable java.lang.Object&gt;<br><a href="../IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;</code></td>
+<td class="colFirst"><code>&lt;A extends @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>,&#8203;E extends @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&gt;<br><a href="../IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">IterableSubject.</span><code><span class="memberNameLink"><a href="../IterableSubject.html#comparingElementsUsing(com.google.common.truth.Correspondence)">comparingElementsUsing</a></span>&#8203;(<a href="../Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</code></th>
 <td class="colLast">
-<div class="block">Starts a method chain for a check in which the actual elements (i.e. the elements of the <code>Iterable</code> under test) are compared to expected elements using the given <a href="../Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.</div>
+<div class="block">Starts a method chain for a check in which the actual elements (i.e. the elements of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) are compared to expected elements using the given <a href="../Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -184,11 +184,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>&lt;T extends @Nullable java.lang.Object&gt;<br><a href="../IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;</code></td>
+<td class="colFirst"><code>&lt;T extends @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&gt;<br><a href="../IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">IterableSubject.</span><code><span class="memberNameLink"><a href="../IterableSubject.html#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">formattingDiffsUsing</a></span>&#8203;(<a href="../Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</code></th>
 <td class="colLast">
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="../Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e. an element of the
- <code>Iterable</code> under test) and the element it is expected to be equal to, but isn't.</div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) and the element it is expected to be equal to, but isn't.</div>
 </td>
 </tr>
 </tbody>
