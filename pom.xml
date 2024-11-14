@@ -247,7 +247,7 @@
               <link>https://guava.dev/releases/snapshot-jre/api/docs</link>
               <link>https://protobuf.dev/reference/java/api-docs/</link>
               <link>https://junit.org/junit4/javadoc/latest/</link>
-              <link>https://docs.oracle.com/javase/7/docs/api/</link>
+              <link>https://docs.oracle.com/javase/21/docs/api/</link>
             </links>
             <sourceFileExcludes>
               <sourceFileExclude>**/super/**/*.java</sourceFileExclude>
