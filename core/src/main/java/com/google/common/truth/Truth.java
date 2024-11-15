@@ -235,42 +235,42 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link boolean} array. */
+  /** Begins an assertion about a {@code boolean} array. */
   public static PrimitiveBooleanArraySubject assertThat(boolean @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link short} array. */
+  /** Begins an assertion about a {@code short} array. */
   public static PrimitiveShortArraySubject assertThat(short @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about an {@link int} array. */
+  /** Begins an assertion about an {@code int} array. */
   public static PrimitiveIntArraySubject assertThat(int @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link long} array. */
+  /** Begins an assertion about a {@code long} array. */
   public static PrimitiveLongArraySubject assertThat(long @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link byte} array. */
+  /** Begins an assertion about a {@code byte} array. */
   public static PrimitiveByteArraySubject assertThat(byte @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link char} array. */
+  /** Begins an assertion about a {@code char} array. */
   public static PrimitiveCharArraySubject assertThat(char @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link float} array. */
+  /** Begins an assertion about a {@code float} array. */
   public static PrimitiveFloatArraySubject assertThat(float @Nullable [] actual) {
     return assert_().that(actual);
   }
 
-  /** Begins an assertion about a {@link double} array. */
+  /** Begins an assertion about a {@code double} array. */
   public static PrimitiveDoubleArraySubject assertThat(double @Nullable [] actual) {
     return assert_().that(actual);
   }
