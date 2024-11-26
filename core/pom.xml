@@ -215,6 +215,11 @@
                     <include name="**/super/**/*.java"/>
                   </fileset>
                 </replace>
+                <replace token="@NullMarked" value="">
+                  <fileset dir="${project.build.directory}/gwt-sources">
+                    <include name="**/super/**/*.java"/>
+                  </fileset>
+                </replace>
               </target>
             </configuration>
           </execution>
