@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -48,6 +47,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
@@ -749,7 +749,7 @@ final class ProtoTruthMessageDifferencer {
                 config.floatCorrespondenceMap().get(rootDescriptor, subScopeId)
                 ));
       } else {
-        result.markModifiedIf(!Objects.equal(actual, expected));
+        result.markModifiedIf(!Objects.equals(actual, expected));
       }
     }
 
@@ -935,7 +935,7 @@ final class ProtoTruthMessageDifferencer {
 
     result.markRemovedIf(actual == null);
     result.markAddedIf(expected == null);
-    result.markModifiedIf(!Objects.equal(actual, expected));
+    result.markModifiedIf(!Objects.equals(actual, expected));
 
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()

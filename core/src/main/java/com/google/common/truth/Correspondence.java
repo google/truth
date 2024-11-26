@@ -26,11 +26,11 @@ import static com.google.common.truth.SubjectUtils.asList;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -265,7 +265,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
 
     @Override
     public boolean compare(A actual, E expected) {
-      return Objects.equal(actualTransform.apply(actual), expectedTransform.apply(expected));
+      return Objects.equals(actualTransform.apply(actual), expectedTransform.apply(expected));
     }
 
     @Override
@@ -333,7 +333,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
 
     @Override
     public boolean compare(T actual, T expected) {
-      return Objects.equal(actual, expected);
+      return Objects.equals(actual, expected);
     }
 
     @Override

@@ -28,7 +28,6 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
@@ -45,6 +44,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
@@ -136,7 +136,7 @@ public class MultimapSubject extends Subject {
       } else if (actual.containsValue(value)) {
         Set<@Nullable Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entries()) {
-          if (Objects.equal(actualEntry.getValue(), value)) {
+          if (Objects.equals(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
         }
@@ -182,7 +182,7 @@ public class MultimapSubject extends Subject {
   @Override
   public final void isEqualTo(@Nullable Object other) {
     @SuppressWarnings("UndefinedEquals") // the contract of this method is to follow Multimap.equals
-    boolean isEqual = Objects.equal(actual, other);
+    boolean isEqual = Objects.equals(actual, other);
     if (isEqual) {
       return;
     }
@@ -438,7 +438,7 @@ public class MultimapSubject extends Subject {
    */
   private static boolean advanceToFind(Iterator<?> iterator, @Nullable Object value) {
     while (iterator.hasNext()) {
-      if (Objects.equal(iterator.next(), value)) {
+      if (Objects.equals(iterator.next(), value)) {
         return true;
       }
     }
@@ -503,9 +503,9 @@ public class MultimapSubject extends Subject {
           LinkedListMultimap.create();
       for (Map.Entry<?, ?> entry : multimap.entries()) {
         Object key =
-            Objects.equal(entry.getKey(), "") ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
+            Objects.equals(entry.getKey(), "") ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
         Object value =
-            Objects.equal(entry.getValue(), "")
+            Objects.equals(entry.getValue(), "")
                 ? HUMAN_UNDERSTANDABLE_EMPTY_STRING
                 : entry.getValue();
         annotatedMultimap.put(key, value);
@@ -821,7 +821,7 @@ public class MultimapSubject extends Subject {
           Correspondence<? super A, ? super E> valueCorrespondence) {
     return Correspondence.from(
         (Map.Entry<K, A> actual, Map.Entry<K, E> expected) ->
-            Objects.equal(actual.getKey(), expected.getKey())
+            Objects.equals(actual.getKey(), expected.getKey())
                 && valueCorrespondence.compare(actual.getValue(), expected.getValue()),
         lenientFormat(
             "has a key that is equal to and a value that %s the key and value of",

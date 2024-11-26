@@ -39,7 +39,6 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -66,6 +65,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
@@ -127,7 +127,7 @@ public class IterableSubject extends Subject {
   @Override
   public void isEqualTo(@Nullable Object expected) {
     @SuppressWarnings("UndefinedEquals") // method contract requires testing iterables for equality
-    boolean equal = Objects.equal(actual, expected);
+    boolean equal = Objects.equals(actual, expected);
     if (equal) {
       return;
     }
@@ -460,7 +460,7 @@ public class IterableSubject extends Subject {
       // cannot succeed, so we can check the rest of the elements more normally.
       // Since any previous pairs of elements we iterated over were equal, they have no
       // effect on the result now.
-      if (!Objects.equal(actualElement, requiredElement)) {
+      if (!Objects.equals(actualElement, requiredElement)) {
         if (isFirst && !actualIter.hasNext() && !requiredIter.hasNext()) {
           /*
            * There's exactly one actual element and exactly one expected element, and they don't

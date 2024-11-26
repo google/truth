@@ -17,7 +17,6 @@
 package com.google.common.truth.refactorings;
 
 import static com.google.common.base.CaseFormat.UPPER_UNDERSCORE;
-import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static com.google.common.collect.ImmutableSetMultimap.toImmutableSetMultimap;
@@ -80,6 +79,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import javax.lang.model.element.Modifier;
@@ -333,7 +333,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     new TreeScanner<Void, Void>() {
       @Override
       public @Nullable Void scan(Tree node, Void unused) {
-        if (equal(getSymbol(node), classSymbol)
+        if (Objects.equals(getSymbol(node), classSymbol)
             && getDeclaredSymbol(node) == null // Don't touch the ClassTree that we're replacing.
         ) {
           references.add(node);

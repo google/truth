@@ -27,7 +27,6 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.util.Collections.singletonList;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultiset;
@@ -41,6 +40,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
@@ -64,7 +64,7 @@ public class MapSubject extends Subject {
 
   @Override
   public final void isEqualTo(@Nullable Object other) {
-    if (Objects.equal(actual, other)) {
+    if (Objects.equals(actual, other)) {
       return;
     }
 
@@ -141,7 +141,7 @@ public class MapSubject extends Subject {
       } else if (actual.containsValue(value)) {
         Set<@Nullable Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entrySet()) {
-          if (Objects.equal(actualEntry.getValue(), value)) {
+          if (Objects.equals(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
         }
@@ -260,7 +260,7 @@ public class MapSubject extends Subject {
   @CanIgnoreReturnValue
   private boolean containsEntriesInAnyOrder(Map<?, ?> expectedMap, boolean allowUnexpected) {
     MapDifference<@Nullable Object, @Nullable Object, @Nullable Object> diff =
-        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, Objects::equal);
+        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, Objects::equals);
     if (diff.isEmpty()) {
       return true;
     }

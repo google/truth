@@ -20,12 +20,12 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
-import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
 
@@ -108,7 +108,7 @@ public class LiteProtoSubject extends Subject {
   @Override
   public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
-    if (Objects.equal(actual, expected)) {
+    if (Objects.equals(actual, expected)) {
       return;
     }
 
@@ -175,7 +175,7 @@ public class LiteProtoSubject extends Subject {
 
   @Override
   public void isNotEqualTo(@Nullable Object expected) {
-    if (Objects.equal(actual, expected)) {
+    if (Objects.equals(actual, expected)) {
       if (actual == null) {
         super.isNotEqualTo(expected);
       } else {

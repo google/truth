@@ -36,7 +36,6 @@ import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -53,6 +52,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -628,7 +628,7 @@ public class Subject {
     } else if (actual instanceof Float && expected instanceof Float) {
       return Float.floatToIntBits((Float) actual) == Float.floatToIntBits((Float) expected);
     } else {
-      return Objects.equal(actual, expected);
+      return Objects.equals(actual, expected);
     }
   }
 

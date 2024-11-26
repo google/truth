@@ -23,7 +23,6 @@ import static com.google.common.collect.Multisets.immutableEntry;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
@@ -37,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -187,7 +187,7 @@ final class SubjectUtils {
         new Equivalence<Object>() {
           @Override
           protected boolean doEquivalent(Object a, Object b) {
-            return Objects.equal(a, b);
+            return Objects.equals(a, b);
           }
 
           @Override
@@ -270,7 +270,7 @@ final class SubjectUtils {
     List<@Nullable Object> result = Lists.newArrayList();
     for (Object item : items) {
       for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
-        if (!Objects.equal(itemToCheck, item)) {
+        if (!Objects.equals(itemToCheck, item)) {
           result.add(item);
           break;
         }
@@ -373,7 +373,7 @@ final class SubjectUtils {
     if (Iterables.contains(items, "")) {
       List<T> annotatedItems = Lists.newArrayList();
       for (T item : items) {
-        if (Objects.equal(item, "")) {
+        if (Objects.equals(item, "")) {
           // This is a safe cast because know that at least one instance of T (this item) is a
           // String.
           @SuppressWarnings("unchecked")
