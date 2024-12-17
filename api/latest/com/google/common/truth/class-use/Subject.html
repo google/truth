@@ -445,7 +445,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><span class="typeNameLabel">ExpectFailure.</span><code><span class="memberNameLink"><a href="../ExpectFailure.html#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)">expectFailureAbout</a></span>&#8203;(<a href="../Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,&#8203;A&gt;&nbsp;factory,
                   <a href="../ExpectFailure.SimpleSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;S,&#8203;A&gt;&nbsp;assertionCallback)</code></th>
 <td class="colLast">
-<div class="block">Static alternative that directly returns the triggered failure.</div>
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:</div>
 </td>
 </tr>
 </tbody>

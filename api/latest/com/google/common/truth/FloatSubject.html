@@ -374,7 +374,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
  <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a>.
 
  <p>The check will pass if both values are zero, even if one is <code>0.0f</code> and the other is
- <code>-0.0f</code>. Use <code>#isEqualTo</code> to assert that a value is exactly <code>0.0f</code> or that it
+ <code>-0.0f</code>. Use <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> to assert that a value is exactly <code>0.0f</code> or that it
  is exactly <code>-0.0f</code>.
 
  <p>You can use a tolerance of <code>0.0f</code> to assert the exact equality of finite floats, but
@@ -402,7 +402,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html?is-external=true#NEGATIVE_INFINITY" title="class or interface in java.lang" class="externalLink"><code>Float.NEGATIVE_INFINITY</code></a>, or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html?is-external=true#NaN" title="class or interface in java.lang" class="externalLink"><code>Float.NaN</code></a>. See <a href="#isFinite()"><code>isFinite()</code></a>, <a href="#isNotNaN()"><code>isNotNaN()</code></a>, or <a href="#isNotEqualTo(java.lang.Object)"><code>isNotEqualTo(java.lang.Object)</code></a> for checks with other behaviours.
 
  <p>The check will fail if both values are zero, even if one is <code>0.0f</code> and the other is
- <code>-0.0f</code>. Use <code>#isNotEqualTo</code> for a test which fails for a value of exactly zero
+ <code>-0.0f</code>. Use <a href="#isNotEqualTo(java.lang.Object)"><code>isNotEqualTo(java.lang.Object)</code></a> for a test which fails for a value of exactly zero
  with one sign but passes for zero with the opposite sign.
 
  <p>You can use a tolerance of <code>0.0f</code> to assert the exact non-equality of finite floats,

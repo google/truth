@@ -156,7 +156,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
  }
  </code></pre>
 
- Or, if you can't use lambdas:
+ <a href="ExpectFailure.html" title="class in com.google.common.truth"><code>ExpectFailure</code></a> also supports a legacy approach, which we no longer recommend now that all
+ Truth users can use lambdas. That approach is based on the JUnit <code>@Rule</code> system:
 
  <pre>
  <code>@Rule public final ExpectFailure expectFailure = new ExpectFailure();</code>
@@ -267,7 +268,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <td class="colFirst"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)">expectFailure</a></span>&#8203;(<a href="ExpectFailure.StandardSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a>&nbsp;assertionCallback)</code></th>
 <td class="colLast">
-<div class="block">Static alternative that directly returns the triggered failure.</div>
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -275,22 +277,23 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)">expectFailureAbout</a></span>&#8203;(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,&#8203;A&gt;&nbsp;factory,
                   <a href="ExpectFailure.SimpleSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;S,&#8203;A&gt;&nbsp;assertionCallback)</code></th>
 <td class="colLast">
-<div class="block">Static alternative that directly returns the triggered failure.</div>
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFailure()">getFailure</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the captured failure, if one occurred.</div>
+<div class="block">Legacy method that returns the failure captured by <a href="#whenTesting()"><code>whenTesting()</code></a>, if one occurred.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#whenTesting()">whenTesting</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns a test verb that expects the chained assertion to fail, and makes the failure available
- via <a href="#getFailure()"><code>getFailure()</code></a>.</div>
+<div class="block">Legacy method that returns a subject builder that expects the chained assertion to fail, and
+ makes the failure available via <a href="#getFailure()"><code>getFailure()</code></a>.</div>
 </td>
 </tr>
 </table>
@@ -345,8 +348,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li class="blockList">
 <h4>whenTesting</h4>
 <pre class="methodSignature">public&nbsp;<a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;whenTesting()</pre>
-<div class="block">Returns a test verb that expects the chained assertion to fail, and makes the failure available
- via <a href="#getFailure()"><code>getFailure()</code></a>.
+<div class="block">Legacy method that returns a subject builder that expects the chained assertion to fail, and
+ makes the failure available via <a href="#getFailure()"><code>getFailure()</code></a>.
 
  <p>An instance of <code>ExpectFailure</code> supports only one <code>whenTesting</code> call per test
  method. The static <a href="#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)</code></a> method, by contrast, does not have this limitation.</div>
@@ -359,7 +362,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li class="blockList">
 <h4>getFailure</h4>
 <pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a>&nbsp;getFailure()</pre>
-<div class="block">Returns the captured failure, if one occurred.</div>
+<div class="block">Legacy method that returns the failure captured by <a href="#whenTesting()"><code>whenTesting()</code></a>, if one occurred.</div>
 </li>
 </ul>
 <a id="expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)">
@@ -370,8 +373,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <h4>expectFailure</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
 public static&nbsp;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a>&nbsp;expectFailure&#8203;(<a href="ExpectFailure.StandardSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a>&nbsp;assertionCallback)</pre>
-<div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
- Java 8+ tests similar to <code>expectThrows()</code>:
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:
 
  <p><code>AssertionError failure = expectFailure(whenTesting -&gt;
  whenTesting.that(4).isNotEqualTo(4));</code></div>
@@ -386,8 +389,8 @@ public static&nbsp;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/j
 <pre class="methodSignature">@CanIgnoreReturnValue
 public static&nbsp;&lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>,&#8203;A&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink">AssertionError</a>&nbsp;expectFailureAbout&#8203;(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,&#8203;A&gt;&nbsp;factory,
                                                                             <a href="ExpectFailure.SimpleSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;S,&#8203;A&gt;&nbsp;assertionCallback)</pre>
-<div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
- Java 8+ tests similar to <code>expectThrows()</code>:
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:
 
  <p><code>AssertionError failure = expectFailureAbout(myTypes(), whenTesting -&gt;
  whenTesting.that(myType).hasProperty());</code></div>

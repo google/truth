@@ -1301,7 +1301,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)">expectFailure(ExpectFailure.StandardSubjectBuilderCallback)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
 <dd>
-<div class="block">Static alternative that directly returns the triggered failure.</div>
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:</div>
 </dd>
 <dt><a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth"><span class="typeNameLink">ExpectFailure</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -1324,7 +1325,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)">expectFailureAbout(Subject.Factory&lt;S, A&gt;, ExpectFailure.SimpleSubjectBuilderCallback&lt;S, A&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
 <dd>
-<div class="block">Static alternative that directly returns the triggered failure.</div>
+<div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
+ <code>assertThrows()</code>:</div>
 </dd>
 </dl>
 <a id="I:F">
@@ -1475,7 +1477,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#getFailure()">getFailure()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
 <dd>
-<div class="block">Returns the captured failure, if one occurred.</div>
+<div class="block">Legacy method that returns the failure captured by <a href="com/google/common/truth/ExpectFailure.html#whenTesting()"><code>ExpectFailure.whenTesting()</code></a>, if one occurred.</div>
 </dd>
 <dt><a href="com/google/common/truth/GuavaOptionalSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">GuavaOptionalSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -4191,8 +4193,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#whenTesting()">whenTesting()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
 <dd>
-<div class="block">Returns a test verb that expects the chained assertion to fail, and makes the failure available
- via <a href="com/google/common/truth/ExpectFailure.html#getFailure()"><code>ExpectFailure.getFailure()</code></a>.</div>
+<div class="block">Legacy method that returns a subject builder that expects the chained assertion to fail, and
+ makes the failure available via <a href="com/google/common/truth/ExpectFailure.html#getFailure()"><code>ExpectFailure.getFailure()</code></a>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#withMessage(java.lang.String)">withMessage(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>
