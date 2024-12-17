@@ -47,7 +47,8 @@ import org.junit.runners.model.Statement;
  * }
  * }</pre>
  *
- * Or, if you can't use lambdas:
+ * {@link ExpectFailure} also supports a legacy approach, which we no longer recommend now that all
+ * Truth users can use lambdas. That approach is based on the JUnit {@code @Rule} system:
  *
  * <pre>
  * {@code @Rule public final ExpectFailure expectFailure = new ExpectFailure();}
@@ -78,8 +79,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   public ExpectFailure() {}
 
   /**
-   * Returns a test verb that expects the chained assertion to fail, and makes the failure available
-   * via {@link #getFailure}.
+   * Legacy method that returns a subject builder that expects the chained assertion to fail, and
+   * makes the failure available via {@link #getFailure}.
    *
    * <p>An instance of {@code ExpectFailure} supports only one {@code whenTesting} call per test
    * method. The static {@link #expectFailure} method, by contrast, does not have this limitation.
@@ -100,8 +101,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   /**
    * Enters rule context to be ready to capture failures.
    *
-   * <p>This should be rarely used directly, except if this class is as a long living object but not
-   * as a JUnit rule, like truth subject tests where for GWT compatible reasons.
+   * <p>This should be used only from framework code. This normally means from the {@link #apply}
+   * method below, but our tests call it directly under J2CL.
    */
   void enterRuleContext() {
     this.inRuleContext = true;
@@ -124,7 +125,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     }
   }
 
-  /** Returns the captured failure, if one occurred. */
+  /** Legacy method that returns the failure captured by {@link #whenTesting}, if one occurred. */
   public AssertionError getFailure() {
     if (failure == null) {
       throw new AssertionError("ExpectFailure did not capture a failure.");
@@ -148,8 +149,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   }
 
   /**
-   * Static alternative that directly returns the triggered failure. This is intended to be used in
-   * Java 8+ tests similar to {@code expectThrows()}:
+   * Captures and returns the failure produced by the assertion in the provided callback, similar to
+   * {@code assertThrows()}:
    *
    * <p>{@code AssertionError failure = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
@@ -163,8 +164,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   }
 
   /**
-   * Static alternative that directly returns the triggered failure. This is intended to be used in
-   * Java 8+ tests similar to {@code expectThrows()}:
+   * Captures and returns the failure produced by the assertion in the provided callback, similar to
+   * {@code assertThrows()}:
    *
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}

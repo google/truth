@@ -100,7 +100,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * {@link #isEqualTo}.
    *
    * <p>The check will pass if both values are zero, even if one is {@code 0.0f} and the other is
-   * {@code -0.0f}. Use {@code #isEqualTo} to assert that a value is exactly {@code 0.0f} or that it
+   * {@code -0.0f}. Use {@link #isEqualTo} to assert that a value is exactly {@code 0.0f} or that it
    * is exactly {@code -0.0f}.
    *
    * <p>You can use a tolerance of {@code 0.0f} to assert the exact equality of finite floats, but
@@ -140,7 +140,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isNotNaN}, or {@link #isNotEqualTo} for checks with other behaviours.
    *
    * <p>The check will fail if both values are zero, even if one is {@code 0.0f} and the other is
-   * {@code -0.0f}. Use {@code #isNotEqualTo} for a test which fails for a value of exactly zero
+   * {@code -0.0f}. Use {@link #isNotEqualTo} for a test which fails for a value of exactly zero
    * with one sign but passes for zero with the opposite sign.
    *
    * <p>You can use a tolerance of {@code 0.0f} to assert the exact non-equality of finite floats,
