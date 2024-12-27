@@ -20,6 +20,7 @@ import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Throwables.throwIfUnchecked;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.SneakyThrows.sneakyThrow;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -254,9 +255,8 @@ final class Platform {
     try {
       return constructor.newInstance(messages, facts, expected, actual, cause);
     } catch (InvocationTargetException e) {
-      throwIfUnchecked(e.getCause());
       // That constructor has no `throws` clause.
-      throw newLinkageError(e);
+      throw sneakyThrow(e.getCause());
     } catch (InstantiationException e) {
       // The class is a concrete class.
       throw newLinkageError(e);

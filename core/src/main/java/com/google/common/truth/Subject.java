@@ -44,6 +44,7 @@ import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Chars;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
+import com.google.common.primitives.Primitives;
 import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
 import com.google.errorprone.annotations.DoNotCall;
@@ -349,12 +350,9 @@ public class Subject {
   private static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     checkArgument(
         !clazz.isPrimitive(),
-        "Cannot check instanceof for primitive type %s. Pass the wrapper class instead.",
-        clazz.getSimpleName());
-    /*
-     * TODO(cpovirk): Make the message include `Primitives.wrap(clazz).getSimpleName()` once that
-     * method is available in a public guava-gwt release that we depend on.
-     */
+        "Cannot check instanceof for primitive type %s. Pass the wrapper class %s instead.",
+        clazz.getSimpleName(),
+        Primitives.wrap(clazz).getSimpleName());
     return Platform.isInstanceOfType(instance, clazz);
   }
 
