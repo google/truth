@@ -121,8 +121,8 @@ final class Platform {
   private static final String DIFF_KEY = "diff (-expected +actual)";
 
   static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
-    ImmutableList<String> expectedLines = splitLines(expected);
-    ImmutableList<String> actualLines = splitLines(actual);
+    List<String> expectedLines = splitLines(expected);
+    List<String> actualLines = splitLines(actual);
     List<String> unifiedDiff =
         generateUnifiedDiff(expectedLines, actualLines, /* contextSize= */ 3);
     if (unifiedDiff.isEmpty()) {
@@ -137,10 +137,11 @@ final class Platform {
     return ImmutableList.of(fact(DIFF_KEY, result));
   }
 
-  private static ImmutableList<String> splitLines(String s) {
-    // splitToList is @Beta, so we avoid it.
-    return ImmutableList.copyOf(Splitter.onPattern("\r?\n").split(s));
+  private static List<String> splitLines(String s) {
+    return Splitter.on(NEWLINE_PATTERN).splitToList(s);
   }
+
+  private static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n");
 
   abstract static class PlatformComparisonFailure extends ComparisonFailure {
     private final String message;

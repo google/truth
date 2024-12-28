@@ -449,12 +449,12 @@ public class Subject {
   private static String base16(byte[] bytes) {
     StringBuilder sb = new StringBuilder(2 * bytes.length);
     for (byte b : bytes) {
-      sb.append(hexDigits[(b >> 4) & 0xf]).append(hexDigits[b & 0xf]);
+      sb.append(hexDigitsUpper[(b >> 4) & 0xf]).append(hexDigitsUpper[b & 0xf]);
     }
     return sb.toString();
   }
 
-  private static final char[] hexDigits = "0123456789ABCDEF".toCharArray();
+  private static final char[] hexDigitsUpper = "0123456789ABCDEF".toCharArray();
 
   private static @Nullable Object arrayAsListRecursively(@Nullable Object input) {
     if (input instanceof Object[]) {
@@ -983,20 +983,20 @@ public class Subject {
 
   // From SourceCodeEscapers:
 
-  private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
+  private static final char[] hexDigitsLower = "0123456789abcdef".toCharArray();
 
   private static char[] asUnicodeHexEscape(char c) {
     // Equivalent to String.format("\\u%04x", (int) c);
     char[] r = new char[6];
     r[0] = '\\';
     r[1] = 'u';
-    r[5] = HEX_DIGITS[c & 0xF];
+    r[5] = hexDigitsLower[c & 0xF];
     c = (char) (c >>> 4);
-    r[4] = HEX_DIGITS[c & 0xF];
+    r[4] = hexDigitsLower[c & 0xF];
     c = (char) (c >>> 4);
-    r[3] = HEX_DIGITS[c & 0xF];
+    r[3] = hexDigitsLower[c & 0xF];
     c = (char) (c >>> 4);
-    r[2] = HEX_DIGITS[c & 0xF];
+    r[2] = hexDigitsLower[c & 0xF];
     return r;
   }
 
