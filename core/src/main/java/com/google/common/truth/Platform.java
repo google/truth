@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.base.Throwables.throwIfUnchecked;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.SneakyThrows.sneakyThrow;
@@ -307,10 +306,10 @@ final class Platform {
       if (e.getCause() instanceof ClassCastException) {
         // icky but no worse than what we normally do for isIn(Iterable)
         return false;
+        // TODO(cpovirk): Should we also look for NullPointerException?
       }
-      throwIfUnchecked(e.getCause());
       // That method has no `throws` clause.
-      throw newLinkageError(e.getCause());
+      throw sneakyThrow(e.getCause());
     } catch (IllegalAccessException e) {
       // We're calling a public method on a public class.
       throw newLinkageError(e);
