@@ -29,7 +29,7 @@
       the other ends up with a merge conflict. That requires reapprovals.
     -->
     <guava.jre.version>33.4.0-jre</guava.jre.version>
-    <gwt.version>2.10.0</gwt.version>
+    <gwt.version>2.11.0</gwt.version>
     <protobuf.version>4.29.2</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
@@ -83,6 +83,11 @@
       <dependency>
         <groupId>org.gwtproject</groupId>
         <artifactId>gwt-user</artifactId>
+        <version>${gwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gwtproject</groupId>
+        <artifactId>gwt-dev</artifactId>
         <version>${gwt.version}</version>
       </dependency>
       <dependency>
@@ -332,7 +337,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>${gwt.version}</version>
+          <version>2.10.0</version>
         </plugin>
         <plugin>
           <groupId>org.xolstice.maven.plugins</groupId>
