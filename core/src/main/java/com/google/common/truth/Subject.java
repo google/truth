@@ -139,7 +139,7 @@ public class Subject {
    * comparison, two objects are equal if any of the following is true:
    *
    * <ul>
-   *   <li>they are equal according to {@link Objects#equal}
+   *   <li>they are equal according to {@link Objects#equals}
    *   <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals}
    *       overload
    *   <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
