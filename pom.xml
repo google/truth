@@ -29,7 +29,7 @@
       the other ends up with a merge conflict. That requires reapprovals.
     -->
     <guava.jre.version>33.4.0-jre</guava.jre.version>
-    <gwt.version>2.11.0</gwt.version>
+    <gwt.version>2.12.1</gwt.version>
     <protobuf.version>4.29.2</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
