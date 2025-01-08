@@ -196,6 +196,8 @@
             <goals><goal>run</goal></goals>
             <configuration>
               <target name="copy-gwt-resources">
+                <delete dir="${project.build.directory}/gwt-sources" quiet="true" />
+
                 <copy toDir="${project.build.directory}/gwt-sources">
                   <fileset dir="${project.basedir}/src/main/java">
                     <include name="**/super/**/*.java"/>
