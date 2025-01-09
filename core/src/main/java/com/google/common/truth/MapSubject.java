@@ -117,6 +117,20 @@ public class MapSubject extends Subject {
       List<@Nullable Object> valueList = singletonList(value);
       if (actual.containsKey(key)) {
         Object actualValue = actual.get(key);
+        if (Objects.equals(actualValue, value)) {
+          /*
+           * `contains(entry(key, value))` returned `false`, but `get(key)` returned a result equal
+           * to `value`. We're probably looking at an `IdentityHashMap`, which compares values (not
+           * just keys!) using `==`.
+           *
+           * `IdentityHashMap` isn't following the contract for `Map`, so we're within our rights to
+           * do whatever we want. But it's probably simplest for us and best for users if we just
+           * make the assertion pass: While users probably *do* want us to follow the
+           * `IdentityHashMap` behavior of comparing *keys* with `==`, they probably *don't* want us
+           * to follow the same behavior for *values*.
+           */
+          return;
+        }
         /*
          * In the case of a null expected or actual value, clarify that the key *is* present and
          * *is* expected to be present. That is, get() isn't returning null to indicate that the key

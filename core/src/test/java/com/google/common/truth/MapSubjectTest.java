@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -961,6 +962,22 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsEntry() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     assertThat(actual).containsEntry("kurt", "kluever");
+  }
+
+  @Test
+  /*
+   * This test is all about reference equality, so we do want a new String instance.
+   *
+   * (Alternatively, we could perform the test with a type other than String. That would still have
+   * been enough to demonstrate that the test failed before my change to MapSubject. However, it
+   * would have demonstrated only a *very* terrible failure message, as opposed to the *extremely*
+   * terrible failure message that a user reported.)
+   */
+  @SuppressWarnings("StringCopy")
+  public void containsEntryInIdentityHashMapWithNonIdenticalValue() {
+    IdentityHashMap<String, String> actual = new IdentityHashMap<>();
+    actual.put("kurt", "kluever");
+    assertThat(actual).containsEntry("kurt", new String("kluever"));
   }
 
   @Test
