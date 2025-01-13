@@ -188,7 +188,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.</div>
 </td>
@@ -219,7 +219,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.math.BigDecimal)">isEquivalentAccordingToCompareTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equivalent to the given value according to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html?is-external=true#compareTo(T)" title="class or interface in java.lang" class="externalLink"><code>Comparable.compareTo(T)</code></a>, (i.e., fails if <code>a.comparesTo(b) != 0</code>).</div>
 </td>
@@ -311,7 +311,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.
 
  <p><b>Note:</b> If you only want to compare the values of the BigDecimals and not their scales,
@@ -328,7 +328,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockListLast">
 <li class="blockList">
 <h4>isEquivalentAccordingToCompareTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink">BigDecimal</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equivalent to the given value according to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html?is-external=true#compareTo(T)" title="class or interface in java.lang" class="externalLink"><code>Comparable.compareTo(T)</code></a>, (i.e., fails if <code>a.comparesTo(b) != 0</code>). This method behaves
  identically to (the more clearly named) <a href="#isEqualToIgnoringScale(java.math.BigDecimal)"><code>isEqualToIgnoringScale(BigDecimal)</code></a>.
 

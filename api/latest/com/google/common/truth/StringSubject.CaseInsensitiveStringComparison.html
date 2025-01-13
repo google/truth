@@ -161,28 +161,28 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(java.lang.CharSequence)">contains</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(java.lang.CharSequence)">contains</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</code></th>
 <td class="colLast">
 <div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(java.lang.CharSequence)">doesNotContain</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContain(java.lang.CharSequence)">doesNotContain</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</code></th>
 <td class="colLast">
 <div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.String)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.String)">isEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given sequence (while ignoring case).</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.String)">isNotEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;unexpected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.String)">isNotEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;unexpected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is equal to the given string (while ignoring case).</div>
 </td>
@@ -217,7 +217,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equal to the given sequence (while ignoring case). For the
  purposes of this comparison, two strings are equal if any of the following is true:
 
@@ -235,7 +235,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;unexpected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is equal to the given string (while ignoring case). The meaning of
  equality is the same as for the <a href="#isEqualTo(java.lang.String)"><code>isEqualTo(java.lang.String)</code></a> method.</div>
 </li>
@@ -246,7 +246,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;contains&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;contains&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</pre>
 <div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
 </li>
 </ul>
@@ -256,7 +256,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <ul class="blockListLast">
 <li class="blockList">
 <h4>doesNotContain</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContain&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContain&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang" class="externalLink">CharSequence</a>&nbsp;expectedSequence)</pre>
 <div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
 </li>
 </ul>

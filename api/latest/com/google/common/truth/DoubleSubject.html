@@ -218,7 +218,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Asserts that the subject is exactly equal to the given value, with equality defined as by
  <code>Double#equals</code>.</div>
@@ -226,7 +226,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.lang.Double)">isEquivalentAccordingToCompareTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true" title="class or interface in java.lang" class="externalLink">Double</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEquivalentAccordingToCompareTo(java.lang.Double)">isEquivalentAccordingToCompareTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true" title="class or interface in java.lang" class="externalLink">Double</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Use <a href="#isWithin(double)"><code>isWithin(double)</code></a> or <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> instead (see documentation for advice).</div>
@@ -278,7 +278,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
  <code>Double#equals</code>.</div>
@@ -423,7 +423,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
 <div class="block">Asserts that the subject is exactly equal to the given value, with equality defined as by
  <code>Double#equals</code>. This method is <i>not</i> recommended when the code under test is doing
  any kind of arithmetic: use <a href="#isWithin(double)"><code>isWithin(double)</code></a> with a suitable tolerance in that case. (Remember
@@ -448,7 +448,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isNotEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
  <code>Double#equals</code>. See <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> for advice on when exact equality is recommended.
  Use <a href="#isNotWithin(double)"><code>isNotWithin(double)</code></a> for an assertion with a tolerance.
@@ -468,7 +468,7 @@ extends <a href="ComparableSubject.html" title="class in com.google.common.truth
 <li class="blockList">
 <h4>isEquivalentAccordingToCompareTo</h4>
 <pre class="methodSignature"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public final&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true" title="class or interface in java.lang" class="externalLink">Double</a>&nbsp;other)</pre>
+public final&nbsp;void&nbsp;isEquivalentAccordingToCompareTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true" title="class or interface in java.lang" class="externalLink">Double</a>&nbsp;other)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Use <a href="#isWithin(double)"><code>isWithin(double)</code></a> or <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> instead (see documentation for advice).</div>
 </div>

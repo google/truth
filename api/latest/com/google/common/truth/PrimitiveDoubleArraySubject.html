@@ -214,7 +214,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
@@ -231,7 +231,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
@@ -294,7 +294,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
  actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html?is-external=true#equals(double%5B%5D,double%5B%5D)" title="class or interface in java.util" class="externalLink"><code>Arrays.equals(double[], double[])</code></a> and <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Double.equals(Object)</code></a> define it (which is
@@ -328,7 +328,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
  actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html?is-external=true#equals(double%5B%5D,double%5B%5D)" title="class or interface in java.util" class="externalLink"><code>Arrays.equals(double[], double[])</code></a> and <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Double.equals(Object)</code></a> define it (which is
