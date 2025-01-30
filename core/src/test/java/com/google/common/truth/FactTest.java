@@ -55,6 +55,18 @@ public class FactTest {
   }
 
   @Test
+  public void numericFacts() {
+    assertThat(
+            makeMessage(
+                ImmutableList.<String>of(),
+                ImmutableList.of(
+                    fact("expected", 802604),
+                    fact("but was", 773804),
+                    fact("outside tolerance", 9599))))
+        .isEqualTo("expected         : 802604\nbut was          : 773804\noutside tolerance: 9599");
+  }
+
+  @Test
   public void oneFactWithoutValue() {
     assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(simpleFact("foo"))))
         .isEqualTo("foo");
