@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
 import org.jspecify.annotations.Nullable;
@@ -101,9 +101,9 @@ public class IntegerSubject extends ComparableSubject<Integer> {
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected", Integer.toString(expected)),
-              butWas(),
-              fact("outside tolerance", Integer.toString(tolerance)));
+              numericFact("expected", expected),
+              numericFact("but was", actual),
+              numericFact("outside tolerance", tolerance));
         }
       }
     };
@@ -128,9 +128,9 @@ public class IntegerSubject extends ComparableSubject<Integer> {
 
         if (equalWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected not to be", Integer.toString(expected)),
-              butWas(),
-              fact("within tolerance", Integer.toString(tolerance)));
+              numericFact("expected not to be", expected),
+              numericFact("but was", actual),
+              numericFact("within tolerance", tolerance));
         }
       }
     };

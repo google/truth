@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.Fact.formatNumericValue;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -169,9 +170,9 @@ public class LongSubjectTest extends BaseSubjectTestCase {
         .factKeys()
         .containsExactly("expected", "but was", "outside tolerance")
         .inOrder();
-    assertThat(failure).factValue("expected").isEqualTo(Long.toString(expected));
-    assertThat(failure).factValue("but was").isEqualTo(Long.toString(actual));
-    assertThat(failure).factValue("outside tolerance").isEqualTo(Long.toString(tolerance));
+    assertThat(failure).factValue("expected").isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("but was").isEqualTo(formatNumericValue(actual));
+    assertThat(failure).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test
@@ -205,8 +206,8 @@ public class LongSubjectTest extends BaseSubjectTestCase {
           }
         };
     AssertionError failure = expectFailure(callback);
-    assertThat(failure).factValue("expected not to be").isEqualTo(Long.toString(expected));
-    assertThat(failure).factValue("within tolerance").isEqualTo(Long.toString(tolerance));
+    assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test

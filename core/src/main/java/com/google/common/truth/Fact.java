@@ -16,8 +16,10 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.padEnd;
+import static com.google.common.base.Strings.padStart;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
@@ -40,7 +42,7 @@ public final class Fact implements Serializable {
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
   public static Fact fact(String key, @Nullable Object value) {
-    return new Fact(key, String.valueOf(value));
+    return new Fact(key, String.valueOf(value), false);
   }
 
   /**
@@ -59,15 +61,59 @@ public final class Fact implements Serializable {
    * </ul>
    */
   public static Fact simpleFact(String key) {
-    return new Fact(key, null);
+    return new Fact(key, null, false);
+  }
+
+  /**
+   * Creates a fact with the given key and value, which will be printed in a format like "key:
+   * value." The numeric value is converted to a string with delimiting commas.
+   */
+  static Fact numericFact(String key, @Nullable Long value) {
+    return new Fact(key, formatNumericValue(value), true);
+  }
+
+  /**
+   * Creates a fact with the given key and value, which will be printed in a format like "key:
+   * value." The numeric value is converted to a string with delimiting commas.
+   */
+  static Fact numericFact(String key, @Nullable Integer value) {
+    return new Fact(key, formatNumericValue(value), true);
+  }
+
+  static String formatNumericValue(@Nullable Object value) {
+    if (value == null) {
+      return "null";
+    }
+
+    // We only support Long and Integer for now; maybe FP numbers in the future?
+    checkArgument(value instanceof Long || value instanceof Integer);
+
+    // DecimalFormat is not available on all platforms
+    String stringValue = String.valueOf(value);
+
+    boolean isNegative = stringValue.startsWith("-");
+    if (isNegative) {
+      stringValue = stringValue.substring(1);
+    }
+
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < stringValue.length(); i++) {
+      builder.append(stringValue.charAt(i));
+      if ((stringValue.length() - i - 1) % 3 == 0 && i != stringValue.length() - 1) {
+        builder.append(',');
+      }
+    }
+    return isNegative ? "-" + builder : builder.toString();
   }
 
   final String key;
   final @Nullable String value;
+  final boolean padStart;
 
-  private Fact(String key, @Nullable String value) {
+  private Fact(String key, @Nullable String value, boolean padStart) {
     this.key = checkNotNull(key);
     this.value = value;
+    this.padStart = padStart;
   }
 
   /**
@@ -86,10 +132,14 @@ public final class Fact implements Serializable {
    */
   static String makeMessage(ImmutableList<String> messages, ImmutableList<Fact> facts) {
     int longestKeyLength = 0;
+    int longestValueLength = 0;
     boolean seenNewlineInValue = false;
     for (Fact fact : facts) {
       if (fact.value != null) {
         longestKeyLength = max(longestKeyLength, fact.key.length());
+        if (fact.padStart) {
+          longestValueLength = max(longestValueLength, fact.value.length());
+        }
         // TODO(cpovirk): Look for other kinds of newlines.
         seenNewlineInValue |= fact.value.contains("\n");
       }
@@ -121,7 +171,11 @@ public final class Fact implements Serializable {
       } else {
         builder.append(padEnd(fact.key, longestKeyLength, ' '));
         builder.append(": ");
-        builder.append(fact.value);
+        if (fact.padStart) {
+          builder.append(padStart(fact.value, longestValueLength, ' '));
+        } else {
+          builder.append(fact.value);
+        }
       }
       builder.append('\n');
     }
