@@ -65,7 +65,7 @@ public class FactTest {
   }
 
   @Test
-  public void numericFacts() {
+  public void numericFacts_integers() {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
@@ -78,6 +78,22 @@ public class FactTest {
                 "expected         : 802,604",
                 "but was          : 773,804",
                 "outside tolerance:   9,599"));
+  }
+
+  @Test
+  public void numericFacts_doubles() {
+    assertThat(
+            makeMessage(
+                ImmutableList.<String>of(),
+                ImmutableList.of(
+                    fact("expected", 802604.123),
+                    fact("but was", 773804.123),
+                    fact("outside tolerance", 95.11111111))))
+        .isEqualTo(
+            TEXT.join(
+                "expected         : 802604.123",
+                "but was          : 773804.123",
+                "outside tolerance: 95.11111111"));
   }
 
   @Test
