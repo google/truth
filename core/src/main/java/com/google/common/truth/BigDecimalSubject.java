@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.math.BigDecimal;
@@ -95,7 +95,10 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
 
   private void compareValues(@Nullable BigDecimal expected) {
     if (checkNotNull(actual).compareTo(checkNotNull(expected)) != 0) {
-      failWithoutActual(fact("expected", expected), butWas(), simpleFact("(scale is ignored)"));
+      failWithoutActual(
+          numericFact("expected", expected),
+          numericFact("but was", actual),
+          simpleFact("(scale is ignored)"));
     }
   }
 }

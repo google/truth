@@ -20,10 +20,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.padEnd;
 import static com.google.common.base.Strings.padStart;
+import static com.google.common.truth.Platform.doubleToString;
+import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -68,29 +71,58 @@ public final class Fact implements Serializable {
    * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The numeric value is converted to a string with delimiting commas.
    */
-  static Fact numericFact(String key, @Nullable Long value) {
+  static Fact numericFact(String key, @Nullable Number value) {
     return new Fact(key, formatNumericValue(value), true);
   }
 
   /**
-   * Creates a fact with the given key and value, which will be printed in a format like "key:
-   * value." The numeric value is converted to a string with delimiting commas.
+   * Formats the given numeric value as a string with delimiting commas.
+   *
+   * <p><b>Note:</b> only {@code Long}, {@code Integer}, {@code Float}, {@code Double} and {@link
+   * BigDecimal} are supported.
    */
-  static Fact numericFact(String key, @Nullable Integer value) {
-    return new Fact(key, formatNumericValue(value), true);
-  }
-
-  static String formatNumericValue(@Nullable Object value) {
+  static String formatNumericValue(@Nullable Number value) {
     if (value == null) {
       return "null";
     }
+    // the value must be a numeric type
+    checkArgument(
+        value instanceof Long
+            || value instanceof Integer
+            || value instanceof Float
+            || value instanceof Double
+            || value instanceof BigDecimal,
+        "Value (%s) must be either a Long, Integer, Float, Double, or BigDecimal.",
+        value);
 
-    // We only support Long and Integer for now; maybe FP numbers in the future?
-    checkArgument(value instanceof Long || value instanceof Integer);
+    // DecimalFormat is not available on all platforms, so we do the formatting manually.
 
-    // DecimalFormat is not available on all platforms
-    String stringValue = String.valueOf(value);
+    if (!(value instanceof BigDecimal) && isInfiniteOrNaN(value.doubleValue())) {
+      return value.toString();
+    }
+    String stringValue =
+        value instanceof Double
+            ? doubleToString((double) value)
+            : value instanceof Float //
+                ? floatToString((float) value)
+                : value.toString();
+    if (stringValue.contains("E")) {
+      return stringValue;
+    }
+    int decimalIndex = stringValue.indexOf('.');
+    if (decimalIndex == -1) {
+      return formatWholeNumericValue(stringValue);
+    }
+    String wholeNumbers = stringValue.substring(0, decimalIndex);
+    String decimal = stringValue.substring(decimalIndex);
+    return formatWholeNumericValue(wholeNumbers) + decimal;
+  }
 
+  private static boolean isInfiniteOrNaN(double d) {
+    return Double.isInfinite(d) || Double.isNaN(d);
+  }
+
+  private static String formatWholeNumericValue(String stringValue) {
     boolean isNegative = stringValue.startsWith("-");
     if (isNegative) {
       stringValue = stringValue.substring(1);
@@ -132,13 +164,18 @@ public final class Fact implements Serializable {
    */
   static String makeMessage(ImmutableList<String> messages, ImmutableList<Fact> facts) {
     int longestKeyLength = 0;
-    int longestValueLength = 0;
+    int longestIntPartValueLength = 0;
     boolean seenNewlineInValue = false;
     for (Fact fact : facts) {
       if (fact.value != null) {
         longestKeyLength = max(longestKeyLength, fact.key.length());
         if (fact.padStart) {
-          longestValueLength = max(longestValueLength, fact.value.length());
+          int decimalIndex = fact.value.indexOf('.');
+          if (decimalIndex != -1) {
+            longestIntPartValueLength = max(longestIntPartValueLength, decimalIndex);
+          } else {
+            longestIntPartValueLength = max(longestIntPartValueLength, fact.value.length());
+          }
         }
         // TODO(cpovirk): Look for other kinds of newlines.
         seenNewlineInValue |= fact.value.contains("\n");
@@ -172,7 +209,14 @@ public final class Fact implements Serializable {
         builder.append(padEnd(fact.key, longestKeyLength, ' '));
         builder.append(": ");
         if (fact.padStart) {
-          builder.append(padStart(fact.value, longestValueLength, ' '));
+          int decimalIndex = fact.value.indexOf('.');
+          if (decimalIndex != -1) {
+            builder.append(
+                padStart(fact.value.substring(0, decimalIndex), longestIntPartValueLength, ' '));
+            builder.append(fact.value.substring(decimalIndex));
+          } else {
+            builder.append(padStart(fact.value, longestIntPartValueLength, ' '));
+          }
         } else {
           builder.append(fact.value);
         }

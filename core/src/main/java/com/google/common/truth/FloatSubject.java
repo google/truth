@@ -18,11 +18,10 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
-import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
@@ -123,9 +122,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected", floatToString(expected)),
-              butWas(),
-              fact("outside tolerance", floatToString(tolerance)));
+              numericFact("expected", expected),
+              numericFact("but was", actual),
+              numericFact("outside tolerance", tolerance));
         }
       }
     };
@@ -162,9 +161,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected not to be", floatToString(expected)),
-              butWas(),
-              fact("within tolerance", floatToString(tolerance)));
+              numericFact("expected not to be", expected),
+              numericFact("but was", actual),
+              numericFact("within tolerance", tolerance));
         }
       }
     };

@@ -18,11 +18,10 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
-import static com.google.common.truth.Platform.doubleToString;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
@@ -115,9 +114,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected", doubleToString(expected)),
-              butWas(),
-              fact("outside tolerance", doubleToString(tolerance)));
+              numericFact("expected", expected),
+              numericFact("but was", actual),
+              numericFact("outside tolerance", tolerance));
         }
       }
     };
@@ -154,9 +153,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithoutActual(
-              fact("expected not to be", doubleToString(expected)),
-              butWas(),
-              fact("within tolerance", doubleToString(tolerance)));
+              numericFact("expected not to be", expected),
+              numericFact("but was", actual),
+              numericFact("within tolerance", tolerance));
         }
       }
     };

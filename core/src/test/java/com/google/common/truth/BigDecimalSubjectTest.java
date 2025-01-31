@@ -83,6 +83,19 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("but was", "10");
   }
 
+  @Test
+  public void isEqualToIgnoringScale_stringWithDecimals() {
+    BigDecimal tenFour = new BigDecimal("10.4");
+    assertThat(tenFour).isEqualToIgnoringScale("10.4");
+    assertThat(tenFour).isEqualToIgnoringScale("10.4");
+    assertThat(tenFour).isEqualToIgnoringScale("10.40");
+    assertThat(tenFour).isEqualToIgnoringScale("10.400");
+    expectFailureWhenTestingThat(tenFour).isEqualToIgnoringScale("3.4");
+    assertFailureKeys("expected", "but was", "(scale is ignored)");
+    assertFailureValue("expected", "3.4");
+    assertFailureValue("but was", "10.4");
+  }
+
   private BigDecimalSubject expectFailureWhenTestingThat(BigDecimal actual) {
     return expectFailure.whenTesting().that(actual);
   }
