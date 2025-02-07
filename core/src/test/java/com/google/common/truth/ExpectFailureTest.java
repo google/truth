@@ -137,12 +137,7 @@ public class ExpectFailureTest {
   }
 
   private static Subject.Factory<StringSubject, String> strings() {
-    return new Subject.Factory<StringSubject, String>() {
-      @Override
-      public StringSubject createSubject(FailureMetadata fm, String that) {
-        return new StringSubject(fm, that);
-      }
-    };
+    return StringSubject::new;
   }
 
   private static class BadSubject extends Subject {
@@ -163,13 +158,8 @@ public class ExpectFailureTest {
       }
     }
 
-    private static Subject.Factory<BadSubject, Integer> badSubject() {
-      return new Subject.Factory<BadSubject, Integer>() {
-        @Override
-        public BadSubject createSubject(FailureMetadata fm, Integer that) {
-          return new BadSubject(fm, that);
-        }
-      };
+    private static Factory<BadSubject, Integer> badSubject() {
+      return BadSubject::new;
     }
   }
 }

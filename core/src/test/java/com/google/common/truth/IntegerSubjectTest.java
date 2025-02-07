@@ -227,18 +227,10 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private static final Subject.Factory<IntegerSubject, Integer> INTEGER_SUBJECT_FACTORY =
-      new Subject.Factory<IntegerSubject, Integer>() {
-        @Override
-        public IntegerSubject createSubject(FailureMetadata metadata, Integer that) {
-          return new IntegerSubject(metadata, that);
-        }
-      };
-
   @CanIgnoreReturnValue
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback) {
-    return ExpectFailure.expectFailureAbout(INTEGER_SUBJECT_FACTORY, callback);
+    return ExpectFailure.expectFailureAbout(IntegerSubject::new, callback);
   }
 
   private IntegerSubject expectFailureWhenTestingThat(Integer actual) {

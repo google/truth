@@ -42,18 +42,10 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   private static final float GOLDEN = 1.23f;
   private static final float JUST_OVER_GOLDEN = 1.2300001f;
 
-  private static final Subject.Factory<FloatSubject, Float> FLOAT_SUBJECT_FACTORY =
-      new Subject.Factory<FloatSubject, Float>() {
-        @Override
-        public FloatSubject createSubject(FailureMetadata metadata, Float that) {
-          return new FloatSubject(metadata, that);
-        }
-      };
-
   @CanIgnoreReturnValue
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<FloatSubject, Float> callback) {
-    return ExpectFailure.expectFailureAbout(FLOAT_SUBJECT_FACTORY, callback);
+    return ExpectFailure.expectFailureAbout(FloatSubject::new, callback);
   }
 
   @Test

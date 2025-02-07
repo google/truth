@@ -41,7 +41,7 @@ public final class Re2jSubjects {
    * @see com.google.common.truth.StringSubject
    */
   public static Subject.Factory<Re2jStringSubject, String> re2jString() {
-    return Re2jStringSubject.FACTORY;
+    return Re2jStringSubject::new;
   }
 
   /**
@@ -51,15 +51,6 @@ public final class Re2jSubjects {
    * @see #re2jString
    */
   public static final class Re2jStringSubject extends Subject {
-    private static final Subject.Factory<Re2jStringSubject, String> FACTORY =
-        new Subject.Factory<Re2jStringSubject, String>() {
-          @Override
-          public Re2jStringSubject createSubject(
-              FailureMetadata failureMetadata, @Nullable String target) {
-            return new Re2jStringSubject(failureMetadata, target);
-          }
-        };
-
     private final @Nullable String actual;
 
     private Re2jStringSubject(FailureMetadata failureMetadata, @Nullable String subject) {

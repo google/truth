@@ -38,7 +38,7 @@ public final class EmployeeSubject extends Subject {
   }
 
   // Static method for getting the subject factory (for use with assertAbout())
-  public static Subject.Factory<EmployeeSubject, Employee> employees() {
+  public static Factory<EmployeeSubject, Employee> employees() {
     return EmployeeSubject::new;
   }
 

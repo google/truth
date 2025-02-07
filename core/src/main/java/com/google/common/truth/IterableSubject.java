@@ -172,7 +172,7 @@ public class IterableSubject extends Subject {
   /** Checks (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@Nullable Object element) {
     if (!Iterables.contains(checkNotNull(actual), element)) {
-      List<@Nullable Object> elementList = newArrayList(element);
+      List<@Nullable Object> elementList = asList(element);
       if (hasMatchingToStringPair(actual, elementList)) {
         failWithoutActual(
             fact("expected to contain", element),
@@ -198,7 +198,7 @@ public class IterableSubject extends Subject {
 
   /** Checks that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
-    List<Multiset.Entry<?>> duplicates = newArrayList();
+    List<Multiset.Entry<?>> duplicates = new ArrayList<>();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(checkNotNull(actual)).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
@@ -280,13 +280,15 @@ public class IterableSubject extends Subject {
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
    */
+  // Some builder calls need to be separate, so let's keep them all separate.
+  @SuppressWarnings("BuilderCollapser")
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(checkNotNull(this.actual));
     Collection<?> expected = iterableToCollection(expectedIterable);
 
-    List<@Nullable Object> missing = newArrayList();
-    List<@Nullable Object> actualNotInOrder = newArrayList();
+    List<@Nullable Object> missing = new ArrayList<>();
+    List<@Nullable Object> actualNotInOrder = new ArrayList<>();
 
     boolean ordered = true;
     // step through the expected elements...
@@ -312,21 +314,17 @@ public class IterableSubject extends Subject {
 
     return ordered
         ? IN_ORDER
-        : new Ordered() {
-          @Override
-          public void inOrder() {
-            ImmutableList.Builder<Fact> facts = ImmutableList.builder();
-            facts.add(simpleFact("required elements were all found, but order was wrong"));
-            facts.add(fact("expected order for required elements", expected));
-            List<Object> actualOrder =
-                Lists.newArrayList(checkNotNull(IterableSubject.this.actual));
-            if (actualOrder.retainAll(expected)) {
-              facts.add(fact("but order was", actualOrder));
-              facts.add(fullContents());
-              failWithoutActual(facts.build());
-            } else {
-              failWithActual(facts.build());
-            }
+        : () -> {
+          ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+          facts.add(simpleFact("required elements were all found, but order was wrong"));
+          facts.add(fact("expected order for required elements", expected));
+          List<Object> actualOrder = newArrayList(checkNotNull(IterableSubject.this.actual));
+          if (actualOrder.retainAll(expected)) {
+            facts.add(fact("but order was", actualOrder));
+            facts.add(fullContents());
+            failWithoutActual(facts.build());
+          } else {
+            failWithActual(facts.build());
           }
         };
   }
@@ -396,7 +394,7 @@ public class IterableSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
     List<@Nullable Object> expected =
-        (varargs == null) ? newArrayList((@Nullable Object) null) : asList(varargs);
+        varargs == null ? asList((@Nullable Object) null) : asList(varargs);
     return containsExactlyElementsIn(
         expected, varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
@@ -484,12 +482,12 @@ public class IterableSubject extends Subject {
           return ALREADY_FAILED;
         }
         // Missing elements; elements that are not missing will be removed as we iterate.
-        List<@Nullable Object> missing = newArrayList();
+        List<@Nullable Object> missing = new ArrayList<>();
         missing.add(requiredElement);
         Iterators.addAll(missing, requiredIter);
 
         // Extra elements that the subject had but shouldn't have.
-        List<@Nullable Object> extra = newArrayList();
+        List<@Nullable Object> extra = new ArrayList<>();
 
         // Remove all actual elements from missing, and add any that weren't in missing
         // to extra.
@@ -508,13 +506,9 @@ public class IterableSubject extends Subject {
            * This containsExactly() call is a success. But the iterables were not in the same order,
            * so return an object that will fail the test if the user calls inOrder().
            */
-          return new Ordered() {
-            @Override
-            public void inOrder() {
+          return () ->
               failWithActual(
                   simpleFact("contents match, but order was wrong"), fact("expected", required));
-            }
-          };
         }
         return failExactly(required, addElementsInWarning, missing, extra);
       }
@@ -1220,8 +1214,7 @@ public class IterableSubject extends Subject {
     @SafeVarargs
     @CanIgnoreReturnValue
     public final Ordered containsExactly(@Nullable E @Nullable ... expected) {
-      return containsExactlyElementsIn(
-          (expected == null) ? newArrayList((E) null) : asList(expected));
+      return containsExactlyElementsIn(expected == null ? asList((E) null) : asList(expected));
     }
 
     /**
@@ -1288,17 +1281,13 @@ public class IterableSubject extends Subject {
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
       // is not in order).
-      return new Ordered() {
-        @Override
-        public void inOrder() {
+      return () ->
           subject.failWithActual(
               ImmutableList.<Fact>builder()
                   .add(simpleFact("contents match, but order was wrong"))
                   .add(fact("expected", expected))
                   .addAll(correspondence.describeForIterable())
                   .build());
-        }
-      };
     }
 
     /**
@@ -1488,7 +1477,7 @@ public class IterableSubject extends Subject {
         // index must be in there once.
         return asList();
       }
-      List<T> notIndexed = newArrayList();
+      List<T> notIndexed = new ArrayList<>();
       for (int index = 0; index < list.size(); index++) {
         if (!indexes.contains(index)) {
           notIndexed.add(list.get(index));
@@ -1628,17 +1617,13 @@ public class IterableSubject extends Subject {
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
       // above that the mapping is not in order).
-      return new Ordered() {
-        @Override
-        public void inOrder() {
+      return () ->
           subject.failWithActual(
               ImmutableList.<Fact>builder()
                   .add(simpleFact("required elements were all found, but order was wrong"))
                   .add(fact("expected order for required elements", expected))
                   .addAll(correspondence.describeForIterable())
                   .build());
-        }
-      };
     }
 
     /**
@@ -2124,13 +2109,13 @@ public class IterableSubject extends Subject {
        * List of the expected values not used in the pairing. Iterates in the order they appear in
        * the input.
        */
-      private final List<E> unpairedExpectedValues = newArrayList();
+      private final List<E> unpairedExpectedValues = new ArrayList<>();
 
       /**
        * List of the actual values not used in the pairing. Iterates in the order they appear in the
        * input.
        */
-      private final List<A> unpairedActualValues = newArrayList();
+      private final List<A> unpairedActualValues = new ArrayList<>();
     }
   }
 }

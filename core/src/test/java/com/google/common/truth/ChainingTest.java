@@ -225,14 +225,6 @@ public final class ChainingTest extends BaseSubjectTestCase {
    */
 
   private static final class MyObjectSubject extends Subject {
-    static final Factory<MyObjectSubject, Object> FACTORY =
-        new Factory<MyObjectSubject, Object>() {
-          @Override
-          public MyObjectSubject createSubject(FailureMetadata metadata, Object actual) {
-            return new MyObjectSubject(metadata, actual);
-          }
-        };
-
     private MyObjectSubject(FailureMetadata metadata, Object actual) {
       super(metadata, actual);
     }
@@ -272,7 +264,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
   }
 
   private static Subject.Factory<MyObjectSubject, Object> myObjects() {
-    return MyObjectSubject.FACTORY;
+    return MyObjectSubject::new;
   }
 
   private MyObjectSubject expectFailureWhenTestingThat(Object actual) {

@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
-import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import org.junit.Test;
@@ -43,10 +42,8 @@ public final class ExpectFailure8Test {
   public void testExpectFailureAbout() {
     AssertionError unused =
         expectFailureAbout(
-            STRINGS,
+            StringSubject::new,
             (SimpleSubjectBuilderCallback<StringSubject, String>)
                 whenTesting -> whenTesting.that("foo").contains("bar"));
   }
-
-  private static final Subject.Factory<StringSubject, String> STRINGS = StringSubject::new;
 }

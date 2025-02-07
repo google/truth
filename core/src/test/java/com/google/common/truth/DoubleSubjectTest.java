@@ -43,18 +43,10 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
   private static final double GOLDEN = 1.23;
   private static final double OVER_GOLDEN = 1.2300000000000002;
 
-  private static final Subject.Factory<DoubleSubject, Double> DOUBLE_SUBJECT_FACTORY =
-      new Subject.Factory<DoubleSubject, Double>() {
-        @Override
-        public DoubleSubject createSubject(FailureMetadata metadata, Double that) {
-          return new DoubleSubject(metadata, that);
-        }
-      };
-
   @CanIgnoreReturnValue
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<DoubleSubject, Double> callback) {
-    return ExpectFailure.expectFailureAbout(DOUBLE_SUBJECT_FACTORY, callback);
+    return ExpectFailure.expectFailureAbout(DoubleSubject::new, callback);
   }
 
   @Test

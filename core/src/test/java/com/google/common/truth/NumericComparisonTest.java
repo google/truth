@@ -121,17 +121,9 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
     assertFailureValue("but was; string representation of actual value", "*");
   }
 
-  private static final Subject.Factory<Subject, Object> DEFAULT_SUBJECT_FACTORY =
-      new Subject.Factory<Subject, Object>() {
-        @Override
-        public Subject createSubject(FailureMetadata metadata, Object that) {
-          return new Subject(metadata, that);
-        }
-      };
-
   private static void expectFailure(
       ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> callback) {
-    AssertionError unused = ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
+    AssertionError unused = ExpectFailure.expectFailureAbout(Subject::new, callback);
   }
 
   @Test

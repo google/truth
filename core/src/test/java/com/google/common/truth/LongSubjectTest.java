@@ -255,18 +255,10 @@ public class LongSubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private static final Subject.Factory<LongSubject, Long> LONG_SUBJECT_FACTORY =
-      new Subject.Factory<LongSubject, Long>() {
-        @Override
-        public LongSubject createSubject(FailureMetadata metadata, Long that) {
-          return new LongSubject(metadata, that);
-        }
-      };
-
   @CanIgnoreReturnValue
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<LongSubject, Long> callback) {
-    return ExpectFailure.expectFailureAbout(LONG_SUBJECT_FACTORY, callback);
+    return ExpectFailure.expectFailureAbout(LongSubject::new, callback);
   }
 
   private LongSubject expectFailureWhenTestingThat(Long actual) {
