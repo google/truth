@@ -144,14 +144,8 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   }
 
   private static void assertThatIsWithinFails(int actual, int tolerance, int expected) {
-    ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback =
-        new ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer>() {
-          @Override
-          public void invokeAssertion(SimpleSubjectBuilder<IntegerSubject, Integer> expect) {
-            expect.that(actual).isWithin(tolerance).of(expected);
-          }
-        };
-    AssertionError failure = expectFailure(callback);
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
     assertThat(failure)
         .factKeys()
         .containsExactly("expected", "but was", "outside tolerance")
@@ -184,14 +178,8 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   }
 
   private static void assertThatIsNotWithinFails(int actual, int tolerance, int expected) {
-    ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback =
-        new ExpectFailure.SimpleSubjectBuilderCallback<IntegerSubject, Integer>() {
-          @Override
-          public void invokeAssertion(SimpleSubjectBuilder<IntegerSubject, Integer> expect) {
-            expect.that(actual).isNotWithin(tolerance).of(expected);
-          }
-        };
-    AssertionError failure = expectFailure(callback);
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
     assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
     assertThat(failure).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
   }

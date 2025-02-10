@@ -49,17 +49,8 @@ public final class TruthFailureSubject extends ThrowableSubject {
    * ExpectFailure#assertThat}.
    */
   public static Factory<TruthFailureSubject, AssertionError> truthFailures() {
-    return FACTORY;
+    return (metadata, actual) -> new TruthFailureSubject(metadata, actual, "failure");
   }
-
-  private static final Factory<TruthFailureSubject, AssertionError> FACTORY =
-      new Factory<TruthFailureSubject, AssertionError>() {
-        @Override
-        public TruthFailureSubject createSubject(
-            FailureMetadata metadata, @Nullable AssertionError actual) {
-          return new TruthFailureSubject(metadata, actual, "failure");
-        }
-      };
 
   private final @Nullable AssertionError actual;
 

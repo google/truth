@@ -786,12 +786,7 @@ public class IterableSubject extends Subject {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be in strict order",
-        new PairwiseChecker() {
-          @Override
-          public boolean check(@Nullable Object prev, @Nullable Object next) {
-            return ((Comparator<@Nullable Object>) comparator).compare(prev, next) < 0;
-          }
-        });
+        (prev, next) -> ((Comparator<@Nullable Object>) comparator).compare(prev, next) < 0);
   }
 
   /**
@@ -818,12 +813,7 @@ public class IterableSubject extends Subject {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be in order",
-        new PairwiseChecker() {
-          @Override
-          public boolean check(@Nullable Object prev, @Nullable Object next) {
-            return ((Comparator<@Nullable Object>) comparator).compare(prev, next) <= 0;
-          }
-        });
+        (prev, next) -> ((Comparator<@Nullable Object>) comparator).compare(prev, next) <= 0);
   }
 
   private interface PairwiseChecker {

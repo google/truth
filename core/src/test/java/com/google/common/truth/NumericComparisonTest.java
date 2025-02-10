@@ -145,22 +145,8 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
     ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
     for (Object actual : fortyTwosNoChar) {
       for (Object expected : fortyTwosNoChar) {
-        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> actualFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
-              @Override
-              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
-                expect.that(actual).isNotEqualTo(expected);
-              }
-            };
-        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> expectedFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
-              @Override
-              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
-                expect.that(expected).isNotEqualTo(actual);
-              }
-            };
-        expectFailure(actualFirst);
-        expectFailure(expectedFirst);
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotEqualTo(expected));
+        expectFailure(whenTesting -> whenTesting.that(expected).isNotEqualTo(actual));
       }
     }
 

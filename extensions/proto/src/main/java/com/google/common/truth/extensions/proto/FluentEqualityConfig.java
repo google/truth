@@ -372,28 +372,14 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
       Optional<Descriptor> optDescriptor) {
     checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return Correspondence.from(
-            // If we were allowed lambdas, this would be:
-            // (M a, M e) ->
-            //     ProtoTruth.assertThat(a).usingConfig(FluentEqualityConfig.this).testIsEqualTo(e),
-            new Correspondence.BinaryPredicate<M, M>() {
-              @Override
-              public boolean apply(@Nullable M actual, @Nullable M expected) {
-                return ProtoTruth.assertThat(actual)
+            (@Nullable M actual, @Nullable M expected) ->
+                ProtoTruth.assertThat(actual)
                     .usingConfig(FluentEqualityConfig.this)
-                    .testIsEqualTo(expected);
-              }
-            },
+                    .testIsEqualTo(expected),
             "is equivalent according to assertThat(proto)"
                 + usingCorrespondenceString(optDescriptor)
                 + ".isEqualTo(target) to")
-        .formattingDiffsUsing(
-            // If we were allowed method references, this would be this::formatDiff.
-            new Correspondence.DiffFormatter<M, M>() {
-              @Override
-              public String formatDiff(@Nullable M actual, @Nullable M expected) {
-                return FluentEqualityConfig.this.formatDiff(actual, expected);
-              }
-            });
+        .formattingDiffsUsing(this::formatDiff);
   }
 
   private <M extends Message> String formatDiff(@Nullable M actual, @Nullable M expected) {

@@ -750,12 +750,8 @@ public class MapSubject extends Subject {
               getCastSubject(),
               expectedMap,
               allowUnexpected,
-              new ValueTester<A, E>() {
-                @Override
-                public boolean test(A actualValue, E expectedValue) {
-                  return correspondence.safeCompare(actualValue, expectedValue, exceptions);
-                }
-              });
+              (actualValue, expectedValue) ->
+                  correspondence.safeCompare(actualValue, expectedValue, exceptions));
       if (diff.isEmpty()) {
         // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would

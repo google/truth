@@ -341,12 +341,8 @@ public class MultimapSubject extends Subject {
   }
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {
-    return new Factory<IterableSubject, Iterable<?>>() {
-      @Override
-      public IterableSubject createSubject(FailureMetadata metadata, @Nullable Iterable<?> actual) {
-        return new IterableEntries(metadata, MultimapSubject.this, checkNotNull(actual));
-      }
-    };
+    return (metadata, actual) ->
+        new IterableEntries(metadata, MultimapSubject.this, checkNotNull(actual));
   }
 
   private static class IterableEntries extends IterableSubject {

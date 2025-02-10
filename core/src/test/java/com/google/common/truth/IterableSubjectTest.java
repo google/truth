@@ -917,13 +917,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyInOrderWithOneShotIterable() {
     Iterator<Object> iterator = asList((Object) 1, null, 3).iterator();
-    Iterable<Object> iterable =
-        new Iterable<Object>() {
-          @Override
-          public Iterator<Object> iterator() {
-            return iterator;
-          }
-        };
+    Iterable<Object> iterable = () -> iterator;
     assertThat(iterable).containsExactly(1, null, 3).inOrder();
   }
 
@@ -950,13 +944,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableWithNoToStringOverride() {
-    Iterable<Integer> iterable =
-        new Iterable<Integer>() {
-          @Override
-          public Iterator<Integer> iterator() {
-            return Iterators.forArray(1, 2, 3);
-          }
-        };
+    Iterable<Integer> iterable = () -> Iterators.forArray(1, 2, 3);
 
     expectFailureWhenTestingThat(iterable).containsExactly(1, 2).inOrder();
     assertFailureValue("but was", "[1, 2, 3]");

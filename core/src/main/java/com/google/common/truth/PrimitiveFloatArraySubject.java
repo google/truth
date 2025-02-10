@@ -119,13 +119,8 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
       Correspondence.from(
           // If we were allowed lambdas, this would be:
           // (a, e) -> Float.floatToIntBits(a) == Float.floatToIntBits(checkedToFloat(e)),
-          new Correspondence.BinaryPredicate<Float, Number>() {
-
-            @Override
-            public boolean apply(Float actual, Number expected) {
-              return Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected));
-            }
-          },
+          (actual, expected) ->
+              Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected)),
           "is exactly equal to");
 
   private static float checkedToFloat(Number expected) {
@@ -251,12 +246,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
    * PrimitiveFloatArraySubject.this.toString(), too, someday?
    */
   private Factory<IterableSubject, Iterable<?>> iterablesWithCustomFloatToString() {
-    return new Factory<IterableSubject, Iterable<?>>() {
-      @Override
-      public IterableSubject createSubject(FailureMetadata metadata, @Nullable Iterable<?> actual) {
-        return new IterableSubjectWithInheritedToString(metadata, actual);
-      }
-    };
+    return IterableSubjectWithInheritedToString::new;
   }
 
   private final class IterableSubjectWithInheritedToString extends IterableSubject {
