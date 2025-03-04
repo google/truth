@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
@@ -31,14 +32,15 @@ import org.junit.runners.JUnit4;
  */
 @SuppressWarnings("LenientFormatStringValidation") // Intentional for testing
 @RunWith(JUnit4.class)
-public class CustomFailureMessageTest extends BaseSubjectTestCase {
+public class CustomFailureMessageTest {
 
   @Test
   public void assertWithMessageThat() {
-    expectFailure.whenTesting().withMessage("This is a custom message").that(false).isTrue();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .startsWith("This is a custom message\n");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.withMessage("This is a custom message").that(false).isTrue());
+    assertThat(e).hasMessageThat().startsWith("This is a custom message\n");
   }
 
   @Test
@@ -59,14 +61,14 @@ public class CustomFailureMessageTest extends BaseSubjectTestCase {
 
   @Test
   public void assertWithMessageThat_withPlaceholders() {
-    expectFailure
-        .whenTesting()
-        .withMessage("This is a %s %s", "custom", "message")
-        .that(false)
-        .isTrue();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .startsWith("This is a custom message\n");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .withMessage("This is a %s %s", "custom", "message")
+                    .that(false)
+                    .isTrue());
+    assertThat(e).hasMessageThat().startsWith("This is a custom message\n");
   }
 
   @Test

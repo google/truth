@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -33,7 +35,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class TableSubjectTest extends BaseSubjectTestCase {
+public class TableSubjectTest {
 
   @Test
   public void tableIsEmpty() {

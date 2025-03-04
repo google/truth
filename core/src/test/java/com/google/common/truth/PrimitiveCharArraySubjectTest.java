@@ -16,6 +16,9 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -31,7 +34,7 @@ import org.junit.runners.JUnit4;
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
 @SuppressWarnings("TruthIncompatibleType")
-public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
+public class PrimitiveCharArraySubjectTest {
 
   @Test
   public void isEqualTo() {

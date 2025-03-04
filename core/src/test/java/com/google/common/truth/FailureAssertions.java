@@ -15,21 +15,21 @@
  */
 package com.google.common.truth;
 
-import org.junit.After;
-import org.junit.Before;
+import static com.google.common.truth.ExpectFailure.assertThat;
 
-public abstract class PlatformBaseSubjectTestCase {
-
-  final ExpectFailure expectFailure = new ExpectFailure();
-
-  @Before
-  public void setupExpectFailure() {
-    expectFailure.enterRuleContext(); // safe since @After forces leaving the context
+/** Convenience methods for {@link Subject} tests. */
+final class FailureAssertions {
+  static void assertFailureKeys(AssertionError e, String... keys) {
+    assertThat(e).factKeys().containsExactlyElementsIn(keys).inOrder();
   }
 
-  @After
-  public void ensureExpectedFailureCaught() {
-    expectFailure.leaveRuleContext();
-    expectFailure.ensureFailureCaught();
+  static void assertFailureValue(AssertionError e, String key, String value) {
+    assertThat(e).factValue(key).isEqualTo(value);
   }
+
+  static void assertFailureValueIndexed(AssertionError e, String key, int index, String value) {
+    assertThat(e).factValue(key, index).isEqualTo(value);
+  }
+
+  private FailureAssertions() {}
 }

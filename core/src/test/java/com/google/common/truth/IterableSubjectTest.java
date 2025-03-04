@@ -17,6 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Arrays.asList;
@@ -47,7 +50,7 @@ import org.junit.runners.JUnit4;
   // TODO(cpovirk): Maybe suppress at a finer scope.
   "TruthIncompatibleType",
 })
-public class IterableSubjectTest extends BaseSubjectTestCase {
+public class IterableSubjectTest {
 
   @Test
   public void hasSize() {

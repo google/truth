@@ -19,6 +19,8 @@ import static com.google.common.truth.Correspondence.equality;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
@@ -35,7 +37,7 @@ import org.junit.runners.JUnit4;
  * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
-public final class CorrespondenceTest extends BaseSubjectTestCase {
+public final class CorrespondenceTest {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 
   private static final Correspondence<Object, Object> INSTANCE =

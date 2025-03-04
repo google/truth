@@ -21,6 +21,9 @@ import static com.google.common.truth.Correspondence.equality;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.NULL_SAFE_RECORD_ID;
@@ -55,7 +58,7 @@ import org.junit.runners.JUnit4;
  * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
-public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
+public class IterableSubjectCorrespondenceTest {
 
   @Test
   // test of a mistaken call

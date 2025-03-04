@@ -25,7 +25,7 @@ import org.junit.runners.JUnit4;
 
 /** Tests for {@link StandardSubjectBuilder}. */
 @RunWith(JUnit4.class)
-public final class StandardSubjectBuilderTest extends BaseSubjectTestCase {
+public final class StandardSubjectBuilderTest {
   @Test
   public void failNoMessage() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.fail());

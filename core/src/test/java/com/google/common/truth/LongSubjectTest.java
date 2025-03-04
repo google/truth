@@ -34,7 +34,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class LongSubjectTest extends BaseSubjectTestCase {
+public class LongSubjectTest {
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
@@ -50,17 +50,17 @@ public class LongSubjectTest extends BaseSubjectTestCase {
   @Test
   public void equalityWithInts() {
     assertThat(0L).isEqualTo(0);
-    expectFailureWhenTestingThat(0L).isNotEqualTo(0);
+    expectFailure(whenTesting -> whenTesting.that(0L).isNotEqualTo(0));
   }
 
   @Test
   public void equalityFail() {
-    expectFailureWhenTestingThat(4L).isEqualTo(5L);
+    expectFailure(whenTesting -> whenTesting.that(4L).isEqualTo(5L));
   }
 
   @Test
   public void inequalityFail() {
-    expectFailureWhenTestingThat(4L).isNotEqualTo(4L);
+    expectFailure(whenTesting -> whenTesting.that(4L).isNotEqualTo(4L));
   }
 
   @Test
@@ -70,12 +70,12 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void equalityOfNullsFail_nullActual() {
-    expectFailureWhenTestingThat(null).isEqualTo(5L);
+    expectFailure(whenTesting -> whenTesting.that(null).isEqualTo(5L));
   }
 
   @Test
   public void equalityOfNullsFail_nullExpected() {
-    expectFailureWhenTestingThat(5L).isEqualTo(null);
+    expectFailure(whenTesting -> whenTesting.that(5L).isEqualTo(null));
   }
 
   @Test
@@ -86,51 +86,51 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void inequalityOfNullsFail() {
-    expectFailureWhenTestingThat(null).isNotEqualTo(null);
+    expectFailure(whenTesting -> whenTesting.that(null).isNotEqualTo(null));
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
-    expectFailureWhenTestingThat(42L).isNotEqualTo(42L);
+    expectFailure(whenTesting -> whenTesting.that(42L).isNotEqualTo(42L));
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_long_int() {
-    expectFailureWhenTestingThat(42L).isNotEqualTo(42);
+    expectFailure(whenTesting -> whenTesting.that(42L).isNotEqualTo(42));
   }
 
   @Test
   public void isGreaterThan_int_strictly() {
-    expectFailureWhenTestingThat(2L).isGreaterThan(3);
+    expectFailure(whenTesting -> whenTesting.that(2L).isGreaterThan(3));
   }
 
   @Test
   public void isGreaterThan_int() {
-    expectFailureWhenTestingThat(2L).isGreaterThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2L).isGreaterThan(2));
     assertThat(2L).isGreaterThan(1);
   }
 
   @Test
   public void isLessThan_int_strictly() {
-    expectFailureWhenTestingThat(2L).isLessThan(1);
+    expectFailure(whenTesting -> whenTesting.that(2L).isLessThan(1));
   }
 
   @Test
   public void isLessThan_int() {
-    expectFailureWhenTestingThat(2L).isLessThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2L).isLessThan(2));
     assertThat(2L).isLessThan(3);
   }
 
   @Test
   public void isAtLeast_int() {
-    expectFailureWhenTestingThat(2L).isAtLeast(3);
+    expectFailure(whenTesting -> whenTesting.that(2L).isAtLeast(3));
     assertThat(2L).isAtLeast(2);
     assertThat(2L).isAtLeast(1);
   }
 
   @Test
   public void isAtMost_int() {
-    expectFailureWhenTestingThat(2L).isAtMost(1);
+    expectFailure(whenTesting -> whenTesting.that(2L).isAtMost(1));
     assertThat(2L).isAtMost(2);
     assertThat(2L).isAtMost(3);
   }
@@ -247,9 +247,5 @@ public class LongSubjectTest extends BaseSubjectTestCase {
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<LongSubject, Long> callback) {
     return ExpectFailure.expectFailureAbout(LongSubject::new, callback);
-  }
-
-  private LongSubject expectFailureWhenTestingThat(Long actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

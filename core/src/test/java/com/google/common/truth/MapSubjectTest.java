@@ -17,6 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
@@ -45,7 +48,7 @@ import org.junit.runners.JUnit4;
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
 @SuppressWarnings("TruthIncompatibleType")
-public class MapSubjectTest extends BaseSubjectTestCase {
+public class MapSubjectTest {
 
   @Test
   public void containsExactlyWithNullKey() {

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Platform.doubleToString;
 
 import java.util.OptionalDouble;
 import org.jspecify.annotations.Nullable;
@@ -57,7 +58,7 @@ public final class OptionalDoubleSubject extends Subject {
     } else if (actual.isPresent()) {
       failWithoutActual(
           simpleFact("expected to be empty"),
-          fact("but was present with value", actual.getAsDouble()));
+          fact("but was present with value", doubleToString(actual.getAsDouble())));
     }
   }
 
@@ -73,7 +74,8 @@ public final class OptionalDoubleSubject extends Subject {
     if (actual == null) {
       failWithActual("expected an optional with value", expected);
     } else if (!actual.isPresent()) {
-      failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
+      failWithoutActual(
+          fact("expected to have value", doubleToString(expected)), simpleFact("but was absent"));
     } else {
       checkNoNeedToDisplayBothValues("getAsDouble()")
           .that(actual.getAsDouble())

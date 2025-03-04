@@ -19,6 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.SubjectTest.ForbidsEqualityChecksSubject.objectsForbiddingEqualityCheck;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
@@ -55,7 +58,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
-public class SubjectTest extends BaseSubjectTestCase {
+public class SubjectTest {
 
   @Test
   @GwtIncompatible("NullPointerTester")

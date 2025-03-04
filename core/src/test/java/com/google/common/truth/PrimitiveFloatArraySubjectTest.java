@@ -18,6 +18,9 @@ package com.google.common.truth;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Float.NEGATIVE_INFINITY;
@@ -39,7 +42,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
+public class PrimitiveFloatArraySubjectTest {
   private static final float DEFAULT_TOLERANCE = 0.000005f;
 
   private static final float JUST_OVER_2POINT2 = 2.2000003f;

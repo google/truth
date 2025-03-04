@@ -18,6 +18,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import static org.junit.Assert.fail;
@@ -29,7 +31,7 @@ import org.junit.runners.JUnit4;
 
 /** Tests for {@link TruthFailureSubject}. */
 @RunWith(JUnit4.class)
-public class TruthFailureSubjectTest extends BaseSubjectTestCase {
+public class TruthFailureSubjectTest {
   // factKeys()
 
   @Test

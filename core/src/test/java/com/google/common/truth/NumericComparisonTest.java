@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
@@ -31,7 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class NumericComparisonTest extends BaseSubjectTestCase {
+public class NumericComparisonTest {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test

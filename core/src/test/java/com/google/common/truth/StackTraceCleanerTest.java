@@ -41,7 +41,7 @@ import org.junit.runners.model.Statement;
  * remove: b/71355096
  */
 @RunWith(JUnit4.class)
-public class StackTraceCleanerTest extends BaseSubjectTestCase {
+public class StackTraceCleanerTest {
   @Test
   public void realWorld() {
     try {
@@ -91,16 +91,14 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
 
   @Test
   public void assertionsActuallyUseCleaner() {
-    expectFailure.whenTesting().that(1).isEqualTo(2);
-    assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
-        .isEqualTo(getClass().getName());
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(1).isEqualTo(2));
+    assertThat(e.getStackTrace()[0].getClassName()).isEqualTo(getClass().getName());
   }
 
   @Test
   public void assertionsActuallyUseCleaner_comparisonFailure() {
-    expectFailure.whenTesting().that("1").isEqualTo("2");
-    assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
-        .isEqualTo(getClass().getName());
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that("1").isEqualTo("2"));
+    assertThat(e.getStackTrace()[0].getClassName()).isEqualTo(getClass().getName());
   }
 
   @Test

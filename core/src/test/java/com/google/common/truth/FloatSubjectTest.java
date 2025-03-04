@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Fact.formatNumericValue;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -34,7 +35,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class FloatSubjectTest extends BaseSubjectTestCase {
+public class FloatSubjectTest {
   private static final float NEARLY_MAX = 3.4028233E38f;
   private static final float NEGATIVE_NEARLY_MAX = -3.4028233E38f;
   private static final float JUST_OVER_MIN = 2.8E-45f;

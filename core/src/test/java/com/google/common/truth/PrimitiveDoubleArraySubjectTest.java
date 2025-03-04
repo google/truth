@@ -17,6 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -37,7 +40,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
+public class PrimitiveDoubleArraySubjectTest {
   private static final double DEFAULT_TOLERANCE = 0.000005d;
 
   private static final double OVER_2POINT2 = 2.2000000000000006d;

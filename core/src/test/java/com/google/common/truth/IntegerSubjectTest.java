@@ -34,7 +34,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class IntegerSubjectTest extends BaseSubjectTestCase {
+public class IntegerSubjectTest {
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
@@ -50,17 +50,17 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   @Test
   public void equalityWithLongs() {
     assertThat(0).isEqualTo(0L);
-    expectFailureWhenTestingThat(0).isNotEqualTo(0L);
+    expectFailure(whenTesting -> whenTesting.that(0).isNotEqualTo(0L));
   }
 
   @Test
   public void equalityFail() {
-    expectFailureWhenTestingThat(4).isEqualTo(5);
+    expectFailure(whenTesting -> whenTesting.that(4).isEqualTo(5));
   }
 
   @Test
   public void inequalityFail() {
-    expectFailureWhenTestingThat(4).isNotEqualTo(4);
+    expectFailure(whenTesting -> whenTesting.that(4).isNotEqualTo(4));
   }
 
   @Test
@@ -70,12 +70,12 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void equalityOfNullsFail_nullActual() {
-    expectFailureWhenTestingThat(null).isEqualTo(5);
+    expectFailure(whenTesting -> whenTesting.that(null).isEqualTo(5));
   }
 
   @Test
   public void equalityOfNullsFail_nullExpected() {
-    expectFailureWhenTestingThat(5).isEqualTo(null);
+    expectFailure(whenTesting -> whenTesting.that(5).isEqualTo(null));
   }
 
   @Test
@@ -86,7 +86,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void inequalityOfNullsFail() {
-    expectFailureWhenTestingThat(null).isNotEqualTo(null);
+    expectFailure(whenTesting -> whenTesting.that(null).isNotEqualTo(null));
   }
 
   @Test
@@ -103,22 +103,24 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_min() {
-    expectFailureWhenTestingThat(Integer.MIN_VALUE).isNotEqualTo((long) Integer.MIN_VALUE);
+    expectFailure(
+        whenTesting -> whenTesting.that(Integer.MIN_VALUE).isNotEqualTo((long) Integer.MIN_VALUE));
   }
 
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_max() {
-    expectFailureWhenTestingThat(Integer.MAX_VALUE).isNotEqualTo((long) Integer.MAX_VALUE);
+    expectFailure(
+        whenTesting -> whenTesting.that(Integer.MAX_VALUE).isNotEqualTo((long) Integer.MAX_VALUE));
   }
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_min() {
-    expectFailureWhenTestingThat(Integer.MIN_VALUE).isEqualTo(Long.MIN_VALUE);
+    expectFailure(whenTesting -> whenTesting.that(Integer.MIN_VALUE).isEqualTo(Long.MIN_VALUE));
   }
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_max() {
-    expectFailureWhenTestingThat(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE);
+    expectFailure(whenTesting -> whenTesting.that(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE));
   }
 
   @Test
@@ -219,9 +221,5 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   private static AssertionError expectFailure(
       SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback) {
     return ExpectFailure.expectFailureAbout(IntegerSubject::new, callback);
-  }
-
-  private IntegerSubject expectFailureWhenTestingThat(Integer actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

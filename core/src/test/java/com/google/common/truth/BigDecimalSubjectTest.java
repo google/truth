@@ -16,6 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static java.math.BigDecimal.TEN;
 
@@ -30,7 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class BigDecimalSubjectTest extends BaseSubjectTestCase {
+public class BigDecimalSubjectTest {
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo() {

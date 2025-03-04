@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -32,7 +34,7 @@ import org.junit.runners.JUnit4;
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
 @SuppressWarnings("TruthIncompatibleType")
-public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
+public class PrimitiveByteArraySubjectTest {
   private static final byte BYTE_0 = (byte) 0;
   private static final byte BYTE_1 = (byte) 1;
   private static final byte BYTE_2 = (byte) 2;

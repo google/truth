@@ -32,7 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
-public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase {
+public final class CorrespondenceExceptionStoreTest {
 
   @Test
   public void hasCompareException_empty() {
