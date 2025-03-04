@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
@@ -70,10 +71,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(4).isIn(oneToFive);
 
-    expectFailureWhenTestingThat(6).isIn(oneToFive);
-    assertThat(expectFailure.getFailure())
-        .factValue("expected to be in range")
-        .isEqualTo(oneToFive.toString());
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(6).isIn(oneToFive));
+    assertThat(e).factValue("expected to be in range").isEqualTo(oneToFive.toString());
   }
 
   @Test
@@ -81,10 +80,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(6).isNotIn(oneToFive);
 
-    expectFailureWhenTestingThat(4).isNotIn(oneToFive);
-    assertThat(expectFailure.getFailure())
-        .factValue("expected not to be in range")
-        .isEqualTo(oneToFive.toString());
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isNotIn(oneToFive));
+    assertThat(e).factValue("expected not to be in range").isEqualTo(oneToFive.toString());
   }
 
   @Test
@@ -92,9 +89,13 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(new StringComparedByLength("abc"))
         .isEquivalentAccordingToCompareTo(new StringComparedByLength("xyz"));
 
-    expectFailureWhenTestingThat(new StringComparedByLength("abc"))
-        .isEquivalentAccordingToCompareTo(new StringComparedByLength("abcd"));
-    assertFailureValue("expected value that sorts equal to", "abcd");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(new StringComparedByLength("abc"))
+                    .isEquivalentAccordingToCompareTo(new StringComparedByLength("abcd")));
+    assertFailureValue(e, "expected value that sorts equal to", "abcd");
   }
 
   private static final class StringComparedByLength implements Comparable<StringComparedByLength> {
@@ -123,28 +124,28 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
   public void isGreaterThan_failsEqual() {
     assertThat(5).isGreaterThan(4);
 
-    expectFailureWhenTestingThat(4).isGreaterThan(4);
-    assertFailureValue("expected to be greater than", "4");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isGreaterThan(4));
+    assertFailureValue(e, "expected to be greater than", "4");
   }
 
   @Test
   public void isGreaterThan_failsSmaller() {
-    expectFailureWhenTestingThat(3).isGreaterThan(4);
-    assertFailureValue("expected to be greater than", "4");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(3).isGreaterThan(4));
+    assertFailureValue(e, "expected to be greater than", "4");
   }
 
   @Test
   public void isLessThan_failsEqual() {
     assertThat(4).isLessThan(5);
 
-    expectFailureWhenTestingThat(4).isLessThan(4);
-    assertFailureValue("expected to be less than", "4");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isLessThan(4));
+    assertFailureValue(e, "expected to be less than", "4");
   }
 
   @Test
   public void isLessThan_failsGreater() {
-    expectFailureWhenTestingThat(4).isLessThan(3);
-    assertFailureValue("expected to be less than", "3");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isLessThan(3));
+    assertFailureValue(e, "expected to be less than", "3");
   }
 
   @Test
@@ -152,8 +153,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(5).isAtMost(5);
     assertThat(5).isAtMost(6);
 
-    expectFailureWhenTestingThat(4).isAtMost(3);
-    assertFailureValue("expected to be at most", "3");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isAtMost(3));
+    assertFailureValue(e, "expected to be at most", "3");
   }
 
   @Test
@@ -161,8 +162,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(4).isAtLeast(3);
     assertThat(4).isAtLeast(4);
 
-    expectFailureWhenTestingThat(4).isAtLeast(5);
-    assertFailureValue("expected to be at least", "5");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(4).isAtLeast(5));
+    assertFailureValue(e, "expected to be at least", "5");
   }
 
   // Brief tests with other comparable types (no negative test cases)
@@ -243,10 +244,5 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     public String toString() {
       return Integer.toString(wrapped);
     }
-  }
-
-  private <T extends Comparable<? super T>> ComparableSubject<T> expectFailureWhenTestingThat(
-      T actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

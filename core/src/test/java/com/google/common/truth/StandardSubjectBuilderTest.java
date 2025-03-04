@@ -16,6 +16,8 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +28,7 @@ import org.junit.runners.JUnit4;
 public final class StandardSubjectBuilderTest extends BaseSubjectTestCase {
   @Test
   public void failNoMessage() {
-    expectFailure.whenTesting().fail();
-    assertThatFailure().hasMessageThat().isEmpty();
+    AssertionError e = expectFailure(whenTesting -> whenTesting.fail());
+    assertThat(e).hasMessageThat().isEmpty();
   }
 }

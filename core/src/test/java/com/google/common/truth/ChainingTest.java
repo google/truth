@@ -31,181 +31,250 @@ public final class ChainingTest extends BaseSubjectTestCase {
 
   @Test
   public void noChaining() {
-    expectFailureWhenTestingThat("root").isThePresentKingOfFrance();
-    assertNoCause("message");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that("root").isThePresentKingOfFrance());
+    assertNoCause(e, "message");
   }
 
   @Test
   public void oneLevel() {
-    expectFailureWhenTestingThat("root").delegatingTo("child").isThePresentKingOfFrance();
-    assertNoCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that("root").delegatingTo("child").isThePresentKingOfFrance());
+    assertNoCause(e, "message");
   }
 
   @Test
   public void twoLevels() {
-    expectFailureWhenTestingThat("root")
-        .delegatingTo("child")
-        .delegatingTo("grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingTo("child")
+                    .delegatingTo("grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "message");
   }
 
   @Test
   public void noChainingRootThrowable() {
-    expectFailureWhenTestingThat(throwable).isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(throwable).isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   @Test
   public void oneLevelRootThrowable() {
-    expectFailureWhenTestingThat(throwable).delegatingTo("child").isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(throwable).delegatingTo("child").isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   @Test
   public void twoLevelsRootThrowable() {
-    expectFailureWhenTestingThat(throwable)
-        .delegatingTo("child")
-        .delegatingTo("grandchild")
-        .isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(throwable)
+                    .delegatingTo("child")
+                    .delegatingTo("grandchild")
+                    .isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   // e.g., future.failureCause()
   @Test
   public void oneLevelDerivedThrowable() {
-    expectFailureWhenTestingThat("root").delegatingTo(throwable).isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that("root").delegatingTo(throwable).isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   @Test
   public void twoLevelsDerivedThrowableMiddle() {
-    expectFailureWhenTestingThat("root")
-        .delegatingTo(throwable)
-        .delegatingTo("grandchild")
-        .isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingTo(throwable)
+                    .delegatingTo("grandchild")
+                    .isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   @Test
   public void twoLevelsDerivedThrowableLast() {
-    expectFailureWhenTestingThat("root")
-        .delegatingTo("child")
-        .delegatingTo(throwable)
-        .isThePresentKingOfFrance();
-    assertHasCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingTo("child")
+                    .delegatingTo(throwable)
+                    .isThePresentKingOfFrance());
+    assertHasCause(e, "message");
   }
 
   @Test
   public void oneLevelNamed() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamed("child", "child")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of    : myObject.child\nmessage\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamed("child", "child")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of    : myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test
   public void twoLevelsNamed() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamed("child", "child")
-        .delegatingToNamed("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamed("child", "child")
+                    .delegatingToNamed("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
   public void twoLevelsOnlyFirstNamed() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamed("child", "child")
-        .delegatingTo("grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("message\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamed("child", "child")
+                    .delegatingTo("grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "message\nmyObject was: root");
   }
 
   @Test
   public void twoLevelsOnlySecondNamed() {
-    expectFailureWhenTestingThat("root")
-        .delegatingTo("child")
-        .delegatingToNamed("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of    : myObject.grandchild\nmessage\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingTo("child")
+                    .delegatingToNamed("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of    : myObject.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
   public void oneLevelNamedNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child\nmessage");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of: myObject.child\nmessage");
   }
 
   @Test
   public void twoLevelsNamedNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
-        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child.grandchild\nmessage");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+                    .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of: myObject.child.grandchild\nmessage");
   }
 
   @Test
   public void twoLevelsOnlyFirstNamedNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
-        .delegatingTo("grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("message");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+                    .delegatingTo("grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "message");
   }
 
   @Test
   public void twoLevelsOnlySecondNamedNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingTo("child")
-        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.grandchild\nmessage");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingTo("child")
+                    .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of: myObject.grandchild\nmessage");
   }
 
   @Test
   public void twoLevelsNamedOnlyFirstNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
-        .delegatingToNamed("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+                    .delegatingToNamed("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
   public void twoLevelsNamedOnlySecondNoNeedToDisplayBoth() {
-    expectFailureWhenTestingThat("root")
-        .delegatingToNamed("child", "child")
-        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
-        .isThePresentKingOfFrance();
-    assertNoCause("value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that("root")
+                    .delegatingToNamed("child", "child")
+                    .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "value of    : myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
   public void namedAndMessage() {
-    expectFailure
-        .whenTesting()
-        .withMessage("prefix")
-        .about(myObjects())
-        .that("root")
-        .delegatingToNamed("child", "child")
-        .isThePresentKingOfFrance();
-    assertNoCause("prefix\nvalue of    : myObject.child\nmessage\nmyObject was: root");
+    AssertionError e =
+        ExpectFailure.expectFailure(
+            whenTesting ->
+                whenTesting
+                    .withMessage("prefix")
+                    .about(myObjects())
+                    .that("root")
+                    .delegatingToNamed("child", "child")
+                    .isThePresentKingOfFrance());
+    assertNoCause(e, "prefix\nvalue of    : myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test
   public void checkFail() {
-    expectFailureWhenTestingThat("root").doCheckFail();
-    assertNoCause("message");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that("root").doCheckFail());
+    assertNoCause(e, "message");
   }
 
   @Test
   public void checkFailWithName() {
-    expectFailureWhenTestingThat("root").doCheckFail("child");
-    assertNoCause("message\nvalue of    : myObject.child\nmyObject was: root");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that("root").doCheckFail("child"));
+    assertNoCause(e, "message\nvalue of    : myObject.child\nmyObject was: root");
   }
 
   @Test
@@ -267,17 +336,18 @@ public final class ChainingTest extends BaseSubjectTestCase {
     return MyObjectSubject::new;
   }
 
-  private MyObjectSubject expectFailureWhenTestingThat(Object actual) {
-    return expectFailure.whenTesting().about(myObjects()).that(actual);
+  private static AssertionError expectFailure(
+      ExpectFailure.SimpleSubjectBuilderCallback<MyObjectSubject, Object> assertionCallback) {
+    return ExpectFailure.expectFailureAbout(myObjects(), assertionCallback);
   }
 
-  private void assertNoCause(String message) {
-    assertThatFailure().hasMessageThat().isEqualTo(message);
-    assertThatFailure().hasCauseThat().isNull();
+  private void assertNoCause(AssertionError failure, String message) {
+    assertThat(failure).hasMessageThat().isEqualTo(message);
+    assertThat(failure).hasCauseThat().isNull();
   }
 
-  private void assertHasCause(String message) {
-    assertThatFailure().hasMessageThat().isEqualTo(message);
-    assertThatFailure().hasCauseThat().isEqualTo(throwable);
+  private void assertHasCause(AssertionError failure, String message) {
+    assertThat(failure).hasMessageThat().isEqualTo(message);
+    assertThat(failure).hasCauseThat().isEqualTo(throwable);
   }
 }

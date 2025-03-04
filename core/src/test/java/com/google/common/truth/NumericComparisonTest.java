@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
@@ -96,34 +97,29 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_long() {
-    expectFailureWhenTestingThat(42).isNotEqualTo(42L);
+    expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo(42L));
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_int() {
-    expectFailureWhenTestingThat(42).isNotEqualTo(42);
+    expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo(42));
   }
 
   @Test
   public void testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
-    expectFailureWhenTestingThat(42).isNotEqualTo((char) 42);
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo((char) 42));
     // 42 in ASCII is '*'
-    assertFailureValue("expected not to be", "*");
-    assertFailureValue("but was; string representation of actual value", "42");
+    assertFailureValue(e, "expected not to be", "*");
+    assertFailureValue(e, "but was; string representation of actual value", "42");
   }
 
   @Test
   public void testNumericPrimitiveTypes_isNotEqual_shouldFail_charToInt() {
     // Uses Object overload rather than Integer.
-    expectFailure.whenTesting().that((char) 42).isNotEqualTo(42);
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((char) 42).isNotEqualTo(42));
     // 42 in ASCII is '*'
-    assertFailureValue("expected not to be", "42");
-    assertFailureValue("but was; string representation of actual value", "*");
-  }
-
-  private static void expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> callback) {
-    AssertionError unused = ExpectFailure.expectFailureAbout(Subject::new, callback);
+    assertFailureValue(e, "expected not to be", "42");
+    assertFailureValue(e, "but was; string representation of actual value", "*");
   }
 
   @Test
@@ -165,9 +161,5 @@ public class NumericComparisonTest extends BaseSubjectTestCase {
         assertThat(second).isNotEqualTo(first);
       }
     }
-  }
-
-  private IntegerSubject expectFailureWhenTestingThat(Integer actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

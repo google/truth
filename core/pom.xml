@@ -128,11 +128,32 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/*GwtTest.java</exclude>
-          </excludes>
-        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <configuration>
+              <excludes>
+                <exclude>**/ActualValueInferenceTest.java</exclude>
+                <exclude>**/*GwtTest.java</exclude>
+              </excludes>
+              <systemPropertyVariables>
+                <!-- Avoid automatically generating "value of" lines based on bytecode: We use one set of tests across multiple environments in our testing inside Google, and most of those environments (e.g., Android, J2CL) don't support "value of" lines. Thus, our tests are simplest if we disable "value of" lines altogether. -->
+                <com.google.common.truth.disable_infer_description>true</com.google.common.truth.disable_infer_description>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>actualvalueinference-test</id>
+            <configuration>
+              <includes>
+                <include>**/ActualValueInferenceTest.java</include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

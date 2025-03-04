@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static java.math.BigDecimal.TEN;
 
@@ -47,28 +48,32 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
   public void isEqualToIgnoringScale_bigDecimal() {
     assertThat(TEN).isEqualToIgnoringScale(TEN);
     assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(10));
-    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(new BigDecimal(3));
-    assertFailureKeys("expected", "but was", "(scale is ignored)");
-    assertFailureValue("expected", "3");
-    assertFailureValue("but was", "10");
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(TEN).isEqualToIgnoringScale(new BigDecimal(3)));
+    assertFailureKeys(e, "expected", "but was", "(scale is ignored)");
+    assertFailureValue(e, "expected", "3");
+    assertFailureValue(e, "but was", "10");
   }
 
   @Test
   public void isEqualToIgnoringScale_int() {
     assertThat(TEN).isEqualToIgnoringScale(10);
-    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(3);
-    assertFailureKeys("expected", "but was", "(scale is ignored)");
-    assertFailureValue("expected", "3");
-    assertFailureValue("but was", "10");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(TEN).isEqualToIgnoringScale(3));
+    assertFailureKeys(e, "expected", "but was", "(scale is ignored)");
+    assertFailureValue(e, "expected", "3");
+    assertFailureValue(e, "but was", "10");
   }
 
   @Test
   public void isEqualToIgnoringScale_long() {
     assertThat(TEN).isEqualToIgnoringScale(10L);
-    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(3L);
-    assertFailureKeys("expected", "but was", "(scale is ignored)");
-    assertFailureValue("expected", "3");
-    assertFailureValue("but was", "10");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(TEN).isEqualToIgnoringScale(3L));
+    assertFailureKeys(e, "expected", "but was", "(scale is ignored)");
+    assertFailureValue(e, "expected", "3");
+    assertFailureValue(e, "but was", "10");
   }
 
   @Test
@@ -77,10 +82,11 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
     assertThat(TEN).isEqualToIgnoringScale("10.");
     assertThat(TEN).isEqualToIgnoringScale("10.0");
     assertThat(TEN).isEqualToIgnoringScale("10.00");
-    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale("3");
-    assertFailureKeys("expected", "but was", "(scale is ignored)");
-    assertFailureValue("expected", "3");
-    assertFailureValue("but was", "10");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(TEN).isEqualToIgnoringScale("3"));
+    assertFailureKeys(e, "expected", "but was", "(scale is ignored)");
+    assertFailureValue(e, "expected", "3");
+    assertFailureValue(e, "but was", "10");
   }
 
   @Test
@@ -90,13 +96,10 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
     assertThat(tenFour).isEqualToIgnoringScale("10.4");
     assertThat(tenFour).isEqualToIgnoringScale("10.40");
     assertThat(tenFour).isEqualToIgnoringScale("10.400");
-    expectFailureWhenTestingThat(tenFour).isEqualToIgnoringScale("3.4");
-    assertFailureKeys("expected", "but was", "(scale is ignored)");
-    assertFailureValue("expected", "3.4");
-    assertFailureValue("but was", "10.4");
-  }
-
-  private BigDecimalSubject expectFailureWhenTestingThat(BigDecimal actual) {
-    return expectFailure.whenTesting().that(actual);
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(tenFour).isEqualToIgnoringScale("3.4"));
+    assertFailureKeys(e, "expected", "but was", "(scale is ignored)");
+    assertFailureValue(e, "expected", "3.4");
+    assertFailureValue(e, "but was", "10.4");
   }
 }

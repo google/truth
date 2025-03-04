@@ -70,8 +70,8 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
   public void testJ2clCornerCaseDoubleVsFloat() {
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
     // TODO(b/35377736): Consider making Truth add the types anyway.
-    expectFailureWhenTestingThat(1.23).isEqualTo(1.23f);
-    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(1.23).isEqualTo(1.23f));
+    assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
   }
 
   @Test
@@ -467,52 +467,48 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotNaNIsNaN() {
-    expectFailureWhenTestingThat(Double.NaN).isNotNaN();
+    expectFailure(whenTesting -> whenTesting.that(Double.NaN).isNotNaN());
   }
 
   @Test
   public void isNotNaNIsNull() {
-    expectFailureWhenTestingThat(null).isNotNaN();
-    assertFailureKeys("expected a double other than NaN", "but was");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Double) null).isNotNaN());
+    assertFailureKeys(e, "expected a double other than NaN", "but was");
   }
 
   @Test
   public void isGreaterThan_int_strictly() {
-    expectFailureWhenTestingThat(2.0).isGreaterThan(3);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isGreaterThan(3));
   }
 
   @Test
   public void isGreaterThan_int() {
-    expectFailureWhenTestingThat(2.0).isGreaterThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isGreaterThan(2));
     assertThat(2.0).isGreaterThan(1);
   }
 
   @Test
   public void isLessThan_int_strictly() {
-    expectFailureWhenTestingThat(2.0).isLessThan(1);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isLessThan(1));
   }
 
   @Test
   public void isLessThan_int() {
-    expectFailureWhenTestingThat(2.0).isLessThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isLessThan(2));
     assertThat(2.0).isLessThan(3);
   }
 
   @Test
   public void isAtLeast_int() {
-    expectFailureWhenTestingThat(2.0).isAtLeast(3);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isAtLeast(3));
     assertThat(2.0).isAtLeast(2);
     assertThat(2.0).isAtLeast(1);
   }
 
   @Test
   public void isAtMost_int() {
-    expectFailureWhenTestingThat(2.0).isAtMost(1);
+    expectFailure(whenTesting -> whenTesting.that(2.0).isAtMost(1));
     assertThat(2.0).isAtMost(2);
     assertThat(2.0).isAtMost(3);
-  }
-
-  private DoubleSubject expectFailureWhenTestingThat(Double actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

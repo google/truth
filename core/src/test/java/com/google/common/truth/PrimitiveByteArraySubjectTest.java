@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -27,6 +29,9 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
+// We intentionally test mismatches.
+// TODO(cpovirk): Maybe suppress at a finer scope.
+@SuppressWarnings("TruthIncompatibleType")
 public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   private static final byte BYTE_0 = (byte) 0;
   private static final byte BYTE_1 = (byte) 1;
@@ -51,21 +56,26 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailureWhenTestingThat(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0));
-    assertFailureKeys("expected", "but was", "expected", "but was");
-    assertFailureValueIndexed("expected", 0, "7B00");
-    assertFailureValueIndexed("but was", 0, "007B");
-    assertFailureValueIndexed("expected", 1, "[123, 0]");
-    assertFailureValueIndexed("but was", 1, "[0, 123]");
-    assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0)));
+    assertFailureKeys(e, "expected", "but was", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 0, "7B00");
+    assertFailureValueIndexed(e, "but was", 0, "007B");
+    assertFailureValueIndexed(e, "expected", 1, "[123, 0]");
+    assertFailureValueIndexed(e, "but was", 1, "[0, 123]");
+    assertThat(e).isInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
-    assertFailureKeys("expected", "but was", "wrong type", "expected", "but was");
-    assertFailureValueIndexed("expected", 1, "int[]");
-    assertFailureValueIndexed("but was", 1, "byte[]");
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {}));
+    assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 1, "int[]");
+    assertFailureValueIndexed(e, "but was", 1, "byte[]");
   }
 
   @Test
@@ -85,21 +95,18 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
+    expectFailure(
+        whenTesting -> whenTesting.that(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     byte[] same = array(BYTE_0, BYTE_1);
-    expectFailureWhenTestingThat(same).isNotEqualTo(same);
+    expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
   private static byte[] array(byte... ts) {
     return ts;
-  }
-
-  private PrimitiveByteArraySubject expectFailureWhenTestingThat(byte[] actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

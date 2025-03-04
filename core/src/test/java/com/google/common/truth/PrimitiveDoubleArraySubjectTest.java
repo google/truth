@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -75,53 +77,63 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
-    expectFailureWhenTestingThat(array(2.2d)).isEqualTo(array(OVER_2POINT2));
-    assertFailureValue("expected", "[2.2000000000000006]");
-    assertFailureValue("but was", "[2.2]");
-    assertFailureValue("differs at index", "[0]");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(array(2.2d)).isEqualTo(array(OVER_2POINT2)));
+    assertFailureValue(e, "expected", "[2.2000000000000006]");
+    assertFailureValue(e, "but was", "[2.2]");
+    assertFailureValue(e, "differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
-    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
+    expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d)));
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
-    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
-    assertFailureKeys("expected", "but was", "wrong length", "expected", "but was");
-    assertFailureValueIndexed("expected", 1, "3");
-    assertFailureValueIndexed("but was", 1, "2");
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d)));
+    assertFailureKeys(e, "expected", "but was", "wrong length", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 1, "3");
+    assertFailureValueIndexed(e, "but was", 1, "2");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
-    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
+    expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(2.2d)));
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
-    expectFailureWhenTestingThat(array(0.0d)).isEqualTo(array(-0.0d));
-    assertFailureValue("expected", "[-0.0]");
-    assertFailureValue("but was", "[0.0]");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(array(0.0d)).isEqualTo(array(-0.0d)));
+    assertFailureValue(e, "expected", "[-0.0]");
+    assertFailureValue(e, "but was", "[0.0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
-    expectFailureWhenTestingThat(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object());
+    expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object()));
   }
 
   @Test
   public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
-    expectFailureWhenTestingThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
-        .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY));
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
+                .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY)));
   }
 
   @Test
   public void isNotEqualTo_WithoutToleranceParameter_NaN_plusZero_FailEquals() {
-    expectFailureWhenTestingThat(
-            array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
-        .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
+                .isNotEqualTo(
+                    array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0)));
   }
 
   @Test
@@ -166,36 +178,49 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_failure() {
-    expectFailureWhenTestingThat(array(1.1, INTOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(2.2);
-    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
-    assertFailureValue("value of", "array.asList()");
-    assertFailureValue("expected to contain", "2.2");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, INTOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .contains(2.2));
+    assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
+    assertFailureValue(e, "value of", "array.asList()");
+    assertFailureValue(e, "expected to contain", "2.2");
     assertFailureValue(
+        e,
         "testing whether",
         "actual element is a finite number within " + DEFAULT_TOLERANCE + " of expected element");
-    assertFailureValue("but was", "[1.1, " + INTOLERABLE_2POINT2 + ", 3.3]");
+    assertFailureValue(e, "but was", "[1.1, " + INTOLERABLE_2POINT2 + ", 3.3]");
   }
 
   @Test
   public void usingTolerance_contains_failureWithInfinity() {
-    expectFailureWhenTestingThat(array(1.1, POSITIVE_INFINITY, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(POSITIVE_INFINITY);
-    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
-    assertFailureValue("expected to contain", "Infinity");
-    assertFailureValue("but was", "[1.1, Infinity, 3.3]");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, POSITIVE_INFINITY, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .contains(POSITIVE_INFINITY));
+    assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
+    assertFailureValue(e, "expected to contain", "Infinity");
+    assertFailureValue(e, "but was", "[1.1, Infinity, 3.3]");
   }
 
   @Test
   public void usingTolerance_contains_failureWithNaN() {
-    expectFailureWhenTestingThat(array(1.1, NaN, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(NaN);
-    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
-    assertFailureValue("expected to contain", "NaN");
-    assertFailureValue("but was", "[1.1, NaN, 3.3]");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, NaN, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .contains(NaN));
+    assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
+    assertFailureValue(e, "expected to contain", "NaN");
+    assertFailureValue(e, "but was", "[1.1, NaN, 3.3]");
   }
 
   @Test
@@ -238,17 +263,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_nullExpected() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(null);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .contains(null));
     assertFailureKeys(
+        e,
         "value of",
         "expected to contain",
         "testing whether",
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertThatFailure()
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(1.1, null) threw java.lang.NullPointerException");
   }
@@ -274,17 +304,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAtLeast_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2, 99.99));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsAtLeast(array(2.2, 99.99)));
     assertFailureKeys(
+        e,
         "value of",
         "missing (1)",
         "---",
         "expected to contain at least",
         "testing whether",
         "but was");
-    assertFailureValue("missing (1)", "99.99");
+    assertFailureValue(e, "missing (1)", "99.99");
   }
 
   @Test
@@ -297,17 +332,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2, 1.1))
-        .inOrder();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsAtLeast(array(2.2, 1.1))
+                    .inOrder());
     assertFailureKeys(
+        e,
         "value of",
         "required elements were all found, but order was wrong",
         "expected order for required elements",
         "testing whether",
         "but was");
-    assertFailureValue("expected order for required elements", "[2.2, 1.1]");
+    assertFailureValue(e, "expected order for required elements", "[2.2, 1.1]");
   }
 
   @Test
@@ -319,11 +359,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAnyOf_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAnyOf(array(99.99, 999.999));
-    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
-    assertFailureValue("expected to contain any of", "[99.99, 999.999]");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsAnyOf(array(99.99, 999.999)));
+    assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
+    assertFailureValue(e, "expected to contain any of", "[99.99, 999.999]");
   }
 
   @Test
@@ -335,12 +379,16 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(2.2, 1.1));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsExactly(array(2.2, 1.1)));
     assertFailureKeys(
-        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
-    assertFailureValue("unexpected (1)", "3.3");
+        e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue(e, "unexpected (1)", "3.3");
   }
 
   @Test
@@ -353,17 +401,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_inOrder_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(2.2, 1.1, 3.3))
-        .inOrder();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsExactly(array(2.2, 1.1, 3.3))
+                    .inOrder());
     assertFailureKeys(
+        e,
         "value of",
         "contents match, but order was wrong",
         "expected",
         "testing whether",
         "but was");
-    assertFailureValue("expected", "[2.2, 1.1, 3.3]");
+    assertFailureValue(e, "expected", "[2.2, 1.1, 3.3]");
   }
 
   @Test
@@ -375,10 +428,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsNoneOf_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsNoneOf(array(99.99, 2.2));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                    .usingTolerance(DEFAULT_TOLERANCE)
+                    .containsNoneOf(array(99.99, 2.2)));
     assertFailureKeys(
+        e,
         "value of",
         "expected not to contain any of",
         "testing whether",
@@ -386,9 +444,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "corresponding to",
         "---",
         "full contents");
-    assertFailureValue("expected not to contain any of", "[99.99, 2.2]");
-    assertFailureValue("but contained", "[" + TOLERABLE_2POINT2 + "]");
-    assertFailureValue("corresponding to", "2.2");
+    assertFailureValue(e, "expected not to contain any of", "[99.99, 2.2]");
+    assertFailureValue(e, "but contained", "[" + TOLERABLE_2POINT2 + "]");
+    assertFailureValue(e, "corresponding to", "2.2");
   }
 
   @Test
@@ -398,11 +456,14 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_failure() {
-    expectFailureWhenTestingThat(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2);
-    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
-    assertFailureValue("expected to contain", "2.2");
-    assertFailureValue("testing whether", "actual element is exactly equal to expected element");
-    assertFailureValue("but was", "[1.1, " + OVER_2POINT2 + ", 3.3]");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2));
+    assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
+    assertFailureValue(e, "expected to contain", "2.2");
+    assertFailureValue(e, "testing whether", "actual element is exactly equal to expected element");
+    assertFailureValue(e, "but was", "[1.1, " + OVER_2POINT2 + ", 3.3]");
   }
 
   @Test
@@ -420,19 +481,23 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_otherTypes_longOutOfRange() {
     long expected = (1L << 53) + 1L;
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
+        e,
         "value of",
         "expected to contain",
         "testing whether",
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("expected to contain", Long.toString(expected));
-    assertThatFailure()
+    assertFailureValue(e, "expected to contain", Long.toString(expected));
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
-    assertThatFailure()
+    assertThat(e)
         .factValue("first exception")
         .contains(
             "Expected value "
@@ -444,19 +509,23 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_otherTypes_bigIntegerNotSupported() {
     BigInteger expected = BigInteger.valueOf(2);
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
+        e,
         "value of",
         "expected to contain",
         "testing whether",
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("expected to contain", "2");
-    assertThatFailure()
+    assertFailureValue(e, "expected to contain", "2");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
-    assertThatFailure()
+    assertThat(e)
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact double equality was of unsupported type "
@@ -467,19 +536,23 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_otherTypes_bigDecimalNotSupported() {
     BigDecimal expected = BigDecimal.valueOf(2.0);
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
+        e,
         "value of",
         "expected to contain",
         "testing whether",
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("expected to contain", expected.toString());
-    assertThatFailure()
+    assertFailureValue(e, "expected to contain", expected.toString());
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
-    assertThatFailure()
+    assertThat(e)
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact double equality was of unsupported type "
@@ -499,29 +572,36 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
-    expectFailureWhenTestingThat(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
-    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0));
+    assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     /*
      * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
      * easy(?) hack would be to make UsingCorrespondence use Platform.doubleToString() when
      * applicable. Or maybe Correspondence implementations should be able to provide custom string
      * conversions, similar to how we plan to let them render their own diffs.
      */
-    assertFailureValue("expected to contain", Double.toString(0.0));
+    assertFailureValue(e, "expected to contain", Double.toString(0.0));
   }
 
   @Test
   public void usingExactEquality_contains_nullExpected() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null));
     assertFailureKeys(
+        e,
         "value of",
         "expected to contain",
         "testing whether",
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("expected to contain", "null");
-    assertThatFailure()
+    assertFailureValue(e, "expected to contain", "null");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(1.1, null) threw java.lang.NullPointerException");
   }
@@ -533,17 +613,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAtLeast_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsAtLeast(array(2.2, 99.99));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsAtLeast(array(2.2, 99.99)));
     assertFailureKeys(
+        e,
         "value of",
         "missing (1)",
         "---",
         "expected to contain at least",
         "testing whether",
         "but was");
-    assertFailureValue("missing (1)", "99.99");
+    assertFailureValue(e, "missing (1)", "99.99");
   }
 
   @Test
@@ -556,17 +641,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsAtLeast(array(2.2, 1.1))
-        .inOrder();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsAtLeast(array(2.2, 1.1))
+                    .inOrder());
     assertFailureKeys(
+        e,
         "value of",
         "required elements were all found, but order was wrong",
         "expected order for required elements",
         "testing whether",
         "but was");
-    assertFailureValue("expected order for required elements", "[2.2, 1.1]");
+    assertFailureValue(e, "expected order for required elements", "[2.2, 1.1]");
   }
 
   @Test
@@ -576,10 +666,14 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAnyOf_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsAnyOf(array(99.99, 999.999));
-    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsAnyOf(array(99.99, 999.999)));
+    assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
   }
 
   @Test
@@ -589,12 +683,16 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsExactly(array(2.2, 1.1));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsExactly(array(2.2, 1.1)));
     assertFailureKeys(
-        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
-    assertFailureValue("unexpected (1)", "3.3");
+        e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue(e, "unexpected (1)", "3.3");
   }
 
   @Test
@@ -607,17 +705,22 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_inOrder_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsExactly(array(2.2, 1.1, 3.3))
-        .inOrder();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsExactly(array(2.2, 1.1, 3.3))
+                    .inOrder());
     assertFailureKeys(
+        e,
         "value of",
         "contents match, but order was wrong",
         "expected",
         "testing whether",
         "but was");
-    assertFailureValue("expected", "[2.2, 1.1, 3.3]");
+    assertFailureValue(e, "expected", "[2.2, 1.1, 3.3]");
   }
 
   @Test
@@ -627,10 +730,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsNoneOf_primitiveDoubleArray_failure() {
-    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
-        .usingExactEquality()
-        .containsNoneOf(array(99.99, 2.2));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(array(1.1, 2.2, 3.3))
+                    .usingExactEquality()
+                    .containsNoneOf(array(99.99, 2.2)));
     assertFailureKeys(
+        e,
         "value of",
         "expected not to contain any of",
         "testing whether",
@@ -638,30 +746,30 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "corresponding to",
         "---",
         "full contents");
-    assertFailureValue("expected not to contain any of", "[99.99, 2.2]");
-    assertFailureValue("but contained", "[2.2]");
-    assertFailureValue("corresponding to", "2.2");
+    assertFailureValue(e, "expected not to contain any of", "[99.99, 2.2]");
+    assertFailureValue(e, "but contained", "[2.2]");
+    assertFailureValue(e, "corresponding to", "2.2");
   }
 
   @Test
   public void smallDifferenceInLongRepresentation() {
-    expectFailureWhenTestingThat(array(-4.4501477170144023E-308))
-        .isEqualTo(array(-4.450147717014402E-308));
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(array(-4.4501477170144023E-308))
+                .isEqualTo(array(-4.450147717014402E-308)));
   }
 
   @Test
   public void noCommas() {
     // Maybe we should include commas, but we don't yet, so make sure we don't under GWT, either.
-    expectFailureWhenTestingThat(array(10000.0)).isEqualTo(array(20000.0));
-    assertFailureValue("expected", "[20000.0]");
-    assertFailureValue("but was", "[10000.0]");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(array(10000.0)).isEqualTo(array(20000.0)));
+    assertFailureValue(e, "expected", "[20000.0]");
+    assertFailureValue(e, "but was", "[10000.0]");
   }
 
   private static double[] array(double... primitives) {
     return primitives;
-  }
-
-  private PrimitiveDoubleArraySubject expectFailureWhenTestingThat(double[] actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

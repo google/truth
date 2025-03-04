@@ -15,11 +15,11 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import com.google.common.collect.ImmutableMultiset;
-import com.google.common.collect.Multiset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -45,11 +45,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasCountFail() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kurt", "kluever");
-    expectFailureWhenTestingThat(multiset).hasCount("kurt", 3);
-    assertFailureValue("value of", "multiset.count(kurt)");
-  }
-
-  private MultisetSubject expectFailureWhenTestingThat(Multiset<?> actual) {
-    return expectFailure.whenTesting().that(actual);
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(multiset).hasCount("kurt", 3));
+    assertFailureValue(e, "value of", "multiset.count(kurt)");
   }
 }

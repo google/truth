@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -56,8 +57,8 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLengthFail() {
-    expectFailureWhenTestingThat(array(2, 5)).hasLength(1);
-    assertFailureValue("value of", "array.length");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array(2, 5)).hasLength(1));
+    assertFailureValue(e, "value of", "array.length");
   }
 
   @Test
@@ -76,8 +77,8 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEmptyFail() {
-    expectFailureWhenTestingThat(array(2, 5)).isEmpty();
-    assertFailureKeys("expected to be empty", "but was");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array(2, 5)).isEmpty());
+    assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
@@ -87,22 +88,23 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEmptyFail() {
-    expectFailureWhenTestingThat(EMPTY).isNotEmpty();
-    assertFailureKeys("expected not to be empty");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(EMPTY).isNotEmpty());
+    assertFailureKeys(e, "expected not to be empty");
   }
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailureWhenTestingThat(array(2, 3)).isEqualTo(array(3, 2));
-    assertFailureKeys("expected", "but was", "differs at index");
-    assertFailureValue("expected", "[3, 2]");
-    assertFailureValue("but was", "[2, 3]");
-    assertFailureValue("differs at index", "[0]");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(array(2, 3)).isEqualTo(array(3, 2)));
+    assertFailureKeys(e, "expected", "but was", "differs at index");
+    assertFailureValue(e, "expected", "[3, 2]");
+    assertFailureValue(e, "but was", "[2, 3]");
+    assertFailureValue(e, "differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailureWhenTestingThat(array(2, 3, 4)).isEqualTo(new Object());
+    expectFailure(whenTesting -> whenTesting.that(array(2, 3, 4)).isEqualTo(new Object()));
   }
 
   @Test
@@ -122,21 +124,17 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailureWhenTestingThat(array(2, 3)).isNotEqualTo(array(2, 3));
+    expectFailure(whenTesting -> whenTesting.that(array(2, 3)).isNotEqualTo(array(2, 3)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     int[] same = array(2, 3);
-    expectFailureWhenTestingThat(same).isNotEqualTo(same);
+    expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
   private static int[] array(int... ts) {
     return ts;
-  }
-
-  private PrimitiveIntArraySubject expectFailureWhenTestingThat(int[] actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

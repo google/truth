@@ -70,8 +70,8 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   public void j2clCornerCaseDoubleVsFloat() {
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
     // TODO(b/35377736): Consider making Truth add the types manually.
-    expectFailureWhenTestingThat(1.23f).isEqualTo(1.23);
-    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(1.23f).isEqualTo(1.23));
+    assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
   }
 
   @Test
@@ -467,64 +467,60 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotNaNIsNaN() {
-    expectFailureWhenTestingThat(Float.NaN).isNotNaN();
+    expectFailure(whenTesting -> whenTesting.that(Float.NaN).isNotNaN());
   }
 
   @Test
   public void isNotNaNIsNull() {
-    expectFailureWhenTestingThat(null).isNotNaN();
-    assertFailureKeys("expected a float other than NaN", "but was");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Float) null).isNotNaN());
+    assertFailureKeys(e, "expected a float other than NaN", "but was");
   }
 
   @Test
   public void isGreaterThan_int_strictly() {
-    expectFailureWhenTestingThat(2.0f).isGreaterThan(3);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isGreaterThan(3));
   }
 
   @Test
   public void isGreaterThan_int() {
-    expectFailureWhenTestingThat(2.0f).isGreaterThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isGreaterThan(2));
     assertThat(2.0f).isGreaterThan(1);
     assertThat(0x1.0p30f).isGreaterThan((1 << 30) - 1);
   }
 
   @Test
   public void isLessThan_int_strictly() {
-    expectFailureWhenTestingThat(2.0f).isLessThan(1);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isLessThan(1));
   }
 
   @Test
   public void isLessThan_int() {
-    expectFailureWhenTestingThat(2.0f).isLessThan(2);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isLessThan(2));
     assertThat(2.0f).isLessThan(3);
     assertThat(0x1.0p30f).isLessThan((1 << 30) + 1);
   }
 
   @Test
   public void isAtLeast_int() {
-    expectFailureWhenTestingThat(2.0f).isAtLeast(3);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isAtLeast(3));
     assertThat(2.0f).isAtLeast(2);
     assertThat(2.0f).isAtLeast(1);
   }
 
   @Test
   public void isAtLeast_int_withNoExactFloatRepresentation() {
-    expectFailureWhenTestingThat(0x1.0p30f).isAtLeast((1 << 30) + 1);
+    expectFailure(whenTesting -> whenTesting.that(0x1.0p30f).isAtLeast((1 << 30) + 1));
   }
 
   @Test
   public void isAtMost_int() {
-    expectFailureWhenTestingThat(2.0f).isAtMost(1);
+    expectFailure(whenTesting -> whenTesting.that(2.0f).isAtMost(1));
     assertThat(2.0f).isAtMost(2);
     assertThat(2.0f).isAtMost(3);
   }
 
   @Test
   public void isAtMost_int_withNoExactFloatRepresentation() {
-    expectFailureWhenTestingThat(0x1.0p30f).isAtMost((1 << 30) - 1);
-  }
-
-  private FloatSubject expectFailureWhenTestingThat(Float actual) {
-    return expectFailure.whenTesting().that(actual);
+    expectFailure(whenTesting -> whenTesting.that(0x1.0p30f).isAtMost((1 << 30) - 1));
   }
 }

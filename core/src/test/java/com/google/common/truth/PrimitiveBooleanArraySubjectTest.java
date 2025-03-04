@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -48,13 +49,17 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailureWhenTestingThat(array(true, false, true)).isEqualTo(array(false, true, true));
-    assertFailureValue("differs at index", "[0]");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(array(true, false, true)).isEqualTo(array(false, true, true)));
+    assertFailureValue(e, "differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailureWhenTestingThat(array(true, false, true)).isEqualTo(new Object());
+    expectFailure(
+        whenTesting -> whenTesting.that(array(true, false, true)).isEqualTo(new Object()));
   }
 
   @Test
@@ -74,21 +79,18 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailureWhenTestingThat(array(true, false)).isNotEqualTo(array(true, false));
+    expectFailure(
+        whenTesting -> whenTesting.that(array(true, false)).isNotEqualTo(array(true, false)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     boolean[] same = array(true, false);
-    expectFailureWhenTestingThat(same).isNotEqualTo(same);
+    expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
   private static boolean[] array(boolean... ts) {
     return ts;
-  }
-
-  private PrimitiveBooleanArraySubject expectFailureWhenTestingThat(boolean[] actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

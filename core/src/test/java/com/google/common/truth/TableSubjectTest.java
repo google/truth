@@ -16,11 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableTable;
-import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
 import org.junit.Test;
@@ -44,8 +44,8 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void tableIsEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
-    expectFailureWhenTestingThat(table).isEmpty();
-    assertFailureKeys("expected to be empty", "but was");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(table).isEmpty());
+    assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
@@ -57,8 +57,8 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void tableIsNotEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of();
-    expectFailureWhenTestingThat(table).isNotEmpty();
-    assertFailureKeys("expected not to be empty");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(table).isNotEmpty());
+    assertFailureKeys(e, "expected not to be empty");
   }
 
   @Test
@@ -89,16 +89,17 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void containsFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    expectFailureWhenTestingThat(table).contains("row", "otherCol");
-    assertThat(expectFailure.getFailure())
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(table).contains("row", "otherCol"));
+    assertThat(e)
         .factKeys()
         .containsExactly(
             "expected to contain mapping for row-column key pair",
             "row key",
             "column key",
             "but was");
-    assertThat(expectFailure.getFailure()).factValue("row key").isEqualTo("row");
-    assertThat(expectFailure.getFailure()).factValue("column key").isEqualTo("otherCol");
+    assertThat(e).factValue("row key").isEqualTo("row");
+    assertThat(e).factValue("column key").isEqualTo("otherCol");
   }
 
   @Test
@@ -113,8 +114,9 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void doesNotContainFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    expectFailureWhenTestingThat(table).doesNotContain("row", "col");
-    assertThat(expectFailure.getFailure())
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(table).doesNotContain("row", "col"));
+    assertThat(e)
         .factKeys()
         .containsExactly(
             "expected not to contain mapping for row-column key pair",
@@ -122,9 +124,9 @@ public class TableSubjectTest extends BaseSubjectTestCase {
             "column key",
             "but contained value",
             "full contents");
-    assertThat(expectFailure.getFailure()).factValue("row key").isEqualTo("row");
-    assertThat(expectFailure.getFailure()).factValue("column key").isEqualTo("col");
-    assertThat(expectFailure.getFailure()).factValue("but contained value").isEqualTo("val");
+    assertThat(e).factValue("row key").isEqualTo("row");
+    assertThat(e).factValue("column key").isEqualTo("col");
+    assertThat(e).factValue("but contained value").isEqualTo("val");
   }
 
   @Test
@@ -137,11 +139,12 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void containsCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    expectFailureWhenTestingThat(table).containsCell("row", "row", "val");
-    assertFailureKeys("value of", "expected to contain", "but was");
-    assertFailureValue("value of", "table.cellSet()");
-    assertFailureValue("expected to contain", "(row,row)=val");
-    assertFailureValue("but was", "[(row,col)=val]");
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(table).containsCell("row", "row", "val"));
+    assertFailureKeys(e, "value of", "expected to contain", "but was");
+    assertFailureValue(e, "value of", "table.cellSet()");
+    assertFailureValue(e, "expected to contain", "(row,row)=val");
+    assertFailureValue(e, "but was", "[(row,col)=val]");
   }
 
   @Test
@@ -160,18 +163,16 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void doesNotContainCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    expectFailureWhenTestingThat(table).doesNotContainCell("row", "col", "val");
-    assertFailureKeys("value of", "expected not to contain", "but was");
-    assertFailureValue("value of", "table.cellSet()");
-    assertFailureValue("expected not to contain", "(row,col)=val");
-    assertFailureValue("but was", "[(row,col)=val]");
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(table).doesNotContainCell("row", "col", "val"));
+    assertFailureKeys(e, "value of", "expected not to contain", "but was");
+    assertFailureValue(e, "value of", "table.cellSet()");
+    assertFailureValue(e, "expected not to contain", "(row,col)=val");
+    assertFailureValue(e, "but was", "[(row,col)=val]");
   }
 
   private static <R, C, V> Cell<R, C, V> cell(R row, C col, V val) {
     return Tables.immutableCell(row, col, val);
-  }
-
-  private TableSubject expectFailureWhenTestingThat(Table<?, ?, ?> actual) {
-    return expectFailure.whenTesting().that(actual);
   }
 }

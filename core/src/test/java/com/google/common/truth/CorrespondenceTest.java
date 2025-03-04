@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Correspondence.equality;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
@@ -95,24 +97,29 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testFrom_viaIterableSubjectContainsExactly_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of("foot", "barn", "gallon"))
-        .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-        .containsExactly("foo", "bar");
-    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
-    assertFailureValue("unexpected (1)", "gallon");
-    assertFailureValue("testing whether", "actual element starts with expected element");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of("foot", "barn", "gallon"))
+                    .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+                    .containsExactly("foo", "bar"));
+    assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue(e, "unexpected (1)", "gallon");
+    assertFailureValue(e, "testing whether", "actual element starts with expected element");
   }
 
   @Test
   public void testFrom_viaIterableSubjectContainsExactly_null() {
-    expectFailure
-        .whenTesting()
-        .that(asList("foot", "barn", null))
-        .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-        .containsExactly("foo", "bar");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(asList("foot", "barn", null))
+                    .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+                    .containsExactly("foo", "bar"));
     assertFailureKeys(
+        e,
         "unexpected (1)",
         "---",
         "expected",
@@ -120,8 +127,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("unexpected (1)", "null");
-    assertThatFailure()
+    assertFailureValue(e, "unexpected (1)", "null");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(null, foo) threw java.lang.NullPointerException");
   }
@@ -187,24 +194,29 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testTransforming_actual_viaIterableSubjectContainsExactly_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of("feet", "barns", "gallons"))
-        .comparingElementsUsing(LENGTHS)
-        .containsExactly(4, 5);
-    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
-    assertFailureValue("unexpected (1)", "gallons");
-    assertFailureValue("testing whether", "actual element has a length of expected element");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of("feet", "barns", "gallons"))
+                    .comparingElementsUsing(LENGTHS)
+                    .containsExactly(4, 5));
+    assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue(e, "unexpected (1)", "gallons");
+    assertFailureValue(e, "testing whether", "actual element has a length of expected element");
   }
 
   @Test
   public void testTransforming_actual_viaIterableSubjectContainsExactly_nullActual() {
-    expectFailure
-        .whenTesting()
-        .that(asList("feet", "barns", null))
-        .comparingElementsUsing(LENGTHS)
-        .containsExactly(4, 5);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(asList("feet", "barns", null))
+                    .comparingElementsUsing(LENGTHS)
+                    .containsExactly(4, 5));
     assertFailureKeys(
+        e,
         "unexpected (1)",
         "---",
         "expected",
@@ -212,8 +224,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("unexpected (1)", "null");
-    assertThatFailure()
+    assertFailureValue(e, "unexpected (1)", "null");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(null, 4) threw java.lang.NullPointerException");
   }
@@ -294,26 +306,32 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testTransforming_both_viaIterableSubjectContainsExactly_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
-        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-        .containsExactly("abcdefg:hij", "abcd:efghij");
-    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
-    assertFailureValue("unexpected (1)", "web-app");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
+                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                    .containsExactly("abcdefg:hij", "abcd:efghij"));
+    assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue(e, "unexpected (1)", "web-app");
     assertFailureValue(
+        e,
         "testing whether",
         "actual element has a hyphen at the same index as the colon in expected element");
   }
 
   @Test
   public void testTransforming_both_viaIterableSubjectContainsExactly_nullActual() {
-    expectFailure
-        .whenTesting()
-        .that(asList("mailing-list", "chat-room", null))
-        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-        .containsExactly("abcdefg:hij", "abcd:efghij");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(asList("mailing-list", "chat-room", null))
+                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                    .containsExactly("abcdefg:hij", "abcd:efghij"));
     assertFailureKeys(
+        e,
         "unexpected (1)",
         "---",
         "expected",
@@ -321,20 +339,23 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("unexpected (1)", "null");
-    assertThatFailure()
+    assertFailureValue(e, "unexpected (1)", "null");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(null, abcdefg:hij) threw java.lang.NullPointerException");
   }
 
   @Test
   public void testTransforming_both_viaIterableSubjectContainsExactly_nullExpected() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of("mailing-list", "chat-room"))
-        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-        .containsExactly("abcdefg:hij", "abcd:efghij", null);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of("mailing-list", "chat-room"))
+                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                    .containsExactly("abcdefg:hij", "abcd:efghij", null));
     assertFailureKeys(
+        e,
         "missing (1)",
         "---",
         "expected",
@@ -342,8 +363,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
-    assertFailureValue("missing (1)", "null");
-    assertThatFailure()
+    assertFailureValue(e, "missing (1)", "null");
+    assertThat(e)
         .factValue("first exception")
         .startsWith("compare(mailing-list, null) threw java.lang.NullPointerException");
   }
@@ -450,16 +471,18 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testTolerance_viaIterableSubjectContains_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of(1.02, 2.04, 3.08))
-        .comparingElementsUsing(tolerance(0.05))
-        .contains(3.01);
-    assertFailureKeys("expected to contain", "testing whether", "but was");
-    assertFailureValue("expected to contain", "3.01");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of(1.02, 2.04, 3.08))
+                    .comparingElementsUsing(tolerance(0.05))
+                    .contains(3.01));
+    assertFailureKeys(e, "expected to contain", "testing whether", "but was");
+    assertFailureValue(e, "expected to contain", "3.01");
     assertFailureValue(
-        "testing whether", "actual element is a finite number within 0.05 of expected element");
-    assertFailureValue("but was", "[1.02, 2.04, 3.08]");
+        e, "testing whether", "actual element is a finite number within 0.05 of expected element");
+    assertFailureValue(e, "but was", "[1.02, 2.04, 3.08]");
   }
 
   // Tests of the 'equality' factory method. Includes both direct tests of the compare method and
@@ -497,13 +520,15 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testEquality_viaIterableSubjectContains_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of(1.01, 2.02, 3.03))
-        .comparingElementsUsing(equality())
-        .contains(2.0);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of(1.01, 2.02, 3.03))
+                    .comparingElementsUsing(equality())
+                    .contains(2.0));
     // N.B. No "testing whether" fact:
-    assertFailureKeys("expected to contain", "but was");
+    assertFailureKeys(e, "expected to contain", "but was");
   }
 
   // Tests of formattingDiffsUsing.
@@ -543,12 +568,15 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
 
   @Test
   public void testFormattingDiffsUsing_viaIterableSubjectContainsExactly_failure() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableList.of("feet", "gallons"))
-        .comparingElementsUsing(LENGTHS_WITH_DIFF)
-        .containsExactly(4, 5);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(ImmutableList.of("feet", "gallons"))
+                    .comparingElementsUsing(LENGTHS_WITH_DIFF)
+                    .containsExactly(4, 5));
     assertFailureKeys(
+        e,
         "missing (1)",
         "unexpected (1)",
         "#1",
@@ -557,19 +585,22 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "expected",
         "testing whether",
         "but was");
-    assertFailureValue("missing (1)", "5");
-    assertFailureValue("#1", "gallons");
-    assertFailureValue("diff", "2");
+    assertFailureValue(e, "missing (1)", "5");
+    assertFailureValue(e, "#1", "gallons");
+    assertFailureValue(e, "diff", "2");
   }
 
   @Test
   public void testFormattingDiffsUsing_viaIterableSubjectContainsExactly_nullActual() {
-    expectFailure
-        .whenTesting()
-        .that(asList("feet", null))
-        .comparingElementsUsing(LENGTHS_WITH_DIFF)
-        .containsExactly(4, 5);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(asList("feet", null))
+                    .comparingElementsUsing(LENGTHS_WITH_DIFF)
+                    .containsExactly(4, 5));
     assertFailureKeys(
+        e,
         "missing (1)",
         "unexpected (1)",
         "---",
@@ -580,12 +611,12 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
-    assertFailureValue("missing (1)", "5");
-    assertFailureValue("unexpected (1)", "[null]");
-    assertThatFailure()
+    assertFailureValue(e, "missing (1)", "5");
+    assertFailureValue(e, "unexpected (1)", "[null]");
+    assertThat(e)
         .factValue("first exception", 0)
         .startsWith("compare(null, 4) threw java.lang.NullPointerException");
-    assertThatFailure()
+    assertThat(e)
         .factValue("first exception", 1)
         .startsWith("formatDiff(null, 5) threw java.lang.NullPointerException");
   }

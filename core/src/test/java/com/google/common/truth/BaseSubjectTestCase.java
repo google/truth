@@ -19,19 +19,15 @@ import static com.google.common.truth.ExpectFailure.assertThat;
 
 /** Base class for truth subject tests to extend. */
 abstract class BaseSubjectTestCase extends PlatformBaseSubjectTestCase {
-  final void assertFailureKeys(String... keys) {
-    assertThatFailure().factKeys().containsExactlyElementsIn(keys).inOrder();
+  static void assertFailureKeys(AssertionError e, String... keys) {
+    assertThat(e).factKeys().containsExactlyElementsIn(keys).inOrder();
   }
 
-  final void assertFailureValue(String key, String value) {
-    assertThatFailure().factValue(key).isEqualTo(value);
+  static void assertFailureValue(AssertionError e, String key, String value) {
+    assertThat(e).factValue(key).isEqualTo(value);
   }
 
-  final void assertFailureValueIndexed(String key, int index, String value) {
-    assertThatFailure().factValue(key, index).isEqualTo(value);
-  }
-
-  final TruthFailureSubject assertThatFailure() {
-    return assertThat(expectFailure.getFailure());
+  static void assertFailureValueIndexed(AssertionError e, String key, int index, String value) {
+    assertThat(e).factValue(key, index).isEqualTo(value);
   }
 }
