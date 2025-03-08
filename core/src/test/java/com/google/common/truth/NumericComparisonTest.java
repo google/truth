@@ -143,7 +143,7 @@ public class NumericComparisonTest {
     for (Object actual : fortyTwosNoChar) {
       for (Object expected : fortyTwosNoChar) {
         expectFailure(whenTesting -> whenTesting.that(actual).isNotEqualTo(expected));
-        expectFailure(whenTesting -> whenTesting.that(expected).isNotEqualTo(actual));
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotEqualTo(expected));
       }
     }
 
