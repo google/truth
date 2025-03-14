@@ -32,9 +32,9 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
+@SuppressWarnings("SelfAssertion")
 public class NumericComparisonTest {
 
-  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_int() {
     int int42 = 42;
@@ -54,7 +54,6 @@ public class NumericComparisonTest {
     assertThat(object42).isEqualTo(object42);
   }
 
-  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_long() {
     long longPrim42 = 42;
@@ -75,7 +74,6 @@ public class NumericComparisonTest {
   }
 
   @Test
-  @SuppressWarnings("TruthSelfEquals")
   public void testAllCombinations_pass() {
     assertThat(42).isEqualTo(42L);
     assertThat(42).isEqualTo(Long.valueOf(42L));
