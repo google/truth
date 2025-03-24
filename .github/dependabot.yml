@@ -9,6 +9,10 @@ updates:
         applies-to: version-updates
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "com.google.guava:guava"
+      - dependency-name: "com.google.guava:guava-testlib"
+      - dependency-name: "com.google.guava:guava-gwt"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
