@@ -20,7 +20,7 @@
       version without the -android and -jre suffixes) because that lets
       Dependabot update our Guava versions.
     -->
-    <guava.android.version>33.4.3-android</guava.android.version>
+    <guava.android.version>33.4.5-android</guava.android.version>
     <!--
       Also, we have this comment in between the 2 flavors of Guava. That's
       also to smooth the Dependabot update process: Dependabot generates a
@@ -28,9 +28,9 @@
       time, one gets submitted before the other, and
       the other ends up with a merge conflict. That requires reapprovals.
     -->
-    <guava.jre.version>33.4.3-jre</guava.jre.version>
+    <guava.jre.version>33.4.5-jre</guava.jre.version>
     <gwt.version>2.11.0</gwt.version>
-    <protobuf.version>4.29.3</protobuf.version>
+    <protobuf.version>4.30.1</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
@@ -108,7 +108,7 @@
       <dependency>
         <groupId>com.google.errorprone</groupId>
         <artifactId>error_prone_annotations</artifactId>
-        <version>2.36.0</version>
+        <version>2.37.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
