@@ -23,18 +23,12 @@ jobs:
           access_token: ${{ github.token }}
       - name: 'Check out repository'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: 'Cache local Maven repository'
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-
       - name: 'Set up JDK ${{ matrix.java }}'
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
+          cache: 'maven'
       - name: 'Install'
         shell: bash
         run: mvn -B -P!standard-with-extra-repos install -U -DskipTests=true
@@ -53,18 +47,12 @@ jobs:
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: 'Cache local Maven repository'
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-
       - name: 'Set up JDK 11'
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12
         with:
           java-version: 11
           distribution: 'zulu'
+          cache: 'maven'
           server-id: sonatype-nexus-snapshots
           server-username: CI_DEPLOY_USERNAME
           server-password: CI_DEPLOY_PASSWORD
@@ -82,18 +70,12 @@ jobs:
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: 'Cache local Maven repository'
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-
       - name: 'Set up JDK 11'
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12
         with:
           java-version: 11
           distribution: 'zulu'
+          cache: 'maven'
       - name: 'Generate latest docs'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
