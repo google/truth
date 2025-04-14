@@ -42,10 +42,7 @@ import org.jspecify.annotations.Nullable;
  * @author Kurt Alfred Kluever
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@SuppressWarnings({
-  "deprecation", // TODO(b/134064106): design an alternative to no-arg check()
-  "Java7ApiChecker", // used only from APIs with Java 8 in their signatures
-})
+@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
 @IgnoreJRERequirement
 public final class LongStreamSubject extends Subject {
 

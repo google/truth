@@ -27,7 +27,6 @@ import org.jspecify.annotations.Nullable;
  * @author Christian Gruber
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class OptionalSubject extends Subject {
   @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type

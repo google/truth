@@ -45,7 +45,6 @@ import org.jspecify.annotations.Nullable;
  * @author Kurt Alfred Kluever
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class StreamSubject extends Subject {
   // Storing the FailureMetadata instance is not usually advisable.

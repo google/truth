@@ -28,7 +28,6 @@ import org.jspecify.annotations.Nullable;
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@SuppressWarnings("Java7ApiChecker") // used only from APIs with Java 8 in their signatures
 @IgnoreJRERequirement
 public final class OptionalDoubleSubject extends Subject {
 

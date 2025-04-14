@@ -306,10 +306,7 @@ public final class Truth {
    *
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings({
-    "Java7ApiChecker", // no more dangerous than wherever the user got the Optional
-    "NullableOptional", // Truth always accepts nulls, no matter the type
-  })
+  @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   public static OptionalSubject assertThat(@Nullable Optional<?> actual) {
     return assert_().that(actual);
   }
@@ -319,7 +316,6 @@ public final class Truth {
    *
    * @since 1.3.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static OptionalIntSubject assertThat(@Nullable OptionalInt actual) {
     return assert_().that(actual);
   }
@@ -329,7 +325,6 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static OptionalLongSubject assertThat(@Nullable OptionalLong actual) {
     return assert_().that(actual);
   }
@@ -339,7 +334,6 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble actual) {
     return assert_().that(actual);
   }
@@ -349,7 +343,6 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static StreamSubject assertThat(@Nullable Stream<?> actual) {
     return assert_().that(actual);
   }
@@ -359,7 +352,6 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static IntStreamSubject assertThat(@Nullable IntStream actual) {
     return assert_().that(actual);
   }
@@ -369,7 +361,6 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous than wherever the user got the Stream
   public static LongStreamSubject assertThat(@Nullable LongStream actual) {
     return assert_().that(actual);
   }

@@ -38,12 +38,8 @@ import org.jspecify.annotations.Nullable;
  *     such static imports will become ambiguous in Truth 1.4.2, breaking your build.
  */
 @Deprecated
-@SuppressWarnings({
-  // The methods here are no more dangerous that wherever the user got the (e.g.) Stream.
-  "Java7ApiChecker",
-  // Replacing "Truth.assertThat" with "assertThat" would produce an infinite loop.
-  "StaticImportPreferred",
-})
+// Replacing "Truth.assertThat" with "assertThat" would produce an infinite loop.
+@SuppressWarnings("StaticImportPreferred")
 public final class Truth8 {
   @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {

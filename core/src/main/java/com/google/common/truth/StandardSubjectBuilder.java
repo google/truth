@@ -181,10 +181,7 @@ public class StandardSubjectBuilder {
    * @since 1.3.0 (with access to {@link OptionalSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings({
-    "Java7ApiChecker", // no more dangerous that wherever the user got the Optional
-    "NullableOptional", // Truth always accepts nulls, no matter the type
-  })
+  @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   public final OptionalSubject that(@Nullable Optional<?> actual) {
     return new OptionalSubject(metadata(), actual, "optional");
   }
@@ -193,8 +190,6 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link OptionalIntSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings(
-      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalInt
   public final OptionalIntSubject that(@Nullable OptionalInt actual) {
     return new OptionalIntSubject(metadata(), actual, "optionalInt");
   }
@@ -203,8 +198,6 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link OptionalLongSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings(
-      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalLong
   public final OptionalLongSubject that(@Nullable OptionalLong actual) {
     return new OptionalLongSubject(metadata(), actual, "optionalLong");
   }
@@ -213,8 +206,6 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link OptionalDoubleSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings(
-      "Java7ApiChecker") // no more dangerous that wherever the user got the OptionalDouble
   public final OptionalDoubleSubject that(@Nullable OptionalDouble actual) {
     return new OptionalDoubleSubject(metadata(), actual, "optionalDouble");
   }
@@ -223,7 +214,6 @@ public class StandardSubjectBuilder {
    * @since 1.3.0 (with access to {@link StreamSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the Stream
   public final StreamSubject that(@Nullable Stream<?> actual) {
     return new StreamSubject(metadata(), actual);
   }
@@ -232,7 +222,6 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link IntStreamSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings("Java7ApiChecker") // no more dangerous that wherever the user got the IntStream
   public final IntStreamSubject that(@Nullable IntStream actual) {
     return new IntStreamSubject(metadata(), actual);
   }
@@ -241,8 +230,6 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link LongStreamSubject} previously part of {@code
    *     truth-java8-extension})
    */
-  @SuppressWarnings(
-      "Java7ApiChecker") // no more dangerous that wherever the user got the LongStream
   public final LongStreamSubject that(@Nullable LongStream actual) {
     return new LongStreamSubject(metadata(), actual);
   }
