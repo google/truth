@@ -18,8 +18,6 @@ package com.google.common.truth;
 
 import static java.lang.Math.subtractExact;
 
-import com.google.common.primitives.Doubles;
-
 /** Math utilities to be shared by numeric subjects. */
 final class MathUtil {
   private MathUtil() {}
@@ -76,7 +74,7 @@ final class MathUtil {
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean notEqualWithinTolerance(double left, double right, double tolerance) {
-    if (Doubles.isFinite(left) && Doubles.isFinite(right)) {
+    if (Double.isFinite(left) && Double.isFinite(right)) {
       return Math.abs(left - right) > Math.abs(tolerance);
     } else {
       return false;
