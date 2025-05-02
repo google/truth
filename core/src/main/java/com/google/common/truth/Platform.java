@@ -93,7 +93,6 @@ final class Platform {
        * would do no good there, anyway, since ASM won't find any .class files to load under
        * Android. Perhaps R8 will even omit ASM automatically once it detects that it's "unused?")
        *
-       * TODO(cpovirk): Add a test that runs R8 without ASM present.
        */
       String clazz =
           Joiner.on('.').join("com", "google", "common", "truth", "ActualValueInference");
