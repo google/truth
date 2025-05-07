@@ -41,7 +41,8 @@ final class Platform {
   static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     if (clazz.isInterface()) {
       throw new UnsupportedOperationException(
-          "Under GWT, we can't determine whether an object is an instance of an interface Class");
+          "On Web platforms, we can't determine whether an object is an instance of an interface"
+              + " Class");
     }
 
     for (Class<?> current = instance.getClass();
