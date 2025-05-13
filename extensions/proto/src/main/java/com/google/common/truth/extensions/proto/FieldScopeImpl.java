@@ -25,12 +25,12 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -217,7 +217,7 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   private static Iterable<String> getDescriptors(Iterable<? extends Message> messages) {
-    List<String> descriptors = Lists.newArrayList();
+    List<String> descriptors = new ArrayList<>();
     for (Message message : messages) {
       descriptors.add(message == null ? "null" : message.getDescriptorForType().getFullName());
     }
@@ -225,7 +225,7 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   private static String formatList(Iterable<? extends Message> messages) {
-    List<String> strings = Lists.newArrayList();
+    List<String> strings = new ArrayList<>();
     for (Message message : messages) {
       strings.add(message == null ? "null" : "{" + message + "}");
     }

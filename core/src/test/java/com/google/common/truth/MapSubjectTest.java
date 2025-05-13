@@ -29,7 +29,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsExactlyWithNullKey() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, "value");
 
     assertThat(actual).containsExactly(null, "value");
@@ -63,7 +63,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsExactlyWithNullValue() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put("key", null);
 
     assertThat(actual).containsExactly("key", null);
@@ -451,10 +451,10 @@ public class MapSubjectTest {
 
   @Test
   public void containsAtLeastWithNullKey() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, "value");
     actual.put("unexpectedKey", "unexpectedValue");
-    Map<String, String> expected = Maps.newHashMap();
+    Map<String, String> expected = new HashMap<>();
     expected.put(null, "value");
 
     assertThat(actual).containsAtLeast(null, "value");
@@ -465,10 +465,10 @@ public class MapSubjectTest {
 
   @Test
   public void containsAtLeastWithNullValue() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put("key", null);
     actual.put("unexpectedKey", "unexpectedValue");
-    Map<String, String> expected = Maps.newHashMap();
+    Map<String, String> expected = new HashMap<>();
     expected.put("key", null);
 
     assertThat(actual).containsAtLeast("key", null);
@@ -1008,7 +1008,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsKey_failsWithNullStringAndNull() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put("null", "value1");
 
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(actual).containsKey(null));
@@ -1027,7 +1027,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullKey() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, "null");
     assertThat(actual).containsKey(null);
   }
@@ -1052,7 +1052,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullKey() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, "null");
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).doesNotContainKey(null));
@@ -1142,14 +1142,14 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullEntry() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, null);
     assertThat(actual).containsEntry(null, null);
   }
 
   @Test
   public void containsNullEntryValue() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry("kurt", null));
@@ -1168,7 +1168,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullEntryKey() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry(null, "kluever"));
@@ -1214,7 +1214,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullEntry() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, null);
     assertThat(actual).doesNotContainEntry("kurt", null);
     assertThat(actual).doesNotContainEntry(null, "kluever");
@@ -1222,7 +1222,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullEntryFailure() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).doesNotContainEntry(null, null));
@@ -1271,7 +1271,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsKeyWithNullValueNullExpected() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put("a", null);
     assertThat(actual).containsEntry("a", null);
   }
@@ -1290,7 +1290,7 @@ public class MapSubjectTest {
 
   @Test
   public void failMapContainsKeyWithNullValuePresentExpected() {
-    Map<String, String> actual = Maps.newHashMap();
+    Map<String, String> actual = new HashMap<>();
     actual.put("a", null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry("a", "A"));

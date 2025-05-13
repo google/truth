@@ -17,12 +17,12 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.UnknownFieldSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ final class FieldNumberTree {
   }
 
   // Modified only during [factory] construction, never changed afterwards.
-  private final Map<SubScopeId, FieldNumberTree> children = Maps.newHashMap();
+  private final Map<SubScopeId, FieldNumberTree> children = new HashMap<>();
 
   /** Returns whether this {@code FieldNumberTree} has no children. */
   boolean isEmpty() {

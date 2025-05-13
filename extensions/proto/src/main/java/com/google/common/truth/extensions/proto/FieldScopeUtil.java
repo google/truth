@@ -18,11 +18,11 @@ package com.google.common.truth.extensions.proto;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Utility methods for {@link FieldScope}s and {@link FluentEqualityConfig}. */
@@ -79,7 +79,7 @@ final class FieldScopeUtil {
 
   /** Joins the arguments into a {@link List} for convenience. */
   static List<Integer> asList(int first, int... rest) {
-    List<Integer> list = Lists.newArrayList();
+    List<Integer> list = new ArrayList<>();
     list.add(first);
     list.addAll(Ints.asList(rest));
     return list;
@@ -101,7 +101,7 @@ final class FieldScopeUtil {
       Optional<Descriptor> optDescriptor, String fmt, Iterable<Integer> fieldNumbers) {
     if (optDescriptor.isPresent()) {
       Descriptor descriptor = optDescriptor.get();
-      List<String> strings = Lists.newArrayList();
+      List<String> strings = new ArrayList<>();
       for (int fieldNumber : fieldNumbers) {
         FieldDescriptor field = descriptor.findFieldByNumber(fieldNumber);
         strings.add(field != null ? field.toString() : String.format("%d (?)", fieldNumber));

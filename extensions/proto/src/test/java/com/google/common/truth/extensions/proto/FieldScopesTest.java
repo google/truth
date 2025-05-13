@@ -22,13 +22,13 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.junit.Test;
@@ -953,7 +953,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message eqMessage2 = parse("o_int: 3 r_string: \"baz\" r_string: \"qux\"");
     Message eqIgnoredMessage2 = parse("o_int: 4 r_string: \"baz\" r_string: \"qux\"");
 
-    List<Message> messages = Lists.newArrayList();
+    List<Message> messages = new ArrayList<>();
     Message nullMessage = null;
     messages.add(parse("o_int: -1"));
     messages.add(nullMessage);
@@ -1004,7 +1004,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message message2 = parse("o_int: 3 r_string: \"baz\" r_string: \"qux\"");
     Message eqIgnoredMessage2 = parse("o_int: 4 r_string: \"baz\" r_string: \"qux\"");
 
-    List<Message> messages = Lists.newArrayList();
+    List<Message> messages = new ArrayList<>();
     messages.add(null);
     messages.add(null);
 

@@ -25,7 +25,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.truth.Correspondence;
 import com.google.common.truth.extensions.proto.DiffResult.RepeatedField;
@@ -43,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -280,7 +280,7 @@ final class ProtoTruthMessageDifferencer {
 
     // Can't use an ImmutableMap.Builder because proto wire format could have multiple entries with
     // the same key. Documented behaviour is to use the last seen entry.
-    Map<Object, Object> retVal = Maps.newHashMap();
+    Map<Object, Object> retVal = new HashMap<>();
     for (Object entry : entryMessages) {
       Message message = (Message) entry;
       retVal.put(valueAtFieldNumber(message, 1), valueAtFieldNumber(message, 2));
@@ -580,7 +580,7 @@ final class ProtoTruthMessageDifferencer {
 
   /** Returns a {@link LinkedHashSet} containing the integers in {@code [0, max)}, in order. */
   private static Set<Integer> setForRange(int max) {
-    Set<Integer> set = Sets.newLinkedHashSet();
+    Set<Integer> set = new LinkedHashSet<>();
     for (int i = 0; i < max; i++) {
       set.add(i);
     }

@@ -30,12 +30,13 @@ import static java.util.Collections.singletonList;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.google.common.truth.Correspondence.DiffFormatter;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -221,7 +222,7 @@ public class MapSubject extends Subject {
             + "(i.e., the number of key/value parameters (%s) must be even).",
         rest.length + 2);
 
-    Map<@Nullable Object, @Nullable Object> expectedMap = Maps.newLinkedHashMap();
+    Map<@Nullable Object, @Nullable Object> expectedMap = new LinkedHashMap<>();
     expectedMap.put(k0, v0);
     Multiset<@Nullable Object> keys = LinkedHashMultiset.create();
     keys.add(k0);
@@ -390,7 +391,7 @@ public class MapSubject extends Subject {
     private boolean includeKeyTypes() {
       // We will annotate all the keys in the diff with their types if any of the keys involved have
       // the same toString() without being equal.
-      Set<K> keys = Sets.newHashSet();
+      Set<K> keys = new HashSet<>();
       keys.addAll(missing.keySet());
       keys.addAll(unexpected.keySet());
       keys.addAll(wrongValues.keySet());
@@ -457,9 +458,9 @@ public class MapSubject extends Subject {
       // We're using the fact that Sets.intersection keeps the order of the first set.
       checkNotNull(actual);
       List<?> expectedKeyOrder =
-          Lists.newArrayList(Sets.intersection(expectedMap.keySet(), actual.keySet()));
+          new ArrayList<>(Sets.intersection(expectedMap.keySet(), actual.keySet()));
       List<?> actualKeyOrder =
-          Lists.newArrayList(Sets.intersection(actual.keySet(), expectedMap.keySet()));
+          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMap.keySet()));
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
         ImmutableList.Builder<Fact> facts =
             ImmutableList.<Fact>builder()

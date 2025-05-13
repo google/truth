@@ -267,7 +267,7 @@ final class SubjectUtils {
       stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
     }
 
-    List<@Nullable Object> result = Lists.newArrayList();
+    List<@Nullable Object> result = new ArrayList<>();
     for (Object item : items) {
       for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
         if (!Objects.equals(itemToCheck, item)) {
@@ -335,7 +335,7 @@ final class SubjectUtils {
   }
 
   private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
-    List<String> itemsWithTypeInfo = Lists.newArrayList();
+    List<String> itemsWithTypeInfo = new ArrayList<>();
     for (Object item : items) {
       itemsWithTypeInfo.add(lenientFormat("%s (%s)", item, objectToTypeName(item)));
     }
@@ -371,7 +371,7 @@ final class SubjectUtils {
    */
   static <T extends @Nullable Object> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
     if (Iterables.contains(items, "")) {
-      List<T> annotatedItems = Lists.newArrayList();
+      List<T> annotatedItems = new ArrayList<>();
       for (T item : items) {
         if (Objects.equals(item, "")) {
           // This is a safe cast because know that at least one instance of T (this item) is a

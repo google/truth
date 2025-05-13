@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class ExpectFailureNonRuleTest {
 
   @Test
   public void testExpect_userThrowExceptionInSubject_shouldPropagate() throws Exception {
-    List<Failure> reportedFailure = Lists.newArrayList();
+    List<Failure> reportedFailure = new ArrayList<>();
     RunNotifier runNotifier = new RunNotifier();
     runNotifier.addListener(
         new RunListener() {
@@ -59,7 +59,7 @@ public class ExpectFailureNonRuleTest {
 
   @Test
   public void testExpect_userThrowExceptionAfterSubject_shouldPropagate() throws Exception {
-    List<Failure> reportedFailure = Lists.newArrayList();
+    List<Failure> reportedFailure = new ArrayList<>();
     RunNotifier runNotifier = new RunNotifier();
     runNotifier.addListener(
         new RunListener() {

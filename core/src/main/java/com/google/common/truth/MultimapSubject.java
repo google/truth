@@ -32,7 +32,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
@@ -379,14 +378,15 @@ public class MultimapSubject extends Subject {
     public void inOrder() {
       // We use the fact that Sets.intersection's result has the same order as the first parameter
       checkNotNull(actual);
+      @SuppressWarnings("nullness") // TODO: b/339070656: Remove suppression after fix.
       boolean keysInOrder =
-          Lists.newArrayList(Sets.intersection(actual.keySet(), expectedMultimap.keySet()))
-              .equals(Lists.newArrayList(expectedMultimap.keySet()));
+          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMultimap.keySet()))
+              .equals(new ArrayList<>(expectedMultimap.keySet()));
 
-      LinkedHashSet<@Nullable Object> keysWithValuesOutOfOrder = Sets.newLinkedHashSet();
+      LinkedHashSet<@Nullable Object> keysWithValuesOutOfOrder = new LinkedHashSet<>();
       for (Object key : expectedMultimap.keySet()) {
-        List<?> actualVals = Lists.newArrayList(get(actual, key));
-        List<?> expectedVals = Lists.newArrayList(get(expectedMultimap, key));
+        List<?> actualVals = new ArrayList<>(get(actual, key));
+        List<?> expectedVals = new ArrayList<>(get(expectedMultimap, key));
         Iterator<?> actualIterator = actualVals.iterator();
         for (Object value : expectedVals) {
           if (!advanceToFind(actualIterator, value)) {
@@ -455,8 +455,7 @@ public class MultimapSubject extends Subject {
     ListMultimap<@Nullable Object, @Nullable Object> difference = LinkedListMultimap.create();
     for (Object key : minuend.keySet()) {
       List<?> valDifference =
-          difference(
-              Lists.newArrayList(get(minuend, key)), Lists.newArrayList(get(subtrahend, key)));
+          difference(new ArrayList<>(get(minuend, key)), new ArrayList<>(get(subtrahend, key)));
       difference.putAll(key, valDifference);
     }
     return difference;
@@ -465,7 +464,7 @@ public class MultimapSubject extends Subject {
   private static List<?> difference(List<?> minuend, List<?> subtrahend) {
     LinkedHashMultiset<@Nullable Object> remaining =
         LinkedHashMultiset.<@Nullable Object>create(subtrahend);
-    List<@Nullable Object> difference = Lists.newArrayList();
+    List<@Nullable Object> difference = new ArrayList<>();
     for (Object elem : minuend) {
       if (!remaining.remove(elem)) {
         difference.add(elem);
