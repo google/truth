@@ -26,7 +26,7 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
@@ -124,28 +124,26 @@ public class MapSubjectTest {
   public void containsExactlyDuplicateKeys() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).containsExactly("jan", 1, "jan", 2, "jan", 3);
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsExactly().");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> assertThat(actual).containsExactly("jan", 1, "jan", 2, "jan", 3));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsExactly().");
   }
 
   @Test
   public void containsExactlyMultipleDuplicateKeys() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).containsExactly("jan", 1, "jan", 1, "feb", 2, "feb", 2);
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsExactly().");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> assertThat(actual).containsExactly("jan", 1, "jan", 1, "feb", 2, "feb", 2));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsExactly().");
   }
 
   @Test
@@ -355,17 +353,18 @@ public class MapSubjectTest {
     assertThat(actual).containsExactlyEntriesIn(actual);
     assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
 
-    try {
-      assertThat(actual)
-          .containsExactly("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july");
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "There must be an equal number of key/value pairs "
-                  + "(i.e., the number of key/value parameters (13) must be even).");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                assertThat(actual)
+                    .containsExactly(
+                        "jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "There must be an equal number of key/value pairs "
+                + "(i.e., the number of key/value parameters (13) must be even).");
   }
 
   @Test
@@ -509,28 +508,26 @@ public class MapSubjectTest {
   public void containsAtLeastDuplicateKeys() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).containsAtLeast("jan", 1, "jan", 2, "jan", 3);
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsAtLeast().");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> assertThat(actual).containsAtLeast("jan", 1, "jan", 2, "jan", 3));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsAtLeast().");
   }
 
   @Test
   public void containsAtLeastMultipleDuplicateKeys() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).containsAtLeast("jan", 1, "jan", 1, "feb", 2, "feb", 2);
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsAtLeast().");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> assertThat(actual).containsAtLeast("jan", 1, "jan", 1, "feb", 2, "feb", 2));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsAtLeast().");
   }
 
   @Test
@@ -642,17 +639,18 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual =
         ImmutableMap.of("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5);
 
-    try {
-      assertThat(actual)
-          .containsAtLeast("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july");
-      fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "There must be an equal number of key/value pairs "
-                  + "(i.e., the number of key/value parameters (13) must be even).");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                assertThat(actual)
+                    .containsAtLeast(
+                        "jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "There must be an equal number of key/value pairs "
+                + "(i.e., the number of key/value parameters (13) must be even).");
   }
 
   @Test
@@ -952,11 +950,8 @@ public class MapSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    try {
-      assertThat(ImmutableMap.of(1, 2)).hasSize(-1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class, () -> assertThat(ImmutableMap.of(1, 2)).hasSize(-1));
   }
 
   @Test

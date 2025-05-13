@@ -24,7 +24,7 @@ import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUAL
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
@@ -202,11 +202,8 @@ public class MultimapSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    try {
-      assertThat(ImmutableMultimap.of(1, 2)).hasSize(-1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class, () -> assertThat(ImmutableMultimap.of(1, 2)).hasSize(-1));
   }
 
   @Test
@@ -491,11 +488,8 @@ public class MultimapSubjectTest {
     ImmutableMultimap<Integer, String> multimap =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    try {
-      assertThat(multimap).containsExactlyEntriesIn(null);
-      fail("Should have thrown.");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(
+        NullPointerException.class, () -> assertThat(multimap).containsExactlyEntriesIn(null));
   }
 
   @Test
@@ -882,11 +876,8 @@ public class MultimapSubjectTest {
     ImmutableMultimap<Integer, String> multimap =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    try {
-      assertThat(multimap).containsAtLeastEntriesIn(null);
-      fail("Should have thrown.");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(
+        NullPointerException.class, () -> assertThat(multimap).containsAtLeastEntriesIn(null));
   }
 
   @Test

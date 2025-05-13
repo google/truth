@@ -20,7 +20,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.IntStreamSubject.intStreams;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -53,11 +53,7 @@ public final class IntStreamSubjectTest {
   @Test
   public void testNullStream_fails() throws Exception {
     IntStream nullStream = null;
-    try {
-      assertThat(nullStream).isEmpty();
-      fail();
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> assertThat(nullStream).isEmpty());
   }
 
   @Test

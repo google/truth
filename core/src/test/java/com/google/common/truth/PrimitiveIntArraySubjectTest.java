@@ -19,7 +19,7 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,11 +65,7 @@ public class PrimitiveIntArraySubjectTest {
 
   @Test
   public void hasLengthNegative() {
-    try {
-      assertThat(array(2, 5)).hasLength(-1);
-      fail("Should have failed.");
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(IllegalArgumentException.class, () -> assertThat(array(2, 5)).hasLength(-1));
   }
 
   @Test

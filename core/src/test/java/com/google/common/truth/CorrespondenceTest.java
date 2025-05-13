@@ -24,7 +24,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
@@ -46,21 +46,13 @@ public final class CorrespondenceTest {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void testEquals_throws() {
-    try {
-      INSTANCE.equals(new Object());
-      fail("Expected UnsupportedOperationException from Correspondence.equals");
-    } catch (UnsupportedOperationException expected) {
-    }
+    assertThrows(UnsupportedOperationException.class, () -> INSTANCE.equals(new Object()));
   }
 
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void testHashCode_throws() {
-    try {
-      INSTANCE.hashCode();
-      fail("Expected UnsupportedOperationException from Correspondence.hashCode");
-    } catch (UnsupportedOperationException expected) {
-    }
+    assertThrows(UnsupportedOperationException.class, () -> INSTANCE.hashCode());
   }
 
   // Tests of the 'from' factory method.
@@ -164,11 +156,7 @@ public final class CorrespondenceTest {
 
   @Test
   public void testTransforming_actual_compare_nullActualValue() {
-    try {
-      HYPHEN_INDEXES.compare(null, 7);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> HYPHEN_INDEXES.compare(null, 7));
   }
 
   @Test
@@ -270,16 +258,10 @@ public final class CorrespondenceTest {
 
   @Test
   public void testTransforming_both_compare_nullInputValues() {
-    try {
-      HYPHENS_MATCH_COLONS.compare(null, "abcde:fghij");
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
-    try {
-      HYPHENS_MATCH_COLONS.compare("mailing-list", null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(
+        NullPointerException.class, () -> HYPHENS_MATCH_COLONS.compare(null, "abcde:fghij"));
+    assertThrows(
+        NullPointerException.class, () -> HYPHENS_MATCH_COLONS.compare("mailing-list", null));
   }
 
   @Test
@@ -425,26 +407,15 @@ public final class CorrespondenceTest {
 
   @Test
   public void testTolerance_compare_negativeTolerance() {
-    try {
-      tolerance(-0.05).compare(1.0, 2.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("tolerance (-0.05) cannot be negative");
-    }
+    IllegalArgumentException expected =
+        assertThrows(IllegalArgumentException.class, () -> tolerance(-0.05).compare(1.0, 2.0));
+    assertThat(expected).hasMessageThat().isEqualTo("tolerance (-0.05) cannot be negative");
   }
 
   @Test
   public void testTolerance_compare_null() {
-    try {
-      tolerance(0.05).compare(1.0, null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
-    try {
-      tolerance(0.05).compare(null, 2.0);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> tolerance(0.05).compare(1.0, null));
+    assertThrows(NullPointerException.class, () -> tolerance(0.05).compare(null, 2.0));
   }
 
   @Test

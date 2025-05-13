@@ -20,7 +20,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
@@ -78,11 +78,7 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void hasLengthNegative() {
-    try {
-      assertThat(objectArray(2, 5)).hasLength(-1);
-      fail("Should have failed");
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(IllegalArgumentException.class, () -> assertThat(objectArray(2, 5)).hasLength(-1));
   }
 
   @Test

@@ -19,7 +19,7 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,29 +73,23 @@ public class CustomFailureMessageTest {
 
   @Test
   public void extraPlaceholderThrowsIae() {
-    try {
-      assert_().withMessage("This is a %s %s", "custom").that(true).isTrue();
-      fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> assert_().withMessage("This is a %s %s", "custom").that(true).isTrue());
   }
 
   @Test
   public void missingPlaceholderThrowsIae() {
-    try {
-      assert_().withMessage("This is a %s", "custom", "message").that(true).isTrue();
-      fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> assert_().withMessage("This is a %s", "custom", "message").that(true).isTrue());
   }
 
   @Test
   public void noPlaceholdersWithArgsThrowsIae() {
-    try {
-      assert_().withMessage("This is a custom message", "bad arg").that(true).isTrue();
-      fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> assert_().withMessage("This is a custom message", "bad arg").that(true).isTrue());
   }
 
   @Test

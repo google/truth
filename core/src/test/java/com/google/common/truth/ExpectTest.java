@@ -21,7 +21,7 @@ import static com.google.common.util.concurrent.Futures.immediateFuture;
 import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,11 +205,7 @@ public class ExpectTest {
         executor.submit(
             () -> {
               awaitUninterruptibly(testMethodComplete);
-              try {
-                expect.that(3);
-                fail();
-              } catch (IllegalStateException expected) {
-              }
+              assertThrows(IllegalStateException.class, () -> expect.that(3));
             });
     executor.shutdown();
   }
@@ -227,12 +223,9 @@ public class ExpectTest {
         executor.submit(
             () -> {
               awaitUninterruptibly(testMethodComplete);
-              try {
-                expectThat3.isEqualTo(4);
-                fail();
-              } catch (IllegalStateException expected) {
-                assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
-              }
+              IllegalStateException expected =
+                  assertThrows(IllegalStateException.class, () -> expectThat3.isEqualTo(4));
+              assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
             });
     executor.shutdown();
   }

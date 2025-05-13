@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.Iterables;
 import org.junit.Test;
@@ -50,11 +50,7 @@ public final class CorrespondenceExceptionStoreTest {
   @Test
   public void describeAsMainCause_empty() {
     Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
-    try {
-      exceptions.describeAsMainCause();
-      fail("Expected IllegalStateException");
-    } catch (IllegalStateException expected) {
-    }
+    assertThrows(IllegalStateException.class, () -> exceptions.describeAsMainCause());
   }
 
   @Test

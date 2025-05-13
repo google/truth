@@ -21,7 +21,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.StreamSubject.streams;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.util.stream.Stream;
 import org.junit.Test;
@@ -110,11 +110,7 @@ public final class StreamSubjectTest {
   @Test
   public void testNullStream_fails() throws Exception {
     Stream<String> nullStream = null;
-    try {
-      assertThat(nullStream).isEmpty();
-      fail();
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> assertThat(nullStream).isEmpty());
   }
 
   @Test

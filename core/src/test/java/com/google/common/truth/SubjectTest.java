@@ -27,6 +27,7 @@ import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -526,11 +527,9 @@ public class SubjectTest {
   @Test
   public void isInstanceOfImplementedInterface() {
     if (isGwt()) {
-      try {
-        assertThat("a").isInstanceOf(CharSequence.class);
-        fail();
-      } catch (UnsupportedOperationException expected) {
-      }
+      assertThrows(
+          UnsupportedOperationException.class,
+          () -> assertThat("a").isInstanceOf(CharSequence.class));
       return;
     }
 
@@ -549,11 +548,9 @@ public class SubjectTest {
   @Test
   public void isInstanceOfUnrelatedInterface() {
     if (isGwt()) {
-      try {
-        assertThat(4.5).isInstanceOf(CharSequence.class);
-        fail();
-      } catch (UnsupportedOperationException expected) {
-      }
+      assertThrows(
+          UnsupportedOperationException.class,
+          () -> assertThat(4.5).isInstanceOf(CharSequence.class));
       return;
     }
 
@@ -577,11 +574,7 @@ public class SubjectTest {
   @SuppressWarnings("IsInstanceInteger")
   @Test
   public void isInstanceOfPrimitiveType() {
-    try {
-      assertThat(1).isInstanceOf(int.class);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(IllegalArgumentException.class, () -> assertThat(1).isInstanceOf(int.class));
   }
 
   @Test
@@ -592,11 +585,9 @@ public class SubjectTest {
   @Test
   public void isNotInstanceOfUnrelatedInterface() {
     if (isGwt()) {
-      try {
-        assertThat(5).isNotInstanceOf(CharSequence.class);
-        fail();
-      } catch (UnsupportedOperationException expected) {
-      }
+      assertThrows(
+          UnsupportedOperationException.class,
+          () -> assertThat(5).isNotInstanceOf(CharSequence.class));
       return;
     }
 
@@ -619,11 +610,9 @@ public class SubjectTest {
   @Test
   public void isNotInstanceOfImplementedInterface() {
     if (isGwt()) {
-      try {
-        assertThat("a").isNotInstanceOf(CharSequence.class);
-        fail();
-      } catch (UnsupportedOperationException expected) {
-      }
+      assertThrows(
+          UnsupportedOperationException.class,
+          () -> assertThat("a").isNotInstanceOf(CharSequence.class));
       return;
     }
 
@@ -632,11 +621,7 @@ public class SubjectTest {
 
   @Test
   public void isNotInstanceOfPrimitiveType() {
-    try {
-      assertThat(1).isNotInstanceOf(int.class);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(IllegalArgumentException.class, () -> assertThat(1).isNotInstanceOf(int.class));
   }
 
   @Test

@@ -27,7 +27,7 @@ import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.NaN;
 import static java.lang.Float.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.math.BigDecimal;
@@ -281,14 +281,16 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void usingTolerance_contains_negativeTolerance() {
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(-1.0f * DEFAULT_TOLERANCE).contains(2.0f);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                assertThat(array(1.0f, 2.0f, 3.0f))
+                    .usingTolerance(-1.0f * DEFAULT_TOLERANCE)
+                    .contains(2.0f));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
   }
 
   @Test

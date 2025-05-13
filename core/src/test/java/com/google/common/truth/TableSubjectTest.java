@@ -20,7 +20,7 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table.Cell;
@@ -75,11 +75,8 @@ public class TableSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    try {
-      assertThat(ImmutableTable.of(1, 2, 3)).hasSize(-1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class, () -> assertThat(ImmutableTable.of(1, 2, 3)).hasSize(-1));
   }
 
   @Test

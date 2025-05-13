@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.GraphMatching.maximumCardinalityBipartiteMatching;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
@@ -135,22 +135,14 @@ public final class GraphMatchingTest {
   public void maximumCardinalityBipartiteMatching_failsWithNullLhs() {
     ListMultimap<String, String> edges = LinkedListMultimap.create();
     edges.put(null, "R1");
-    try {
-      BiMap<String, String> unused = maximumCardinalityBipartiteMatching(edges);
-      fail("Should have thrown.");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> maximumCardinalityBipartiteMatching(edges));
   }
 
   @Test
   public void maximumCardinalityBipartiteMatching_failsWithNullRhs() {
     ListMultimap<String, String> edges = LinkedListMultimap.create();
     edges.put("L1", null);
-    try {
-      BiMap<String, String> unused = maximumCardinalityBipartiteMatching(edges);
-      fail("Should have thrown.");
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(NullPointerException.class, () -> maximumCardinalityBipartiteMatching(edges));
   }
 
   /** Representation of a bipartite graph to be used for testing. */

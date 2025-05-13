@@ -21,7 +21,7 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.Range;
 import org.junit.Test;
@@ -40,31 +40,12 @@ public class ComparableSubjectTest {
   // test of a mistaken call and of unnecessary use of isEquivalentAccordingToCompareTo
   @SuppressWarnings({"deprecation", "IntegerComparison"})
   public void testNulls() {
-    try {
-      assertThat(6).isEquivalentAccordingToCompareTo(null);
-      fail();
-    } catch (NullPointerException expected) {
-    }
-    try {
-      assertThat(6).isGreaterThan(null);
-      fail();
-    } catch (NullPointerException expected) {
-    }
-    try {
-      assertThat(6).isLessThan(null);
-      fail();
-    } catch (NullPointerException expected) {
-    }
-    try {
-      assertThat(6).isAtMost(null);
-      fail();
-    } catch (NullPointerException expected) {
-    }
-    try {
-      assertThat(6).isAtLeast(null);
-      fail();
-    } catch (NullPointerException expected) {
-    }
+    assertThrows(
+        NullPointerException.class, () -> assertThat(6).isEquivalentAccordingToCompareTo(null));
+    assertThrows(NullPointerException.class, () -> assertThat(6).isGreaterThan(null));
+    assertThrows(NullPointerException.class, () -> assertThat(6).isLessThan(null));
+    assertThrows(NullPointerException.class, () -> assertThat(6).isAtMost(null));
+    assertThrows(NullPointerException.class, () -> assertThat(6).isAtLeast(null));
   }
 
   @Test

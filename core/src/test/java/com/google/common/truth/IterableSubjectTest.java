@@ -23,7 +23,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValueIndexe
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
@@ -72,11 +72,8 @@ public class IterableSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    try {
-      assertThat(ImmutableList.of(1, 2, 3)).hasSize(-1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class, () -> assertThat(ImmutableList.of(1, 2, 3)).hasSize(-1));
   }
 
   @Test
@@ -1198,11 +1195,9 @@ public class IterableSubjectTest {
 
   @Test
   public void isInStrictOrderWithNonComparableElementsFailure() {
-    try {
-      assertThat(asList((Object) 1, "2", 3, "4")).isInStrictOrder();
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+    assertThrows(
+        ClassCastException.class,
+        () -> assertThat(asList((Object) 1, "2", 3, "4")).isInStrictOrder());
   }
 
   @Test
@@ -1230,11 +1225,8 @@ public class IterableSubjectTest {
 
   @Test
   public void isInOrderWithNonComparableElementsFailure() {
-    try {
-      assertThat(asList((Object) 1, "2", 2, "3")).isInOrder();
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+    assertThrows(
+        ClassCastException.class, () -> assertThat(asList((Object) 1, "2", 2, "3")).isInOrder());
   }
 
   @Test

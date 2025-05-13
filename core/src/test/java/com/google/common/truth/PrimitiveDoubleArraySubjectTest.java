@@ -25,7 +25,7 @@ import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.math.BigDecimal;
@@ -288,14 +288,16 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingTolerance_contains_negativeTolerance() {
-    try {
-      assertThat(array(1.1, 2.2, 3.3)).usingTolerance(-1.1 * DEFAULT_TOLERANCE).contains(2.0f);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + -1.1 * DEFAULT_TOLERANCE + ") cannot be negative");
-    }
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                assertThat(array(1.1, 2.2, 3.3))
+                    .usingTolerance(-1.1 * DEFAULT_TOLERANCE)
+                    .contains(2.0f));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("tolerance (" + -1.1 * DEFAULT_TOLERANCE + ") cannot be negative");
   }
 
   @Test

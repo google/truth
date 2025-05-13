@@ -17,6 +17,7 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
@@ -852,13 +853,10 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message message1 = parse("o_int: 44");
     Message message2 = parse("o_int: 33");
 
-    try {
-      assertThat(message1).ignoringFields(999).isEqualTo(message2);
-      fail("Expected failure.");
-    } catch (Exception expected) {
-      // TODO(user): Use hasTransitiveCauseThat() if/when it becomes available.
-
-      Throwable cause = expected;
+    Exception expected =
+        assertThrows(
+            Exception.class, () -> assertThat(message1).ignoringFields(999).isEqualTo(message2));
+    Throwable cause = expected;
       while (cause != null) {
         if (cause
             .getMessage()
@@ -870,7 +868,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       }
       if (cause == null) {
         fail("No cause with field number error message.");
-      }
     }
   }
 
@@ -1034,19 +1031,19 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       return;
     }
 
-    try {
-      FieldScopes.fromSetFields(
-          TestMessage2.newBuilder().setOInt(2).build(),
-          TestMessage3.newBuilder().setOInt(2).build());
-      fail("Expected failure.");
-    } catch (RuntimeException expected) {
-      expect
-          .that(expected)
-          .hasMessageThat()
-          .contains("Cannot create scope from messages with different descriptors");
+    RuntimeException expected =
+        assertThrows(
+            RuntimeException.class,
+            () ->
+                FieldScopes.fromSetFields(
+                    TestMessage2.newBuilder().setOInt(2).build(),
+                    TestMessage3.newBuilder().setOInt(2).build()));
+    expect
+        .that(expected)
+        .hasMessageThat()
+        .contains("Cannot create scope from messages with different descriptors");
       expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
-      expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
-    }
+    expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
   }
 
   @Test
@@ -1061,24 +1058,24 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message eqMessage =
         TestMessage2.newBuilder().setOInt(1).addRString("foo").addRString("bar").build();
 
-    try {
-      assertThat(message)
-          .withPartialScope(
-              FieldScopes.fromSetFields(
-                  TestMessage3.newBuilder().setOInt(2).build(),
-                  TestMessage3.newBuilder().addRString("foo").build()))
-          .isEqualTo(eqMessage);
-      fail("Expected failure.");
-    } catch (RuntimeException expected) {
-      expect
-          .that(expected)
-          .hasMessageThat()
-          .contains(
-              "Message given to FieldScopes.fromSetFields() "
-                  + "does not have the same descriptor as the message being tested");
+    RuntimeException expected =
+        assertThrows(
+            RuntimeException.class,
+            () ->
+                assertThat(message)
+                    .withPartialScope(
+                        FieldScopes.fromSetFields(
+                            TestMessage3.newBuilder().setOInt(2).build(),
+                            TestMessage3.newBuilder().addRString("foo").build()))
+                    .isEqualTo(eqMessage));
+    expect
+        .that(expected)
+        .hasMessageThat()
+        .contains(
+            "Message given to FieldScopes.fromSetFields() "
+                + "does not have the same descriptor as the message being tested");
       expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
-      expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
-    }
+    expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
   }
 
   @Test

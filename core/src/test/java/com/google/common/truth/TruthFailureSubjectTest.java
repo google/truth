@@ -22,7 +22,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
@@ -128,11 +128,9 @@ public class TruthFailureSubjectTest {
 
   @Test
   public void factValueIntFailNegative() {
-    try {
-      assertThat(fact("foo", "the foo")).factValue("foo", -1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> assertThat(fact("foo", "the foo")).factValue("foo", -1));
   }
 
   @Test

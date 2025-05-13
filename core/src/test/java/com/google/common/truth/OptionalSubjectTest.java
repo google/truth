@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.util.Optional;
 import org.junit.Test;
@@ -91,12 +91,10 @@ public class OptionalSubjectTest {
 
   @Test
   public void hasValue_npeWithNullParameter() {
-    try {
-      assertThat(Optional.of("foo")).hasValue(null);
-      fail("Expected NPE");
-    } catch (NullPointerException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Optional cannot have a null value.");
-    }
+    NullPointerException expected =
+        assertThrows(
+            NullPointerException.class, () -> assertThat(Optional.of("foo")).hasValue(null));
+    assertThat(expected).hasMessageThat().isEqualTo("Optional cannot have a null value.");
   }
 
   @Test
