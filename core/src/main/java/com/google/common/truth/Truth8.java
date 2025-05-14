@@ -39,7 +39,10 @@ import org.jspecify.annotations.Nullable;
  */
 @Deprecated
 // Replacing "Truth.assertThat" with "assertThat" would produce an infinite loop.
-@SuppressWarnings("StaticImportPreferred")
+@SuppressWarnings({
+  "StaticImportPreferred",
+  "StaticImportPreferredForTruth",
+})
 public final class Truth8 {
   @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {

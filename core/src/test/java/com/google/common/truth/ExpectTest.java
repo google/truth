@@ -153,7 +153,7 @@ public class ExpectTest {
     expect.withMessage("y").fail();
   }
 
-  private void throwException() {
+  private static void throwException() {
     throw new IllegalStateException("testing");
   }
 

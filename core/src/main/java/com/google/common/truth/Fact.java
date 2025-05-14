@@ -45,7 +45,7 @@ public final class Fact implements Serializable {
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
   public static Fact fact(String key, @Nullable Object value) {
-    return new Fact(key, String.valueOf(value), false);
+    return new Fact(key, String.valueOf(value), /* padStart= */ false);
   }
 
   /**
@@ -64,7 +64,7 @@ public final class Fact implements Serializable {
    * </ul>
    */
   public static Fact simpleFact(String key) {
-    return new Fact(key, null, false);
+    return new Fact(key, null, /* padStart= */ false);
   }
 
   /**
@@ -72,7 +72,7 @@ public final class Fact implements Serializable {
    * value." The numeric value is converted to a string with delimiting commas.
    */
   static Fact numericFact(String key, @Nullable Number value) {
-    return new Fact(key, formatNumericValue(value), true);
+    return new Fact(key, formatNumericValue(value), /* padStart= */ true);
   }
 
   /**

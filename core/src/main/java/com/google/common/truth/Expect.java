@@ -169,7 +169,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
     }
 
-    private String printSubsequentFailure(
+    private static String printSubsequentFailure(
         StackTraceElement[] baseTraceFrames, AssertionError toPrint) {
       Exception e = new RuntimeException("__EXCEPTION_MARKER__", toPrint);
       e.setStackTrace(baseTraceFrames);

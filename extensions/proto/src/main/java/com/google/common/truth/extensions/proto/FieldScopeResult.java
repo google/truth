@@ -49,13 +49,13 @@ package com.google.common.truth.extensions.proto;
  */
 enum FieldScopeResult {
   /** This field is included in this scope, but children might be excludable. */
-  INCLUDED_NONRECURSIVELY(true, false),
+  INCLUDED_NONRECURSIVELY(/* included= */ true, /* recursive= */ false),
   /** This field and all its children are included in the scope. */
-  INCLUDED_RECURSIVELY(true, true),
+  INCLUDED_RECURSIVELY(/* included= */ true, /* recursive= */ true),
   /** This field is excluded from the scope, but children might be includable. */
-  EXCLUDED_NONRECURSIVELY(false, false),
+  EXCLUDED_NONRECURSIVELY(/* included= */ false, /* recursive= */ false),
   /** This field and all its children are excluded from the scope. */
-  EXCLUDED_RECURSIVELY(false, true);
+  EXCLUDED_RECURSIVELY(/* included= */ false, /* recursive= */ true);
 
   public static FieldScopeResult of(boolean included, boolean recursively) {
     if (included) {

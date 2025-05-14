@@ -411,7 +411,7 @@ public class IterableSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactlyElementsIn(@Nullable Iterable<?> expected) {
-    return containsExactlyElementsIn(expected, false);
+    return containsExactlyElementsIn(expected, /* addElementsInWarning= */ false);
   }
 
   /**
@@ -1460,7 +1460,7 @@ public class IterableSubject extends Subject {
      * Returns all the elements of the given list other than those with the given indexes. Assumes
      * that all the given indexes really are valid indexes into the list.
      */
-    private <T extends @Nullable Object> List<T> findNotIndexed(
+    private static <T extends @Nullable Object> List<T> findNotIndexed(
         List<T> list, Set<Integer> indexes) {
       if (indexes.size() == list.size()) {
         // If there are as many distinct valid indexes are there are elements in the list then every
@@ -1484,7 +1484,7 @@ public class IterableSubject extends Subject {
      * there are multiple possible output mappings tying for the largest possible, this returns an
      * arbitrary one.
      */
-    private ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
+    private static ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
         ImmutableMultimap<Integer, Integer> edges) {
       /*
        * Finding this 1:1 mapping is analogous to finding a maximum cardinality bipartite matching

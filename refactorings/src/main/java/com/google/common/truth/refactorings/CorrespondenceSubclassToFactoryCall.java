@@ -651,7 +651,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
             .collect(onlyElement());
     return potentialOverrider.getSimpleName().contentEquals(method)
         && potentialOverrider.overrides(
-            overridable, (TypeSymbol) overridable.owner, state.getTypes(), true);
+            overridable, (TypeSymbol) overridable.owner, state.getTypes(), /* checkResult= */ true);
   }
 
   private static boolean isCorrespondence(Tree supertypeTree, VisitorState state) {

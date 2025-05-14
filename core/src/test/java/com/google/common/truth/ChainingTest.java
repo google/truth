@@ -341,12 +341,12 @@ public final class ChainingTest {
     return ExpectFailure.expectFailureAbout(myObjects(), assertionCallback);
   }
 
-  private void assertNoCause(AssertionError failure, String message) {
+  private static void assertNoCause(AssertionError failure, String message) {
     assertThat(failure).hasMessageThat().isEqualTo(message);
     assertThat(failure).hasCauseThat().isNull();
   }
 
-  private void assertHasCause(AssertionError failure, String message) {
+  private static void assertHasCause(AssertionError failure, String message) {
     assertThat(failure).hasMessageThat().isEqualTo(message);
     assertThat(failure).hasCauseThat().isEqualTo(throwable);
   }

@@ -310,6 +310,7 @@ public class MapSubject extends Subject {
   // This is mostly like the MapDifference code in com.google.common.collect, generalized to remove
   // the requirement that the values of the two maps are of the same type and are compared with a
   // symmetric Equivalence.
+  @SuppressWarnings("ImmutableMemberCollection") // null elements (b/173628387#comment8)
   private static class MapDifference<
       K extends @Nullable Object, A extends @Nullable Object, E extends @Nullable Object> {
     private final Map<K, E> missing;

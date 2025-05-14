@@ -198,7 +198,7 @@ public class TruthFailureSubjectTest {
     assertFailureKeys(e, "expected a failure thrown by Truth's failure API", "but was");
   }
 
-  private TruthFailureSubject assertThat(Fact... facts) {
+  private static TruthFailureSubject assertThat(Fact... facts) {
     return ExpectFailure.assertThat(failure(facts));
   }
 
@@ -208,7 +208,7 @@ public class TruthFailureSubjectTest {
     return ExpectFailure.expectFailureAbout(truthFailures(), assertionCallback);
   }
 
-  private AssertionErrorWithFacts failure(Fact... facts) {
+  private static AssertionErrorWithFacts failure(Fact... facts) {
     return new AssertionErrorWithFacts(
         ImmutableList.<String>of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }

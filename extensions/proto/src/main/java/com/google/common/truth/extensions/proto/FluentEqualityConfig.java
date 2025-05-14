@@ -18,6 +18,7 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
+import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Function;
@@ -373,9 +374,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     checkState(hasExpectedMessages(), "withExpectedMessages() not called");
     return Correspondence.from(
             (@Nullable M actual, @Nullable M expected) ->
-                ProtoTruth.assertThat(actual)
-                    .usingConfig(FluentEqualityConfig.this)
-                    .testIsEqualTo(expected),
+                assertThat(actual).usingConfig(FluentEqualityConfig.this).testIsEqualTo(expected),
             "is equivalent according to assertThat(proto)"
                 + usingCorrespondenceString(optDescriptor)
                 + ".isEqualTo(target) to")

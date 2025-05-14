@@ -20,4 +20,6 @@ final class TestPlatform {
   static boolean isGwt() {
     return false;
   }
+
+  private TestPlatform() {}
 }

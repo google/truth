@@ -33,7 +33,7 @@ public final class EmployeeSubjectTest {
   // Note: not real employee IDs :-)
 
   private static final Employee KURT =
-      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false);
+      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, /* isCeo= */ false);
 
   @Test
   public void id() {

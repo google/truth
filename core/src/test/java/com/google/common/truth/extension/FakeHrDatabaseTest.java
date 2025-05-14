@@ -29,10 +29,10 @@ public final class FakeHrDatabaseTest {
   // Note: not real employee IDs :-)
 
   private static final Employee KURT =
-      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false);
+      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, /* isCeo= */ false);
 
   private static final Employee SUNDAR =
-      Employee.create("sundar", 5243, "Sundar Pichai", Location.MTV, true);
+      Employee.create("sundar", 5243, "Sundar Pichai", Location.MTV, /* isCeo= */ true);
 
   // Notice that we static import two different assertThat methods.
 

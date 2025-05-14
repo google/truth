@@ -340,7 +340,7 @@ final class ProtoTruthMessageDifferencer {
             compareSingularValue(
                 actualValue,
                 expectedValue,
-                /*defaultValue=*/ null,
+                /* defaultValue= */ null,
                 compareValues == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                 valueFieldDescriptor,
                 indexedName(mapFieldDescriptor, key, keyFieldDescriptor),
@@ -399,22 +399,22 @@ final class ProtoTruthMessageDifferencer {
         builder.addPairResult(
             compareRepeatedFieldElementPair(
                 actualList.get(i),
-                /*expected=*/ null,
+                /* expected= */ null,
                 excludeNonRecursive,
                 fieldDescriptor,
                 i,
-                /*expectedFieldIndex=*/ null,
+                /* expectedFieldIndex= */ null,
                 config));
       }
     }
     for (int j : unmatchedExpected) {
       builder.addPairResult(
           compareRepeatedFieldElementPair(
-              /*actual=*/ null,
+              /* actual= */ null,
               expectedList.get(j),
               excludeNonRecursive,
               fieldDescriptor,
-              /*actualFieldIndex=*/ null,
+              /* actualFieldIndex= */ null,
               j,
               config));
     }
@@ -543,6 +543,7 @@ final class ProtoTruthMessageDifferencer {
     return null;
   }
 
+  @SuppressWarnings("UnnecessaryBoxedVariable") // b/356487410
   private RepeatedField.PairResult compareRepeatedFieldElementPair(
       @Nullable Object actual,
       @Nullable Object expected,
@@ -555,7 +556,7 @@ final class ProtoTruthMessageDifferencer {
         compareSingularValue(
             actual,
             expected,
-            /*defaultValue=*/ null,
+            /* defaultValue= */ null,
             excludeNonRecursive,
             fieldDescriptor,
             "<no field path>",
@@ -609,7 +610,7 @@ final class ProtoTruthMessageDifferencer {
           compareSingularValue(
               actual,
               expected,
-              /*defaultValue=*/ null,
+              /* defaultValue= */ null,
               excludeNonRecursive,
               fieldDescriptor,
               indexedName(fieldDescriptor, i),
@@ -646,7 +647,7 @@ final class ProtoTruthMessageDifferencer {
 
   // Replaces 'input' with 'defaultValue' iff input is null and we're ignoring field absence.
   // Otherwise, just returns the input.
-  private <T> T orIfIgnoringFieldAbsence(
+  private static <T> T orIfIgnoringFieldAbsence(
       @Nullable T input, @Nullable T defaultValue, boolean ignoreFieldAbsence) {
     return (input == null && ignoreFieldAbsence) ? defaultValue : input;
   }
@@ -768,7 +769,7 @@ final class ProtoTruthMessageDifferencer {
     return singularFieldBuilder.build();
   }
 
-  private boolean doublesEqual(
+  private static boolean doublesEqual(
       double x,
       double y,
       Optional<Correspondence<Number, Number>> correspondence
@@ -780,7 +781,7 @@ final class ProtoTruthMessageDifferencer {
     }
   }
 
-  private boolean floatsEqual(
+  private static boolean floatsEqual(
       float x,
       float y,
       Optional<Correspondence<Number, Number>> correspondence

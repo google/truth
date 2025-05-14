@@ -425,7 +425,7 @@ public class Subject {
     return actualCustomStringRepresentation();
   }
 
-  private String formatActualOrExpected(@Nullable Object o) {
+  private static String formatActualOrExpected(@Nullable Object o) {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
