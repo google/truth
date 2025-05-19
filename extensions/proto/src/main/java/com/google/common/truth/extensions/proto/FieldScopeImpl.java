@@ -29,6 +29,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.TypeRegistry;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,9 @@ abstract class FieldScopeImpl extends FieldScope {
       Message message, TypeRegistry typeRegistry, ExtensionRegistry extensionRegistry) {
     return create(
         FieldScopeLogic.partialScope(message, typeRegistry, extensionRegistry),
-        Functions.constant(String.format("FieldScopes.fromSetFields({%s})", message.toString())));
+        Functions.constant(
+            String.format(
+                "FieldScopes.fromSetFields({%s})", TextFormat.printer().printToString(message))));
   }
 
   static FieldScope createFromSetFields(
@@ -76,9 +79,7 @@ abstract class FieldScopeImpl extends FieldScope {
       TypeRegistry typeRegistry,
       ExtensionRegistry extensionRegistry) {
     if (emptyOrAllNull(messages)) {
-      return create(
-          FieldScopeLogic.none(),
-          Functions.constant(String.format("FieldScopes.fromSetFields(%s)", messages.toString())));
+      return create(FieldScopeLogic.none(), Functions.constant("FieldScopes.fromSetFields([])"));
     }
 
     Optional<Descriptor> optDescriptor = FieldScopeUtil.getSingleDescriptor(messages);
@@ -227,7 +228,8 @@ abstract class FieldScopeImpl extends FieldScope {
   private static String formatList(Iterable<? extends Message> messages) {
     List<String> strings = new ArrayList<>();
     for (Message message : messages) {
-      strings.add(message == null ? "null" : "{" + message + "}");
+      strings.add(
+          message == null ? "null" : "{" + TextFormat.printer().printToString(message) + "}");
     }
     return "[" + join(strings) + "]";
   }
