@@ -23,7 +23,6 @@ import static com.google.common.collect.Multisets.immutableEntry;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -65,16 +64,6 @@ final class SubjectUtils {
     return items;
   }
 
-  static <T> int countOf(T t, Iterable<T> items) {
-    int count = 0;
-    for (T item : items) {
-      if (t == null ? (item == null) : t.equals(item)) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   static String countDuplicates(Iterable<?> items) {
     /*
      * TODO(cpovirk): Remove brackets after migrating all callers to the new message format. But
@@ -111,10 +100,10 @@ final class SubjectUtils {
    */
   static String countDuplicatesAndAddTypeInfo(Iterable<?> itemsIterable) {
     Collection<?> items = iterableToCollection(itemsIterable);
-    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
+    String homogeneousTypeName = getHomogeneousTypeName(items);
 
-    return homogeneousTypeName.isPresent()
-        ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
+    return homogeneousTypeName != null
+        ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName)
         : countDuplicates(addTypeInfoToEveryItem(items));
   }
 
@@ -126,17 +115,16 @@ final class SubjectUtils {
       Iterable<?> itemsIterable, boolean addTypeInfo) {
     if (addTypeInfo) {
       Collection<?> items = iterableToCollection(itemsIterable);
-      Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
+      String homogeneousTypeName = getHomogeneousTypeName(items);
 
       NonHashingMultiset<?> valuesWithCountsAndMaybeTypes =
-          homogeneousTypeName.isPresent()
+          homogeneousTypeName != null
               ? countDuplicatesToMultiset(items)
               : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
       return new DuplicateGroupedAndTyped(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
     } else {
       return new DuplicateGroupedAndTyped(
-          countDuplicatesToMultiset(itemsIterable),
-          /* homogeneousTypeToDisplay= */ Optional.<String>absent());
+          countDuplicatesToMultiset(itemsIterable), /* homogeneousTypeToDisplay= */ null);
     }
   }
 
@@ -208,10 +196,10 @@ final class SubjectUtils {
    */
   static final class DuplicateGroupedAndTyped {
     final NonHashingMultiset<?> valuesAndMaybeTypes;
-    final Optional<String> homogeneousTypeToDisplay;
+    final @Nullable String homogeneousTypeToDisplay;
 
     DuplicateGroupedAndTyped(
-        NonHashingMultiset<?> valuesAndMaybeTypes, Optional<String> homogeneousTypeToDisplay) {
+        NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
       this.valuesAndMaybeTypes = valuesAndMaybeTypes;
       this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
     }
@@ -230,26 +218,9 @@ final class SubjectUtils {
 
     @Override
     public String toString() {
-      return homogeneousTypeToDisplay.isPresent()
-          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ")"
+      return homogeneousTypeToDisplay != null
+          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay + ")"
           : valuesAndMaybeTypes.toString();
-    }
-  }
-
-  /**
-   * Makes a String representation of {@code items} with additional class info.
-   *
-   * <p>Example: {@code iterableToStringWithTypeInfo([1, 2]) == "[1, 2] (java.lang.Integer)"} and
-   * {@code iterableToStringWithTypeInfo([1, 2L]) == "[1 (java.lang.Integer), 2 (java.lang.Long)]"}.
-   */
-  static String iterableToStringWithTypeInfo(Iterable<?> itemsIterable) {
-    Collection<?> items = iterableToCollection(itemsIterable);
-    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
-
-    if (homogeneousTypeName.isPresent()) {
-      return lenientFormat("%s (%s)", items, homogeneousTypeName.get());
-    } else {
-      return addTypeInfoToEveryItem(items).toString();
     }
   }
 
@@ -310,11 +281,10 @@ final class SubjectUtils {
   }
 
   /**
-   * Returns the name of the single type of all given items or {@link Optional#absent()} if no such
-   * type exists.
+   * Returns the name of the single type of all given items or {@code null} if no such type exists.
    */
-  private static Optional<String> getHomogeneousTypeName(Iterable<?> items) {
-    Optional<String> homogeneousTypeName = Optional.absent();
+  private static @Nullable String getHomogeneousTypeName(Iterable<?> items) {
+    String homogeneousTypeName = null;
     for (Object item : items) {
       if (item == null) {
         /*
@@ -322,13 +292,13 @@ final class SubjectUtils {
          * likely, we could have exactly one null, which is still homogeneous. Arguably it's weird
          * to call a single element "homogeneous" at all, but that's not specific to null.
          */
-        return Optional.absent();
-      } else if (!homogeneousTypeName.isPresent()) {
+        return null;
+      } else if (homogeneousTypeName == null) {
         // This is the first item
-        homogeneousTypeName = Optional.of(objectToTypeName(item));
-      } else if (!objectToTypeName(item).equals(homogeneousTypeName.get())) {
+        homogeneousTypeName = objectToTypeName(item);
+      } else if (!objectToTypeName(item).equals(homogeneousTypeName)) {
         // items is a heterogeneous collection
-        return Optional.absent();
+        return null;
       }
     }
     return homogeneousTypeName;

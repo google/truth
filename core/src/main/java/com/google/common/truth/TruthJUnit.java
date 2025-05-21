@@ -55,7 +55,7 @@ public final class TruthJUnit {
    * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will
    * throw {@link AssumptionViolatedException}.
    */
-  public static final StandardSubjectBuilder assume() {
+  public static StandardSubjectBuilder assume() {
     return ASSUME;
   }
 

@@ -17,12 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Sets.newIdentityHashSet;
 import static java.lang.Thread.currentThread;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -46,7 +46,7 @@ final class StackTraceCleaner {
    * the bottom. Collapses the frames for various frameworks in the middle of the trace as well.
    */
   static void cleanStackTrace(Throwable throwable) {
-    new StackTraceCleaner(throwable).clean(Sets.<Throwable>newIdentityHashSet());
+    new StackTraceCleaner(throwable).clean(newIdentityHashSet());
   }
 
   private final Throwable throwable;

@@ -39,7 +39,6 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
@@ -635,8 +634,8 @@ public class IterableSubject extends Subject {
      * an associated value, so it won't factor into alignment.
      */
     String key = keyToGoWithElementsString(label, elements);
-    if (elements.homogeneousTypeToDisplay.isPresent()) {
-      key += " (" + elements.homogeneousTypeToDisplay.get() + ")";
+    if (elements.homogeneousTypeToDisplay != null) {
+      key += " (" + elements.homogeneousTypeToDisplay + ")";
     }
     return key;
   }
@@ -700,7 +699,7 @@ public class IterableSubject extends Subject {
    */
   enum ElementFactGrouping {
     ALL_IN_ONE_FACT,
-    FACT_PER_ELEMENT;
+    FACT_PER_ELEMENT,
   }
 
   /**
@@ -949,13 +948,13 @@ public class IterableSubject extends Subject {
 
     private final IterableSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
-    private final Optional<Pairer> pairer;
+    private final @Nullable Pairer pairer;
 
     UsingCorrespondence(
         IterableSubject subject, Correspondence<? super A, ? super E> correspondence) {
       this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
-      this.pairer = Optional.absent();
+      this.pairer = null;
     }
 
     UsingCorrespondence(
@@ -964,7 +963,7 @@ public class IterableSubject extends Subject {
         Pairer pairer) {
       this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
-      this.pairer = Optional.of(pairer);
+      this.pairer = pairer;
     }
 
     /**
@@ -1125,8 +1124,8 @@ public class IterableSubject extends Subject {
         }
       }
       // Found no match. Fail, reporting elements that have the correct key if there are any.
-      if (pairer.isPresent()) {
-        List<A> keyMatches = pairer.get().pairOne(expected, getCastActual(), exceptions);
+      if (pairer != null) {
+        List<A> keyMatches = pairer.pairOne(expected, getCastActual(), exceptions);
         if (!keyMatches.isEmpty()) {
           subject.failWithoutActual(
               ImmutableList.<Fact>builder()
@@ -1375,8 +1374,8 @@ public class IterableSubject extends Subject {
         List<? extends E> missing,
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
-      if (pairer.isPresent()) {
-        Pairing pairing = pairer.get().pair(missing, extra, exceptions);
+      if (pairer != null) {
+        Pairing pairing = pairer.pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingOrExtraWithPairing(pairing, exceptions);
         } else {
@@ -1388,7 +1387,7 @@ public class IterableSubject extends Subject {
                           + " provided and has consequently been ignored"))
               .build();
         }
-      } else if (missing.size() == 1 && extra.size() >= 1) {
+      } else if (missing.size() == 1 && !extra.isEmpty()) {
         return ImmutableList.<Fact>builder()
             .add(fact("missing (1)", missing.get(0)))
             .addAll(formatExtras("unexpected", missing.get(0), extra, exceptions))
@@ -1709,8 +1708,8 @@ public class IterableSubject extends Subject {
         List<? extends E> missing,
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
-      if (pairer.isPresent()) {
-        Pairing pairing = pairer.get().pair(missing, extra, exceptions);
+      if (pairer != null) {
+        Pairing pairing = pairer.pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingWithPairing(pairing, exceptions);
         } else {
@@ -1825,9 +1824,8 @@ public class IterableSubject extends Subject {
         }
       }
       // Found no match. Fail, reporting elements that have a correct key if there are any.
-      if (pairer.isPresent()) {
-        Pairing pairing =
-            pairer.get().pair(iterableToList(expected), iterableToList(actual), exceptions);
+      if (pairer != null) {
+        Pairing pairing = pairer.pair(iterableToList(expected), iterableToList(actual), exceptions);
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
             subject.failWithoutActual(

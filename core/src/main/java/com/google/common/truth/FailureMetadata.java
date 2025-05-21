@@ -54,7 +54,7 @@ import org.jspecify.annotations.Nullable;
 public final class FailureMetadata {
   static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
     return new FailureMetadata(
-        failureStrategy, ImmutableList.<LazyMessage>of(), ImmutableList.<Step>of());
+        failureStrategy, /* messages= */ ImmutableList.of(), /* steps= */ ImmutableList.of());
   }
 
   private final FailureStrategy strategy;
@@ -153,7 +153,7 @@ public final class FailureMetadata {
    */
   enum OldAndNewValuesAreSimilar {
     SIMILAR,
-    DIFFERENT;
+    DIFFERENT,
   }
 
   /**
@@ -240,7 +240,7 @@ public final class FailureMetadata {
     }
     return descriptionIsInteresting
         ? ImmutableList.of(fact("value of", description))
-        : ImmutableList.<Fact>of();
+        : ImmutableList.of();
   }
 
   /**
@@ -306,7 +306,7 @@ public final class FailureMetadata {
                 checkNotNull(checkNotNull(rootSubject).subject).typeDescription() + " was",
                 checkNotNull(checkNotNull(rootSubject).subject)
                     .actualCustomStringRepresentationForPackageMembersToCall()))
-        : ImmutableList.<Fact>of();
+        : ImmutableList.of();
   }
 
   /**

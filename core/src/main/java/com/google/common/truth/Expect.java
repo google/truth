@@ -271,6 +271,6 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   enum TestPhase {
     BEFORE,
     DURING,
-    AFTER;
+    AFTER,
   }
 }

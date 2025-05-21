@@ -289,7 +289,7 @@ public class StringSubject extends ComparableSubject<String> {
               simpleFact("(case is ignored)"));
         }
       } else {
-        if (unexpected != null && actual.equalsIgnoreCase(unexpected)) {
+        if (actual.equalsIgnoreCase(unexpected)) {
           failWithoutActual(
               fact("expected not to be", unexpected), butWas(), simpleFact("(case is ignored)"));
         }

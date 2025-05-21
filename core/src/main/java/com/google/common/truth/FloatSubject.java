@@ -185,7 +185,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isZero}.
    */
   @Override
-  public final void isEqualTo(@Nullable Object other) {
+  public void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
@@ -199,7 +199,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isNonZero}.
    */
   @Override
-  public final void isNotEqualTo(@Nullable Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 
@@ -208,7 +208,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(@Nullable Float other) {
+  public void isEquivalentAccordingToCompareTo(@Nullable Float other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
@@ -225,8 +225,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
-  public final void isZero() {
-    if (actual == null || actual.floatValue() != 0.0f) {
+  public void isZero() {
+    if (actual == null || actual != 0.0f) {
       failWithActual(simpleFact("expected zero"));
     }
   }
@@ -235,26 +235,26 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * Asserts that the subject is a non-null value other than zero (i.e. it is not {@code 0.0f},
    * {@code -0.0f} or {@code null}).
    */
-  public final void isNonZero() {
+  public void isNonZero() {
     if (actual == null) {
       failWithActual(simpleFact("expected a float other than zero"));
-    } else if (actual.floatValue() == 0.0f) {
+    } else if (actual == 0.0f) {
       failWithActual(simpleFact("expected not to be zero"));
     }
   }
 
   /** Asserts that the subject is {@link Float#POSITIVE_INFINITY}. */
-  public final void isPositiveInfinity() {
+  public void isPositiveInfinity() {
     isEqualTo(Float.POSITIVE_INFINITY);
   }
 
   /** Asserts that the subject is {@link Float#NEGATIVE_INFINITY}. */
-  public final void isNegativeInfinity() {
+  public void isNegativeInfinity() {
     isEqualTo(Float.NEGATIVE_INFINITY);
   }
 
   /** Asserts that the subject is {@link Float#NaN}. */
-  public final void isNaN() {
+  public void isNaN() {
     isEqualTo(NaN);
   }
 
@@ -262,7 +262,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * Asserts that the subject is finite, i.e. not {@link Float#POSITIVE_INFINITY}, {@link
    * Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    */
-  public final void isFinite() {
+  public void isFinite() {
     if (actual == null || actual.isNaN() || actual.isInfinite()) {
       failWithActual(simpleFact("expected to be finite"));
     }
@@ -272,7 +272,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * Asserts that the subject is a non-null value other than {@link Float#NaN} (but it may be {@link
    * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
-  public final void isNotNaN() {
+  public void isNotNaN() {
     if (actual == null) {
       failWithActual(simpleFact("expected a float other than NaN"));
     } else {
@@ -286,7 +286,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public final void isGreaterThan(int other) {
+  public void isGreaterThan(int other) {
     asDouble.isGreaterThan(other);
   }
 
@@ -296,7 +296,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
-  public final void isLessThan(int other) {
+  public void isLessThan(int other) {
     asDouble.isLessThan(other);
   }
 
@@ -306,7 +306,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public final void isAtMost(int other) {
+  public void isAtMost(int other) {
     asDouble.isAtMost(other);
   }
 
@@ -316,7 +316,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public final void isAtLeast(int other) {
+  public void isAtLeast(int other) {
     asDouble.isAtLeast(other);
   }
 }

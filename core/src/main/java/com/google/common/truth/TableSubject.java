@@ -53,7 +53,7 @@ public final class TableSubject extends Subject {
   }
 
   /** Fails if the table does not have the given size. */
-  public final void hasSize(int expectedSize) {
+  public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
   }

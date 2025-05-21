@@ -207,19 +207,16 @@ final class DiffUtils {
       int blockSizeOrigin = lineNumOrigin - startLineOrigin - (next - end - 1);
       int blockSizeRevised = lineNumRevised - startLineRevised - (next - end - 1);
 
-      StringBuilder header = new StringBuilder();
-      header
-          .append("@@ -")
-          .append(startLineOrigin)
-          .append(",")
-          .append(blockSizeOrigin)
-          .append(" +")
-          .append(startLineRevised)
-          .append(",")
-          .append(blockSizeRevised)
-          .append(" @@");
-
-      reducedUnifiedDiff.add(header.toString());
+      reducedUnifiedDiff.add(
+          "@@ -"
+              + startLineOrigin
+              + ","
+              + blockSizeOrigin
+              + " +"
+              + startLineRevised
+              + ","
+              + blockSizeRevised
+              + " @@");
       for (int i = start; i < end; i++) {
         reducedUnifiedDiff.add(
             unifiedDiffType.get(i) + stringList.get(unifiedDiffContentId.get(i)));

@@ -511,7 +511,7 @@ public class Subject {
 
     private static final ComparisonResult EQUAL = new ComparisonResult(null);
     private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
-        new ComparisonResult(ImmutableList.<Fact>of());
+        new ComparisonResult(ImmutableList.of());
 
     private final @Nullable ImmutableList<Fact> facts;
 
@@ -524,7 +524,7 @@ public class Subject {
     }
 
     ImmutableList<Fact> factsOrEmpty() {
-      return firstNonNull(facts, ImmutableList.<Fact>of());
+      return firstNonNull(facts, ImmutableList.of());
     }
 
     /** Returns an instance with the same "equal"/"not-equal" bit but with no description. */
@@ -534,9 +534,9 @@ public class Subject {
   }
 
   /**
-   * Returns null if the arrays are equal. If not equal, returns a string comparing the two arrays,
-   * displaying them in the style "[1, 2, 3]" to supplement the main failure message, which uses the
-   * style "010203."
+   * Returns {@link ComparisonResult#equal} if the arrays are equal. If not equal, returns a string
+   * comparing the two arrays, displaying them in the style "[1, 2, 3]" to supplement the main
+   * failure message, which uses the style "010203."
    */
   private static ComparisonResult checkByteArrayEquals(byte[] expected, byte[] actual) {
     if (Arrays.equals(expected, actual)) {
@@ -547,8 +547,8 @@ public class Subject {
   }
 
   /**
-   * Returns null if the arrays are equal, recursively. If not equal, returns the string of the
-   * index at which they're different.
+   * Returns {@link ComparisonResult#equal} if the arrays are equal, recursively. If not equal,
+   * returns the string of the index at which they're different.
    */
   /*
    * TODO(cpovirk): Decide whether it's worthwhile to go to this trouble to display the index at
@@ -1017,7 +1017,8 @@ public class Subject {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  final void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
+  final void failWithBadResults(
+      String verb, @Nullable Object expected, String failVerb, @Nullable Object actual) {
     String message =
         lenientFormat(
             "Not true that <%s> %s <%s>. It %s <%s>",
@@ -1025,7 +1026,7 @@ public class Subject {
             verb,
             expected,
             failVerb,
-            (actual == null) ? "null reference" : actual);
+            actual == null ? "null reference" : actual);
     failWithoutActual(simpleFact(message));
   }
 
@@ -1041,11 +1042,12 @@ public class Subject {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  final void failWithCustomSubject(String verb, Object expected, Object actual) {
+  final void failWithCustomSubject(
+      String verb, @Nullable Object expected, @Nullable Object actual) {
     String message =
         lenientFormat(
             "Not true that <%s> %s <%s>",
-            (actual == null) ? "null reference" : actual, verb, expected);
+            actual == null ? "null reference" : actual, verb, expected);
     failWithoutActual(simpleFact(message));
   }
 

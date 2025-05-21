@@ -177,7 +177,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * #isZero}.
    */
   @Override
-  public final void isEqualTo(@Nullable Object other) {
+  public void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
@@ -191,7 +191,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * #isNonZero}.
    */
   @Override
-  public final void isNotEqualTo(@Nullable Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 
@@ -200,7 +200,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(@Nullable Double other) {
+  public void isEquivalentAccordingToCompareTo(@Nullable Double other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
@@ -219,8 +219,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
-  public final void isZero() {
-    if (actual == null || actual.doubleValue() != 0.0) {
+  public void isZero() {
+    if (actual == null || actual != 0.0) {
       failWithActual(simpleFact("expected zero"));
     }
   }
@@ -229,26 +229,26 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * Asserts that the subject is a non-null value other than zero (i.e. it is not {@code 0.0},
    * {@code -0.0} or {@code null}).
    */
-  public final void isNonZero() {
+  public void isNonZero() {
     if (actual == null) {
       failWithActual(simpleFact("expected a double other than zero"));
-    } else if (actual.doubleValue() == 0.0) {
+    } else if (actual == 0.0) {
       failWithActual(simpleFact("expected not to be zero"));
     }
   }
 
   /** Asserts that the subject is {@link Double#POSITIVE_INFINITY}. */
-  public final void isPositiveInfinity() {
+  public void isPositiveInfinity() {
     isEqualTo(Double.POSITIVE_INFINITY);
   }
 
   /** Asserts that the subject is {@link Double#NEGATIVE_INFINITY}. */
-  public final void isNegativeInfinity() {
+  public void isNegativeInfinity() {
     isEqualTo(Double.NEGATIVE_INFINITY);
   }
 
   /** Asserts that the subject is {@link Double#NaN}. */
-  public final void isNaN() {
+  public void isNaN() {
     isEqualTo(NaN);
   }
 
@@ -256,7 +256,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * Asserts that the subject is finite, i.e. not {@link Double#POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
    */
-  public final void isFinite() {
+  public void isFinite() {
     if (actual == null || actual.isNaN() || actual.isInfinite()) {
       failWithActual(simpleFact("expected to be finite"));
     }
@@ -266,7 +266,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * Asserts that the subject is a non-null value other than {@link Double#NaN} (but it may be
    * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
    */
-  public final void isNotNaN() {
+  public void isNotNaN() {
     if (actual == null) {
       failWithActual(simpleFact("expected a double other than NaN"));
     } else {
@@ -280,7 +280,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public final void isGreaterThan(int other) {
+  public void isGreaterThan(int other) {
     isGreaterThan((double) other);
   }
 
@@ -290,7 +290,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
-  public final void isLessThan(int other) {
+  public void isLessThan(int other) {
     isLessThan((double) other);
   }
 
@@ -300,7 +300,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public final void isAtMost(int other) {
+  public void isAtMost(int other) {
     isAtMost((double) other);
   }
 
@@ -310,7 +310,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public final void isAtLeast(int other) {
+  public void isAtLeast(int other) {
     isAtLeast((double) other);
   }
 }

@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -27,6 +26,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Helper routines related to <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">graph
@@ -91,8 +91,8 @@ final class GraphMatching {
         // Perform the BFS as described below. This finds the length of the shortest augmenting path
         // and a guide which locates all the augmenting paths of that length.
         Map<U, Integer> layers = new HashMap<>();
-        Optional<Integer> freeRhsVertexLayer = breadthFirstSearch(matching, layers);
-        if (!freeRhsVertexLayer.isPresent()) {
+        Integer freeRhsVertexLayer = breadthFirstSearch(matching, layers);
+        if (freeRhsVertexLayer == null) {
           // The BFS failed, i.e. we found no augmenting paths. So we're done.
           break;
         }
@@ -101,7 +101,7 @@ final class GraphMatching {
         // the matching by computing the symmetric difference with that set.
         for (U lhs : graph.keySet()) {
           if (!matching.containsKey(lhs)) {
-            depthFirstSearch(matching, layers, freeRhsVertexLayer.get(), lhs);
+            depthFirstSearch(matching, layers, freeRhsVertexLayer, lhs);
           }
         }
       }
@@ -126,12 +126,12 @@ final class GraphMatching {
      *     by this method
      * @param layers A map to be filled with the layer of each LHS vertex visited during the BFS,
      *     which should be empty when passed into this method and will be modified by this method
-     * @return The number of the layer in which the first free RHS vertex was found, if any, and the
-     *     absent value if the BFS was exhausted without finding any free RHS vertex
+     * @return The number of the layer in which the first free RHS vertex was found, if any, and
+     *     {@code null} if the BFS was exhausted without finding any free RHS vertex
      */
-    private Optional<Integer> breadthFirstSearch(BiMap<U, V> matching, Map<U, Integer> layers) {
+    private @Nullable Integer breadthFirstSearch(BiMap<U, V> matching, Map<U, Integer> layers) {
       Queue<U> queue = new ArrayDeque<>();
-      Optional<Integer> freeRhsVertexLayer = Optional.absent();
+      Integer freeRhsVertexLayer = null;
 
       // Enqueue all free LHS vertices and assign them to layer 1.
       for (U lhs : graph.keySet()) {
@@ -146,7 +146,7 @@ final class GraphMatching {
         U lhs = queue.remove();
         int layer = checkNotNull(layers.get(lhs));
         // If the BFS has proceeded past a layer in which a free RHS vertex was found, stop.
-        if (freeRhsVertexLayer.isPresent() && layer > freeRhsVertexLayer.get()) {
+        if (freeRhsVertexLayer != null && layer > freeRhsVertexLayer) {
           break;
         }
         // We want to consider all the unmatched edges from the current LHS vertex to the RHS, and
@@ -158,8 +158,8 @@ final class GraphMatching {
             // We found a free RHS vertex. Record the layer at which we found it. Since the RHS
             // vertex is free, there is no matched edge to follow. (Note that the edge from the LHS
             // to the RHS must be unmatched, because a matched edge cannot lead to a free vertex.)
-            if (!freeRhsVertexLayer.isPresent()) {
-              freeRhsVertexLayer = Optional.of(layer);
+            if (freeRhsVertexLayer == null) {
+              freeRhsVertexLayer = layer;
             }
           } else {
             // We found an RHS vertex with a matched vertex back to the LHS. If we haven't visited
