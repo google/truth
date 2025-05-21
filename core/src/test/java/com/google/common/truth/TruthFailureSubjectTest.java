@@ -209,7 +209,7 @@ public class TruthFailureSubjectTest {
   }
 
   private static AssertionErrorWithFacts failure(Fact... facts) {
-    return new AssertionErrorWithFacts(
-        ImmutableList.<String>of(), ImmutableList.copyOf(facts), /* cause= */ null);
+    return AssertionErrorWithFacts.create(
+        ImmutableList.of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }
 }

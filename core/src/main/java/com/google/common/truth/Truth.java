@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
@@ -377,36 +375,5 @@ public final class Truth {
   @J2ktIncompatible
   public static PathSubject assertThat(@Nullable Path actual) {
     return assert_().that(actual);
-  }
-
-  /**
-   * An {@code AssertionError} that omits "java.lang.AssertionError:" from the beginning of its
-   * toString() representation.
-   */
-  // TODO(cpovirk): Consider eliminating this, adding its functionality to AssertionErrorWithFacts?
-  @SuppressWarnings("OverrideThrowableToString") // We intentionally replace the normal format.
-  static final class SimpleAssertionError extends AssertionError {
-    private SimpleAssertionError(String message, @Nullable Throwable cause) {
-      super(checkNotNull(message), cause);
-    }
-
-    static SimpleAssertionError create(String message, @Nullable Throwable cause) {
-      return new SimpleAssertionError(message, cause);
-    }
-
-    static SimpleAssertionError createWithNoStack(String message, @Nullable Throwable cause) {
-      SimpleAssertionError error = create(message, cause);
-      error.setStackTrace(new StackTraceElement[0]);
-      return error;
-    }
-
-    static SimpleAssertionError createWithNoStack(String message) {
-      return createWithNoStack(message, /* cause= */ null);
-    }
-
-    @Override
-    public String toString() {
-      return checkNotNull(getLocalizedMessage());
-    }
   }
 }

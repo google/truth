@@ -292,7 +292,7 @@ public class ComparisonFailureWithFactsTest {
     ImmutableList<String> messages = ImmutableList.of("hello");
     ImmutableList<Fact> facts = ImmutableList.of(fact("first", "value"), simpleFact("second"));
     Throwable cause = new Throwable("cause");
-    AssertionErrorWithFacts original = new AssertionErrorWithFacts(messages, facts, cause);
+    AssertionErrorWithFacts original = AssertionErrorWithFacts.create(messages, facts, cause);
 
     AssertionErrorWithFacts reserialized = reserialize(original);
     assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());

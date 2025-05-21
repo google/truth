@@ -29,10 +29,29 @@ import org.jspecify.annotations.Nullable;
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
   private final ImmutableList<Fact> facts;
 
-  AssertionErrorWithFacts(
+  private AssertionErrorWithFacts(
       ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
     super(makeMessage(messages, facts), cause);
     this.facts = checkNotNull(facts);
+  }
+
+  static AssertionErrorWithFacts create(
+      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
+    return new AssertionErrorWithFacts(messages, facts, cause);
+  }
+
+  static AssertionError createWithoutFacts(String message, @Nullable Throwable cause) {
+    return create(ImmutableList.of(message), ImmutableList.of(), cause);
+  }
+
+  static AssertionError createWithoutFactsOrStack(String message, @Nullable Throwable cause) {
+    AssertionError error = createWithoutFacts(message, cause);
+    error.setStackTrace(new StackTraceElement[0]);
+    return error;
+  }
+
+  static AssertionError createWithoutFactsOrStack(String message) {
+    return createWithoutFactsOrStack(message, /* cause= */ null);
   }
 
   @Override

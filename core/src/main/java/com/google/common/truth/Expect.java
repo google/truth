@@ -26,7 +26,6 @@ import static com.google.common.truth.Expect.TestPhase.DURING;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Throwables;
-import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +202,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     @GuardedBy("this")
     private void doLeaveRuleContext() {
       if (hasFailures()) {
-        throw SimpleAssertionError.createWithNoStack(this.toString());
+        throw AssertionErrorWithFacts.createWithoutFactsOrStack(toString());
       }
     }
 
@@ -214,8 +213,8 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
             caught instanceof AssumptionViolatedException
                 ? "Also, after those failures, an assumption was violated:"
                 : "Also, after those failures, an exception was thrown:";
-        record(SimpleAssertionError.createWithNoStack(message, caught));
-        throw SimpleAssertionError.createWithNoStack(this.toString());
+        record(AssertionErrorWithFacts.createWithoutFactsOrStack(message, caught));
+        throw AssertionErrorWithFacts.createWithoutFactsOrStack(toString());
       } else {
         throw caught;
       }

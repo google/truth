@@ -232,7 +232,7 @@ final class Platform {
        * not actually extending ComparisonFailure but still exposing getExpected() and getActual()
        * methods.
        */
-      return new AssertionErrorWithFacts(messages, facts, cause);
+      return AssertionErrorWithFacts.create(messages, facts, cause);
     }
     Class<? extends AssertionError> asAssertionErrorSubclass =
         comparisonFailureClass.asSubclass(AssertionError.class);

@@ -166,10 +166,7 @@ public final class FailureMetadata {
     return derive(messages, steps);
   }
 
-  void failEqualityCheck(
-      ImmutableList<Fact> tailFacts,
-      String expected,
-      String actual) {
+  void failEqualityCheck(ImmutableList<Fact> tailFacts, String expected, String actual) {
     doFail(
         makeComparisonFailure(
             evaluateAll(messages),
@@ -182,7 +179,7 @@ public final class FailureMetadata {
 
   void fail(ImmutableList<Fact> facts) {
     doFail(
-        new AssertionErrorWithFacts(
+        AssertionErrorWithFacts.create(
             evaluateAll(messages),
             concat(description(), facts, rootUnlessThrowable()),
             rootCause()));

@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.jspecify.annotations.Nullable;
 import org.junit.runner.Description;
@@ -88,7 +87,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   public StandardSubjectBuilder whenTesting() {
     checkState(inRuleContext, "ExpectFailure must be used as a JUnit @Rule");
     if (failure != null) {
-      throw SimpleAssertionError.create("ExpectFailure already captured a failure", failure);
+      throw AssertionErrorWithFacts.createWithoutFacts(
+          "ExpectFailure already captured a failure", failure);
     }
     if (failureExpected) {
       throw new AssertionError(
