@@ -26,6 +26,7 @@ import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
+import static java.util.Collections.emptyList;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -38,7 +39,6 @@ import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -447,7 +447,7 @@ public class MultimapSubject extends Subject {
     if (multimap.containsKey(key)) {
       return checkNotNull(multimap.asMap().get(key));
     } else {
-      return Collections.emptyList();
+      return emptyList();
     }
   }
 

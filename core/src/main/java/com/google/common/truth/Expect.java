@@ -25,7 +25,6 @@ import static com.google.common.truth.Expect.TestPhase.BEFORE;
 import static com.google.common.truth.Expect.TestPhase.DURING;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +160,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       return message.toString();
     }
 
-    // String.repeat is not available under Java 8 and old versions of Android.
+    // String.repeat is not available under Java 8.
     @SuppressWarnings({"StringsRepeat", "InlineMeInliner"})
     private static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
       int indent = countLength + 4; // "  " and ". "
@@ -172,7 +171,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         StackTraceElement[] baseTraceFrames, AssertionError toPrint) {
       Exception e = new RuntimeException("__EXCEPTION_MARKER__", toPrint);
       e.setStackTrace(baseTraceFrames);
-      String s = Throwables.getStackTraceAsString(e);
+      String s = getStackTraceAsString(e);
       // Force single line reluctant matching
       return s.replaceFirst("(?s)^.*?__EXCEPTION_MARKER__.*?Caused by:\\s+", "");
     }
