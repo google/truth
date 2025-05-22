@@ -24,7 +24,7 @@ Read more at [the main website](https://truth.dev).
 [extension]: https://truth.dev/extension
 [Guava]: https://github.com/google/guava
 [gh-pages-shield]: https://img.shields.io/badge/main%20site-truth.dev-ff55ff.png?style=flat
-[gh-pages-link]: https://truth.dev/
+[gh-pages-link]: https://truth.dev
 [ci-shield]: https://github.com/google/truth/workflows/CI/badge.svg?branch=master
 [ci-link]: https://github.com/google/truth/actions
 [maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png
