@@ -22,8 +22,6 @@ import static java.lang.annotation.ElementType.TYPE;
 
 import java.lang.annotation.Target;
 
-/**
- * Disables Animal Sniffer's checking of compatibility with older versions of Java/Android.
- */
+/** Disables Animal Sniffer's checking of compatibility with older versions of Java/Android. */
 @Target({METHOD, CONSTRUCTOR, TYPE})
 @interface IgnoreJRERequirement {}

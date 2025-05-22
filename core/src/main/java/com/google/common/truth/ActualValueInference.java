@@ -224,6 +224,7 @@ final class ActualValueInference {
     private final ArrayList<StackEntry> localVariableSlots;
     private final ArrayList<StackEntry> operandStack = new ArrayList<>();
     private FrameInfo previousFrame;
+
     /** For debugging purpose. */
     private final String methodSignature;
 
@@ -1316,8 +1317,10 @@ final class ActualValueInference {
     static final InferredType FLOAT = new AutoValue_ActualValueInference_InferredType("F");
     static final InferredType LONG = new AutoValue_ActualValueInference_InferredType("J");
     static final InferredType DOUBLE = new AutoValue_ActualValueInference_InferredType("D");
+
     /** Not a real value. */
     static final InferredType TOP = new AutoValue_ActualValueInference_InferredType("TOP");
+
     /** The value NULL */
     static final InferredType NULL = new AutoValue_ActualValueInference_InferredType("NULL");
 

@@ -406,8 +406,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
      * Returns a {@link String} describing the difference between the {@code actual} and {@code
      * expected} values, if possible, or {@code null} if not.
      */
-    @Nullable
-    String formatDiff(A actual, E expected);
+    @Nullable String formatDiff(A actual, E expected);
   }
 
   private static class FormattingDiffs<A extends @Nullable Object, E extends @Nullable Object>

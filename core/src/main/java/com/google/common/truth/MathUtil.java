@@ -18,6 +18,7 @@ package com.google.common.truth;
 
 import static java.lang.Math.subtractExact;
 
+
 /** Math utilities to be shared by numeric subjects. */
 final class MathUtil {
   private MathUtil() {}

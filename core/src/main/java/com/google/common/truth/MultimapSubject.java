@@ -124,7 +124,7 @@ public class MultimapSubject extends Subject {
             fact(
                 "though it did contain",
                 countDuplicatesAndAddTypeInfo(
-                    retainMatchingToString(actual.entries(), /* itemsToCheck = */ entryList))),
+                    retainMatchingToString(actual.entries(), /* itemsToCheck= */ entryList))),
             fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsKey(key)) {
         failWithoutActual(
@@ -260,7 +260,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected = */ false, expectedMultimap);
+    return new MultimapInOrder(/* allowUnexpected= */ false, expectedMultimap);
   }
 
   /**
@@ -288,7 +288,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected = */ true, expectedMultimap);
+    return new MultimapInOrder(/* allowUnexpected= */ true, expectedMultimap);
   }
 
   /** Fails if the multimap is not empty. */
