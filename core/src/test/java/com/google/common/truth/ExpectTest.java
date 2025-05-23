@@ -178,7 +178,7 @@ public class ExpectTest {
   @Test
   @SuppressWarnings("TruthSelfEquals")
   public void warnWhenExpectIsNotRule() {
-    String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
+    String message = "Assertion made on Expect instance, but it's not enabled as a @Rule.";
     thrown.expectMessage(message);
     oopsNotARule.that(true).isEqualTo(true);
   }

@@ -181,12 +181,12 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       switch (inRuleContext) {
         case BEFORE:
           throw new IllegalStateException(
-              "assertion made on Expect instance, but it's not enabled as a @Rule.", failure);
+              "Assertion made on Expect instance, but it's not enabled as a @Rule.", failure);
         case DURING:
           return;
         case AFTER:
           throw new IllegalStateException(
-              "assertion made on Expect instance, but its @Rule has already completed. Maybe "
+              "Assertion made on Expect instance, but its @Rule has already completed. Maybe "
                   + "you're making assertions from a background thread and not waiting for them to "
                   + "complete, or maybe you've shared an Expect instance across multiple tests? "
                   + "We're throwing this exception to warn you that your assertion would have been "
