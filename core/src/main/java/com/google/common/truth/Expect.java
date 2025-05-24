@@ -69,9 +69,9 @@ import org.junit.runners.model.Statement;
  *       safety, multithreaded tests should check for such exceptions regardless of whether they use
  *       {@code Expect}. (Typically, this means calling {@code get()} on any {@code Future} returned
  *       by a method like {@code executor.submit(...)}. It might also include checking for
- *       unexpected log messages
- *       or reading metrics that count failures.) If your tests already check for exceptions from a
- *       thread, then that will cover any exception from plain {@code assertThat}.
+ *       unexpected log messages or reading metrics that count failures.) If your tests already
+ *       check for exceptions from a thread, then that will cover any exception from plain {@code
+ *       assertThat}.
  * </ul>
  *
  * <p>To record failures for the purpose of testing that an assertion fails when it should, see
