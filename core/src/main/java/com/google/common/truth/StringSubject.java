@@ -249,7 +249,7 @@ public class StringSubject extends ComparableSubject<String> {
     private CaseInsensitiveStringComparison() {}
 
     /**
-     * Fails if the subject is not equal to the given sequence (while ignoring case). For the
+     * Fails if the actual value is not equal to the given sequence (while ignoring case). For the
      * purposes of this comparison, two strings are equal if any of the following is true:
      *
      * <ul>
@@ -278,7 +278,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
 
     /**
-     * Fails if the subject is equal to the given string (while ignoring case). The meaning of
+     * Fails if the actual value is equal to the given string (while ignoring case). The meaning of
      * equality is the same as for the {@link #isEqualTo} method.
      */
     public void isNotEqualTo(@Nullable String unexpected) {
@@ -328,17 +328,13 @@ public class StringSubject extends ComparableSubject<String> {
 
     private boolean containsIgnoreCase(@Nullable String string) {
       checkNotNull(string);
-      if (string.isEmpty()) {
-        // TODO(b/79459427): Fix for J2CL discrepancy when string is empty
-        return true;
-      }
-      String subject = checkNotNull(actual);
-      for (int subjectOffset = 0;
-          subjectOffset <= subject.length() - string.length();
-          subjectOffset++) {
-        if (subject.regionMatches(
+      String actual = checkNotNull(StringSubject.this.actual);
+      for (int actualOffset = 0;
+          actualOffset <= actual.length() - string.length();
+          actualOffset++) {
+        if (actual.regionMatches(
             /* ignoreCase= */ true,
-            /* toffset= */ subjectOffset,
+            /* toffset= */ actualOffset,
             /* other= */ string,
             /* ooffset= */ 0,
             /* len= */ string.length())) {
