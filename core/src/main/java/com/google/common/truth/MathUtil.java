@@ -16,6 +16,8 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.Double.doubleToLongBits;
 import static java.lang.Math.subtractExact;
 
 
@@ -90,4 +92,20 @@ final class MathUtil {
   public static boolean notEqualWithinTolerance(float left, float right, float tolerance) {
     return notEqualWithinTolerance(left, right, (double) tolerance);
   }
+
+  /**
+   * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Double.NaN},
+   * {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}.
+   */
+  static void checkTolerance(double tolerance) {
+    checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
+    checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
+    checkArgument(
+        doubleToLongBits(tolerance) != NEG_ZERO_BITS,
+        "tolerance (%s) cannot be negative",
+        tolerance);
+    checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
+  }
+
+  private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 }

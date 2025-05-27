@@ -18,9 +18,9 @@ package com.google.common.truth;
 import static com.google.common.base.Functions.identity;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.MathUtil.checkTolerance;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static com.google.common.truth.SubjectUtils.asList;
 

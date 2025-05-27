@@ -16,14 +16,13 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.MathUtil.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static java.lang.Double.NaN;
-import static java.lang.Double.doubleToLongBits;
 
 import org.jspecify.annotations.Nullable;
 
@@ -33,8 +32,6 @@ import org.jspecify.annotations.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class DoubleSubject extends ComparableSubject<Double> {
-  private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
-
   private final @Nullable Double actual;
 
   DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
@@ -202,20 +199,6 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   @Deprecated
   public void isEquivalentAccordingToCompareTo(@Nullable Double other) {
     super.isEquivalentAccordingToCompareTo(other);
-  }
-
-  /**
-   * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Double.NaN},
-   * {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}.
-   */
-  static void checkTolerance(double tolerance) {
-    checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
-    checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(
-        doubleToLongBits(tolerance) != NEG_ZERO_BITS,
-        "tolerance (%s) cannot be negative",
-        tolerance);
-    checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
