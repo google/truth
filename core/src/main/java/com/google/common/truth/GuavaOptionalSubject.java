@@ -63,7 +63,7 @@ public final class GuavaOptionalSubject extends Subject {
   /**
    * Fails if the {@link Optional}{@code <T>} does not have the given value or the subject is null.
    *
-   * <p>To make more complex assertions on the optional's value split your assertion in two:
+   * <p>To make more complex assertions on the optional's value, split your assertion in two:
    *
    * <pre>{@code
    * assertThat(myOptional).isPresent();

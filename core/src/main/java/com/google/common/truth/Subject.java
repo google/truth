@@ -114,6 +114,25 @@ public class Subject {
    * just that we want to be able to run Truth's own tests run with class metadata off, and it's
    * easier to tweak the subjects to know their own names rather than generalize the tests to accept
    * obfuscated names.
+   *
+   * <p>Even within Truth itself, we rarely need to pass a {@code typeDescriptionOverride}: At least
+   * with Truth's current failure messages, the type appears only when a {@link Subject} uses
+   * assertion chaining. (This can happen because the {@link Subject} exposes chaining it in its
+   * API, like in {@link ThrowableSubject#hasCause}, or because it uses it internally, like in
+   * {@link MultisetSubject#hasCount}.)
+   *
+   * <p>When we do want to pass a {@code typeDescriptionOverride}, we have two main approaches:
+   *
+   * <ul>
+   *   <li>For a {@code FooSubject} subclass that is {@code final}, the constructor uses {@code
+   *       super(metadata, actual, "foo")}.
+   *   <li>For a {@code FooSubject} subclass that is not {@code final}, the constructor that is
+   *       accessible to subclasses uses {@code super(metadata, actual, null)} (so that we don't set
+   *       a potentially misleading type description, like "comparable" for a type that only
+   *       "incidentally" implements {@link Comparable}), and the {@link Factory} for the class
+   *       (which is used for creating "plain" {@code FooSubject} instances) passes {@code "foo"} to
+   *       a second constructor that accepts a {@code typeDescriptionOverride}.
+   * </ul>
    */
   Subject(
       @Nullable FailureMetadata metadata,

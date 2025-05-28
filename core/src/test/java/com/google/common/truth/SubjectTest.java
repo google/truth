@@ -799,7 +799,10 @@ public class SubjectTest {
   }
 
   @Test
-  @SuppressWarnings("TruthIncompatibleType") // test of a mistaken call
+  @SuppressWarnings({
+    "TruthIncompatibleType", // test of a mistaken call
+    "UnnecessaryStringBuilder", // We need a type that doesn't implement value-based equals().
+  })
   public void disambiguationWithSameToString() {
     AssertionError e =
         expectFailure(
@@ -813,7 +816,7 @@ public class SubjectTest {
 
   private static final class ThrowsOnEqualsNull {
 
-    @SuppressWarnings("EqualsHashCode")
+    @SuppressWarnings({"EqualsHashCode", "SuperCallToObjectMethod"})
     @Override
     public boolean equals(Object obj) {
       checkNotNull(obj); // buggy implementation but one that we're working around, at least for now
