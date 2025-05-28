@@ -53,7 +53,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
      * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
      * tolerance are specified earlier in the fluent call chain.
      */
-    public abstract void of(double expectedDouble);
+    public abstract void of(double expected);
 
     /**
      * @throws UnsupportedOperationException always

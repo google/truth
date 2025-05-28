@@ -57,7 +57,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
      * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
      * tolerance are specified earlier in the fluent call chain.
      */
-    public abstract void of(int expectedInteger);
+    public abstract void of(int expected);
 
     /**
      * @throws UnsupportedOperationException always
