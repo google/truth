@@ -31,7 +31,7 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
   /**
    * The actual value, which has type {@code T} except in unusual circumstances. The unusual
    * circumstances can happen under J2CL, where {@code JsEnum} types implement {@code Comparable} at
-   * compile time but not at runtime.
+   * compile time (b/132736149) but not at runtime.
    */
   private final @Nullable Object actual;
 
