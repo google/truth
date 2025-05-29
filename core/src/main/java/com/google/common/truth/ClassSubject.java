@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 public final class ClassSubject extends Subject {
   private final @Nullable Class<?> actual;
 
-  ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
+  private ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
     super(metadata, o);
     this.actual = o;
   }
@@ -43,5 +43,9 @@ public final class ClassSubject extends Subject {
     if (!clazz.isAssignableFrom(checkNotNull(actual))) {
       failWithActual("expected to be assignable to", clazz.getName());
     }
+  }
+
+  static Factory<ClassSubject, Class<?>> classes() {
+    return ClassSubject::new;
   }
 }

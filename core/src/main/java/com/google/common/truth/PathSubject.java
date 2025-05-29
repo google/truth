@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
 @J2ObjCIncompatible
 @J2ktIncompatible
 public final class PathSubject extends Subject {
-  PathSubject(FailureMetadata failureMetadata, @Nullable Path actual) {
+  private PathSubject(FailureMetadata failureMetadata, @Nullable Path actual) {
     super(failureMetadata, actual);
   }
 

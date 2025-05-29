@@ -48,7 +48,7 @@ public final class LongStreamSubject extends Subject {
 
   private final @Nullable List<?> actualList;
 
-  LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
+  private LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
     super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));

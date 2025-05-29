@@ -149,4 +149,8 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   private static void checkTolerance(int tolerance) {
     checkArgument(tolerance >= 0, "tolerance (%s) cannot be negative", tolerance);
   }
+
+  static Factory<IntegerSubject, Integer> integers() {
+    return IntegerSubject::new;
+  }
 }

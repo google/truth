@@ -33,9 +33,8 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double @Nullable [] actual;
 
-  PrimitiveDoubleArraySubject(
-      FailureMetadata metadata, double @Nullable [] o, @Nullable String typeDescriptionOverride) {
-    super(metadata, o, typeDescriptionOverride);
+  private PrimitiveDoubleArraySubject(FailureMetadata metadata, double @Nullable [] o) {
+    super(metadata, o, /* typeDescriptionOverride= */ "array");
     this.actual = o;
   }
 
@@ -255,5 +254,9 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
       return PrimitiveDoubleArraySubject.this
           .actualCustomStringRepresentationForPackageMembersToCall();
     }
+  }
+
+  static Factory<PrimitiveDoubleArraySubject, double[]> doubleArrays() {
+    return PrimitiveDoubleArraySubject::new;
   }
 }

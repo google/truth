@@ -118,7 +118,7 @@ public class Subject {
    * <p>Even within Truth itself, we rarely need to pass a {@code typeDescriptionOverride}: At least
    * with Truth's current failure messages, the type appears only when a {@link Subject} uses
    * assertion chaining. (This can happen because the {@link Subject} exposes chaining it in its
-   * API, like in {@link ThrowableSubject#hasCause}, or because it uses it internally, like in
+   * API, like in {@link ThrowableSubject#hasCauseThat}, or because it uses it internally, like in
    * {@link MultisetSubject#hasCount}.)
    *
    * <p>When we do want to pass a {@code typeDescriptionOverride}, we have two main approaches:
@@ -1217,5 +1217,9 @@ public class Subject {
 
   private void doFail(ImmutableList<Fact> facts) {
     checkNotNull(metadata).fail(facts);
+  }
+
+  static Factory<Subject, Object> objects() {
+    return Subject::new;
   }
 }

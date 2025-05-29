@@ -28,13 +28,16 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveCharArraySubject extends AbstractArraySubject {
   private final char @Nullable [] actual;
 
-  PrimitiveCharArraySubject(
-      FailureMetadata metadata, char @Nullable [] o, @Nullable String typeDescriptionOverride) {
-    super(metadata, o, typeDescriptionOverride);
+  private PrimitiveCharArraySubject(FailureMetadata metadata, char @Nullable [] o) {
+    super(metadata, o, /* typeDescriptionOverride= */ "array");
     this.actual = o;
   }
 
   public IterableSubject asList() {
     return checkNoNeedToDisplayBothValues("asList()").that(Chars.asList(checkNotNull(actual)));
+  }
+
+  static Factory<PrimitiveCharArraySubject, char[]> charArrays() {
+    return PrimitiveCharArraySubject::new;
   }
 }

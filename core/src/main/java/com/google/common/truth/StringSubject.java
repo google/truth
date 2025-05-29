@@ -365,4 +365,8 @@ public class StringSubject extends ComparableSubject<String> {
       return new CaseInsensitiveStringComparison(stringSubject);
     }
   }
+
+  static Factory<StringSubject, String> strings() {
+    return StringSubject::new;
+  }
 }

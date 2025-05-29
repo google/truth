@@ -38,7 +38,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
   private final @Nullable Float actual;
   private final DoubleSubject asDouble;
 
-  FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
+  private FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
     super(metadata, actual);
     this.actual = actual;
     /*
@@ -318,5 +318,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    */
   public void isAtLeast(int other) {
     asDouble.isAtLeast(other);
+  }
+
+  static Factory<FloatSubject, Float> floats() {
+    return FloatSubject::new;
   }
 }

@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
 public final class BooleanSubject extends Subject {
   private final @Nullable Boolean actual;
 
-  BooleanSubject(FailureMetadata metadata, @Nullable Boolean actual) {
+  private BooleanSubject(FailureMetadata metadata, @Nullable Boolean actual) {
     super(metadata, actual);
     this.actual = actual;
   }
@@ -48,5 +48,9 @@ public final class BooleanSubject extends Subject {
     } else if (actual) {
       failWithoutActual(simpleFact("expected to be false"));
     }
+  }
+
+  static Factory<BooleanSubject, Boolean> booleans() {
+    return BooleanSubject::new;
   }
 }

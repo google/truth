@@ -2106,4 +2106,8 @@ public class IterableSubject extends Subject {
       private final List<A> unpairedActualValues = new ArrayList<>();
     }
   }
+
+  static Factory<IterableSubject, Iterable<?>> iterables() {
+    return IterableSubject::new;
+  }
 }

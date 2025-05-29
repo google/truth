@@ -127,6 +127,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
     }
   }
 
+  /**
+   * Factory for {@link ComparableSubject}, with an actual-value type of {@code Object} to work
+   * around the J2CL strangeness documented on {@link #actual}.
+   */
+  static <T extends Comparable<?>> Factory<ComparableSubject<T>, Object> comparables() {
+    return (metadata, actual) -> new ComparableSubject<T>(metadata, actual) {};
+  }
+
   @SuppressWarnings("unchecked")
   private Comparable<Object> actualAsComparable() {
     return checkNotNull((Comparable<Object>) actual);

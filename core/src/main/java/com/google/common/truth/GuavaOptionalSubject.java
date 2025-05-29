@@ -32,12 +32,11 @@ public final class GuavaOptionalSubject extends Subject {
   @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   private final @Nullable Optional<?> actual;
 
-  GuavaOptionalSubject(
+  private GuavaOptionalSubject(
       FailureMetadata metadata,
       @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
-          @Nullable Optional<?> actual,
-      @Nullable String typeDescriptionOverride) {
-    super(metadata, actual, typeDescriptionOverride);
+          @Nullable Optional<?> actual) {
+    super(metadata, actual, /* typeDescriptionOverride= */ "optional");
     this.actual = actual;
   }
 
@@ -81,5 +80,9 @@ public final class GuavaOptionalSubject extends Subject {
     } else {
       checkNoNeedToDisplayBothValues("get()").that(actual.get()).isEqualTo(expected);
     }
+  }
+
+  static Factory<GuavaOptionalSubject, Optional<?>> guavaOptionals() {
+    return GuavaOptionalSubject::new;
   }
 }

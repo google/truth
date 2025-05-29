@@ -30,7 +30,7 @@ public final class MultisetSubject extends IterableSubject {
 
   private final @Nullable Multiset<?> actual;
 
-  MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> multiset) {
+  private MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> multiset) {
     super(metadata, multiset, /* typeDescriptionOverride= */ "multiset");
     this.actual = multiset;
   }
@@ -40,5 +40,9 @@ public final class MultisetSubject extends IterableSubject {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
     int actualCount = checkNotNull(actual).count(element);
     check("count(%s)", element).that(actualCount).isEqualTo(expectedCount);
+  }
+
+  static Factory<MultisetSubject, Multiset<?>> multisets() {
+    return MultisetSubject::new;
   }
 }

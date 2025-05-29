@@ -32,12 +32,11 @@ public final class OptionalSubject extends Subject {
   @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   private final @Nullable Optional<?> actual;
 
-  OptionalSubject(
+  private OptionalSubject(
       FailureMetadata failureMetadata,
       @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
-          @Nullable Optional<?> subject,
-      @Nullable String typeDescriptionOverride) {
-    super(failureMetadata, subject, typeDescriptionOverride);
+          @Nullable Optional<?> subject) {
+    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optional");
     this.actual = subject;
   }
 
@@ -97,6 +96,6 @@ public final class OptionalSubject extends Subject {
   @Deprecated
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<OptionalSubject, Optional<?>> optionals() {
-    return (metadata, subject) -> new OptionalSubject(metadata, subject, "optional");
+    return OptionalSubject::new;
   }
 }

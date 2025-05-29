@@ -52,7 +52,7 @@ public final class StreamSubject extends Subject {
   private final @Nullable Stream<?> actual;
   private final Supplier<@Nullable List<?>> listSupplier;
 
-  StreamSubject(
+  private StreamSubject(
       FailureMetadata metadata,
       @Nullable Stream<?> actual,
       Supplier<@Nullable List<?>> listSupplier) {
@@ -62,7 +62,7 @@ public final class StreamSubject extends Subject {
     this.listSupplier = listSupplier;
   }
 
-  StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
+  private StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
     /*
      * As discussed in the Javadoc, we're a *little* accommodating of streams that have already been
      * collected (or are outright broken, like some mocks), and we avoid collecting the contents

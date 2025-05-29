@@ -28,13 +28,16 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
   private final boolean @Nullable [] actual;
 
-  PrimitiveBooleanArraySubject(
-      FailureMetadata metadata, boolean @Nullable [] o, @Nullable String typeDescriptionOverride) {
-    super(metadata, o, typeDescriptionOverride);
+  private PrimitiveBooleanArraySubject(FailureMetadata metadata, boolean @Nullable [] o) {
+    super(metadata, o, /* typeDescriptionOverride= */ "array");
     this.actual = o;
   }
 
   public IterableSubject asList() {
     return checkNoNeedToDisplayBothValues("asList()").that(Booleans.asList(checkNotNull(actual)));
+  }
+
+  static Factory<PrimitiveBooleanArraySubject, boolean[]> booleanArrays() {
+    return PrimitiveBooleanArraySubject::new;
   }
 }

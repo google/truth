@@ -31,11 +31,8 @@ import org.jspecify.annotations.Nullable;
 public final class OptionalLongSubject extends Subject {
   private final @Nullable OptionalLong actual;
 
-  OptionalLongSubject(
-      FailureMetadata failureMetadata,
-      @Nullable OptionalLong subject,
-      @Nullable String typeDescriptionOverride) {
-    super(failureMetadata, subject, typeDescriptionOverride);
+  private OptionalLongSubject(FailureMetadata failureMetadata, @Nullable OptionalLong subject) {
+    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optionalLong");
     this.actual = subject;
   }
 
@@ -85,6 +82,6 @@ public final class OptionalLongSubject extends Subject {
   @Deprecated
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
-    return (metadata, subject) -> new OptionalLongSubject(metadata, subject, "optionalLong");
+    return OptionalLongSubject::new;
   }
 }

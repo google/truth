@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final @Nullable BigDecimal actual;
 
-  BigDecimalSubject(FailureMetadata metadata, @Nullable BigDecimal actual) {
+  private BigDecimalSubject(FailureMetadata metadata, @Nullable BigDecimal actual) {
     super(metadata, actual);
     this.actual = actual;
   }
@@ -100,5 +100,9 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
           numericFact("but was", actual),
           simpleFact("(scale is ignored)"));
     }
+  }
+
+  static Factory<BigDecimalSubject, BigDecimal> bigDecimals() {
+    return BigDecimalSubject::new;
   }
 }

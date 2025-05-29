@@ -190,4 +190,8 @@ public class LongSubject extends ComparableSubject<Long> {
   public final void isAtLeast(int other) {
     isAtLeast((long) other);
   }
+
+  static Factory<LongSubject, Long> longs() {
+    return LongSubject::new;
+  }
 }

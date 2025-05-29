@@ -33,11 +33,8 @@ public final class OptionalDoubleSubject extends Subject {
 
   private final @Nullable OptionalDouble actual;
 
-  OptionalDoubleSubject(
-      FailureMetadata failureMetadata,
-      @Nullable OptionalDouble subject,
-      @Nullable String typeDescriptionOverride) {
-    super(failureMetadata, subject, typeDescriptionOverride);
+  private OptionalDoubleSubject(FailureMetadata failureMetadata, @Nullable OptionalDouble subject) {
+    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optionalDouble");
     this.actual = subject;
   }
 
@@ -94,6 +91,6 @@ public final class OptionalDoubleSubject extends Subject {
   @Deprecated
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
-    return (metadata, subject) -> new OptionalDoubleSubject(metadata, subject, "optionalDouble");
+    return OptionalDoubleSubject::new;
   }
 }

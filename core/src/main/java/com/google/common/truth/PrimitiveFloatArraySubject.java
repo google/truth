@@ -33,9 +33,8 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   private final float @Nullable [] actual;
 
-  PrimitiveFloatArraySubject(
-      FailureMetadata metadata, float @Nullable [] o, @Nullable String typeDescriptionOverride) {
-    super(metadata, o, typeDescriptionOverride);
+  private PrimitiveFloatArraySubject(FailureMetadata metadata, float @Nullable [] o) {
+    super(metadata, o, /* typeDescriptionOverride= */ "array");
     this.actual = o;
   }
 
@@ -260,5 +259,9 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
       return PrimitiveFloatArraySubject.this
           .actualCustomStringRepresentationForPackageMembersToCall();
     }
+  }
+
+  static Factory<PrimitiveFloatArraySubject, float[]> floatArrays() {
+    return PrimitiveFloatArraySubject::new;
   }
 }

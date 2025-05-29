@@ -804,4 +804,8 @@ public class MapSubject extends Subject {
       return new UsingCorrespondence<>(subject, correspondence);
     }
   }
+
+  static Factory<MapSubject, Map<?, ?>> maps() {
+    return MapSubject::new;
+  }
 }

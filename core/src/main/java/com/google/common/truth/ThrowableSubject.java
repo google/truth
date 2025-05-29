@@ -103,4 +103,8 @@ public class ThrowableSubject extends Subject {
     }
     return check("getCause()").that(actual.getCause());
   }
+
+  static Factory<ThrowableSubject, Throwable> throwables() {
+    return (metadata, actual) -> new ThrowableSubject(metadata, actual, "throwable");
+  }
 }

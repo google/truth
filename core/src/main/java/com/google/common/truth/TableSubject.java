@@ -33,7 +33,7 @@ import org.jspecify.annotations.Nullable;
 public final class TableSubject extends Subject {
   private final @Nullable Table<?, ?, ?> actual;
 
-  TableSubject(FailureMetadata metadata, @Nullable Table<?, ?, ?> table) {
+  private TableSubject(FailureMetadata metadata, @Nullable Table<?, ?, ?> table) {
     super(metadata, table);
     this.actual = table;
   }
@@ -127,5 +127,9 @@ public final class TableSubject extends Subject {
   /** Fails if the table does not contain the given value. */
   public void containsValue(@Nullable Object value) {
     check("values()").that(checkNotNull(actual).values()).contains(value);
+  }
+
+  static Factory<TableSubject, Table<?, ?, ?>> tables() {
+    return TableSubject::new;
   }
 }

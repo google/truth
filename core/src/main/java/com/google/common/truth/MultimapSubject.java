@@ -68,7 +68,7 @@ public class MultimapSubject extends Subject {
     this(metadata, multimap, null);
   }
 
-  MultimapSubject(
+  private MultimapSubject(
       FailureMetadata metadata,
       @Nullable Multimap<?, ?> multimap,
       @Nullable String typeDescriptionOverride) {
@@ -842,5 +842,9 @@ public class MultimapSubject extends Subject {
         lenientFormat(
             "has a key that is equal to and a value that %s the key and value of",
             valueCorrespondence));
+  }
+
+  static Factory<MultimapSubject, Multimap<?, ?>> multimaps() {
+    return (metadata, actual) -> new MultimapSubject(metadata, actual, "multimap");
   }
 }

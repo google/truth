@@ -34,6 +34,7 @@ import org.jspecify.annotations.Nullable;
 public final class DoubleSubject extends ComparableSubject<Double> {
   private final @Nullable Double actual;
 
+  // TODO: b/134064106 - Hide this constructor after migrating FloatSubject off it.
   DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
     super(metadata, actual);
     this.actual = actual;
@@ -295,5 +296,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    */
   public void isAtLeast(int other) {
     isAtLeast((double) other);
+  }
+
+  static Factory<DoubleSubject, Double> doubles() {
+    return DoubleSubject::new;
   }
 }

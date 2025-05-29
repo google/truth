@@ -797,10 +797,16 @@ public class SubjectTest {
     "UnnecessaryStringBuilder", // We need a type that doesn't implement value-based equals().
   })
   public void disambiguationWithSameToString() {
+    /*
+     * We use `Object` instead of `StringBuilder` to force the compiler to choose that(Object) over
+     * that(Comparable): StringBuilder does not implement Comparable under Android Lollipop, so the
+     * test would fail there at runtime.
+     */
+    Object stringBuilderAsObject = new StringBuilder("foo");
     AssertionError e =
         expectFailure(
             whenTesting ->
-                whenTesting.that(new StringBuilder("foo")).isEqualTo(new StringBuilder("foo")));
+                whenTesting.that(stringBuilderAsObject).isEqualTo(new StringBuilder("foo")));
     assertFailureKeys(e, "expected", "but was");
     assertFailureValue(e, "expected", "foo");
     assertFailureValue(
