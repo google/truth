@@ -717,6 +717,46 @@ public class Subject {
     return doCheck(OldAndNewValuesAreSimilar.SIMILAR, format, args);
   }
 
+  /**
+   * Returns a builder for creating a subject for an object that is "close enough" to the original
+   * actual value.
+   *
+   * <p>This is a niche API: When one {@link Subject} wants to delegate to another, it should
+   * normally use {@link #check(String, Object...)}, which augments the failure message by:
+   *
+   * <ul>
+   *   <li>specifying which <i>part</i> of the actual value we are asserting about (e.g., "value of:
+   *       foo.size()")
+   *   <li>including both the original actual value and the relevant part of that value (e.g., both
+   *       the collection and its size)
+   * </ul>
+   *
+   * Thus, {@code substituteCheck()} is useful only when the new assertion is still (roughly
+   * speaking) "about" the entire actual value. For example, {@link StreamSubject} uses this method
+   * to create an {@link IterableSubject} for the contents of the stream.
+   *
+   * <p>The result of {@code substituteCheck()} should be used carefully. For example, it should
+   * <b>never</b> be returned to users unless the new subject has the exact full actual value as the
+   * original one had. (As of this writing, we never do that, but that may change someday
+   * (b/135436697? b/333091510?).) That's because:
+   *
+   * <ul>
+   *   <li>If the assertion is about only a <i>part</i> of the actual value (or about some derived
+   *       value, as in {@link ObjectArraySubject#asList}), then we should use {@link #check(String,
+   *       Object...)}, as discussed above. (In some cases, we should instead introduce a non-{@link
+   *       Subject} type, such as {@link StringSubject.CaseInsensitiveStringComparison}.)
+   *   <li>Otherwise, we don't want to present an assertion as about the original actual value when
+   *       it's actually about some "stand-in" value. For example (though this isn't a great
+   *       example), we wouldn't want for {@code assertThat(stream).isEqualTo(expected)} to use
+   *       {@code substituteCheck().that(stream.toList())} internally: The test would be comparing
+   *       the <i>list</i> for equality, but the message would suggest that it's comparing the
+   *       <i>stream</i>.
+   * </ul>
+   */
+  final StandardSubjectBuilder substituteCheck() {
+    return new StandardSubjectBuilder(checkNotNull(metadata));
+  }
+
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
     LazyMessage message = new LazyMessage(format, args);

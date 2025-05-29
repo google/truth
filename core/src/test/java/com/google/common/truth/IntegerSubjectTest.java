@@ -16,12 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.formatNumericValue;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -58,6 +57,7 @@ public class IntegerSubjectTest {
     expectFailure(whenTesting -> whenTesting.that(4).isEqualTo(5));
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void inequalityFail() {
     expectFailure(whenTesting -> whenTesting.that(4).isNotEqualTo(4));
@@ -70,7 +70,7 @@ public class IntegerSubjectTest {
 
   @Test
   public void equalityOfNullsFail_nullActual() {
-    expectFailure(whenTesting -> whenTesting.that(null).isEqualTo(5));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isEqualTo(5));
   }
 
   @Test
@@ -86,7 +86,7 @@ public class IntegerSubjectTest {
 
   @Test
   public void inequalityOfNullsFail() {
-    expectFailure(whenTesting -> whenTesting.that(null).isNotEqualTo(null));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isNotEqualTo(null));
   }
 
   @Test
@@ -215,11 +215,5 @@ public class IntegerSubjectTest {
           .hasMessageThat()
           .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
-  }
-
-  @CanIgnoreReturnValue
-  private static AssertionError expectFailure(
-      SimpleSubjectBuilderCallback<IntegerSubject, Integer> callback) {
-    return ExpectFailure.expectFailureAbout(IntegerSubject::new, callback);
   }
 }

@@ -41,13 +41,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
   private FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
     super(metadata, actual);
     this.actual = actual;
-    /*
-     * Doing anything with the FailureMetadata besides passing it to super(...) is generally bad
-     * practice. For an explanation of why it works out OK here, see LiteProtoSubject.
-     *
-     * An alternative approach would be to reimplement isLessThan, etc. here.
-     */
-    this.asDouble = new DoubleSubject(metadata, actual == null ? null : Double.valueOf(actual));
+    this.asDouble = substituteCheck().that(actual == null ? null : Double.valueOf(actual));
   }
 
   /**

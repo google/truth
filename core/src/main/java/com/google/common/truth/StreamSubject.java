@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.IterableSubject.iterables;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -47,8 +48,6 @@ import org.jspecify.annotations.Nullable;
  */
 @IgnoreJRERequirement
 public final class StreamSubject extends Subject {
-  // Storing the FailureMetadata instance is not usually advisable.
-  private final FailureMetadata metadata;
   private final @Nullable Stream<?> actual;
   private final Supplier<@Nullable List<?>> listSupplier;
 
@@ -57,7 +56,6 @@ public final class StreamSubject extends Subject {
       @Nullable Stream<?> actual,
       Supplier<@Nullable List<?>> listSupplier) {
     super(metadata, actual);
-    this.metadata = metadata;
     this.actual = actual;
     this.listSupplier = listSupplier;
   }
@@ -100,6 +98,16 @@ public final class StreamSubject extends Subject {
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<StreamSubject, Stream<?>> streams() {
     return StreamSubject::new;
+  }
+
+  /**
+   * Factory instance for creating an instance for which we already have a {@code listSupplier} from
+   * an existing instance. Naturally, the resulting factory should be used to create an instance
+   * only for the stream corresponding to {@code listSupplier}.
+   */
+  private static Factory<StreamSubject, Stream<?>> streams(
+      Supplier<@Nullable List<?>> listSupplier) {
+    return (metadata, actual) -> new StreamSubject(metadata, actual, listSupplier);
   }
 
   /** Fails if the subject is not empty. */
@@ -286,23 +294,17 @@ public final class StreamSubject extends Subject {
      * We add a warning about stream equality. Doing so is a bit of a pain. (There might be a better
      * way.)
      *
-     * Calling Subject constructors directly is not generally advisable. I'm not sure if the
-     * metadata munging we perform is advisable, either....
-     *
      * We do need to create a StreamSubject (rather than a plain Subject) in order to get our
      * desired string representation (unless we edit Subject itself to create and expose a
-     * Supplier<List> when given a Stream...). And we have to call a special constructor to avoid
+     * Supplier<List> when given a Stream...). And we have to use a special Factory to avoid
      * re-collecting the stream.
      */
-    new StreamSubject(
-            metadata.withMessage(
-                "%s",
-                new Object[] {
-                  "Warning: Stream equality is based on object identity. To compare Stream"
-                      + " contents, use methods like containsExactly."
-                }),
-            actual,
-            listSupplier)
+    substituteCheck()
+        .withMessage(
+            "Warning: Stream equality is based on object identity. To compare Stream"
+                + " contents, use methods like containsExactly.")
+        .about(streams(listSupplier))
+        .that(actual)
         .superIsEqualTo(expected);
   }
 
@@ -347,16 +349,11 @@ public final class StreamSubject extends Subject {
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 
+  /** Be careful with using this, as documented on {@link Subject#substituteCheck}. */
   private IterableSubject checkThatContentsList() {
-    /*
-     * Calling Subject constructors directly is usually not advisable: It does not update the
-     * metadata, so the resultant failure message might say (for example) "value of: foo" when it
-     * should say "value of: foo.size()." However, in this specific case, that's exactly what we
-     * want: We're testing the contents of the stream, so we want a "value of" line for the stream,
-     * even though we happen to implement the contents check by delegating to IterableSubject.
-     */
-    return new IterableSubject(
-        metadata, listSupplier.get(), /* typeDescriptionOverride= */ "stream");
+    return substituteCheck()
+        .about(iterables(/* typeDescriptionOverride= */ "stream"))
+        .that(listSupplier.get());
   }
 
   private static Supplier<@Nullable List<?>> listCollector(@Nullable Stream<?> actual) {

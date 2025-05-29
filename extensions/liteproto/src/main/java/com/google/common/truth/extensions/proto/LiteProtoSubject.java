@@ -59,7 +59,7 @@ public class LiteProtoSubject extends Subject {
    * "equivalent" object. Thus, it will still be accurate for the failure message to be written as
    * if it's talking about the proto itself.
    *
-   * TODO(b/127819891): Use a better API for this if one is addded.
+   * TODO(b/134064106): Use a better API for this if one is addded.
    */
   private final FailureMetadata metadata;
   private final MessageLite actual;

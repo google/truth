@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.formatNumericValue;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.Truth.assertThat;
@@ -23,8 +24,6 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,12 +43,6 @@ public class DoubleSubjectTest {
   private static final double UNDER_NEGATIVE_MIN = -9.9E-324;
   private static final double GOLDEN = 1.23;
   private static final double OVER_GOLDEN = 1.2300000000000002;
-
-  @CanIgnoreReturnValue
-  private static AssertionError expectFailure(
-      SimpleSubjectBuilderCallback<DoubleSubject, Double> callback) {
-    return ExpectFailure.expectFailureAbout(DoubleSubject::new, callback);
-  }
 
   @Test
   @GwtIncompatible("Math.nextAfter")
@@ -370,6 +363,7 @@ public class DoubleSubjectTest {
     assertThat(1.0).isNotEqualTo(2);
   }
 
+  @SuppressWarnings("SelfAssertion")
   private static void assertThatIsNotEqualToFails(@Nullable Double value) {
     expectFailure(whenTesting -> whenTesting.that(value).isNotEqualTo(value));
   }

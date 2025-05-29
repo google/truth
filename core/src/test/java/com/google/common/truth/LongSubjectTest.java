@@ -16,12 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.formatNumericValue;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -58,6 +57,7 @@ public class LongSubjectTest {
     expectFailure(whenTesting -> whenTesting.that(4L).isEqualTo(5L));
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void inequalityFail() {
     expectFailure(whenTesting -> whenTesting.that(4L).isNotEqualTo(4L));
@@ -70,7 +70,7 @@ public class LongSubjectTest {
 
   @Test
   public void equalityOfNullsFail_nullActual() {
-    expectFailure(whenTesting -> whenTesting.that(null).isEqualTo(5L));
+    expectFailure(whenTesting -> whenTesting.that((Long) null).isEqualTo(5L));
   }
 
   @Test
@@ -86,9 +86,10 @@ public class LongSubjectTest {
 
   @Test
   public void inequalityOfNullsFail() {
-    expectFailure(whenTesting -> whenTesting.that(null).isNotEqualTo(null));
+    expectFailure(whenTesting -> whenTesting.that((Long) null).isNotEqualTo(null));
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
     expectFailure(whenTesting -> whenTesting.that(42L).isNotEqualTo(42L));
@@ -241,11 +242,5 @@ public class LongSubjectTest {
           .hasMessageThat()
           .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
-  }
-
-  @CanIgnoreReturnValue
-  private static AssertionError expectFailure(
-      SimpleSubjectBuilderCallback<LongSubject, Long> callback) {
-    return ExpectFailure.expectFailureAbout(LongSubject::new, callback);
   }
 }

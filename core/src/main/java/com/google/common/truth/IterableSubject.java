@@ -2110,4 +2110,8 @@ public class IterableSubject extends Subject {
   static Factory<IterableSubject, Iterable<?>> iterables() {
     return IterableSubject::new;
   }
+
+  static Factory<IterableSubject, Iterable<?>> iterables(String typeDescriptionOverride) {
+    return (metadata, actual) -> new IterableSubject(metadata, actual, typeDescriptionOverride);
+  }
 }
