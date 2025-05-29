@@ -240,21 +240,30 @@ public class StringSubject extends ComparableSubject<String> {
    * Note that this is independent of any locale.
    */
   public CaseInsensitiveStringComparison ignoringCase() {
-    return new CaseInsensitiveStringComparison();
+    return CaseInsensitiveStringComparison.create(this);
   }
 
   /** Case insensitive propositions for string subjects. */
   @SuppressWarnings("Casing_StringEqualsIgnoreCase") // intentional choice from API Review
-  public final class CaseInsensitiveStringComparison {
-    private CaseInsensitiveStringComparison() {}
+  public static final class CaseInsensitiveStringComparison {
+    private final StringSubject subject;
+    private final @Nullable String actual;
+
+    private CaseInsensitiveStringComparison(StringSubject subject) {
+      this.subject = subject;
+      this.actual = subject.actual;
+    }
 
     /**
      * Fails if the actual value is not equal to the given sequence (while ignoring case). For the
-     * purposes of this comparison, two strings are equal if any of the following is true:
+     * purposes of this comparison, two strings are equal if either of the following is true:
      *
      * <ul>
-     *   <li>they are equal according to {@link String#equalsIgnoreCase}
-     *   <li>they are both null
+     *   <li>They are equal according to {@link String#equalsIgnoreCase}. (In Kotlin terms: They are
+     *       equal according to <a
+     *       href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/equals.html">{@code
+     *       actual.equals(expected, ignoreCase = true)}</a>.)
+     *   <li>They are both null.
      * </ul>
      *
      * <p>Example: "abc" is equal to "ABC", but not to "abcd".
@@ -328,7 +337,7 @@ public class StringSubject extends ComparableSubject<String> {
 
     private boolean containsIgnoreCase(@Nullable String string) {
       checkNotNull(string);
-      String actual = checkNotNull(StringSubject.this.actual);
+      String actual = checkNotNull(this.actual);
       for (int actualOffset = 0;
           actualOffset <= actual.length() - string.length();
           actualOffset++) {
@@ -342,6 +351,18 @@ public class StringSubject extends ComparableSubject<String> {
         }
       }
       return false;
+    }
+
+    private Fact butWas() {
+      return subject.butWas();
+    }
+
+    private void failWithoutActual(Fact first, Fact... rest) {
+      subject.failWithoutActual(first, rest);
+    }
+
+    static CaseInsensitiveStringComparison create(StringSubject stringSubject) {
+      return new CaseInsensitiveStringComparison(stringSubject);
     }
   }
 }

@@ -535,7 +535,7 @@ public class MultimapSubject extends Subject {
   public <A extends @Nullable Object, E extends @Nullable Object>
       UsingCorrespondence<A, E> comparingValuesUsing(
           Correspondence<? super A, ? super E> correspondence) {
-    return new UsingCorrespondence<>(correspondence);
+    return UsingCorrespondence.create(this, correspondence);
   }
 
   // TODO(b/69154276): Add formattingDiffsUsing, like we have on MapSubject, once we have
@@ -549,12 +549,17 @@ public class MultimapSubject extends Subject {
    *
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    */
-  public final class UsingCorrespondence<A extends @Nullable Object, E extends @Nullable Object> {
-
+  public static final class UsingCorrespondence<
+      A extends @Nullable Object, E extends @Nullable Object> {
+    private final MultimapSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
+    private final @Nullable Multimap<?, ?> actual;
 
-    private UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
+    private UsingCorrespondence(
+        MultimapSubject subject, Correspondence<? super A, ? super E> correspondence) {
+      this.subject = subject;
       this.correspondence = checkNotNull(correspondence);
+      this.actual = subject.actual;
     }
 
     /**
@@ -730,8 +735,9 @@ public class MultimapSubject extends Subject {
       // the case where inOrder() fails it says the keys and/or the values for some keys are out of
       // order. We don't bother with that here. It would be nice, but it would be a lot of added
       // complexity for little gain.
-      return check()
-          .about(iterableEntries())
+      return subject
+          .check()
+          .about(subject.iterableEntries())
           .that(checkNotNull(actual).entries())
           .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
@@ -765,8 +771,9 @@ public class MultimapSubject extends Subject {
       // the case where inOrder() fails it says the keys and/or the values for some keys are out of
       // order. We don't bother with that here. It would be nice, but it would be a lot of added
       // complexity for little gain.
-      return check()
-          .about(iterableEntries())
+      return subject
+          .check()
+          .about(subject.iterableEntries())
           .that(checkNotNull(actual).entries())
           .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
           .containsAtLeastElementsIn(expectedMultimap.entries());
@@ -788,7 +795,7 @@ public class MultimapSubject extends Subject {
     /** Fails if the multimap is not empty. */
     @CanIgnoreReturnValue
     public Ordered containsExactly() {
-      return MultimapSubject.this.containsExactly();
+      return subject.containsExactly();
     }
 
     /**
@@ -807,6 +814,20 @@ public class MultimapSubject extends Subject {
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Multimap<?, A> getCastActual() {
       return (Multimap<?, A>) checkNotNull(actual);
+    }
+
+    private String actualCustomStringRepresentationForPackageMembersToCall() {
+      return subject.actualCustomStringRepresentationForPackageMembersToCall();
+    }
+
+    private void failWithoutActual(Iterable<Fact> facts) {
+      subject.failWithoutActual(facts);
+    }
+
+    static <E extends @Nullable Object, A extends @Nullable Object>
+        UsingCorrespondence<A, E> create(
+            MultimapSubject subject, Correspondence<? super A, ? super E> correspondence) {
+      return new UsingCorrespondence<>(subject, correspondence);
     }
   }
 

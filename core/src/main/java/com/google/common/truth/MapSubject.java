@@ -513,7 +513,7 @@ public class MapSubject extends Subject {
   public final <A extends @Nullable Object, E extends @Nullable Object>
       UsingCorrespondence<A, E> comparingValuesUsing(
           Correspondence<? super A, ? super E> correspondence) {
-    return new UsingCorrespondence<>(correspondence);
+    return UsingCorrespondence.create(this, correspondence);
   }
 
   /**
@@ -554,12 +554,17 @@ public class MapSubject extends Subject {
    *
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    */
-  public final class UsingCorrespondence<A extends @Nullable Object, E extends @Nullable Object> {
-
+  public static final class UsingCorrespondence<
+      A extends @Nullable Object, E extends @Nullable Object> {
+    private final MapSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
+    private final @Nullable Map<?, ?> actual;
 
-    private UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
+    private UsingCorrespondence(
+        MapSubject subject, Correspondence<? super A, ? super E> correspondence) {
+      this.subject = subject;
       this.correspondence = checkNotNull(correspondence);
+      this.actual = subject.actual;
     }
 
     /**
@@ -725,7 +730,7 @@ public class MapSubject extends Subject {
         if (checkNotNull(actual).isEmpty()) {
           return IN_ORDER;
         } else {
-          isEmpty(); // fails
+          subject.isEmpty(); // fails
           return ALREADY_FAILED;
         }
       }
@@ -758,7 +763,7 @@ public class MapSubject extends Subject {
         // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would
         // record that we had the wrong value for that key.
-        return new MapInOrder(expectedMap, allowUnexpected, correspondence);
+        return subject.new MapInOrder(expectedMap, allowUnexpected, correspondence);
       }
       failWithoutActual(
           ImmutableList.<Fact>builder()
@@ -779,6 +784,24 @@ public class MapSubject extends Subject {
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Map<?, A> getCastSubject() {
       return (Map<?, A>) checkNotNull(actual);
+    }
+
+    private String actualCustomStringRepresentationForPackageMembersToCall() {
+      return subject.actualCustomStringRepresentationForPackageMembersToCall();
+    }
+
+    private Fact butWas() {
+      return subject.butWas();
+    }
+
+    private void failWithoutActual(Iterable<Fact> facts) {
+      subject.failWithoutActual(facts);
+    }
+
+    static <A extends @Nullable Object, E extends @Nullable Object>
+        UsingCorrespondence<A, E> create(
+            MapSubject subject, Correspondence<? super A, ? super E> correspondence) {
+      return new UsingCorrespondence<>(subject, correspondence);
     }
   }
 }
