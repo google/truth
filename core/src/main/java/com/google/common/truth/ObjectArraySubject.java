@@ -28,8 +28,9 @@ import org.jspecify.annotations.Nullable;
 public final class ObjectArraySubject<T extends @Nullable Object> extends AbstractArraySubject {
   private final T @Nullable [] actual;
 
-  ObjectArraySubject(FailureMetadata metadata, T @Nullable [] o, @Nullable String typeDescription) {
-    super(metadata, o, typeDescription);
+  ObjectArraySubject(
+      FailureMetadata metadata, T @Nullable [] o, @Nullable String typeDescriptionOverride) {
+    super(metadata, o, typeDescriptionOverride);
     this.actual = o;
   }
 

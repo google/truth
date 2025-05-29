@@ -55,8 +55,10 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private final @Nullable AssertionError actual;
 
   TruthFailureSubject(
-      FailureMetadata metadata, @Nullable AssertionError actual, @Nullable String typeDescription) {
-    super(metadata, actual, typeDescription);
+      FailureMetadata metadata,
+      @Nullable AssertionError actual,
+      @Nullable String typeDescriptionOverride) {
+    super(metadata, actual, typeDescriptionOverride);
     this.actual = actual;
   }
 

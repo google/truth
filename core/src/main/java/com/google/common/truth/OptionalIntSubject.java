@@ -34,8 +34,8 @@ public final class OptionalIntSubject extends Subject {
   OptionalIntSubject(
       FailureMetadata failureMetadata,
       @Nullable OptionalInt subject,
-      @Nullable String typeDescription) {
-    super(failureMetadata, subject, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(failureMetadata, subject, typeDescriptionOverride);
     this.actual = subject;
   }
 

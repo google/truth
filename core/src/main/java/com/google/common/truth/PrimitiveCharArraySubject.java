@@ -29,8 +29,8 @@ public final class PrimitiveCharArraySubject extends AbstractArraySubject {
   private final char @Nullable [] actual;
 
   PrimitiveCharArraySubject(
-      FailureMetadata metadata, char @Nullable [] o, @Nullable String typeDescription) {
-    super(metadata, o, typeDescription);
+      FailureMetadata metadata, char @Nullable [] o, @Nullable String typeDescriptionOverride) {
+    super(metadata, o, typeDescriptionOverride);
     this.actual = o;
   }
 

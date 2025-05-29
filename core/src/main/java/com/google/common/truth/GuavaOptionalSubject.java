@@ -36,8 +36,8 @@ public final class GuavaOptionalSubject extends Subject {
       FailureMetadata metadata,
       @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
           @Nullable Optional<?> actual,
-      @Nullable String typeDescription) {
-    super(metadata, actual, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(metadata, actual, typeDescriptionOverride);
     this.actual = actual;
   }
 

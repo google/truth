@@ -36,8 +36,8 @@ public final class OptionalDoubleSubject extends Subject {
   OptionalDoubleSubject(
       FailureMetadata failureMetadata,
       @Nullable OptionalDouble subject,
-      @Nullable String typeDescription) {
-    super(failureMetadata, subject, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(failureMetadata, subject, typeDescriptionOverride);
     this.actual = subject;
   }
 

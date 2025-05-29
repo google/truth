@@ -31,8 +31,8 @@ abstract class AbstractArraySubject extends Subject {
   private final @Nullable Object actual;
 
   AbstractArraySubject(
-      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescription) {
-    super(metadata, actual, typeDescription);
+      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
+    super(metadata, actual, typeDescriptionOverride);
     this.actual = actual;
   }
 

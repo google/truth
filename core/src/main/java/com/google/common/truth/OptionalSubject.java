@@ -36,8 +36,8 @@ public final class OptionalSubject extends Subject {
       FailureMetadata failureMetadata,
       @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
           @Nullable Optional<?> subject,
-      @Nullable String typeDescription) {
-    super(failureMetadata, subject, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(failureMetadata, subject, typeDescriptionOverride);
     this.actual = subject;
   }
 

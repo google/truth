@@ -71,8 +71,8 @@ public class MultimapSubject extends Subject {
   MultimapSubject(
       FailureMetadata metadata,
       @Nullable Multimap<?, ?> multimap,
-      @Nullable String typeDescription) {
-    super(metadata, multimap, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(metadata, multimap, typeDescriptionOverride);
     this.actual = multimap;
   }
 

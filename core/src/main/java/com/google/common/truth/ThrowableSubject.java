@@ -50,8 +50,10 @@ public class ThrowableSubject extends Subject {
   }
 
   ThrowableSubject(
-      FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
-    super(metadata, throwable, typeDescription);
+      FailureMetadata metadata,
+      @Nullable Throwable throwable,
+      @Nullable String typeDescriptionOverride) {
+    super(metadata, throwable, typeDescriptionOverride);
     this.actual = throwable;
   }
 

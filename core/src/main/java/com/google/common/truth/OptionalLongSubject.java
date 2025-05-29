@@ -34,8 +34,8 @@ public final class OptionalLongSubject extends Subject {
   OptionalLongSubject(
       FailureMetadata failureMetadata,
       @Nullable OptionalLong subject,
-      @Nullable String typeDescription) {
-    super(failureMetadata, subject, typeDescription);
+      @Nullable String typeDescriptionOverride) {
+    super(failureMetadata, subject, typeDescriptionOverride);
     this.actual = subject;
   }
 
