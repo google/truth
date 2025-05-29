@@ -28,7 +28,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
@@ -136,7 +135,7 @@ public class SubjectTest {
         subject.isNotSameInstanceAs(new Object());
 
         if (!(subject instanceof IterableSubject)) { // b/36000148
-          subject.isNotIn(ImmutableList.<Object>of());
+          subject.isNotIn(ImmutableList.of());
           subject.isNoneOf(new Object(), new Object());
         }
 
@@ -217,26 +216,28 @@ public class SubjectTest {
     assertFailureValue(e, "expected specific instance", "a");
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void isSameInstanceAsWithSameObject() {
     Object a = new Object();
-    Object b = a;
-    assertThat(a).isSameInstanceAs(b);
+    assertThat(a).isSameInstanceAs(a);
   }
 
   @Test
   public void isSameInstanceAsFailureWithObjects() {
-    Object a = OBJECT_1;
-    Object b = OBJECT_2;
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isSameInstanceAs(b));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(OBJECT_1).isSameInstanceAs(OBJECT_2));
     assertThat(e).isNotInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
   public void isSameInstanceAsFailureWithComparableObjects_nonString() {
-    Object a = UnsignedInteger.valueOf(42);
-    Object b = UnsignedInteger.fromIntBits(42);
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isSameInstanceAs(b));
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(UnsignedInteger.valueOf(42))
+                    .isSameInstanceAs(UnsignedInteger.valueOf(42)));
     assertFailureKeys(e, "expected specific instance", "but was");
     assertFailureValue(e, "expected specific instance", "42");
     assertFailureValue(
@@ -245,19 +246,18 @@ public class SubjectTest {
         "(different but equal instance of same class with same string representation)");
   }
 
+  @SuppressWarnings("UnnecessaryStringBuilder") // We need a non-identical String instance.
   @Test
   @GwtIncompatible("String equality under JS")
   public void isSameInstanceAsFailureWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("ab").toString();
-    expectFailure(whenTesting -> whenTesting.that(a).isSameInstanceAs(b));
+    expectFailure(
+        whenTesting -> whenTesting.that("ab").isSameInstanceAs(new StringBuilder("ab").toString()));
   }
 
   @Test
   public void isSameInstanceAsFailureWithDifferentTypesAndSameToString() {
-    Object a = "true";
-    Object b = true;
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isSameInstanceAs(b));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that("true").isSameInstanceAs(true));
     assertFailureKeys(
         e, "expected specific instance", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected specific instance", "true");
@@ -282,46 +282,38 @@ public class SubjectTest {
 
   @Test
   public void isNotSameInstanceAsWithObjects() {
-    Object a = new Object();
-    Object b = new Object();
-    assertThat(a).isNotSameInstanceAs(b);
+    assertThat(new Object()).isNotSameInstanceAs(new Object());
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void isNotSameInstanceAsFailureWithSameObject() {
-    Object a = OBJECT_1;
-    Object b = a;
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isNotSameInstanceAs(b));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(OBJECT_1).isNotSameInstanceAs(OBJECT_1));
     assertFailureKeys(e, "expected not to be specific instance");
     assertFailureValue(e, "expected not to be specific instance", "Object 1");
   }
 
   @Test
   public void isNotSameInstanceAsWithComparableObjects_nonString() {
-    Object a = UnsignedInteger.valueOf(42);
-    Object b = UnsignedInteger.fromIntBits(42);
-    assertThat(a).isNotSameInstanceAs(b);
+    assertThat(UnsignedInteger.valueOf(42)).isNotSameInstanceAs(UnsignedInteger.valueOf(42));
   }
 
+  @SuppressWarnings("UnnecessaryStringBuilder") // We need a non-identical String instance.
   @Test
   @GwtIncompatible("String equality under JS")
   public void isNotSameInstanceAsWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("ab").toString();
-    assertThat(a).isNotSameInstanceAs(b);
+    assertThat("ab").isNotSameInstanceAs(new StringBuilder("ab").toString());
   }
 
   @Test
   public void isNotSameInstanceAsWithDifferentTypesAndSameToString() {
-    Object a = "true";
-    Object b = true;
-    assertThat(a).isNotSameInstanceAs(b);
+    assertThat("true").isNotSameInstanceAs(true);
   }
 
   @Test
   public void isNull() {
-    Object o = null;
-    assertThat(o).isNull();
+    assertThat((Object) null).isNull();
   }
 
   @Test
@@ -334,7 +326,7 @@ public class SubjectTest {
 
   @Test
   public void isNullWhenSubjectForbidsIsEqualTo() {
-    assertAbout(objectsForbiddingEqualityCheck()).that((Object) null).isNull();
+    assertAbout(objectsForbiddingEqualityCheck()).that(null).isNull();
   }
 
   @Test
@@ -381,8 +373,7 @@ public class SubjectTest {
   @Test
   public void isNotNullWhenSubjectForbidsIsEqualToFail() {
     expectFailure(
-        whenTesting ->
-            whenTesting.about(objectsForbiddingEqualityCheck()).that((Object) null).isNotNull());
+        whenTesting -> whenTesting.about(objectsForbiddingEqualityCheck()).that(null).isNotNull());
   }
 
   @Test
@@ -410,28 +401,25 @@ public class SubjectTest {
     assertFailureValueIndexed(e, "an instance of", 1, "java.lang.String");
   }
 
+  @SuppressWarnings("SelfAssertion")
   @Test
   public void isEqualToWithSameObject() {
     Object a = new Object();
-    Object b = a;
-    assertThat(a).isEqualTo(b);
+    assertThat(a).isEqualTo(a);
   }
 
   @Test
   public void isEqualToFailureWithObjects() {
-    Object a = OBJECT_1;
-    Object b = OBJECT_2;
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isEqualTo(b));
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(OBJECT_1).isEqualTo(OBJECT_2));
     assertFailureKeys(e, "expected", "but was");
     assertFailureValue(e, "expected", "Object 2");
     assertFailureValue(e, "but was", "Object 1");
   }
 
+  @SuppressWarnings("TruthIncompatibleType")
   @Test
   public void isEqualToFailureWithDifferentTypesAndSameToString() {
-    Object a = "true";
-    Object b = true;
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that(a).isEqualTo(b));
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that("true").isEqualTo(true));
     assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected", "true");
     assertFailureValueIndexed(e, "an instance of", 0, "java.lang.Boolean");
@@ -467,36 +455,50 @@ public class SubjectTest {
 
   @Test
   public void isNotEqualToWithObjects() {
-    Object a = new Object();
-    Object b = new Object();
-    assertThat(a).isNotEqualTo(b);
+    assertThat(new Object()).isNotEqualTo(new Object());
   }
 
-  @SuppressWarnings({
-    "BoxedPrimitiveConstructor",
-    "deprecation"
-  }) // intentional check on non-identity objects
   @Test
   public void isNotEqualToFailureWithObjects() {
-    Object o = new Integer(1);
     AssertionError e =
-        expectFailure(whenTesting -> whenTesting.that(o).isNotEqualTo(new Integer(1)));
+        expectFailure(whenTesting -> whenTesting.that(new IntId(1)).isNotEqualTo(new IntId(1)));
     assertFailureKeys(e, "expected not to be");
     assertFailureValue(e, "expected not to be", "1");
   }
 
-  @Test
-  public void isNotEqualToFailureWithSameObject() {
-    Object a = OBJECT_1;
-    Object b = a;
-    expectFailure(whenTesting -> whenTesting.that(a).isNotEqualTo(b));
+  private static final class IntId {
+    private final int id;
+
+    IntId(int id) {
+      this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      return o instanceof IntId && id == ((IntId) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+      return id;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(id);
+    }
   }
 
+  @SuppressWarnings("SelfAssertion")
+  @Test
+  public void isNotEqualToFailureWithSameObject() {
+    expectFailure(whenTesting -> whenTesting.that(OBJECT_1).isNotEqualTo(OBJECT_1));
+  }
+
+  @SuppressWarnings("TruthIncompatibleType")
   @Test
   public void isNotEqualToWithDifferentTypesAndSameToString() {
-    Object a = "true";
-    Object b = true;
-    assertThat(a).isNotEqualTo(b);
+    assertThat("true").isNotEqualTo(true);
   }
 
   @Test
@@ -644,12 +646,12 @@ public class SubjectTest {
 
   @Test
   public void isInNullInListWithNull() {
-    assertThat((String) null).isIn(oneShotIterable("a", "b", (String) null));
+    assertThat((String) null).isIn(oneShotIterable("a", "b", null));
   }
 
   @Test
   public void isInNonnullInListWithNull() {
-    assertThat("b").isIn(oneShotIterable("a", "b", (String) null));
+    assertThat("b").isIn(oneShotIterable("a", "b", null));
   }
 
   @Test
@@ -716,8 +718,7 @@ public class SubjectTest {
   @Test
   public void isNotInNullFailure() {
     expectFailure(
-        whenTesting ->
-            whenTesting.that((String) null).isNotIn(oneShotIterable("a", "b", (String) null)));
+        whenTesting -> whenTesting.that((String) null).isNotIn(oneShotIterable("a", "b", null)));
   }
 
   @Test
@@ -751,31 +752,23 @@ public class SubjectTest {
   // test of a mistaken call
   @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall", "deprecation"})
   public void equalsThrowsUSOE() {
-    try {
-      boolean unused = assertThat(5).equals(5);
-    } catch (UnsupportedOperationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Subject.equals() is not supported. Did you mean to call"
-                  + " assertThat(actual).isEqualTo(expected) instead of"
-                  + " assertThat(actual).equals(expected)?");
-      return;
-    }
-    fail("Should have thrown.");
+    UnsupportedOperationException expected =
+        assertThrows(UnsupportedOperationException.class, () -> assertThat(5).equals(5));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "Subject.equals() is not supported. Did you mean to call"
+                + " assertThat(actual).isEqualTo(expected) instead of"
+                + " assertThat(actual).equals(expected)?");
   }
 
   @Test
   // test of a mistaken call
   @SuppressWarnings({"DoNotCall", "deprecation"})
   public void hashCodeThrowsUSOE() {
-    try {
-      int unused = assertThat(5).hashCode();
-    } catch (UnsupportedOperationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Subject.hashCode() is not supported.");
-      return;
-    }
-    fail("Should have thrown.");
+    UnsupportedOperationException expected =
+        assertThrows(UnsupportedOperationException.class, () -> assertThat(5).hashCode());
+    assertThat(expected).hasMessageThat().isEqualTo("Subject.hashCode() is not supported.");
   }
 
   @Test
