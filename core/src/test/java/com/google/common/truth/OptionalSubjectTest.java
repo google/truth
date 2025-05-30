@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
-import static com.google.common.truth.OptionalSubject.optionals;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -47,7 +47,8 @@ public class OptionalSubjectTest {
 
   @Test
   public void isPresentFailingNull() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isPresent());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((Optional<?>) null).isPresent());
     assertThat(expected)
         .factKeys()
         .containsExactly("expected present optional", "but was")
@@ -69,7 +70,8 @@ public class OptionalSubjectTest {
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((Optional<?>) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -102,10 +104,5 @@ public class OptionalSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
     assertThat(expected).factValue("value of").isEqualTo("optional.get()");
-  }
-
-  private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<OptionalSubject, Optional<?>> assertionCallback) {
-    return ExpectFailure.expectFailureAbout(optionals(), assertionCallback);
   }
 }
