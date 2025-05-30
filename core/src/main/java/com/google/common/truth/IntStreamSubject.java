@@ -16,8 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Suppliers.memoize;
+import static com.google.common.truth.IterableSubject.iterables;
 import static java.util.stream.Collectors.toCollection;
 
+import com.google.common.base.Supplier;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,34 +32,46 @@ import org.jspecify.annotations.Nullable;
 /**
  * Propositions for {@link IntStream} subjects.
  *
- * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
- * provide more readable failure messages. You should not use this class if you intend to leave the
- * stream un-consumed or if the stream is <i>very</i> large or infinite.
+ * <p><b>Note:</b> When you perform an assertion based on the <i>contents</i> of the stream, or when
+ * <i>any</i> assertion <i>fails</i>, the wrapped stream will be drained immediately into a private
+ * collection to provide more readable failure messages. This consumes the stream. Take care if you
+ * intend to leave the stream un-consumed or if the stream is <i>very</i> large or infinite.
  *
- * <p>If you intend to make multiple assertions on the same stream of data you should instead first
- * collect the contents of the stream into a collection, and then assert directly on that.
+ * <p>If you intend to make multiple assertions on the contents of the same stream, you should
+ * instead first collect the contents of the stream into a collection and then assert directly on
+ * that. For example:
  *
- * <p>For very large or infinite streams you may want to first {@linkplain Stream#limit limit} the
+ * <pre>{@code
+ * List<Integer> list = makeStream().map(...).filter(...).boxed().collect(toImmutableList());
+ * assertThat(list).contains(5);
+ * assertThat(list).doesNotContain(2);
+ * }</pre>
+ *
+ * <p>For very large or infinite streams, you may want to first {@linkplain Stream#limit limit} the
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@SuppressWarnings("deprecation") // TODO(b/134064106): design an alternative to no-arg check()
 @IgnoreJRERequirement
 public final class IntStreamSubject extends Subject {
+  private final Supplier<@Nullable List<?>> listSupplier;
 
-  private final @Nullable List<?> actualList;
-
-  private IntStreamSubject(FailureMetadata failureMetadata, @Nullable IntStream stream) {
-    super(failureMetadata, stream);
-    this.actualList =
-        (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
+  private IntStreamSubject(FailureMetadata metadata, @Nullable IntStream actual) {
+    super(metadata, actual, /* typeDescriptionOverride= */ "stream");
+    // For discussion of when we collect(), see the Javadoc and also StreamSubject.
+    this.listSupplier = memoize(listCollector(actual));
   }
 
   @Override
   protected String actualCustomStringRepresentation() {
-    return String.valueOf(actualList);
+    List<?> asList;
+    try {
+      asList = listSupplier.get();
+    } catch (IllegalStateException e) {
+      return "Stream that has already been operated upon or closed: " + actual();
+    }
+    return String.valueOf(asList);
   }
 
   /**
@@ -76,12 +91,12 @@ public final class IntStreamSubject extends Subject {
 
   /** Fails if the subject is not empty. */
   public void isEmpty() {
-    check().that(actualList).isEmpty();
+    checkThatContentsList().isEmpty();
   }
 
   /** Fails if the subject is empty. */
   public void isNotEmpty() {
-    check().that(actualList).isNotEmpty();
+    checkThatContentsList().isNotEmpty();
   }
 
   /**
@@ -91,33 +106,33 @@ public final class IntStreamSubject extends Subject {
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
    */
   public void hasSize(int expectedSize) {
-    check().that(actualList).hasSize(expectedSize);
+    checkThatContentsList().hasSize(expectedSize);
   }
 
   /** Fails if the subject does not contain the given element. */
   public void contains(int element) {
-    check().that(actualList).contains(element);
+    checkThatContentsList().contains(element);
   }
 
   /** Fails if the subject contains the given element. */
   public void doesNotContain(int element) {
-    check().that(actualList).doesNotContain(element);
+    checkThatContentsList().doesNotContain(element);
   }
 
   /** Fails if the subject contains duplicate elements. */
   public void containsNoDuplicates() {
-    check().that(actualList).containsNoDuplicates();
+    checkThatContentsList().containsNoDuplicates();
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsAnyOf(int first, int second, int... rest) {
-    check().that(actualList).containsAnyOf(first, second, box(rest));
+    checkThatContentsList().containsAnyOf(first, second, box(rest));
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
   public void containsAnyIn(@Nullable Iterable<?> expected) {
-    check().that(actualList).containsAnyIn(expected);
+    checkThatContentsList().containsAnyIn(expected);
   }
 
   /**
@@ -132,7 +147,7 @@ public final class IntStreamSubject extends Subject {
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
   public Ordered containsAtLeast(int first, int second, int... rest) {
-    return check().that(actualList).containsAtLeast(first, second, box(rest));
+    return checkThatContentsList().containsAtLeast(first, second, box(rest));
   }
 
   /**
@@ -146,7 +161,7 @@ public final class IntStreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expected) {
-    return check().that(actualList).containsAtLeastElementsIn(expected);
+    return checkThatContentsList().containsAtLeastElementsIn(expected);
   }
 
   /**
@@ -172,7 +187,7 @@ public final class IntStreamSubject extends Subject {
      * TODO(cpovirk): Actually produce such a better exception message.
      */
     checkNotNull(varargs);
-    return check().that(actualList).containsExactlyElementsIn(box(varargs));
+    return checkThatContentsList().containsExactlyElementsIn(box(varargs));
   }
 
   /**
@@ -186,7 +201,7 @@ public final class IntStreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactlyElementsIn(@Nullable Iterable<?> expected) {
-    return check().that(actualList).containsExactlyElementsIn(expected);
+    return checkThatContentsList().containsExactlyElementsIn(expected);
   }
 
   /**
@@ -195,7 +210,7 @@ public final class IntStreamSubject extends Subject {
    */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsNoneOf(int first, int second, int... rest) {
-    check().that(actualList).containsNoneOf(first, second, box(rest));
+    checkThatContentsList().containsNoneOf(first, second, box(rest));
   }
 
   /**
@@ -203,7 +218,7 @@ public final class IntStreamSubject extends Subject {
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneIn(@Nullable Iterable<?> excluded) {
-    check().that(actualList).containsNoneIn(excluded);
+    checkThatContentsList().containsNoneIn(excluded);
   }
 
   /**
@@ -215,7 +230,7 @@ public final class IntStreamSubject extends Subject {
    * @throws NullPointerException if any element is null
    */
   public void isInStrictOrder() {
-    check().that(actualList).isInStrictOrder();
+    checkThatContentsList().isInStrictOrder();
   }
 
   /**
@@ -226,7 +241,7 @@ public final class IntStreamSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   public void isInStrictOrder(Comparator<? super Integer> comparator) {
-    check().that(actualList).isInStrictOrder(comparator);
+    checkThatContentsList().isInStrictOrder(comparator);
   }
 
   /**
@@ -237,7 +252,7 @@ public final class IntStreamSubject extends Subject {
    * @throws NullPointerException if any element is null
    */
   public void isInOrder() {
-    check().that(actualList).isInOrder();
+    checkThatContentsList().isInOrder();
   }
 
   /**
@@ -247,14 +262,25 @@ public final class IntStreamSubject extends Subject {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   public void isInOrder(Comparator<? super Integer> comparator) {
-    check().that(actualList).isInOrder(comparator);
+    checkThatContentsList().isInOrder(comparator);
+  }
+
+  /** Be careful with using this, as documented on {@link Subject#substituteCheck}. */
+  private IterableSubject checkThatContentsList() {
+    return substituteCheck()
+        .about(iterables(/* typeDescriptionOverride= */ "stream"))
+        .that(listSupplier.get());
+  }
+
+  private static Supplier<@Nullable List<?>> listCollector(@Nullable IntStream actual) {
+    return () -> actual == null ? null : actual.boxed().collect(toCollection(ArrayList::new));
   }
 
   private static Object[] box(int[] rest) {
     return IntStream.of(rest).boxed().toArray(Integer[]::new);
   }
 
-  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  // TODO: b/246961366 - Do we want to override + deprecate isEqualTo/isNotEqualTo?
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

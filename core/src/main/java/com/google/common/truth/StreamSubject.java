@@ -38,9 +38,15 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>If you intend to make multiple assertions on the contents of the same stream, you should
  * instead first collect the contents of the stream into a collection and then assert directly on
- * that.
+ * that. For example:
  *
- * <p>For very large or infinite streams you may want to first {@linkplain Stream#limit limit} the
+ * <pre>{@code
+ * List<Integer> list = makeStream().map(...).filter(...).collect(toImmutableList());
+ * assertThat(list).contains(5);
+ * assertThat(list).doesNotContain(2);
+ * }</pre>
+ *
+ * <p>For very large or infinite streams, you may want to first {@linkplain Stream#limit limit} the
  * stream before asserting on it.
  *
  * @author Kurt Alfred Kluever
@@ -55,7 +61,7 @@ public final class StreamSubject extends Subject {
       FailureMetadata metadata,
       @Nullable Stream<?> actual,
       Supplier<@Nullable List<?>> listSupplier) {
-    super(metadata, actual);
+    super(metadata, actual, /* typeDescriptionOverride= */ "stream");
     this.actual = actual;
     this.listSupplier = listSupplier;
   }
