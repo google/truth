@@ -364,12 +364,12 @@ final class SubjectUtils {
     return ImmutableList.copyOf(Iterables.concat(inputs));
   }
 
-  static <E> ImmutableList<E> append(E[] array, E object) {
-    return new ImmutableList.Builder<E>().add(array).add(object).build();
+  static <E> ImmutableList<E> append(E[] array, E e) {
+    return new ImmutableList.Builder<E>().add(array).add(e).build();
   }
 
-  static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
-    return new ImmutableList.Builder<E>().addAll(list).add(object).build();
+  static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E e) {
+    return new ImmutableList.Builder<E>().addAll(list).add(e).build();
   }
 
   static <E> ImmutableList<E> sandwich(E first, E[] array, E last) {

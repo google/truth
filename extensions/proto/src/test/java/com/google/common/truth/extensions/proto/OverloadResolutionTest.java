@@ -54,11 +54,11 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 eqMessage = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 diffMessage = parse("r_string: \"bar\" r_string: \"foo\"");
-    Object object = message;
+    Object anObject = message;
     Object eqObject = eqMessage;
     Object diffObject = diffMessage;
 
-    assertThat(message).isSameInstanceAs(object);
+    assertThat(message).isSameInstanceAs(anObject);
     assertThat(message).isNotSameInstanceAs(eqMessage);
     assertThat(message).isEqualTo(eqMessage);
     assertThat(message).isNotEqualTo(diffMessage);
@@ -79,16 +79,16 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 eqMessage = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 diffMessage = parse("r_string: \"bar\" r_string: \"foo\"");
-    Object object = message;
+    Object anObject = message;
     Object eqObject = eqMessage;
     Object diffObject = diffMessage;
 
-    assertThat(object).isSameInstanceAs(message);
-    assertThat(object).isNotSameInstanceAs(eqObject);
-    assertThat(object).isEqualTo(eqObject);
-    assertThat(object).isNotEqualTo(diffObject);
-    assertThat(object).isEqualTo(eqMessage);
-    assertThat(object).isNotEqualTo(diffMessage);
+    assertThat(anObject).isSameInstanceAs(message);
+    assertThat(anObject).isNotSameInstanceAs(eqObject);
+    assertThat(anObject).isEqualTo(eqObject);
+    assertThat(anObject).isNotEqualTo(diffObject);
+    assertThat(anObject).isEqualTo(eqMessage);
+    assertThat(anObject).isNotEqualTo(diffMessage);
   }
 
   @Test

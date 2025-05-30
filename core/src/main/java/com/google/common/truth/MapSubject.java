@@ -427,10 +427,8 @@ public class MapSubject extends Subject {
     }
   }
 
-  private static String maybeAddType(@Nullable Object object, boolean includeTypes) {
-    return includeTypes
-        ? lenientFormat("%s (%s)", object, objectToTypeName(object))
-        : String.valueOf(object);
+  private static String maybeAddType(@Nullable Object o, boolean includeTypes) {
+    return includeTypes ? lenientFormat("%s (%s)", o, objectToTypeName(o)) : String.valueOf(o);
   }
 
   private class MapInOrder implements Ordered {

@@ -133,9 +133,9 @@ abstract class FieldScopeImpl extends FieldScope {
     return NONE;
   }
 
-  private static boolean emptyOrAllNull(Iterable<?> objects) {
-    for (Object object : objects) {
-      if (object != null) {
+  private static boolean emptyOrAllNull(Iterable<?> iterable) {
+    for (Object o : iterable) {
+      if (o != null) {
         return false;
       }
     }
