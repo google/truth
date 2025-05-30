@@ -634,8 +634,8 @@ public class IterableSubject extends Subject {
      * an associated value, so it won't factor into alignment.
      */
     String key = keyToGoWithElementsString(label, elements);
-    if (elements.homogeneousTypeToDisplay != null) {
-      key += " (" + elements.homogeneousTypeToDisplay + ")";
+    if (elements.getHomogeneousTypeToDisplay() != null) {
+      key += " (" + elements.getHomogeneousTypeToDisplay() + ")";
     }
     return key;
   }

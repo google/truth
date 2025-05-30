@@ -20,6 +20,7 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Multisets.immutableEntry;
+import static com.google.common.truth.NullnessCasts.uncheckedCastNullableTToT;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
@@ -49,7 +50,7 @@ final class SubjectUtils {
 
   static final String HUMAN_UNDERSTANDABLE_EMPTY_STRING = "\"\" (empty String)";
 
-  static <T extends @Nullable Object> List<T> accumulate(T first, T second, T @Nullable ... rest) {
+  static <T extends @Nullable Object> List<T> accumulate(T first, T second, T @Nullable [] rest) {
     // rest should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
     // Javac makes the opposite inference, so handle that here.
@@ -57,7 +58,12 @@ final class SubjectUtils {
     items.add(first);
     items.add(second);
     if (rest == null) {
-      items.add((T) null);
+      /*
+       * This cast is probably not actually safe as used in IterableSubject.UsingCorrespondence. But
+       * that whole API is stuck being type-unsafe unless we re-generify IterableSubject:
+       * b/145689657#comment1.
+       */
+      items.add(uncheckedCastNullableTToT(null));
     } else {
       items.addAll(asList(rest));
     }
@@ -195,13 +201,17 @@ final class SubjectUtils {
    * elements and even to output different elements on different lines.
    */
   static final class DuplicateGroupedAndTyped {
-    final NonHashingMultiset<?> valuesAndMaybeTypes;
-    final @Nullable String homogeneousTypeToDisplay;
+    private final NonHashingMultiset<?> valuesAndMaybeTypes;
+    private final @Nullable String homogeneousTypeToDisplay;
 
     DuplicateGroupedAndTyped(
         NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
       this.valuesAndMaybeTypes = valuesAndMaybeTypes;
       this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
+    }
+
+    @Nullable String getHomogeneousTypeToDisplay() {
+      return homogeneousTypeToDisplay;
     }
 
     int totalCopies() {
@@ -257,10 +267,10 @@ final class SubjectUtils {
    * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
    */
   static boolean hasMatchingToStringPair(Iterable<?> items1, Iterable<?> items2) {
-    if (isEmpty(items1) || isEmpty(items2)) {
-      return false; // Bail early to avoid calling hashCode() on the elements unnecessarily.
-    }
-    return !retainMatchingToString(items1, items2).isEmpty();
+    // Bail early for empty iterables to avoid calling hashCode() on the elements unnecessarily.
+    return !isEmpty(items1)
+        && !isEmpty(items2)
+        && !retainMatchingToString(items1, items2).isEmpty();
   }
 
   static String objectToTypeName(@Nullable Object item) {
