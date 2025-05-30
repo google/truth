@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
-import static com.google.common.truth.OptionalIntSubject.optionalInts;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.OptionalInt;
@@ -34,7 +34,8 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void failOnNullSubject() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalInt) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -65,7 +66,8 @@ public class OptionalIntSubjectTest {
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalInt) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -90,11 +92,5 @@ public class OptionalIntSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalInt.of(1337)).hasValue(42));
     assertThat(expected).factValue("value of").isEqualTo("optionalInt.getAsInt()");
-  }
-
-  private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<OptionalIntSubject, OptionalInt>
-          assertionCallback) {
-    return ExpectFailure.expectFailureAbout(optionalInts(), assertionCallback);
   }
 }

@@ -41,8 +41,8 @@ import org.junit.runners.model.Statement;
  * ...
  *
  * private static AssertionError expectFailure(
- *     ExpectFailure.SimpleSubjectBuilderCallback<UiElementSubject, UiElement> assertionCallback) {
- *   return ExpectFailure.expectFailureAbout(uiElements(), assertionCallback);
+ *     SimpleSubjectBuilderCallback<UiElementSubject, UiElement> assertionCallback) {
+ *   return expectFailureAbout(uiElements(), assertionCallback);
  * }
  * }</pre>
  *

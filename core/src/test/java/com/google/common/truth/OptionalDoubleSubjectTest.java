@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
-import static com.google.common.truth.OptionalDoubleSubject.optionalDoubles;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.OptionalDouble;
@@ -34,7 +34,8 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void failOnNullSubject() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalDouble) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -65,7 +66,8 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalDouble) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -90,11 +92,5 @@ public class OptionalDoubleSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.of(1337.0)).hasValue(42.0));
     assertThat(expected).factValue("value of").isEqualTo("optionalDouble.getAsDouble()");
-  }
-
-  private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<OptionalDoubleSubject, OptionalDouble>
-          assertionCallback) {
-    return ExpectFailure.expectFailureAbout(optionalDoubles(), assertionCallback);
   }
 }

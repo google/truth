@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
-import static com.google.common.truth.OptionalLongSubject.optionalLongs;
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.OptionalLong;
@@ -34,7 +34,8 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void failOnNullSubject() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalLong) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -65,7 +66,8 @@ public class OptionalLongSubjectTest {
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that((OptionalLong) null).isEmpty());
     assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
@@ -90,11 +92,5 @@ public class OptionalLongSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalLong.of(1337L)).hasValue(42L));
     assertThat(expected).factValue("value of").isEqualTo("optionalLong.getAsLong()");
-  }
-
-  private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<OptionalLongSubject, OptionalLong>
-          assertionCallback) {
-    return ExpectFailure.expectFailureAbout(optionalLongs(), assertionCallback);
   }
 }

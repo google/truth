@@ -15,9 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
-import static com.google.common.truth.IntStreamSubject.intStreams;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThrows;
@@ -340,10 +340,5 @@ public final class IntStreamSubjectTest {
   public void testIsInStrictOrder_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(IntStream.of(1, 2, 2, 4)).isInStrictOrder());
-  }
-
-  private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<IntStreamSubject, IntStream> assertionCallback) {
-    return ExpectFailure.expectFailureAbout(intStreams(), assertionCallback);
   }
 }
