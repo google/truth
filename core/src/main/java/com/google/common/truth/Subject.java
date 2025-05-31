@@ -92,7 +92,7 @@ public class Subject {
     SubjectT createSubject(FailureMetadata metadata, @Nullable ActualT actual);
   }
 
-  private final @Nullable FailureMetadata metadata;
+  private final FailureMetadata metadata;
   private final @Nullable Object actual;
   private final @Nullable String typeDescriptionOverride;
 
@@ -135,10 +135,8 @@ public class Subject {
    * </ul>
    */
   Subject(
-      @Nullable FailureMetadata metadata,
-      @Nullable Object actual,
-      @Nullable String typeDescriptionOverride) {
-    this.metadata = metadata == null ? null : metadata.updateForSubject(this);
+      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
+    this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
@@ -675,7 +673,7 @@ public class Subject {
    */
   @Deprecated
   final StandardSubjectBuilder check() {
-    return new StandardSubjectBuilder(checkNotNull(metadata).updateForCheckCall());
+    return new StandardSubjectBuilder(metadata.updateForCheckCall());
   }
 
   /**
@@ -761,9 +759,8 @@ public class Subject {
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
     LazyMessage message = new LazyMessage(format, args);
     return new StandardSubjectBuilder(
-        checkNotNull(metadata)
-            .updateForCheckCall(
-                valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));
+        metadata.updateForCheckCall(
+            valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));
   }
 
   /**
@@ -937,8 +934,7 @@ public class Subject {
       }
     } else {
       if (equalityCheck == EqualityCheck.EQUAL && actual != null && expected != null) {
-        checkNotNull(metadata)
-            .failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
+        metadata.failEqualityCheck(difference.factsOrEmpty(), expectedString, actualString);
       } else {
         failEqualityCheckNoComparisonFailure(
             difference,
@@ -1256,7 +1252,7 @@ public class Subject {
   }
 
   private void doFail(ImmutableList<Fact> facts) {
-    checkNotNull(metadata).fail(facts);
+    metadata.fail(facts);
   }
 
   static Factory<Subject, Object> objects() {
