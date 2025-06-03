@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Guava {@link Optional} subjects.
+ * Propositions for Guava {@link Optional} values.
  *
  * <p>If you are looking for a {@code java.util.Optional} subject, see {@link OptionalSubject}.
  *
@@ -40,7 +40,7 @@ public final class GuavaOptionalSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the {@link Optional}{@code <T>} is absent or the subject is null. */
+  /** Fails if the {@link Optional} is absent or null. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -49,7 +49,7 @@ public final class GuavaOptionalSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link Optional}{@code <T>} is present or the subject is null. */
+  /** Fails if the {@link Optional} is present or null. */
   public void isAbsent() {
     if (actual == null) {
       failWithActual(simpleFact("expected absent optional"));
@@ -60,7 +60,7 @@ public final class GuavaOptionalSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link Optional}{@code <T>} does not have the given value or the subject is null.
+   * Fails if the {@link Optional} does not have the given value or null.
    *
    * <p>To make more complex assertions on the optional's value, split your assertion in two:
    *

@@ -26,7 +26,7 @@ import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code float[]}.
+ * A subject for {@code float[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -189,7 +189,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
 
   /**
    * A partially specified check for doing assertions on the array similar to the assertions
-   * supported for {@link Iterable} subjects, in which the elements of the array under test are
+   * supported for {@link Iterable} values, in which the elements of the array under test are
    * compared to expected elements using either exact or tolerant float equality: see {@link
    * #usingExactEquality} and {@link #usingTolerance}. Call methods on this object to actually
    * execute the check.

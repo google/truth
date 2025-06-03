@@ -22,7 +22,7 @@ import java.util.OptionalInt;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalInt} subjects.
+ * Propositions for Java 8 {@link OptionalInt} values.
  *
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
@@ -31,12 +31,12 @@ import org.jspecify.annotations.Nullable;
 public final class OptionalIntSubject extends Subject {
   private final @Nullable OptionalInt actual;
 
-  private OptionalIntSubject(FailureMetadata failureMetadata, @Nullable OptionalInt subject) {
-    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optionalInt");
-    this.actual = subject;
+  private OptionalIntSubject(FailureMetadata failureMetadata, @Nullable OptionalInt actual) {
+    super(failureMetadata, actual, /* typeDescriptionOverride= */ "optionalInt");
+    this.actual = actual;
   }
 
-  /** Fails if the {@link OptionalInt} is empty or the subject is null. */
+  /** Fails if the {@link OptionalInt} is empty or null. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -45,7 +45,7 @@ public final class OptionalIntSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalInt} is present or the subject is null. */
+  /** Fails if the {@link OptionalInt} is present or null. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -57,8 +57,8 @@ public final class OptionalIntSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link OptionalInt} does not have the given value or the subject is null. More
-   * sophisticated comparisons can be done using {@code assertThat(optional.getAsInt())…}.
+   * Fails if the {@link OptionalInt} does not have the given value or is null. More sophisticated
+   * comparisons can be done using {@code assertThat(optional.getAsInt())…}.
    */
   public void hasValue(int expected) {
     if (actual == null) {

@@ -20,7 +20,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for boolean subjects.
+ * Propositions for boolean values.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -32,7 +32,7 @@ public final class BooleanSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the subject is false or {@code null}. */
+  /** Fails if the actual value is false or {@code null}. */
   public void isTrue() {
     if (actual == null) {
       isEqualTo(true); // fails
@@ -41,7 +41,7 @@ public final class BooleanSubject extends Subject {
     }
   }
 
-  /** Fails if the subject is true or {@code null}. */
+  /** Fails if the actual value is true or {@code null}. */
   public void isFalse() {
     if (actual == null) {
       isEqualTo(false); // fails

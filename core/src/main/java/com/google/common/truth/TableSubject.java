@@ -26,7 +26,7 @@ import com.google.common.collect.Tables;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Table} subjects.
+ * Propositions for {@link Table} values.
  *
  * @author Kurt Alfred Kluever
  */

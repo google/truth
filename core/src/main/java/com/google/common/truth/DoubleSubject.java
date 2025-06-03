@@ -27,7 +27,7 @@ import static java.lang.Double.NaN;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Double} subjects.
+ * Propositions for {@link Double} values.
  *
  * @author Kurt Alfred Kluever
  */
@@ -40,8 +40,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * A partially specified check about an approximate relationship to a {@code double} subject using
-   * a tolerance.
+   * A partially specified check about an approximate relationship to a {@code double} value using a
+   * tolerance.
    */
   public abstract static class TolerantDoubleComparison {
 
@@ -49,9 +49,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
     private TolerantDoubleComparison() {}
 
     /**
-     * Fails if the subject was expected to be within the tolerance of the given value but was not
-     * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
-     * tolerance are specified earlier in the fluent call chain.
+     * Fails if the actual value was expected to be within the tolerance of the given value but was
+     * not <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The actual
+     * value and tolerance are specified earlier in the fluent call chain.
      */
     public abstract void of(double expected);
 
@@ -79,13 +79,13 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Prepares for a check that the subject is a finite number within the given tolerance of an
+   * Prepares for a check that the actual value is a finite number within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
    *
-   * <p>The check will fail if either the subject or the object is {@link Double#POSITIVE_INFINITY},
-   * {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. To check for those values, use {@link
-   * #isPositiveInfinity}, {@link #isNegativeInfinity}, {@link #isNaN}, or (with more generality)
-   * {@link #isEqualTo}.
+   * <p>The check will fail if either the actual value or the expected value is {@link
+   * Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. To check
+   * for those values, use {@link #isPositiveInfinity}, {@link #isNegativeInfinity}, {@link #isNaN},
+   * or (with more generality) {@link #isEqualTo}.
    *
    * <p>The check will pass if both values are zero, even if one is {@code 0.0} and the other is
    * {@code -0.0}. Use {@link #isEqualTo} to assert that a value is exactly {@code 0.0} or that it
@@ -96,9 +96,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * and {@code -0.0}). See the documentation on {@link #isEqualTo} for advice on when exact
    * equality assertions are appropriate.
    *
-   * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
-   *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   * @param tolerance an inclusive upper bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@link Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public TolerantDoubleComparison isWithin(double tolerance) {
     return new TolerantDoubleComparison() {
@@ -120,12 +120,12 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Prepares for a check that the subject is a finite number not within the given tolerance of an
-   * expected value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a finite number not within the given tolerance of
+   * an expected value that will be provided in the next call in the fluent chain.
    *
-   * <p>The check will fail if either the subject or the object is {@link Double#POSITIVE_INFINITY},
-   * {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. See {@link #isFinite}, {@link
-   * #isNotNaN}, or {@link #isNotEqualTo} for checks with other behaviours.
+   * <p>The check will fail if either the actual value or the expected value is {@link
+   * Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. See {@link
+   * #isFinite}, {@link #isNotNaN}, or {@link #isNotEqualTo} for checks with other behaviours.
    *
    * <p>The check will fail if both values are zero, even if one is {@code 0.0} and the other is
    * {@code -0.0}. Use {@link #isNotEqualTo} for a test which fails for a value of exactly zero with
@@ -135,9 +135,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * but sometimes {@link #isNotEqualTo} is preferable (note the different behaviours around
    * non-finite values and {@code -0.0}).
    *
-   * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
-   *     Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   * @param tolerance an exclusive lower bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@code Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public TolerantDoubleComparison isNotWithin(double tolerance) {
     return new TolerantDoubleComparison() {
@@ -159,7 +159,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Asserts that the subject is exactly equal to the given value, with equality defined as by
+   * Asserts that the actual value is exactly equal to the given value, with equality defined as by
    * {@code Double#equals}. This method is <i>not</i> recommended when the code under test is doing
    * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
@@ -179,9 +179,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Asserts that the subject is not exactly equal to the given value, with equality defined as by
-   * {@code Double#equals}. See {@link #isEqualTo} for advice on when exact equality is recommended.
-   * Use {@link #isNotWithin} for an assertion with a tolerance.
+   * Asserts that the actual value is not exactly equal to the given value, with equality defined as
+   * by {@code Double#equals}. See {@link #isEqualTo} for advice on when exact equality is
+   * recommended. Use {@link #isNotWithin} for an assertion with a tolerance.
    *
    * <p><b>Note:</b> The assertion {@code isNotEqualTo(0.0)} passes for {@code -0.0}, and vice
    * versa. For an assertion that fails for either {@code 0.0} or {@code -0.0}, use {@link
@@ -201,7 +201,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  /** Asserts that the subject is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
+  /** Asserts that the actual value is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
   public void isZero() {
     if (actual == null || actual != 0.0) {
       failWithActual(simpleFact("expected zero"));
@@ -209,7 +209,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Asserts that the subject is a non-null value other than zero (i.e. it is not {@code 0.0},
+   * Asserts that the actual value is a non-null value other than zero (i.e. it is not {@code 0.0},
    * {@code -0.0} or {@code null}).
    */
   public void isNonZero() {
@@ -220,23 +220,23 @@ public final class DoubleSubject extends ComparableSubject<Double> {
     }
   }
 
-  /** Asserts that the subject is {@link Double#POSITIVE_INFINITY}. */
+  /** Asserts that the actual value is {@link Double#POSITIVE_INFINITY}. */
   public void isPositiveInfinity() {
     isEqualTo(Double.POSITIVE_INFINITY);
   }
 
-  /** Asserts that the subject is {@link Double#NEGATIVE_INFINITY}. */
+  /** Asserts that the actual value is {@link Double#NEGATIVE_INFINITY}. */
   public void isNegativeInfinity() {
     isEqualTo(Double.NEGATIVE_INFINITY);
   }
 
-  /** Asserts that the subject is {@link Double#NaN}. */
+  /** Asserts that the actual value is {@link Double#NaN}. */
   public void isNaN() {
     isEqualTo(NaN);
   }
 
   /**
-   * Asserts that the subject is finite, i.e. not {@link Double#POSITIVE_INFINITY}, {@link
+   * Asserts that the actual value is finite, i.e. not {@link Double#POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
    */
   public void isFinite() {
@@ -246,7 +246,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Asserts that the subject is a non-null value other than {@link Double#NaN} (but it may be
+   * Asserts that the actual value is a non-null value other than {@link Double#NaN} (but it may be
    * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
    */
   public void isNotNaN() {
@@ -258,9 +258,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Checks that the subject is greater than {@code other}.
+   * Checks that the actual value is greater than {@code other}.
    *
-   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
   public void isGreaterThan(int other) {
@@ -268,9 +268,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Checks that the subject is less than {@code other}.
+   * Checks that the actual value is less than {@code other}.
    *
-   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
   public void isLessThan(int other) {
@@ -278,9 +278,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Checks that the subject is less than or equal to {@code other}.
+   * Checks that the actual value is less than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
   public void isAtMost(int other) {
@@ -288,9 +288,9 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   }
 
   /**
-   * Checks that the subject is greater than or equal to {@code other}.
+   * Checks that the actual value is greater than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
   public void isAtLeast(int other) {

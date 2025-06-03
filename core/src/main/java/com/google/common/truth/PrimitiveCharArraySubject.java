@@ -21,7 +21,7 @@ import com.google.common.primitives.Chars;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code char[]}.
+ * A subject for {@code char[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

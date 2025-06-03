@@ -26,7 +26,7 @@ import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code double[]}.
+ * A subject for {@code double[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -182,7 +182,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
 
   /**
    * A partially specified check for doing assertions on the array similar to the assertions
-   * supported for {@link Iterable} subjects, in which the elements of the array under test are
+   * supported for {@link Iterable} values, in which the elements of the array under test are
    * compared to expected elements using either exact or tolerant double equality: see {@link
    * #usingExactEquality} and {@link #usingTolerance}. Call methods on this object to actually
    * execute the check.

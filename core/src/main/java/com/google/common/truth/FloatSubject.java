@@ -28,7 +28,7 @@ import static java.lang.Float.floatToIntBits;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Float} subjects.
+ * Propositions for {@link Float} values.
  *
  * @author Kurt Alfred Kluever
  */
@@ -45,8 +45,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * A partially specified check about an approximate relationship to a {@code float} subject using
-   * a tolerance.
+   * A partially specified check about an approximate relationship to a {@code float} value using a
+   * tolerance.
    */
   public abstract static class TolerantFloatComparison {
 
@@ -54,9 +54,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
     private TolerantFloatComparison() {}
 
     /**
-     * Fails if the subject was expected to be within the tolerance of the given value but was not
-     * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
-     * tolerance are specified earlier in the fluent call chain.
+     * Fails if the actual value was expected to be within the tolerance of the given value but was
+     * not <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The actual
+     * value and tolerance are specified earlier in the fluent call chain.
      */
     public abstract void of(float expected);
 
@@ -84,13 +84,13 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Prepares for a check that the subject is a finite number within the given tolerance of an
+   * Prepares for a check that the actual value is a finite number within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
    *
-   * <p>The check will fail if either the subject or the object is {@link Float#POSITIVE_INFINITY},
-   * {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. To check for those values, use {@link
-   * #isPositiveInfinity}, {@link #isNegativeInfinity}, {@link #isNaN}, or (with more generality)
-   * {@link #isEqualTo}.
+   * <p>The check will fail if either the actual value or the expected value is {@link
+   * Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. To check for
+   * those values, use {@link #isPositiveInfinity}, {@link #isNegativeInfinity}, {@link #isNaN}, or
+   * (with more generality) {@link #isEqualTo}.
    *
    * <p>The check will pass if both values are zero, even if one is {@code 0.0f} and the other is
    * {@code -0.0f}. Use {@link #isEqualTo} to assert that a value is exactly {@code 0.0f} or that it
@@ -101,9 +101,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * and {@code -0.0f}). See the documentation on {@link #isEqualTo} for advice on when exact
    * equality assertions are appropriate.
    *
-   * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
-   *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   * @param tolerance an inclusive upper bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isWithin(float tolerance) {
     return new TolerantFloatComparison() {
@@ -125,12 +125,12 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Prepares for a check that the subject is a finite number not within the given tolerance of an
-   * expected value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a finite number not within the given tolerance of
+   * an expected value that will be provided in the next call in the fluent chain.
    *
-   * <p>The check will fail if either the subject or the object is {@link Float#POSITIVE_INFINITY},
-   * {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. See {@link #isFinite}, {@link
-   * #isNotNaN}, or {@link #isNotEqualTo} for checks with other behaviours.
+   * <p>The check will fail if either the actual value or the expected value is {@link
+   * Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. See {@link
+   * #isFinite}, {@link #isNotNaN}, or {@link #isNotEqualTo} for checks with other behaviours.
    *
    * <p>The check will fail if both values are zero, even if one is {@code 0.0f} and the other is
    * {@code -0.0f}. Use {@link #isNotEqualTo} for a test which fails for a value of exactly zero
@@ -140,9 +140,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * but sometimes {@link #isNotEqualTo} is preferable (note the different behaviours around
    * non-finite values and {@code -0.0f}).
    *
-   * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
-   *     Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   * @param tolerance an exclusive lower bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@code Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(float tolerance) {
     return new TolerantFloatComparison() {
@@ -164,7 +164,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Asserts that the subject is exactly equal to the given value, with equality defined as by
+   * Asserts that the actual value is exactly equal to the given value, with equality defined as by
    * {@code Float#equals}. This method is <i>not</i> recommended when the code under test is doing
    * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
@@ -184,9 +184,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Asserts that the subject is not exactly equal to the given value, with equality defined as by
-   * {@code Float#equals}. See {@link #isEqualTo} for advice on when exact equality is recommended.
-   * Use {@link #isNotWithin} for an assertion with a tolerance.
+   * Asserts that the actual value is not exactly equal to the given value, with equality defined as
+   * by {@code Float#equals}. See {@link #isEqualTo} for advice on when exact equality is
+   * recommended. Use {@link #isNotWithin} for an assertion with a tolerance.
    *
    * <p><b>Note:</b> The assertion {@code isNotEqualTo(0.0f)} passes for {@code -0.0f}, and vice
    * versa. For an assertion that fails for either {@code 0.0f} or {@code -0.0f}, use {@link
@@ -218,7 +218,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
     checkArgument(tolerance != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
-  /** Asserts that the subject is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
+  /** Asserts that the actual value is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
   public void isZero() {
     if (actual == null || actual != 0.0f) {
       failWithActual(simpleFact("expected zero"));
@@ -226,7 +226,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Asserts that the subject is a non-null value other than zero (i.e. it is not {@code 0.0f},
+   * Asserts that the actual value is a non-null value other than zero (i.e. it is not {@code 0.0f},
    * {@code -0.0f} or {@code null}).
    */
   public void isNonZero() {
@@ -237,23 +237,23 @@ public final class FloatSubject extends ComparableSubject<Float> {
     }
   }
 
-  /** Asserts that the subject is {@link Float#POSITIVE_INFINITY}. */
+  /** Asserts that the actual value is {@link Float#POSITIVE_INFINITY}. */
   public void isPositiveInfinity() {
     isEqualTo(Float.POSITIVE_INFINITY);
   }
 
-  /** Asserts that the subject is {@link Float#NEGATIVE_INFINITY}. */
+  /** Asserts that the actual value is {@link Float#NEGATIVE_INFINITY}. */
   public void isNegativeInfinity() {
     isEqualTo(Float.NEGATIVE_INFINITY);
   }
 
-  /** Asserts that the subject is {@link Float#NaN}. */
+  /** Asserts that the actual value is {@link Float#NaN}. */
   public void isNaN() {
     isEqualTo(NaN);
   }
 
   /**
-   * Asserts that the subject is finite, i.e. not {@link Float#POSITIVE_INFINITY}, {@link
+   * Asserts that the actual value is finite, i.e. not {@link Float#POSITIVE_INFINITY}, {@link
    * Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    */
   public void isFinite() {
@@ -263,8 +263,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Asserts that the subject is a non-null value other than {@link Float#NaN} (but it may be {@link
-   * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
+   * Asserts that the actual value is a non-null value other than {@link Float#NaN} (but it may be
+   * {@link Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
   public void isNotNaN() {
     if (actual == null) {
@@ -275,9 +275,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Checks that the subject is greater than {@code other}.
+   * Checks that the actual value is greater than {@code other}.
    *
-   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
   public void isGreaterThan(int other) {
@@ -285,9 +285,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Checks that the subject is less than {@code other}.
+   * Checks that the actual value is less than {@code other}.
    *
-   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
   public void isLessThan(int other) {
@@ -295,9 +295,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Checks that the subject is less than or equal to {@code other}.
+   * Checks that the actual value is less than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
   public void isAtMost(int other) {
@@ -305,9 +305,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
   }
 
   /**
-   * Checks that the subject is greater than or equal to {@code other}.
+   * Checks that the actual value is greater than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
   public void isAtLeast(int other) {

@@ -158,8 +158,8 @@ public class MultimapSubject extends Subject {
   }
 
   /**
-   * Returns a context-aware {@link Subject} for making assertions about the values for the given
-   * key within the {@link Multimap}.
+   * Returns a {@link Subject} for making assertions about the values for the given key within the
+   * {@link Multimap}.
    *
    * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
@@ -224,7 +224,7 @@ public class MultimapSubject extends Subject {
     ListMultimap<?, ?> extra = difference(actual, expectedMultimap);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
+    // the actual value but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {
         boolean addTypeInfo = hasMatchingToStringPair(missing.entries(), extra.entries());
@@ -279,7 +279,7 @@ public class MultimapSubject extends Subject {
     ListMultimap<?, ?> missing = difference(expectedMultimap, actual);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
+    // the actual value but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       failWithActual(
           fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),

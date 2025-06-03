@@ -21,7 +21,7 @@ import com.google.common.primitives.Booleans;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code boolean[]}.
+ * A subject for {@code boolean[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

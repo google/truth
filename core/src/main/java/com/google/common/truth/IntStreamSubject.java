@@ -89,18 +89,18 @@ public final class IntStreamSubject extends Subject {
     return IntStreamSubject::new;
   }
 
-  /** Fails if the subject is not empty. */
+  /** Fails if the actual value is not empty. */
   public void isEmpty() {
     checkThatContentsList().isEmpty();
   }
 
-  /** Fails if the subject is empty. */
+  /** Fails if the actual value is empty. */
   public void isNotEmpty() {
     checkThatContentsList().isNotEmpty();
   }
 
   /**
-   * Fails if the subject does not have the given size.
+   * Fails if the actual value does not have the given size.
    *
    * <p>If you'd like to check that your stream contains more than {@link Integer#MAX_VALUE}
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
@@ -109,35 +109,35 @@ public final class IntStreamSubject extends Subject {
     checkThatContentsList().hasSize(expectedSize);
   }
 
-  /** Fails if the subject does not contain the given element. */
+  /** Fails if the actual value does not contain the given element. */
   public void contains(int element) {
     checkThatContentsList().contains(element);
   }
 
-  /** Fails if the subject contains the given element. */
+  /** Fails if the actual value contains the given element. */
   public void doesNotContain(int element) {
     checkThatContentsList().doesNotContain(element);
   }
 
-  /** Fails if the subject contains duplicate elements. */
+  /** Fails if the actual value contains duplicate elements. */
   public void containsNoDuplicates() {
     checkThatContentsList().containsNoDuplicates();
   }
 
-  /** Fails if the subject does not contain at least one of the given elements. */
+  /** Fails if the actual value does not contain at least one of the given elements. */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsAnyOf(int first, int second, int... rest) {
     checkThatContentsList().containsAnyOf(first, second, box(rest));
   }
 
-  /** Fails if the subject does not contain at least one of the given elements. */
+  /** Fails if the actual value does not contain at least one of the given elements. */
   public void containsAnyIn(@Nullable Iterable<?> expected) {
     checkThatContentsList().containsAnyIn(expected);
   }
 
   /**
-   * Fails if the subject does not contain all of the given elements. If an element appears more
-   * than once in the given elements, then it must appear at least that number of times in the
+   * Fails if the actual value does not contain all of the given elements. If an element appears
+   * more than once in the given elements, then it must appear at least that number of times in the
    * actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
@@ -151,8 +151,8 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject does not contain all of the given elements. If an element appears more
-   * than once in the given elements, then it must appear at least that number of times in the
+   * Fails if the actual value does not contain all of the given elements. If an element appears
+   * more than once in the given elements, then it must appear at least that number of times in the
    * actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
@@ -165,10 +165,11 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject does not contain exactly the given elements.
+   * Fails if the actual value does not contain exactly the given elements.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
-   * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
+   * parameters asserts that the object must likewise be duplicated exactly 3 times in the actual
+   * value.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
@@ -191,10 +192,11 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject does not contain exactly the given elements.
+   * Fails if the actual value does not contain exactly the given elements.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
-   * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
+   * parameters asserts that the object must likewise be duplicated exactly 3 times in the actual
+   * value.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
@@ -205,8 +207,8 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
-   * test, which fails if any of the actual elements equal any of the excluded.)
+   * Fails if the actual value contains any of the given elements. (Duplicates are irrelevant to
+   * this test, which fails if any of the actual elements equal any of the excluded.)
    */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsNoneOf(int first, int second, int... rest) {
@@ -214,15 +216,15 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
-   * test, which fails if any of the actual elements equal any of the excluded.)
+   * Fails if the actual value contains any of the given elements. (Duplicates are irrelevant to
+   * this test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneIn(@Nullable Iterable<?> excluded) {
     checkThatContentsList().containsNoneIn(excluded);
   }
 
   /**
-   * Fails if the subject is not strictly ordered, according to the natural ordering of its
+   * Fails if the actual value is not strictly ordered, according to the natural ordering of its
    * elements. Strictly ordered means that each element in the stream is <i>strictly</i> greater
    * than the element that preceded it.
    *
@@ -234,7 +236,7 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject is not strictly ordered, according to the given comparator. Strictly
+   * Fails if the actual value is not strictly ordered, according to the given comparator. Strictly
    * ordered means that each element in the stream is <i>strictly</i> greater than the element that
    * preceded it.
    *
@@ -245,8 +247,9 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject is not ordered, according to the natural ordering of its elements. Ordered
-   * means that each element in the stream is greater than or equal to the element that preceded it.
+   * Fails if the actual value is not ordered, according to the natural ordering of its elements.
+   * Ordered means that each element in the stream is greater than or equal to the element that
+   * preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
@@ -256,8 +259,8 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject is not ordered, according to the given comparator. Ordered means that each
-   * element in the stream is greater than or equal to the element that preceded it.
+   * Fails if the actual value is not ordered, according to the given comparator. Ordered means that
+   * each element in the stream is greater than or equal to the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */

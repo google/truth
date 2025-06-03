@@ -22,7 +22,7 @@ import java.util.OptionalLong;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalLong} subjects.
+ * Propositions for Java 8 {@link OptionalLong} values.
  *
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
@@ -31,12 +31,12 @@ import org.jspecify.annotations.Nullable;
 public final class OptionalLongSubject extends Subject {
   private final @Nullable OptionalLong actual;
 
-  private OptionalLongSubject(FailureMetadata failureMetadata, @Nullable OptionalLong subject) {
-    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optionalLong");
-    this.actual = subject;
+  private OptionalLongSubject(FailureMetadata failureMetadata, @Nullable OptionalLong actual) {
+    super(failureMetadata, actual, /* typeDescriptionOverride= */ "optionalLong");
+    this.actual = actual;
   }
 
-  /** Fails if the {@link OptionalLong} is empty or the subject is null. */
+  /** Fails if the {@link OptionalLong} is empty or null. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -45,7 +45,7 @@ public final class OptionalLongSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalLong} is present or the subject is null. */
+  /** Fails if the {@link OptionalLong} is present or null. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -57,8 +57,8 @@ public final class OptionalLongSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link OptionalLong} does not have the given value or the subject is null. More
-   * sophisticated comparisons can be done using {@code assertThat(optional.getAsLong())…}.
+   * Fails if the {@link OptionalLong} does not have the given value or is null. More sophisticated
+   * comparisons can be done using {@code assertThat(optional.getAsLong())…}.
    */
   public void hasValue(long expected) {
     if (actual == null) {

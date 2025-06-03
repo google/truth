@@ -22,7 +22,7 @@ import com.google.common.collect.Multiset;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Multiset} subjects.
+ * Propositions for {@link Multiset} values.
  *
  * @author Kurt Alfred Kluever
  */

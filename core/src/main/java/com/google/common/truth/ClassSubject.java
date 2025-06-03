@@ -21,7 +21,7 @@ import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Class} subjects.
+ * Propositions for {@link Class} values.
  *
  * @author Kurt Alfred Kluever
  */

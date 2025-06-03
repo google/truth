@@ -21,7 +21,7 @@ import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code Object[]} and more generically {@code T[]}.
+ * A subject for {@code Object[]} and more generically {@code T[]}.
  *
  * @author Christian Gruber
  */

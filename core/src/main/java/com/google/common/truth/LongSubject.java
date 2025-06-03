@@ -23,7 +23,7 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@code long} subjects.
+ * Propositions for {@code long} values.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
@@ -43,7 +43,7 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * A partially specified check about an approximate relationship to a {@code long} subject using a
+   * A partially specified check about an approximate relationship to a {@code long} value using a
    * tolerance.
    *
    * @since 1.2
@@ -54,9 +54,9 @@ public class LongSubject extends ComparableSubject<Long> {
     private TolerantLongComparison() {}
 
     /**
-     * Fails if the subject was expected to be within the tolerance of the given value but was not
-     * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
-     * tolerance are specified earlier in the fluent call chain.
+     * Fails if the actual value was expected to be within the tolerance of the given value but was
+     * not <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The actual
+     * value and tolerance are specified earlier in the fluent call chain.
      */
     public abstract void of(long expected);
 
@@ -84,11 +84,11 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Prepares for a check that the subject is a number within the given tolerance of an expected
-   * value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a number within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
    *
-   * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative value.
+   * @param tolerance an inclusive upper bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative value.
    * @since 1.2
    */
   public TolerantLongComparison isWithin(long tolerance) {
@@ -111,11 +111,11 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Prepares for a check that the subject is a number not within the given tolerance of an expected
-   * value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a number not within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
    *
-   * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative value.
+   * @param tolerance an exclusive lower bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative value.
    * @since 1.2
    */
   public TolerantLongComparison isNotWithin(long tolerance) {
@@ -152,9 +152,9 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Checks that the subject is greater than {@code other}.
+   * Checks that the actual value is greater than {@code other}.
    *
-   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
   public final void isGreaterThan(int other) {
@@ -162,9 +162,9 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Checks that the subject is less than {@code other}.
+   * Checks that the actual value is less than {@code other}.
    *
-   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
   public final void isLessThan(int other) {
@@ -172,9 +172,9 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Checks that the subject is less than or equal to {@code other}.
+   * Checks that the actual value is less than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
   public final void isAtMost(int other) {
@@ -182,9 +182,9 @@ public class LongSubject extends ComparableSubject<Long> {
   }
 
   /**
-   * Checks that the subject is greater than or equal to {@code other}.
+   * Checks that the actual value is greater than or equal to {@code other}.
    *
-   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
   public final void isAtLeast(int other) {

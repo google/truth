@@ -50,7 +50,7 @@ final class Platform {
     return clazz.isInstance(instance);
   }
 
-  /** Determines if the given subject contains a match for the given regex. */
+  /** Determines if the given actual value contains a match for the given regex. */
   static boolean containsMatch(String actual, String regex) {
     return Pattern.compile(regex).matcher(actual).find();
   }

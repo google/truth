@@ -23,7 +23,7 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Integer} subjects.
+ * Propositions for {@link Integer} values.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
@@ -42,8 +42,8 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   }
 
   /**
-   * A partially specified check about an approximate relationship to a {@code int} subject using a
-   * tolerance.
+   * A partially specified check about an approximate relationship to a {@code int} actual value
+   * using a tolerance.
    *
    * @since 1.2
    */
@@ -53,9 +53,9 @@ public class IntegerSubject extends ComparableSubject<Integer> {
     private TolerantIntegerComparison() {}
 
     /**
-     * Fails if the subject was expected to be within the tolerance of the given value but was not
-     * <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The subject and
-     * tolerance are specified earlier in the fluent call chain.
+     * Fails if the actual value was expected to be within the tolerance of the given value but was
+     * not <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The actual
+     * value and tolerance are specified earlier in the fluent call chain.
      */
     public abstract void of(int expected);
 
@@ -83,11 +83,11 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   }
 
   /**
-   * Prepares for a check that the subject is a number within the given tolerance of an expected
-   * value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a number within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
    *
-   * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative value.
+   * @param tolerance an inclusive upper bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative value.
    * @since 1.2
    */
   public TolerantIntegerComparison isWithin(int tolerance) {
@@ -110,11 +110,11 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   }
 
   /**
-   * Prepares for a check that the subject is a number not within the given tolerance of an expected
-   * value that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the actual value is a number not within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
    *
-   * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative value.
+   * @param tolerance an exclusive lower bound on the difference between the actual value and
+   *     expected value allowed by the check, which must be a non-negative value.
    * @since 1.2
    */
   public TolerantIntegerComparison isNotWithin(int tolerance) {

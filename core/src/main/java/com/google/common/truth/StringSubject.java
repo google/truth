@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for string subjects.
+ * Propositions for string values.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
@@ -243,7 +243,7 @@ public class StringSubject extends ComparableSubject<String> {
     return CaseInsensitiveStringComparison.create(this);
   }
 
-  /** Case insensitive propositions for string subjects. */
+  /** Case insensitive propositions for string values. */
   @SuppressWarnings("Casing_StringEqualsIgnoreCase") // intentional choice from API Review
   public static final class CaseInsensitiveStringComparison {
     private final StringSubject subject;

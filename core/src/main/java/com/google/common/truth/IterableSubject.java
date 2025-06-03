@@ -69,7 +69,7 @@ import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Iterable} subjects.
+ * Propositions for {@link Iterable} values.
  *
  * <p><b>Note:</b>
  *
@@ -147,28 +147,28 @@ public class IterableSubject extends Subject {
     }
   }
 
-  /** Fails if the subject is not empty. */
+  /** Fails if the actual value is not empty. */
   public final void isEmpty() {
     if (!Iterables.isEmpty(checkNotNull(actual))) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
-  /** Fails if the subject is empty. */
+  /** Fails if the actual value is empty. */
   public final void isNotEmpty() {
     if (Iterables.isEmpty(checkNotNull(actual))) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
-  /** Fails if the subject does not have the given size. */
+  /** Fails if the actual value does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     int actualSize = size(checkNotNull(actual));
     check("size()").that(actualSize).isEqualTo(expectedSize);
   }
 
-  /** Checks (with a side-effect failure) that the subject contains the supplied item. */
+  /** Checks (with a side-effect failure) that the actual value contains the supplied item. */
   public final void contains(@Nullable Object element) {
     if (!Iterables.contains(checkNotNull(actual), element)) {
       List<@Nullable Object> elementList = asList(element);
@@ -188,14 +188,16 @@ public class IterableSubject extends Subject {
     }
   }
 
-  /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
+  /**
+   * Checks (with a side-effect failure) that the actual value does not contain the supplied item.
+   */
   public final void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(checkNotNull(actual), element)) {
       failWithActual("expected not to contain", element);
     }
   }
 
-  /** Checks that the subject does not contain duplicate elements. */
+  /** Checks that the actual value does not contain duplicate elements. */
   public final void containsNoDuplicates() {
     List<Multiset.Entry<?>> duplicates = new ArrayList<>();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(checkNotNull(actual)).entrySet()) {
@@ -211,14 +213,14 @@ public class IterableSubject extends Subject {
     }
   }
 
-  /** Checks that the subject contains at least one of the provided objects or fails. */
+  /** Checks that the actual value contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     containsAnyIn(accumulate(first, second, rest));
   }
 
   /**
-   * Checks that the subject contains at least one of the objects contained in the provided
+   * Checks that the actual value contains at least one of the objects contained in the provided
    * collection or fails.
    */
   // TODO(cpovirk): Consider using makeElementFacts-style messages here, in contains(), etc.
@@ -245,8 +247,8 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that the subject contains at least one of the objects contained in the provided array or
-   * fails.
+   * Checks that the actual value contains at least one of the objects contained in the provided
+   * array or fails.
    */
   @SuppressWarnings("AvoidObjectArrays")
   public final void containsAnyIn(@Nullable Object[] expected) {
@@ -378,10 +380,11 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that a subject contains exactly the provided objects or fails.
+   * Checks that the actual value contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
-   * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
+   * parameters asserts that the object must likewise be duplicated exactly 3 times in the actual
+   * value.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
@@ -399,11 +402,11 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that a subject contains exactly the provided objects or fails.
+   * Checks that the actual value contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
    * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
-   * subject.
+   * actual value.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
@@ -414,10 +417,11 @@ public class IterableSubject extends Subject {
   }
 
   /**
-   * Checks that a subject contains exactly the provided objects or fails.
+   * Checks that the actual value contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the array
-   * parameter asserts that the object must likewise be duplicated exactly 3 times in the subject.
+   * parameter asserts that the object must likewise be duplicated exactly 3 times in the actual
+   * value.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
@@ -485,7 +489,7 @@ public class IterableSubject extends Subject {
         missing.add(requiredElement);
         Iterators.addAll(missing, requiredIter);
 
-        // Extra elements that the subject had but shouldn't have.
+        // Extra elements that the actual value had but shouldn't have.
         List<@Nullable Object> extra = new ArrayList<>();
 
         // Remove all actual elements from missing, and add any that weren't in missing
@@ -565,7 +569,7 @@ public class IterableSubject extends Subject {
       String secondKey,
       Collection<?> secondCollection) {
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
+    // the actual value but not enough times. Similarly for unexpected extra items.
     boolean addTypeInfo = hasMatchingToStringPair(firstCollection, secondCollection);
     DuplicateGroupedAndTyped first =
         countDuplicatesAndMaybeAddTypeInfoReturnObject(firstCollection, addTypeInfo);
@@ -1097,8 +1101,8 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains at least one element that corresponds to the given expected
-     * element.
+     * Checks that the actual value contains at least one element that corresponds to the given
+     * expected element.
      */
     /*
      * TODO(cpovirk): Do we want @Nullable on usages of E? Probably not, since it could throw errors
@@ -1189,9 +1193,9 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-     * that there is a 1:1 mapping between the actual elements and the expected elements where each
-     * pair of elements correspond.
+     * Checks that actual value contains exactly elements that correspond to the expected elements,
+     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
+     * each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
@@ -1207,9 +1211,9 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-     * that there is a 1:1 mapping between the actual elements and the expected elements where each
-     * pair of elements correspond.
+     * Checks that actual value contains exactly elements that correspond to the expected elements,
+     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
+     * each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
@@ -1280,9 +1284,9 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-     * that there is a 1:1 mapping between the actual elements and the expected elements where each
-     * pair of elements correspond.
+     * Checks that actual value contains exactly elements that correspond to the expected elements,
+     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
+     * each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
@@ -1539,13 +1543,13 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that correspond to all the expected elements, i.e.
-     * that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * Checks that the actual value contains elements that correspond to all the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
+     * actual value, but they are not required to be consecutive.
      */
     @SafeVarargs
     @CanIgnoreReturnValue
@@ -1554,13 +1558,13 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that correspond to all the expected elements, i.e.
-     * that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * Checks that the actual value contains elements that correspond to all the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
+     * actual value, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
     public Ordered containsAtLeastElementsIn(Iterable<? extends E> expected) {
@@ -1616,13 +1620,13 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains elements that correspond to all the expected elements, i.e.
-     * that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * Checks that the actual value contains elements that correspond to all the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
+     * actual value, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
     @SuppressWarnings("AvoidObjectArrays")
@@ -1790,8 +1794,8 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains at least one element that corresponds to at least one of the
-     * expected elements.
+     * Checks that the actual value contains at least one element that corresponds to at least one
+     * of the expected elements.
      */
     @SafeVarargs
     public final void containsAnyOf(E first, E second, E @Nullable ... rest) {
@@ -1799,8 +1803,8 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains at least one element that corresponds to at least one of the
-     * expected elements.
+     * Checks that the actual value contains at least one element that corresponds to at least one
+     * of the expected elements.
      */
     public void containsAnyIn(Iterable<? extends E> expected) {
       Collection<A> actual = iterableToCollection(getCastActual());
@@ -1871,8 +1875,8 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains at least one element that corresponds to at least one of the
-     * expected elements.
+     * Checks that the actual value contains at least one element that corresponds to at least one
+     * of the expected elements.
      */
     @SuppressWarnings("AvoidObjectArrays")
     public void containsAnyIn(E[] expected) {
@@ -1894,9 +1898,9 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains no elements that correspond to any of the given elements.
-     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
-     * correspond to any of the given elements.)
+     * Checks that the actual value contains no elements that correspond to any of the given
+     * elements. (Duplicates are irrelevant to this test, which fails if any of the actual value's
+     * elements correspond to any of the given elements.)
      */
     @SafeVarargs
     public final void containsNoneOf(
@@ -1905,9 +1909,9 @@ public class IterableSubject extends Subject {
     }
 
     /**
-     * Checks that the subject contains no elements that correspond to any of the given elements.
-     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
-     * correspond to any of the given elements.)
+     * Checks that the actual value contains no elements that correspond to any of the given
+     * elements. (Duplicates are irrelevant to this test, which fails if any of the actual value's
+     * elements correspond to any of the given elements.)
      */
     public void containsNoneIn(Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
@@ -1952,7 +1956,7 @@ public class IterableSubject extends Subject {
 
     /**
      * Checks that the subject contains no elements that correspond to any of the given elements.
-     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
+     * (Duplicates are irrelevant to this test, which fails if any of the actual value's elements
      * correspond to any of the given elements.)
      */
     @SuppressWarnings("AvoidObjectArrays")

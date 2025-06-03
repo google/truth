@@ -21,7 +21,7 @@ import com.google.common.primitives.Longs;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A Subject for {@code long[]}.
+ * A subject for {@code long[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

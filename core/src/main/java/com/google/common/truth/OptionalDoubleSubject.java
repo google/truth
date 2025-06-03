@@ -23,7 +23,7 @@ import java.util.OptionalDouble;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalDouble} subjects.
+ * Propositions for Java 8 {@link OptionalDouble} values.
  *
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
@@ -33,12 +33,12 @@ public final class OptionalDoubleSubject extends Subject {
 
   private final @Nullable OptionalDouble actual;
 
-  private OptionalDoubleSubject(FailureMetadata failureMetadata, @Nullable OptionalDouble subject) {
-    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optionalDouble");
-    this.actual = subject;
+  private OptionalDoubleSubject(FailureMetadata failureMetadata, @Nullable OptionalDouble actual) {
+    super(failureMetadata, actual, /* typeDescriptionOverride= */ "optionalDouble");
+    this.actual = actual;
   }
 
-  /** Fails if the {@link OptionalDouble} is empty or the subject is null. */
+  /** Fails if the {@link OptionalDouble} is empty or null. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -47,7 +47,7 @@ public final class OptionalDoubleSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalDouble} is present or the subject is null. */
+  /** Fails if the {@link OptionalDouble} is present or null. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -59,12 +59,12 @@ public final class OptionalDoubleSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link OptionalDouble} does not have the given value or the subject is null. This
-   * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic,
-   * since the exact result of floating point arithmetic is sensitive to apparently trivial changes.
-   * More sophisticated comparisons can be done using {@code assertThat(optional.getAsDouble())…}.
-   * This method is recommended when the code under test is specified as either copying a value
-   * without modification from its input or returning a well-defined literal or constant value.
+   * Fails if the {@link OptionalDouble} does not have the given value or is null. This method is
+   * <i>not</i> recommended when the code under test is doing any kind of arithmetic, since the
+   * exact result of floating point arithmetic is sensitive to apparently trivial changes. More
+   * sophisticated comparisons can be done using {@code assertThat(optional.getAsDouble())…}. This
+   * method is recommended when the code under test is specified as either copying a value without
+   * modification from its input or returning a well-defined literal or constant value.
    */
   public void hasValue(double expected) {
     if (actual == null) {
