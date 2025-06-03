@@ -21,7 +21,7 @@ import com.google.common.collect.Range;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Comparable} values.
+ * A subject for {@link Comparable} values.
  *
  * @author Kurt Alfred Kluever
  * @param <T> the type of the object being tested by this {@code ComparableSubject}

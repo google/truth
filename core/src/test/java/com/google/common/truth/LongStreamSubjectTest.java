@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Java 8 {@link LongStream} Subjects.
+ * Tests for {@link LongStream} Subjects.
  *
  * @author Kurt Alfred Kluever
  */

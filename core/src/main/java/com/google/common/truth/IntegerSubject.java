@@ -23,7 +23,7 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Integer} values.
+ * A subject for {@link Integer} values.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)

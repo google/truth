@@ -23,7 +23,7 @@ import java.util.OptionalDouble;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalDouble} values.
+ * A subject for {@link OptionalDouble} values.
  *
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})

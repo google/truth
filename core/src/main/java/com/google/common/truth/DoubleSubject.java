@@ -27,7 +27,7 @@ import static java.lang.Double.NaN;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Double} values.
+ * A subject for {@link Double} values.
  *
  * @author Kurt Alfred Kluever
  */

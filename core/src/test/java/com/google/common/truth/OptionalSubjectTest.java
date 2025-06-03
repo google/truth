@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Java 8 {@link Optional} Subject.
+ * Tests for {@link Optional} Subject.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

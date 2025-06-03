@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Throwable} values.
+ * A subject for {@link Throwable} values.
  *
  * <p>Truth does not provide its own support for calling a method and automatically catching an
  * expected exception, only for asserting on the exception after it has been caught. To catch the

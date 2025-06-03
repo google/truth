@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link BigDecimal} values.
+ * A subject for {@link BigDecimal} values.
  *
  * @author Kurt Alfred Kluever
  */

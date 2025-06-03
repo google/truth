@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Stream} values.
+ * A subject for {@link Stream} values.
  *
  * <p><b>Note:</b> When you perform an assertion based on the <i>contents</i> of the stream, or when
  * <i>any</i> assertion <i>fails</i>, the wrapped stream will be drained immediately into a private

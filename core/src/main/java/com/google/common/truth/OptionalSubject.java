@@ -22,7 +22,7 @@ import java.util.Optional;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link Optional} subjects.
+ * A subject for {@link Optional} values.
  *
  * @author Christian Gruber
  * @since 1.3.0 (previously part of {@code truth-java8-extension})

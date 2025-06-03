@@ -22,7 +22,7 @@ import java.util.OptionalLong;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Java 8 {@link OptionalLong} values.
+ * A subject for {@link OptionalLong} values.
  *
  * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})

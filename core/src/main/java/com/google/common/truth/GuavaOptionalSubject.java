@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for Guava {@link Optional} values.
+ * A subject for Guava {@link Optional} values.
  *
  * <p>If you are looking for a {@code java.util.Optional} subject, see {@link OptionalSubject}.
  *

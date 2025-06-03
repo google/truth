@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Java 8 {@link OptionalInt} Subjects.
+ * Tests for {@link OptionalInt} Subjects.
  *
  * @author Ben Douglass
  */

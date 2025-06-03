@@ -46,7 +46,7 @@ import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Map} subjects.
+ * A subject for {@link Map} subjects.
  *
  * @author Christian Gruber
  * @author Kurt Alfred Kluever

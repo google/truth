@@ -69,7 +69,7 @@ import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Iterable} values.
+ * A subject for {@link Iterable} values.
  *
  * <p><b>Note:</b>
  *

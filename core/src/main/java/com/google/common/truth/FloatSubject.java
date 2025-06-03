@@ -28,7 +28,7 @@ import static java.lang.Float.floatToIntBits;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Propositions for {@link Float} values.
+ * A subject for {@link Float} values.
  *
  * @author Kurt Alfred Kluever
  */
