@@ -36,7 +36,7 @@ public final class OptionalLongSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the {@link OptionalLong} is empty or null. */
+  /** Checks that the actual {@link OptionalLong} contains a value. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -45,7 +45,7 @@ public final class OptionalLongSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalLong} is present or null. */
+  /** Checks that the actual {@link OptionalLong} does not contain a value. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -57,7 +57,7 @@ public final class OptionalLongSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link OptionalLong} does not have the given value or is null. More sophisticated
+   * Checks that the actual {@link OptionalLong} contains the given value. More sophisticated
    * comparisons can be done using {@code assertThat(optional.getAsLong())…}.
    */
   public void hasValue(long expected) {

@@ -40,7 +40,7 @@ public final class GuavaOptionalSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the {@link Optional} is absent or null. */
+  /** Checks that the actual {@link Optional} contains a value. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -49,7 +49,7 @@ public final class GuavaOptionalSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link Optional} is present or null. */
+  /** Checks that the actual {@link Optional} does not contain a value. */
   public void isAbsent() {
     if (actual == null) {
       failWithActual(simpleFact("expected absent optional"));
@@ -60,7 +60,7 @@ public final class GuavaOptionalSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link Optional} does not have the given value or null.
+   * Checks that the actual {@link Optional} contains the given value.
    *
    * <p>To make more complex assertions on the optional's value, split your assertion in two:
    *

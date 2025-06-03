@@ -36,8 +36,8 @@ public final class ClassSubject extends Subject {
   }
 
   /**
-   * Fails if this class or interface is not the same as or a subclass or subinterface of, the given
-   * class or interface.
+   * Checks that the actual value is a subclass of the given class. Classes are considered to be
+   * subclasses of themselves.
    */
   public void isAssignableTo(Class<?> clazz) {
     if (!clazz.isAssignableFrom(checkNotNull(actual))) {

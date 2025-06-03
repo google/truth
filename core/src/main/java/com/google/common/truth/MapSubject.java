@@ -79,37 +79,37 @@ public class MapSubject extends Subject {
     containsEntriesInAnyOrder((Map<?, ?>) other, /* allowUnexpected= */ false);
   }
 
-  /** Fails if the map is not empty. */
+  /** Checks that the actual map is empty. */
   public final void isEmpty() {
     if (!checkNotNull(actual).isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
-  /** Fails if the map is empty. */
+  /** Checks that the actual map is not empty. */
   public final void isNotEmpty() {
     if (checkNotNull(actual).isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
-  /** Fails if the map does not have the given size. */
+  /** Checks that the actual map has the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
     check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
   }
 
-  /** Fails if the map does not contain the given key. */
+  /** Checks that the actual map contains the given key. */
   public final void containsKey(@Nullable Object key) {
     check("keySet()").that(checkNotNull(actual).keySet()).contains(key);
   }
 
-  /** Fails if the map contains the given key. */
+  /** Checks that the actual map does not contain the given key. */
   public final void doesNotContainKey(@Nullable Object key) {
     check("keySet()").that(checkNotNull(actual).keySet()).doesNotContain(key);
   }
 
-  /** Fails if the map does not contain the given entry. */
+  /** Checks that the actual map contains the given entry. */
   public final void containsEntry(@Nullable Object key, @Nullable Object value) {
     Map.Entry<@Nullable Object, @Nullable Object> entry = immutableEntry(key, value);
     checkNotNull(actual);
@@ -133,7 +133,7 @@ public class MapSubject extends Subject {
           return;
         }
         /*
-         * In the case of a null expected or actual value, clarify that the key *is* present and
+         * In the case of a null expected or actual map, clarify that the key *is* present and
          * *is* expected to be present. That is, get() isn't returning null to indicate that the key
          * is missing, and the user isn't making an assertion that the key is missing.
          */
@@ -181,21 +181,21 @@ public class MapSubject extends Subject {
     }
   }
 
-  /** Fails if the map contains the given entry. */
+  /** Checks that the actual map does not contain the given entry. */
   public final void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     checkNoNeedToDisplayBothValues("entrySet()")
         .that(checkNotNull(actual).entrySet())
         .doesNotContain(immutableEntry(key, value));
   }
 
-  /** Fails if the map is not empty. */
+  /** Checks that the actual map is empty. */
   @CanIgnoreReturnValue
   public final Ordered containsExactly() {
     return containsExactlyEntriesIn(ImmutableMap.of());
   }
 
   /**
-   * Fails if the map does not contain exactly the given set of key/value pairs.
+   * Checks that the actual map contains exactly the given set of key/value pairs.
    *
    * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
@@ -239,7 +239,7 @@ public class MapSubject extends Subject {
     return expectedMap;
   }
 
-  /** Fails if the map does not contain exactly the given set of entries in the given map. */
+  /** Checks that the actual map contains exactly the given set of entries in the given map. */
   @CanIgnoreReturnValue
   public final Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
@@ -258,7 +258,7 @@ public class MapSubject extends Subject {
     }
   }
 
-  /** Fails if the map does not contain at least the given set of entries in the given map. */
+  /** Checks that the actual map contains at least the given set of entries in the given map. */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
@@ -505,8 +505,8 @@ public class MapSubject extends Subject {
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    *
    * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value that is not of type {@code A} or an expected value that is not of
-   * type {@code E}.
+   * encounter an actual map that is not of type {@code A} or an expected value that is not of type
+   * {@code E}.
    */
   public final <A extends @Nullable Object, E extends @Nullable Object>
       UsingCorrespondence<A, E> comparingValuesUsing(
@@ -516,7 +516,7 @@ public class MapSubject extends Subject {
 
   /**
    * Starts a method chain for a check in which failure messages may use the given {@link
-   * DiffFormatter} to describe the difference between an actual value (i.e. a value in the {@link
+   * DiffFormatter} to describe the difference between an actual map (i.e. a value in the {@link
    * Map} under test) and the value it is expected to be equal to, but isn't. The actual and
    * expected values must be of type {@code V}. The check is actually executed by continuing the
    * method chain. For example:
@@ -566,8 +566,8 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain an entry with the given key and a value that corresponds to
-     * the given value.
+     * Checks that the actual map contains an entry with the given key and a value that corresponds
+     * to the given value.
      */
     @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
@@ -641,8 +641,8 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map contains an entry with the given key and a value that corresponds to the
-     * given value.
+     * Checks that the actual map does not contain an entry with the given key and a value that
+     * corresponds to the given value.
      */
     @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
@@ -681,7 +681,7 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain exactly the given set of keys mapping to values that
+     * Checks that the actual map contains exactly the given set of keys mapping to values that
      * correspond to the given values.
      *
      * <p>The values must all be of type {@code E}, and a {@link ClassCastException} will be thrown
@@ -700,7 +700,7 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain at least the given set of keys mapping to values that
+     * Checks that the actual map contains at least the given set of keys mapping to values that
      * correspond to the given values.
      *
      * <p>The values must all be of type {@code E}, and a {@link ClassCastException} will be thrown
@@ -719,7 +719,7 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain exactly the keys in the given map, mapping to values that
+     * Checks that the actual map contains exactly the keys in the given map, mapping to values that
      * correspond to the values of the given map.
      */
     @CanIgnoreReturnValue
@@ -736,8 +736,8 @@ public class MapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain at least the keys in the given map, mapping to values that
-     * correspond to the values of the given map.
+     * Checks that the actual map contains at least the keys in the given map, mapping to values
+     * that correspond to the values of the given map.
      */
     @CanIgnoreReturnValue
     public Ordered containsAtLeastEntriesIn(Map<?, ? extends E> expectedMap) {

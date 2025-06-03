@@ -42,7 +42,7 @@ public final class OptionalSubject extends Subject {
 
   // TODO(cpovirk): Consider making OptionalIntSubject and OptionalLongSubject delegate to this.
 
-  /** Fails if the {@link Optional} is empty or null. */
+  /** Checks that the actual {@link Optional} contains a value. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -51,7 +51,7 @@ public final class OptionalSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link Optional} is present or null. */
+  /** Checks that the actual {@link Optional} does not contain a value. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -62,7 +62,7 @@ public final class OptionalSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link Optional} does not have the given value or is null.
+   * Checks that the actual {@link Optional} contains the given value.
    *
    * <p>To make more complex assertions on the optional's value, split your assertion in two:
    *

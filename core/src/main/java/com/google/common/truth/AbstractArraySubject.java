@@ -36,14 +36,14 @@ abstract class AbstractArraySubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the array is not empty (i.e. {@code array.length > 0}). */
+  /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
   public final void isEmpty() {
     if (length() > 0) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
-  /** Fails if the array is empty (i.e. {@code array.length == 0}). */
+  /** Checks that the actual array is not empty (i.e., that {@code array.length > 0}). */
   public final void isNotEmpty() {
     if (length() == 0) {
       failWithoutActual(simpleFact("expected not to be empty"));
@@ -51,7 +51,7 @@ abstract class AbstractArraySubject extends Subject {
   }
 
   /**
-   * Fails if the array does not have the given length.
+   * Checks that the actual array has the given length.
    *
    * @throws IllegalArgumentException if {@code length < 0}
    */

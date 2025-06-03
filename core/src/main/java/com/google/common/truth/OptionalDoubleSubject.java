@@ -38,7 +38,7 @@ public final class OptionalDoubleSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the {@link OptionalDouble} is empty or null. */
+  /** Checks that the actual {@link OptionalDouble} contains a value. */
   public void isPresent() {
     if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
@@ -47,7 +47,7 @@ public final class OptionalDoubleSubject extends Subject {
     }
   }
 
-  /** Fails if the {@link OptionalDouble} is present or null. */
+  /** Checks that the actual {@link OptionalDouble} does not contain a value. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
@@ -59,7 +59,7 @@ public final class OptionalDoubleSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link OptionalDouble} does not have the given value or is null. This method is
+   * Checks that the actual {@link OptionalDouble} contains the given value. This method is
    * <i>not</i> recommended when the code under test is doing any kind of arithmetic, since the
    * exact result of floating point arithmetic is sensitive to apparently trivial changes. More
    * sophisticated comparisons can be done using {@code assertThat(optional.getAsDouble())…}. This

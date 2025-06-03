@@ -52,13 +52,13 @@ public class StringSubject extends ComparableSubject<String> {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  /** Fails if the string does not have the given length. */
+  /** Checks that the actual value has the given length. */
   public void hasLength(int expectedLength) {
     checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
     check("length()").that(checkNotNull(actual).length()).isEqualTo(expectedLength);
   }
 
-  /** Fails if the string is not equal to the zero-length "empty string." */
+  /** Checks that the actual value is the zero-length "empty string." */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected an empty string"));
@@ -67,7 +67,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string is equal to the zero-length "empty string." */
+  /** Checks that the actual value is not the zero-length "empty string." */
   public void isNotEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected a non-empty string"));
@@ -76,7 +76,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not contain the given sequence. */
+  /** Checks that the actual value contains the given sequence. */
   public void contains(@Nullable CharSequence string) {
     checkNotNull(string);
     if (actual == null) {
@@ -86,7 +86,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string contains the given sequence. */
+  /** Checks that the actual value does not contain the given sequence. */
   public void doesNotContain(@Nullable CharSequence string) {
     checkNotNull(string);
     if (actual == null) {
@@ -96,7 +96,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not start with the given string. */
+  /** Checks that the actual value starts with the given string. */
   public void startsWith(@Nullable String string) {
     checkNotNull(string);
     if (actual == null) {
@@ -106,7 +106,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not end with the given string. */
+  /** Checks that the actual value ends with the given string. */
   public void endsWith(@Nullable String string) {
     checkNotNull(string);
     if (actual == null) {
@@ -116,7 +116,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not match the given regex. */
+  /** Checks that the actual value matches the given regex. */
   public void matches(@Nullable String regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -138,7 +138,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not match the given regex. */
+  /** Checks that the actual value matches the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(@Nullable Pattern regex) {
     checkNotNull(regex);
@@ -163,7 +163,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string matches the given regex. */
+  /** Checks that the actual value does not match the given regex. */
   public void doesNotMatch(@Nullable String regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -173,7 +173,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string matches the given regex. */
+  /** Checks that the actual value does not match the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
@@ -184,7 +184,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not contain a match on the given regex. */
+  /** Checks that the actual value contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
@@ -195,7 +195,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string does not contain a match on the given regex. */
+  /** Checks that the actual value contains a match on the given regex. */
   public void containsMatch(@Nullable String regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -205,7 +205,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string contains a match on the given regex. */
+  /** Checks that the actual value does not contain a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(@Nullable Pattern regex) {
     checkNotNull(regex);
@@ -222,7 +222,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Fails if the string contains a match on the given regex. */
+  /** Checks that the actual value does not contain a match on the given regex. */
   public void doesNotContainMatch(@Nullable String regex) {
     checkNotNull(regex);
     if (actual == null) {
@@ -255,7 +255,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
 
     /**
-     * Fails if the actual value is not equal to the given sequence (while ignoring case). For the
+     * Checks that the actual value is equal to the given sequence (while ignoring case). For the
      * purposes of this comparison, two strings are equal if either of the following is true:
      *
      * <ul>
@@ -287,8 +287,8 @@ public class StringSubject extends ComparableSubject<String> {
     }
 
     /**
-     * Fails if the actual value is equal to the given string (while ignoring case). The meaning of
-     * equality is the same as for the {@link #isEqualTo} method.
+     * Checks that the actual value is not equal to the given string (while ignoring case). The
+     * meaning of equality is the same as for the {@link #isEqualTo} method.
      */
     public void isNotEqualTo(@Nullable String unexpected) {
       if (actual == null) {
@@ -305,7 +305,7 @@ public class StringSubject extends ComparableSubject<String> {
       }
     }
 
-    /** Fails if the string does not contain the given sequence (while ignoring case). */
+    /** Checks that the actual value contains the given sequence (while ignoring case). */
     public void contains(@Nullable CharSequence expectedSequence) {
       checkNotNull(expectedSequence);
       String expected = expectedSequence.toString();
@@ -320,7 +320,7 @@ public class StringSubject extends ComparableSubject<String> {
       }
     }
 
-    /** Fails if the string contains the given sequence (while ignoring case). */
+    /** Checks that the actual value does not contain the given sequence (while ignoring case). */
     public void doesNotContain(@Nullable CharSequence expectedSequence) {
       checkNotNull(expectedSequence);
       String expected = expectedSequence.toString();

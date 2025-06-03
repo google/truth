@@ -77,37 +77,37 @@ public class MultimapSubject extends Subject {
     this.actual = multimap;
   }
 
-  /** Fails if the multimap is not empty. */
+  /** Checks that the actual multimap is empty. */
   public final void isEmpty() {
     if (!checkNotNull(actual).isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
-  /** Fails if the multimap is empty. */
+  /** Checks that the actual multimap is not empty. */
   public final void isNotEmpty() {
     if (checkNotNull(actual).isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
-  /** Fails if the multimap does not have the given size. */
+  /** Checks that the actual multimap has the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
   }
 
-  /** Fails if the multimap does not contain the given key. */
+  /** Checks that the actual multimap contains the given key. */
   public final void containsKey(@Nullable Object key) {
     check("keySet()").that(checkNotNull(actual).keySet()).contains(key);
   }
 
-  /** Fails if the multimap contains the given key. */
+  /** Checks that the actual multimap does not contain the given key. */
   public final void doesNotContainKey(@Nullable Object key) {
     check("keySet()").that(checkNotNull(actual).keySet()).doesNotContain(key);
   }
 
-  /** Fails if the multimap does not contain the given entry. */
+  /** Checks that the actual multimap contains the given entry. */
   public final void containsEntry(@Nullable Object key, @Nullable Object value) {
     // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
     checkNotNull(actual);
@@ -151,7 +151,7 @@ public class MultimapSubject extends Subject {
     }
   }
 
-  /** Fails if the multimap contains the given entry. */
+  /** Checks that the actual multimap does not contain the given entry. */
   public final void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     checkNoNeedToDisplayBothValues("entries()")
         .that(checkNotNull(actual).entries())
@@ -210,8 +210,8 @@ public class MultimapSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link Multimap} does not contain precisely the same entries as the argument
-   * {@link Multimap}.
+   * Checks that the actual multimap contains precisely the same entries as the argument {@link
+   * Multimap}.
    *
    * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
    * the two multimaps iterate fully in the same order. That is, their key sets iterate in the same
@@ -225,7 +225,7 @@ public class MultimapSubject extends Subject {
     ListMultimap<?, ?> extra = difference(actual, expectedMultimap);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the actual value but not enough times. Similarly for unexpected extra items.
+    // the actual multimap but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {
         boolean addTypeInfo = hasMatchingToStringPair(missing.entries(), extra.entries());
@@ -265,8 +265,7 @@ public class MultimapSubject extends Subject {
   }
 
   /**
-   * Fails if the {@link Multimap} does not contain at least the entries in the argument {@link
-   * Multimap}.
+   * Checks that the actual multimap contains at least the entries in the argument {@link Multimap}.
    *
    * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
    * the entries are present in the same order as given. That is, the keys are present in the given
@@ -280,7 +279,7 @@ public class MultimapSubject extends Subject {
     ListMultimap<?, ?> missing = difference(expectedMultimap, actual);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the actual value but not enough times. Similarly for unexpected extra items.
+    // the actual multimap but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       failWithActual(
           fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),
@@ -292,7 +291,7 @@ public class MultimapSubject extends Subject {
     return new MultimapInOrder(/* allowUnexpected= */ true, expectedMultimap);
   }
 
-  /** Fails if the multimap is not empty. */
+  /** Checks that the actual multimap is empty. */
   @CanIgnoreReturnValue
   public final Ordered containsExactly() {
     return substituteCheck()
@@ -302,7 +301,7 @@ public class MultimapSubject extends Subject {
   }
 
   /**
-   * Fails if the multimap does not contain exactly the given set of key/value pairs.
+   * Checks that the actual multimap contains exactly the given set of key/value pairs.
    *
    * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
@@ -314,7 +313,7 @@ public class MultimapSubject extends Subject {
   }
 
   /**
-   * Fails if the multimap does not contain at least the given key/value pairs.
+   * Checks that the actual multimap contains at least the given key/value pairs.
    *
    * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
@@ -533,7 +532,7 @@ public class MultimapSubject extends Subject {
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    *
    * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value that is not of type {@code A}.
+   * encounter an actual multimap that is not of type {@code A}.
    */
   public <A extends @Nullable Object, E extends @Nullable Object>
       UsingCorrespondence<A, E> comparingValuesUsing(
@@ -566,7 +565,7 @@ public class MultimapSubject extends Subject {
     }
 
     /**
-     * Fails if the multimap does not contain an entry with the given key and a value that
+     * Checks that the actual multimap contains an entry with the given key and a value that
      * corresponds to the given value.
      */
     public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
@@ -659,8 +658,8 @@ public class MultimapSubject extends Subject {
     }
 
     /**
-     * Fails if the multimap contains an entry with the given key and a value that corresponds to
-     * the given value.
+     * Checks that the actual multimap does not contain an entry with the given key and a value that
+     * corresponds to the given value.
      */
     public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
       if (checkNotNull(actual).containsKey(excludedKey)) {
@@ -711,8 +710,8 @@ public class MultimapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain exactly the keys in the given multimap, mapping to values
-     * that correspond to the values of the given multimap.
+     * Checks that the actual multimap contains exactly the keys in the given multimap, mapping to
+     * values that correspond to the values of the given multimap.
      *
      * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
      * that the two Multimaps iterate fully in the same order. That is, their key sets iterate in
@@ -746,8 +745,8 @@ public class MultimapSubject extends Subject {
     }
 
     /**
-     * Fails if the map does not contain at least the keys in the given multimap, mapping to values
-     * that correspond to the values of the given multimap.
+     * Checks that the actual multimap contains at least the keys in the given multimap, mapping to
+     * values that correspond to the values of the given multimap.
      *
      * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
      * that the two Multimaps iterate fully in the same order. That is, their key sets iterate in
@@ -781,7 +780,7 @@ public class MultimapSubject extends Subject {
     }
 
     /**
-     * Fails if the multimap does not contain exactly the given set of key/value pairs.
+     * Checks that the actual multimap contains exactly the given set of key/value pairs.
      *
      * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
@@ -793,14 +792,14 @@ public class MultimapSubject extends Subject {
       return containsExactlyEntriesIn(expectedMultimap);
     }
 
-    /** Fails if the multimap is not empty. */
+    /** Checks that the actual multimap is empty. */
     @CanIgnoreReturnValue
     public Ordered containsExactly() {
       return subject.containsExactly();
     }
 
     /**
-     * Fails if the multimap does not contain at least the given key/value pairs.
+     * Checks that the actual multimap contains at least the given key/value pairs.
      *
      * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!

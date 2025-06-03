@@ -39,7 +39,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   }
 
   /**
-   * A check that the actual array and {@code expected} are arrays of the same length and type,
+   * Checks that the actual array and {@code expected} are arrays of the same length and type,
    * containing elements such that each element in {@code expected} is equal to each element in the
    * actual array, and in the same position, with element equality defined the same way that {@link
    * Arrays#equals(float[], float[])} and {@link Float#equals(Object)} define it (which is different
@@ -68,7 +68,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   }
 
   /**
-   * A check that the actual array and {@code expected} are not arrays of the same length and type,
+   * Checks that the actual array and {@code expected} are not arrays of the same length and type,
    * containing elements such that each element in {@code expected} is equal to each element in the
    * actual array, and in the same position, with element equality defined the same way that {@link
    * Arrays#equals(float[], float[])} and {@link Float#equals(Object)} define it (which is different

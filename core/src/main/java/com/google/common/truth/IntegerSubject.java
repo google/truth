@@ -53,9 +53,9 @@ public class IntegerSubject extends ComparableSubject<Integer> {
     private TolerantIntegerComparison() {}
 
     /**
-     * Fails if the actual value was expected to be within the tolerance of the given value but was
-     * not <i>or</i> if it was expected <i>not</i> to be within the tolerance but was. The actual
-     * value and tolerance are specified earlier in the fluent call chain.
+     * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
+     * the tolerance of the given value, depending on the choice made earlier in the fluent call
+     * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
     public abstract void of(int expected);
 

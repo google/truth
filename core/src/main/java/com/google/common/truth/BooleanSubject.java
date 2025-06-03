@@ -32,7 +32,7 @@ public final class BooleanSubject extends Subject {
     this.actual = actual;
   }
 
-  /** Fails if the actual value is false or {@code null}. */
+  /** Checks that the actual value is {@code true}. */
   public void isTrue() {
     if (actual == null) {
       isEqualTo(true); // fails
@@ -41,7 +41,7 @@ public final class BooleanSubject extends Subject {
     }
   }
 
-  /** Fails if the actual value is true or {@code null}. */
+  /** Checks that the actual value is {@code false}. */
   public void isFalse() {
     if (actual == null) {
       isEqualTo(false); // fails
