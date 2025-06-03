@@ -22,6 +22,7 @@ import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
+import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -478,7 +479,7 @@ public class MultimapSubject extends Subject {
   private static String countDuplicatesMultimap(Multimap<?, ?> multimap) {
     List<String> entries = new ArrayList<>();
     for (Object key : multimap.keySet()) {
-      entries.add(key + "=" + SubjectUtils.countDuplicates(get(multimap, key)));
+      entries.add(key + "=" + countDuplicates(get(multimap, key)));
     }
 
     StringBuilder sb = new StringBuilder();

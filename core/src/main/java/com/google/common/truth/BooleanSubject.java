@@ -20,7 +20,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for boolean values.
+ * A subject for {@link Boolean} values.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

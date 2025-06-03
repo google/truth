@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for string values.
+ * A subject for {@link String} values.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
