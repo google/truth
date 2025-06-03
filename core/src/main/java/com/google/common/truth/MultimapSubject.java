@@ -48,7 +48,7 @@ import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for {@link Multimap} subjects.
+ * A subject for {@link Multimap} values.
  *
  * @author Daniel Ploch
  * @author Kurt Alfred Kluever

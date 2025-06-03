@@ -55,9 +55,9 @@ final class Platform {
     return false;
   }
 
-  /** Determines if the given subject contains a match for the given regex. */
-  static boolean containsMatch(String subject, String regex) {
-    return compile(regex).test(subject);
+  /** Determines if the given actual value contains a match for the given regex. */
+  static boolean containsMatch(String actual, String regex) {
+    return compile(regex).test(actual);
   }
 
   static void cleanStackTrace(Throwable throwable) {
