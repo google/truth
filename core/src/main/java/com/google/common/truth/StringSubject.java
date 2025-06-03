@@ -58,7 +58,7 @@ public class StringSubject extends ComparableSubject<String> {
     check("length()").that(checkNotNull(actual).length()).isEqualTo(expectedLength);
   }
 
-  /** Checks that the actual value is the zero-length "empty string." */
+  /** Checks that the actual value is the empty string. */
   public void isEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected an empty string"));
@@ -67,7 +67,7 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  /** Checks that the actual value is not the zero-length "empty string." */
+  /** Checks that the actual value is not the empty string. */
   public void isNotEmpty() {
     if (actual == null) {
       failWithActual(simpleFact("expected a non-empty string"));
