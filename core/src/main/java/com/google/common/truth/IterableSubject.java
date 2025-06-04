@@ -1089,7 +1089,7 @@ public class IterableSubject extends Subject {
     public UsingCorrespondence<A, E> displayingDiffsPairedBy(
         Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
       return new UsingCorrespondence<>(
-          subject, correspondence, new Pairer(actualKeyFunction, expectedKeyFunction));
+          subject, correspondence, Pairer.create(actualKeyFunction, expectedKeyFunction));
     }
 
     /**
@@ -1973,7 +1973,8 @@ public class IterableSubject extends Subject {
       private final Function<? super A, ?> actualKeyFunction;
       private final Function<? super E, ?> expectedKeyFunction;
 
-      Pairer(Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+      private Pairer(
+          Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
         this.actualKeyFunction = actualKeyFunction;
         this.expectedKeyFunction = expectedKeyFunction;
       }
@@ -2097,6 +2098,11 @@ public class IterableSubject extends Subject {
        */
       private final List<A> unpairedActualValues = new ArrayList<>();
     }
+
+        static <A extends @Nullable Object, E extends @Nullable Object> Pairer create(
+            Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+          return new Pairer(actualKeyFunction, expectedKeyFunction);
+        }
   }
 
   static Factory<IterableSubject, Iterable<?>> iterables() {

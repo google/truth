@@ -114,7 +114,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
    */
   public static <A extends @Nullable Object, E extends @Nullable Object> Correspondence<A, E> from(
       BinaryPredicate<A, E> predicate, String description) {
-    return new FromBinaryPredicate<>(predicate, description);
+    return FromBinaryPredicate.create(predicate, description);
   }
 
   /**
@@ -141,8 +141,8 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     private final BinaryPredicate<A, E> predicate;
     private final String description;
 
-    private FromBinaryPredicate(BinaryPredicate<A, E> correspondencePredicate, String description) {
-      this.predicate = checkNotNull(correspondencePredicate);
+    private FromBinaryPredicate(BinaryPredicate<A, E> predicate, String description) {
+      this.predicate = checkNotNull(predicate);
       this.description = checkNotNull(description);
     }
 
@@ -154,6 +154,11 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     @Override
     public String toString() {
       return description;
+    }
+
+    static <A extends @Nullable Object, E extends @Nullable Object>
+        FromBinaryPredicate<A, E> create(BinaryPredicate<A, E> predicate, String description) {
+      return new FromBinaryPredicate<>(predicate, description);
     }
   }
 
@@ -388,7 +393,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
    * }</pre>
    */
   public Correspondence<A, E> formattingDiffsUsing(DiffFormatter<? super A, ? super E> formatter) {
-    return new FormattingDiffs<>(this, formatter);
+    return FormattingDiffs.create(this, formatter);
   }
 
   /**
@@ -415,7 +420,8 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     private final Correspondence<A, E> delegate;
     private final DiffFormatter<? super A, ? super E> formatter;
 
-    FormattingDiffs(Correspondence<A, E> delegate, DiffFormatter<? super A, ? super E> formatter) {
+    private FormattingDiffs(
+        Correspondence<A, E> delegate, DiffFormatter<? super A, ? super E> formatter) {
       this.delegate = checkNotNull(delegate);
       this.formatter = checkNotNull(formatter);
     }
@@ -438,6 +444,11 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     @Override
     boolean isEquality() {
       return delegate.isEquality();
+    }
+
+    static <A extends @Nullable Object, E extends @Nullable Object> FormattingDiffs<A, E> create(
+        Correspondence<A, E> delegate, DiffFormatter<? super A, ? super E> formatter) {
+      return new FormattingDiffs<>(delegate, formatter);
     }
   }
 

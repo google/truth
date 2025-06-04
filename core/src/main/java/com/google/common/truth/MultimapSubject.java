@@ -343,13 +343,14 @@ public class MultimapSubject extends Subject {
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {
     return (metadata, actual) ->
-        new IterableEntries(metadata, MultimapSubject.this, checkNotNull(actual));
+         IterableEntries.create(metadata, MultimapSubject.this, checkNotNull(actual));
   }
 
   private static class IterableEntries extends IterableSubject {
     private final String stringRepresentation;
 
-    IterableEntries(FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+     private IterableEntries(
+         FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
       super(metadata, actual);
       // We want to use the multimap's toString() instead of the iterable of entries' toString():
       this.stringRepresentation = String.valueOf(multimapSubject.actual);
@@ -359,6 +360,11 @@ public class MultimapSubject extends Subject {
     protected String actualCustomStringRepresentation() {
       return stringRepresentation;
     }
+
+     static IterableEntries create(
+         FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+       return new IterableEntries(metadata, multimapSubject, actual);
+     }
   }
 
   private class MultimapInOrder implements Ordered {

@@ -89,7 +89,7 @@ final class SubjectUtils {
       Iterable<T> items) {
     // We use avoid hashing in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
-    NonHashingMultiset<T> multiset = new NonHashingMultiset<>();
+    NonHashingMultiset<T> multiset = NonHashingMultiset.create();
     for (T item : items) {
       multiset.add(item);
     }
@@ -147,6 +147,8 @@ final class SubjectUtils {
 
     private final Multiset<Wrapper<E>> contents = LinkedHashMultiset.create();
 
+    private NonHashingMultiset() {}
+
     void add(E element) {
       contents.add(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
     }
@@ -189,6 +191,10 @@ final class SubjectUtils {
             return 0; // slow but hopefully not much worse than what we get with a flat list
           }
         };
+
+    static <E extends @Nullable Object> NonHashingMultiset<E> create() {
+      return new NonHashingMultiset<>();
+    }
   }
 
   /**
