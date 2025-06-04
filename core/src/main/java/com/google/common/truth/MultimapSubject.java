@@ -261,7 +261,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ false, expectedMultimap);
+    return MultimapInOrder.create(/* allowUnexpected= */ false, expectedMultimap);
   }
 
   /**
@@ -288,7 +288,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ true, expectedMultimap);
+    return MultimapInOrder.create(/* allowUnexpected= */ true, expectedMultimap);
   }
 
   /** Checks that the actual multimap is empty. */
@@ -371,7 +371,7 @@ public class MultimapSubject extends Subject {
     private final Multimap<?, ?> expectedMultimap;
     private final boolean allowUnexpected;
 
-    MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+    private MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
       this.expectedMultimap = expectedMultimap;
       this.allowUnexpected = allowUnexpected;
     }
@@ -428,6 +428,10 @@ public class MultimapSubject extends Subject {
             simpleFact("---"),
             fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
       }
+    }
+
+    static MultimapInOrder create(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+      return new MultimapInOrder(allowUnexpected, expectedMultimap);
     }
   }
 

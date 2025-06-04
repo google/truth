@@ -39,21 +39,33 @@ public final class DoubleSubject extends ComparableSubject<Double> {
     this.actual = actual;
   }
 
+  @FunctionalInterface
+  interface DoubleComparisonLogic {
+    void apply(double expected);
+  }
+
   /**
    * A partially specified check about an approximate relationship to a {@code double} value using a
    * tolerance.
    */
-  public abstract static class TolerantDoubleComparison {
+  public static final class TolerantDoubleComparison {
+    private final double tolerance;
+    private final DoubleComparisonLogic comparisonLogic;
 
     // Prevent subclassing outside of this class
-    private TolerantDoubleComparison() {}
+    private TolerantDoubleComparison(double tolerance, DoubleComparisonLogic logic) {
+      this.tolerance = tolerance; // Though not used directly here, it's part of the context
+      this.comparisonLogic = logic;
+    }
 
     /**
      * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(double expected);
+    public void of(double expected) {
+      comparisonLogic.apply(expected);
+    }
 
     /**
      * @throws UnsupportedOperationException always
@@ -101,22 +113,21 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     {@link Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public TolerantDoubleComparison isWithin(double tolerance) {
-    return new TolerantDoubleComparison() {
-      @Override
-      public void of(double expected) {
-        Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantDoubleComparison.create(
+        tolerance,
+        expected -> {
+          Double actual = DoubleSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected", expected),
-              numericFact("but was", actual),
-              numericFact("outside tolerance", tolerance));
-        }
-      }
-    };
+          if (!equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected", expected),
+                numericFact("but was", actual),
+                numericFact("outside tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -140,22 +151,21 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *     {@code Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public TolerantDoubleComparison isNotWithin(double tolerance) {
-    return new TolerantDoubleComparison() {
-      @Override
-      public void of(double expected) {
-        Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantDoubleComparison.create(
+        tolerance,
+        expected -> {
+          Double actual = DoubleSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!notEqualWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected not to be", expected),
-              numericFact("but was", actual),
-              numericFact("within tolerance", tolerance));
-        }
-      }
-    };
+          if (!notEqualWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected not to be", expected),
+                numericFact("but was", actual),
+                numericFact("within tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -299,5 +309,10 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
   static Factory<DoubleSubject, Double> doubles() {
     return DoubleSubject::new;
+  }
+
+  // Factory method for TolerantDoubleComparison
+  static TolerantDoubleComparison create(double tolerance, DoubleComparisonLogic logic) {
+    return new TolerantDoubleComparison(tolerance, logic);
   }
 }

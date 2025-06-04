@@ -508,32 +508,43 @@ public class Subject {
      * description.
      */
     static ComparisonResult fromEqualsResult(boolean equal) {
-      return equal ? EQUAL : DIFFERENT_NO_DESCRIPTION;
+      return equal ? createEqual() : createDifferentNoDescription();
     }
 
     /** Returns a non-equal result with the given description. */
     static ComparisonResult differentWithDescription(Fact... facts) {
-      return new ComparisonResult(ImmutableList.copyOf(facts));
+      return createDifferentWithDescription(facts);
     }
 
     /** Returns an equal result. */
     static ComparisonResult equal() {
-      return EQUAL;
+      return createEqual();
     }
 
     /** Returns a non-equal result with no description. */
     static ComparisonResult differentNoDescription() {
-      return DIFFERENT_NO_DESCRIPTION;
+      return createDifferentNoDescription();
     }
 
-    private static final ComparisonResult EQUAL = new ComparisonResult(null);
-    private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
-        new ComparisonResult(ImmutableList.of());
+    private static final ComparisonResult EQUAL = createEqual();
+    private static final ComparisonResult DIFFERENT_NO_DESCRIPTION = createDifferentNoDescription();
 
     private final @Nullable ImmutableList<Fact> facts;
 
     private ComparisonResult(@Nullable ImmutableList<Fact> facts) {
       this.facts = facts;
+    }
+
+    static ComparisonResult createEqual() {
+      return new ComparisonResult(null);
+    }
+
+    static ComparisonResult createDifferentNoDescription() {
+      return new ComparisonResult(ImmutableList.of());
+    }
+
+    static ComparisonResult createDifferentWithDescription(Fact... facts) {
+      return new ComparisonResult(ImmutableList.copyOf(facts));
     }
 
     boolean valuesAreEqual() {
@@ -557,9 +568,9 @@ public class Subject {
    */
   private static ComparisonResult checkByteArrayEquals(byte[] expected, byte[] actual) {
     if (Arrays.equals(expected, actual)) {
-      return ComparisonResult.equal();
+      return ComparisonResult.createEqual();
     }
-    return ComparisonResult.differentWithDescription(
+    return ComparisonResult.createDifferentWithDescription(
         fact("expected", Arrays.toString(expected)), fact("but was", Arrays.toString(actual)));
   }
 
@@ -576,7 +587,7 @@ public class Subject {
   private static ComparisonResult checkArrayEqualsRecursive(
       Object expectedArray, Object actualArray, String lastIndex) {
     if (expectedArray == actualArray) {
-      return ComparisonResult.equal();
+      return ComparisonResult.createEqual();
     }
     String expectedType = arrayType(expectedArray);
     String actualType = arrayType(actualArray);
@@ -609,10 +620,10 @@ public class Subject {
           return result;
         }
       } else if (!gwtSafeObjectEquals(actual, expected)) {
-        return ComparisonResult.differentWithDescription(fact("differs at index", index));
+        return ComparisonResult.createDifferentWithDescription(fact("differs at index", index));
       }
     }
-    return ComparisonResult.equal();
+    return ComparisonResult.createEqual();
   }
 
   private static String arrayType(Object array) {
@@ -757,7 +768,7 @@ public class Subject {
 
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
-    LazyMessage message = new LazyMessage(format, args);
+     LazyMessage message = LazyMessage.create(format, args);
     return new StandardSubjectBuilder(
         metadata.updateForCheckCall(
             valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));

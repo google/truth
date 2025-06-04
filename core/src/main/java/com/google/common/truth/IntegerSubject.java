@@ -41,23 +41,35 @@ public class IntegerSubject extends ComparableSubject<Integer> {
     this.actual = actual;
   }
 
+  @FunctionalInterface
+  interface IntegerComparisonLogic {
+    void apply(int expected);
+  }
+
   /**
    * A partially specified check about an approximate relationship to a {@code int} actual value
    * using a tolerance.
    *
    * @since 1.2
    */
-  public abstract static class TolerantIntegerComparison {
+  public static final class TolerantIntegerComparison {
+    private final int tolerance;
+    private final IntegerComparisonLogic comparisonLogic;
 
     // Prevent subclassing outside of this class
-    private TolerantIntegerComparison() {}
+    private TolerantIntegerComparison(int tolerance, IntegerComparisonLogic logic) {
+      this.tolerance = tolerance; // Though not used directly here, it's part of the context
+      this.comparisonLogic = logic;
+    }
 
     /**
      * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(int expected);
+    public void of(int expected) {
+      comparisonLogic.apply(expected);
+    }
 
     /**
      * @throws UnsupportedOperationException always
@@ -91,22 +103,21 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isWithin(int tolerance) {
-    return new TolerantIntegerComparison() {
-      @Override
-      public void of(int expected) {
-        Integer actual = IntegerSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantIntegerComparison.create(
+        tolerance,
+        expected -> {
+          Integer actual = IntegerSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected", expected),
-              numericFact("but was", actual),
-              numericFact("outside tolerance", tolerance));
-        }
-      }
-    };
+          if (!equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected", expected),
+                numericFact("but was", actual),
+                numericFact("outside tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -118,22 +129,21 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isNotWithin(int tolerance) {
-    return new TolerantIntegerComparison() {
-      @Override
-      public void of(int expected) {
-        Integer actual = IntegerSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantIntegerComparison.create(
+        tolerance,
+        expected -> {
+          Integer actual = IntegerSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected not to be", expected),
-              numericFact("but was", actual),
-              numericFact("within tolerance", tolerance));
-        }
-      }
-    };
+          if (equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected not to be", expected),
+                numericFact("but was", actual),
+                numericFact("within tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -152,5 +162,10 @@ public class IntegerSubject extends ComparableSubject<Integer> {
 
   static Factory<IntegerSubject, Integer> integers() {
     return IntegerSubject::new;
+  }
+
+  // Factory method for TolerantIntegerComparison
+  static TolerantIntegerComparison create(int tolerance, IntegerComparisonLogic logic) {
+    return new TolerantIntegerComparison(tolerance, logic);
   }
 }

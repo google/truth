@@ -1987,7 +1987,7 @@ public class IterableSubject extends Subject {
           List<? extends E> expectedValues,
           List<? extends A> actualValues,
           Correspondence.ExceptionStore exceptions) {
-        Pairing pairing = new Pairing();
+        Pairing pairing = Pairing.create();
 
         // Populate expectedKeys with the keys of the corresponding elements of expectedValues.
         // We do this ahead of time to avoid invoking the key function twice for each element.
@@ -2097,6 +2097,12 @@ public class IterableSubject extends Subject {
        * input.
        */
       private final List<A> unpairedActualValues = new ArrayList<>();
+
+      private Pairing() {}
+
+      static <A extends @Nullable Object, E extends @Nullable Object> Pairing create() {
+        return new Pairing();
+      }
     }
 
         static <A extends @Nullable Object, E extends @Nullable Object> Pairer create(

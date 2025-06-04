@@ -42,23 +42,35 @@ public class LongSubject extends ComparableSubject<Long> {
     this.actual = actual;
   }
 
+  @FunctionalInterface
+  interface LongComparisonLogic {
+    void apply(long expected);
+  }
+
   /**
    * A partially specified check about an approximate relationship to a {@code long} value using a
    * tolerance.
    *
    * @since 1.2
    */
-  public abstract static class TolerantLongComparison {
+  public static final class TolerantLongComparison {
+    private final long tolerance;
+    private final LongComparisonLogic comparisonLogic;
 
     // Prevent subclassing outside of this class
-    private TolerantLongComparison() {}
+    private TolerantLongComparison(long tolerance, LongComparisonLogic logic) {
+      this.tolerance = tolerance; // Though not used directly here, it's part of the context
+      this.comparisonLogic = logic;
+    }
 
     /**
      * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(long expected);
+    public void of(long expected) {
+      comparisonLogic.apply(expected);
+    }
 
     /**
      * @throws UnsupportedOperationException always
@@ -92,22 +104,21 @@ public class LongSubject extends ComparableSubject<Long> {
    * @since 1.2
    */
   public TolerantLongComparison isWithin(long tolerance) {
-    return new TolerantLongComparison() {
-      @Override
-      public void of(long expected) {
-        Long actual = LongSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantLongComparison.create(
+        tolerance,
+        expected -> {
+          Long actual = LongSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected", expected),
-              numericFact("but was", actual),
-              numericFact("outside tolerance", tolerance));
-        }
-      }
-    };
+          if (!equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected", expected),
+                numericFact("but was", actual),
+                numericFact("outside tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -119,22 +130,21 @@ public class LongSubject extends ComparableSubject<Long> {
    * @since 1.2
    */
   public TolerantLongComparison isNotWithin(long tolerance) {
-    return new TolerantLongComparison() {
-      @Override
-      public void of(long expected) {
-        Long actual = LongSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantLongComparison.create(
+        tolerance,
+        expected -> {
+          Long actual = LongSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected not to be", expected),
-              numericFact("but was", actual),
-              numericFact("within tolerance", tolerance));
-        }
-      }
-    };
+          if (equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected not to be", expected),
+                numericFact("but was", actual),
+                numericFact("within tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -193,5 +203,10 @@ public class LongSubject extends ComparableSubject<Long> {
 
   static Factory<LongSubject, Long> longs() {
     return LongSubject::new;
+  }
+
+  // Factory method for TolerantLongComparison
+  static TolerantLongComparison create(long tolerance, LongComparisonLogic logic) {
+    return new TolerantLongComparison(tolerance, logic);
   }
 }

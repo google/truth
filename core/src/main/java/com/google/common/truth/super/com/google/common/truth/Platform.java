@@ -253,7 +253,7 @@ final class Platform {
      * non-GWT copy of Platform, we could consider another custom type that exposes getExpected()
      * and getActual(), even in the absence of ComparisonFailure. That type would work under GWT.
      */
-    return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
+    return ComparisonFailureWithFacts.create(messages, facts, expected, actual, cause);
   }
 
   static boolean isKotlinRange(Iterable<?> iterable) {

@@ -112,7 +112,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public DoubleArrayAsIterable usingTolerance(double tolerance) {
-    return new DoubleArrayAsIterable(tolerance(tolerance), iterableSubject());
+    return DoubleArrayAsIterable.create(tolerance(tolerance), iterableSubject());
   }
 
   private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
@@ -177,7 +177,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
    * </ul>
    */
   public DoubleArrayAsIterable usingExactEquality() {
-    return new DoubleArrayAsIterable(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
+    return DoubleArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
   }
 
   /**
@@ -193,7 +193,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   public static final class DoubleArrayAsIterable
       extends IterableSubject.UsingCorrespondence<Double, Number> {
 
-    DoubleArrayAsIterable(
+    private DoubleArrayAsIterable(
         Correspondence<? super Double, Number> correspondence, IterableSubject subject) {
       super(subject, correspondence);
     }
@@ -222,6 +222,11 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
      */
     public void containsNoneOf(double[] excluded) {
       containsNoneIn(Doubles.asList(excluded));
+    }
+
+    static DoubleArrayAsIterable create(
+        Correspondence<? super Double, Number> correspondence, IterableSubject subject) {
+      return new DoubleArrayAsIterable(correspondence, subject);
     }
   }
 

@@ -252,7 +252,7 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ false);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
+      return MapInOrder.create(expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -266,7 +266,7 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ true);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
+      return MapInOrder.create(expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -334,7 +334,7 @@ public class MapSubject extends Subject {
           @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
           A actualValue = (A) unexpected.remove(expectedKey);
           if (!valueTester.test(actualValue, expectedValue)) {
-            wrongValues.put(expectedKey, new ValueDifference<>(actualValue, expectedValue));
+            wrongValues.put(expectedKey, ValueDifference.create(actualValue, expectedValue));
           }
         } else {
           missing.put(expectedKey, expectedValue);
@@ -404,7 +404,7 @@ public class MapSubject extends Subject {
     private final A actual;
     private final E expected;
 
-    ValueDifference(A actual, E expected) {
+    private ValueDifference(A actual, E expected) {
       this.actual = actual;
       this.expected = expected;
     }
@@ -437,7 +437,7 @@ public class MapSubject extends Subject {
     private final boolean allowUnexpected;
     private final @Nullable Correspondence<?, ?> correspondence;
 
-    MapInOrder(
+    private MapInOrder(
         Map<?, ?> expectedMap,
         boolean allowUnexpected,
         @Nullable Correspondence<?, ?> correspondence) {
@@ -477,6 +477,13 @@ public class MapSubject extends Subject {
         }
         failWithActual(facts.build());
       }
+    }
+
+    static MapInOrder create(
+        Map<?, ?> expectedMap,
+        boolean allowUnexpected,
+        @Nullable Correspondence<?, ?> correspondence) {
+      return new MapInOrder(expectedMap, allowUnexpected, correspondence);
     }
   }
 
@@ -677,6 +684,11 @@ public class MapSubject extends Subject {
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .build());
         }
+
+    static <A extends @Nullable Object, E extends @Nullable Object> ValueDifference<A, E> create(
+        A actual, E expected) {
+      return new ValueDifference<>(actual, expected);
+    }
       }
     }
 
@@ -761,7 +773,7 @@ public class MapSubject extends Subject {
         // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would
         // record that we had the wrong value for that key.
-        return subject.new MapInOrder(expectedMap, allowUnexpected, correspondence);
+        return MapInOrder.create(expectedMap, allowUnexpected, correspondence);
       }
       failWithoutActual(
           ImmutableList.<Fact>builder()

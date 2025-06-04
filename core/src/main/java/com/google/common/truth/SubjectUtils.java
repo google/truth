@@ -127,9 +127,9 @@ final class SubjectUtils {
           homogeneousTypeName != null
               ? countDuplicatesToMultiset(items)
               : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
-      return new DuplicateGroupedAndTyped(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
+      return DuplicateGroupedAndTyped.create(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
     } else {
-      return new DuplicateGroupedAndTyped(
+      return DuplicateGroupedAndTyped.create(
           countDuplicatesToMultiset(itemsIterable), /* homogeneousTypeToDisplay= */ null);
     }
   }
@@ -210,7 +210,7 @@ final class SubjectUtils {
     private final NonHashingMultiset<?> valuesAndMaybeTypes;
     private final @Nullable String homogeneousTypeToDisplay;
 
-    DuplicateGroupedAndTyped(
+    private DuplicateGroupedAndTyped(
         NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
       this.valuesAndMaybeTypes = valuesAndMaybeTypes;
       this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
@@ -237,6 +237,11 @@ final class SubjectUtils {
       return homogeneousTypeToDisplay != null
           ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay + ")"
           : valuesAndMaybeTypes.toString();
+    }
+
+    static DuplicateGroupedAndTyped create(
+        NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
+      return new DuplicateGroupedAndTyped(valuesAndMaybeTypes, homogeneousTypeToDisplay);
     }
   }
 
