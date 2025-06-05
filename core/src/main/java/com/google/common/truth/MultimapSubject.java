@@ -834,6 +834,7 @@ public class MultimapSubject extends Subject {
       subject.failWithoutActual(facts);
     }
 
+    // This create method is the new factory method.
     static <E extends @Nullable Object, A extends @Nullable Object>
         UsingCorrespondence<A, E> create(
             MultimapSubject subject, Correspondence<? super A, ? super E> correspondence) {

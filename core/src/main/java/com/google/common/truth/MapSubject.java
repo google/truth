@@ -808,6 +808,7 @@ public class MapSubject extends Subject {
       subject.failWithoutActual(facts);
     }
 
+    // This create method is the new factory method
     static <A extends @Nullable Object, E extends @Nullable Object>
         UsingCorrespondence<A, E> create(
             MapSubject subject, Correspondence<? super A, ? super E> correspondence) {
