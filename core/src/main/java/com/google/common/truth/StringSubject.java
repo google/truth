@@ -314,7 +314,7 @@ public class StringSubject extends ComparableSubject<String> {
             fact("expected a string that contains", expected),
             butWas(),
             simpleFact("(case is ignored)"));
-      } else if (!containsIgnoreCase(expected)) {
+      } else if (!containsIgnoreCase(actual, expected)) {
         failWithoutActual(
             fact("expected to contain", expected), butWas(), simpleFact("(case is ignored)"));
       }
@@ -329,15 +329,13 @@ public class StringSubject extends ComparableSubject<String> {
             fact("expected a string that does not contain", expected),
             butWas(),
             simpleFact("(case is ignored)"));
-      } else if (containsIgnoreCase(expected)) {
+      } else if (containsIgnoreCase(actual, expected)) {
         failWithoutActual(
             fact("expected not to contain", expected), butWas(), simpleFact("(case is ignored)"));
       }
     }
 
-    private boolean containsIgnoreCase(@Nullable String string) {
-      checkNotNull(string);
-      String actual = checkNotNull(this.actual);
+    private static boolean containsIgnoreCase(String actual, String string) {
       for (int actualOffset = 0;
           actualOffset <= actual.length() - string.length();
           actualOffset++) {
