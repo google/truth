@@ -237,30 +237,30 @@ final class Platform {
     Class<? extends AssertionError> asAssertionErrorSubclass =
         comparisonFailureClass.asSubclass(AssertionError.class);
 
-    Constructor<? extends AssertionError> constructor;
+    Method createMethod;
     try {
-      constructor =
-          asAssertionErrorSubclass.getDeclaredConstructor(
+      createMethod =
+          asAssertionErrorSubclass.getDeclaredMethod(
+              "create",
               ImmutableList.class,
               ImmutableList.class,
               String.class,
               String.class,
               Throwable.class);
     } catch (NoSuchMethodException e) {
-      // That constructor exists.
+      // The factory method "create" should exist.
       throw newLinkageError(e);
     }
 
     try {
-      return constructor.newInstance(messages, facts, expected, actual, cause);
+      // Invoke static method, so the first argument to invoke is null.
+      // The result of invoke is Object, so it needs to be cast to AssertionError.
+      return (AssertionError) createMethod.invoke(null, messages, facts, expected, actual, cause);
     } catch (InvocationTargetException e) {
-      // That constructor has no `throws` clause.
+      // The factory method might throw an exception.
       throw sneakyThrow(e.getCause());
-    } catch (InstantiationException e) {
-      // The class is a concrete class.
-      throw newLinkageError(e);
     } catch (IllegalAccessException e) {
-      // We're accessing a class from within its package.
+      // We should have access to the package-private static factory method.
       throw newLinkageError(e);
     }
   }

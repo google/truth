@@ -111,7 +111,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public FloatArrayAsIterable usingTolerance(double tolerance) {
-    return new FloatArrayAsIterable(tolerance(tolerance), iterableSubject());
+    return FloatArrayAsIterable.create(tolerance(tolerance), iterableSubject());
   }
 
   private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
@@ -184,7 +184,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
    * </ul>
    */
   public FloatArrayAsIterable usingExactEquality() {
-    return new FloatArrayAsIterable(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
+    return FloatArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
   }
 
   /**
@@ -200,7 +200,7 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
   public static final class FloatArrayAsIterable
       extends IterableSubject.UsingCorrespondence<Float, Number> {
 
-    FloatArrayAsIterable(
+    private FloatArrayAsIterable(
         Correspondence<? super Float, Number> correspondence, IterableSubject subject) {
       super(subject, correspondence);
     }
@@ -227,6 +227,11 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
     /** As {@link #containsNoneOf(Object, Object, Object...)} but taking a primitive float array. */
     public void containsNoneOf(float[] excluded) {
       containsNoneIn(Floats.asList(excluded));
+    }
+
+    static FloatArrayAsIterable create(
+        Correspondence<? super Float, Number> correspondence, IterableSubject subject) {
+      return new FloatArrayAsIterable(correspondence, subject);
     }
   }
 

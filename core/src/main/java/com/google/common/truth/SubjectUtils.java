@@ -89,7 +89,7 @@ final class SubjectUtils {
       Iterable<T> items) {
     // We use avoid hashing in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
-    NonHashingMultiset<T> multiset = new NonHashingMultiset<>();
+    NonHashingMultiset<T> multiset = NonHashingMultiset.create();
     for (T item : items) {
       multiset.add(item);
     }
@@ -127,9 +127,9 @@ final class SubjectUtils {
           homogeneousTypeName != null
               ? countDuplicatesToMultiset(items)
               : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
-      return new DuplicateGroupedAndTyped(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
+      return DuplicateGroupedAndTyped.create(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
     } else {
-      return new DuplicateGroupedAndTyped(
+      return DuplicateGroupedAndTyped.create(
           countDuplicatesToMultiset(itemsIterable), /* homogeneousTypeToDisplay= */ null);
     }
   }
@@ -146,6 +146,8 @@ final class SubjectUtils {
     }
 
     private final Multiset<Wrapper<E>> contents = LinkedHashMultiset.create();
+
+    private NonHashingMultiset() {}
 
     void add(E element) {
       contents.add(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
@@ -189,6 +191,10 @@ final class SubjectUtils {
             return 0; // slow but hopefully not much worse than what we get with a flat list
           }
         };
+
+    static <E extends @Nullable Object> NonHashingMultiset<E> create() {
+      return new NonHashingMultiset<>();
+    }
   }
 
   /**
@@ -204,7 +210,7 @@ final class SubjectUtils {
     private final NonHashingMultiset<?> valuesAndMaybeTypes;
     private final @Nullable String homogeneousTypeToDisplay;
 
-    DuplicateGroupedAndTyped(
+    private DuplicateGroupedAndTyped(
         NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
       this.valuesAndMaybeTypes = valuesAndMaybeTypes;
       this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
@@ -231,6 +237,11 @@ final class SubjectUtils {
       return homogeneousTypeToDisplay != null
           ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay + ")"
           : valuesAndMaybeTypes.toString();
+    }
+
+    static DuplicateGroupedAndTyped create(
+        NonHashingMultiset<?> valuesAndMaybeTypes, @Nullable String homogeneousTypeToDisplay) {
+      return new DuplicateGroupedAndTyped(valuesAndMaybeTypes, homogeneousTypeToDisplay);
     }
   }
 

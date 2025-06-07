@@ -44,21 +44,33 @@ public final class FloatSubject extends ComparableSubject<Float> {
     this.asDouble = substituteCheck().that(actual == null ? null : Double.valueOf(actual));
   }
 
+  @FunctionalInterface
+  interface FloatComparisonLogic {
+    void apply(float expected);
+  }
+
   /**
    * A partially specified check about an approximate relationship to a {@code float} value using a
    * tolerance.
    */
-  public abstract static class TolerantFloatComparison {
+  public static final class TolerantFloatComparison {
+    private final float tolerance;
+    private final FloatComparisonLogic comparisonLogic;
 
     // Prevent subclassing outside of this class
-    private TolerantFloatComparison() {}
+    private TolerantFloatComparison(float tolerance, FloatComparisonLogic logic) {
+      this.tolerance = tolerance; // Though not used directly here, it's part of the context
+      this.comparisonLogic = logic;
+    }
 
     /**
      * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(float expected);
+    public void of(float expected) {
+      comparisonLogic.apply(expected);
+    }
 
     /**
      * @throws UnsupportedOperationException always
@@ -106,22 +118,21 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isWithin(float tolerance) {
-    return new TolerantFloatComparison() {
-      @Override
-      public void of(float expected) {
-        Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantFloatComparison.create(
+        tolerance,
+        expected -> {
+          Float actual = FloatSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected", expected),
-              numericFact("but was", actual),
-              numericFact("outside tolerance", tolerance));
-        }
-      }
-    };
+          if (!equalWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected", expected),
+                numericFact("but was", actual),
+                numericFact("outside tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -145,22 +156,21 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@code Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(float tolerance) {
-    return new TolerantFloatComparison() {
-      @Override
-      public void of(float expected) {
-        Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
+    return TolerantFloatComparison.create(
+        tolerance,
+        expected -> {
+          Float actual = FloatSubject.this.actual;
+          checkNotNull(
+              actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+          checkTolerance(tolerance);
 
-        if (!notEqualWithinTolerance(actual, expected, tolerance)) {
-          failWithoutActual(
-              numericFact("expected not to be", expected),
-              numericFact("but was", actual),
-              numericFact("within tolerance", tolerance));
-        }
-      }
-    };
+          if (!notEqualWithinTolerance(actual, expected, tolerance)) {
+            failWithoutActual(
+                numericFact("expected not to be", expected),
+                numericFact("but was", actual),
+                numericFact("within tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -316,5 +326,10 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
   static Factory<FloatSubject, Float> floats() {
     return FloatSubject::new;
+  }
+
+  // Factory method for TolerantFloatComparison
+  static TolerantFloatComparison create(float tolerance, FloatComparisonLogic logic) {
+    return new TolerantFloatComparison(tolerance, logic);
   }
 }

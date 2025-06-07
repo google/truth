@@ -1089,7 +1089,7 @@ public class IterableSubject extends Subject {
     public UsingCorrespondence<A, E> displayingDiffsPairedBy(
         Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
       return new UsingCorrespondence<>(
-          subject, correspondence, new Pairer(actualKeyFunction, expectedKeyFunction));
+          subject, correspondence, Pairer.create(actualKeyFunction, expectedKeyFunction));
     }
 
     /**
@@ -1973,7 +1973,8 @@ public class IterableSubject extends Subject {
       private final Function<? super A, ?> actualKeyFunction;
       private final Function<? super E, ?> expectedKeyFunction;
 
-      Pairer(Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+      private Pairer(
+          Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
         this.actualKeyFunction = actualKeyFunction;
         this.expectedKeyFunction = expectedKeyFunction;
       }
@@ -1986,7 +1987,7 @@ public class IterableSubject extends Subject {
           List<? extends E> expectedValues,
           List<? extends A> actualValues,
           Correspondence.ExceptionStore exceptions) {
-        Pairing pairing = new Pairing();
+        Pairing pairing = Pairing.create();
 
         // Populate expectedKeys with the keys of the corresponding elements of expectedValues.
         // We do this ahead of time to avoid invoking the key function twice for each element.
@@ -2096,7 +2097,18 @@ public class IterableSubject extends Subject {
        * input.
        */
       private final List<A> unpairedActualValues = new ArrayList<>();
+
+      private Pairing() {}
+
+      static <A extends @Nullable Object, E extends @Nullable Object> Pairing create() {
+        return new Pairing();
+      }
     }
+
+        static <A extends @Nullable Object, E extends @Nullable Object> Pairer create(
+            Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+          return new Pairer(actualKeyFunction, expectedKeyFunction);
+        }
   }
 
   static Factory<IterableSubject, Iterable<?>> iterables() {

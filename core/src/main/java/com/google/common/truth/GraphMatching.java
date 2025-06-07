@@ -77,7 +77,7 @@ final class GraphMatching {
      * graph described by the given multimap.
      */
     static <U, V> HopcroftKarp<U, V> overBipartiteGraph(Multimap<U, V> graph) {
-      return new HopcroftKarp<>(graph);
+      return HopcroftKarp.create(graph);
     }
 
     private HopcroftKarp(Multimap<U, V> graph) {
@@ -259,6 +259,10 @@ final class GraphMatching {
         }
       }
       return false;
+    }
+
+    static <U, V> HopcroftKarp<U, V> create(Multimap<U, V> graph) {
+      return new HopcroftKarp<>(graph);
     }
   }
 }

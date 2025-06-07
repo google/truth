@@ -261,7 +261,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ false, expectedMultimap);
+    return MultimapInOrder.create(/* allowUnexpected= */ false, expectedMultimap);
   }
 
   /**
@@ -288,7 +288,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ true, expectedMultimap);
+    return MultimapInOrder.create(/* allowUnexpected= */ true, expectedMultimap);
   }
 
   /** Checks that the actual multimap is empty. */
@@ -343,13 +343,14 @@ public class MultimapSubject extends Subject {
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {
     return (metadata, actual) ->
-        new IterableEntries(metadata, MultimapSubject.this, checkNotNull(actual));
+         IterableEntries.create(metadata, MultimapSubject.this, checkNotNull(actual));
   }
 
   private static class IterableEntries extends IterableSubject {
     private final String stringRepresentation;
 
-    IterableEntries(FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+     private IterableEntries(
+         FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
       super(metadata, actual);
       // We want to use the multimap's toString() instead of the iterable of entries' toString():
       this.stringRepresentation = String.valueOf(multimapSubject.actual);
@@ -359,13 +360,18 @@ public class MultimapSubject extends Subject {
     protected String actualCustomStringRepresentation() {
       return stringRepresentation;
     }
+
+     static IterableEntries create(
+         FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+       return new IterableEntries(metadata, multimapSubject, actual);
+     }
   }
 
   private class MultimapInOrder implements Ordered {
     private final Multimap<?, ?> expectedMultimap;
     private final boolean allowUnexpected;
 
-    MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+    private MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
       this.expectedMultimap = expectedMultimap;
       this.allowUnexpected = allowUnexpected;
     }
@@ -422,6 +428,10 @@ public class MultimapSubject extends Subject {
             simpleFact("---"),
             fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
       }
+    }
+
+    static MultimapInOrder create(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+      return new MultimapInOrder(allowUnexpected, expectedMultimap);
     }
   }
 
@@ -824,6 +834,7 @@ public class MultimapSubject extends Subject {
       subject.failWithoutActual(facts);
     }
 
+    // This create method is the new factory method.
     static <E extends @Nullable Object, A extends @Nullable Object>
         UsingCorrespondence<A, E> create(
             MultimapSubject subject, Correspondence<? super A, ? super E> correspondence) {

@@ -26,7 +26,7 @@ final class LazyMessage {
   private final String format;
   private final @Nullable Object[] args;
 
-  LazyMessage(String format, @Nullable Object... args) {
+  private LazyMessage(String format, @Nullable Object... args) {
     this.format = format;
     this.args = args;
     int placeholders = countPlaceholders(format);
@@ -64,5 +64,9 @@ final class LazyMessage {
       result.add(message.toString());
     }
     return result.build();
+  }
+
+  static LazyMessage create(String format, @Nullable Object... args) {
+    return new LazyMessage(format, args);
   }
 }

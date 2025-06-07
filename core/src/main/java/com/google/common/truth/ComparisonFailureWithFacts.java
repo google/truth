@@ -31,7 +31,7 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
   private final ImmutableList<Fact> facts;
 
   @UsedByReflection
-  ComparisonFailureWithFacts(
+  private ComparisonFailureWithFacts(
       ImmutableList<String> messages,
       ImmutableList<Fact> facts,
       String expected,
@@ -44,5 +44,14 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
   @Override
   public ImmutableList<Fact> facts() {
     return facts;
+  }
+
+  static ComparisonFailureWithFacts create(
+      ImmutableList<String> messages,
+      ImmutableList<Fact> facts,
+      String expected,
+      String actual,
+      @Nullable Throwable cause) {
+    return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
   }
 }
