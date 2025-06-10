@@ -185,6 +185,18 @@ public final class FailureMetadata {
             rootCause()));
   }
 
+  /**
+   * Special failure method for {@link ThrowableSubject} to use when users try to assert about the
+   * cause or message of a null {@link Throwable}.
+   */
+  void failForNullThrowable(String message) {
+    doFail(
+        AssertionErrorWithFacts.create(
+            evaluateAll(append(messages, new LazyMessage("%s", message))),
+            concat(description(/* factKey= */ "null Throwable was"), rootUnlessThrowable()),
+            rootCause()));
+  }
+
   private void doFail(AssertionError failure) {
     cleanStackTrace(failure);
     strategy.fail(failure);
@@ -219,6 +231,11 @@ public final class FailureMetadata {
    * to be worth displaying.)
    */
   private ImmutableList<Fact> description() {
+    return description(/* factKey= */ "value of");
+  }
+
+  /** Overload of {@link #description()} that allows passing a custom key for the fact. */
+  private ImmutableList<Fact> description(String factKey) {
     String description = inferDescription();
     boolean descriptionIsInteresting = description != null;
     for (Step step : steps) {
@@ -239,7 +256,7 @@ public final class FailureMetadata {
       }
     }
     return descriptionIsInteresting
-        ? ImmutableList.of(fact("value of", description))
+        ? ImmutableList.of(fact(factKey, description))
         : ImmutableList.of();
   }
 

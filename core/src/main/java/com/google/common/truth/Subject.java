@@ -825,7 +825,7 @@ public class Subject {
    * the user, see {@link #ignoreCheck()}.
    */
   protected final void failWithActual(Fact first, Fact... rest) {
-    doFail(sandwich(first, rest, butWas()));
+    metadata.fail(sandwich(first, rest, butWas()));
   }
 
   // TODO(cpovirk): Consider making this protected if there's a need for it.
@@ -841,7 +841,7 @@ public class Subject {
    * the user, see {@link #ignoreCheck()}.
    */
   final void failWithActual(Iterable<Fact> facts) {
-    doFail(append(ImmutableList.copyOf(facts), butWas()));
+    metadata.fail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
   /**
@@ -1127,7 +1127,7 @@ public class Subject {
 
   private void failEqualityCheckNoComparisonFailure(ComparisonResult difference, Fact... facts) {
     // TODO(cpovirk): Is it possible for difference.factsOrEmpty() to be nonempty? If not, remove.
-    doFail(concat(asList(facts), difference.factsOrEmpty()));
+    metadata.fail(concat(asList(facts), difference.factsOrEmpty()));
   }
 
   /**
@@ -1242,12 +1242,12 @@ public class Subject {
    * the user, see {@link #ignoreCheck()}.
    */
   protected final void failWithoutActual(Fact first, Fact... rest) {
-    doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
+    metadata.fail(ImmutableList.copyOf(Lists.asList(first, rest)));
   }
 
   // TODO(cpovirk): Consider making this protected if there's a need for it.
   final void failWithoutActual(Iterable<Fact> facts) {
-    doFail(ImmutableList.copyOf(facts));
+    metadata.fail(ImmutableList.copyOf(facts));
   }
 
   /**
@@ -1272,6 +1272,22 @@ public class Subject {
   @Deprecated
   final void failWithoutActual(String check) {
     failWithoutSubject(check);
+  }
+
+  /**
+   * Special failure method for {@link ThrowableSubject} to use when users try to assert about the
+   * cause or message of a null {@link Throwable}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
+   */
+  final void failForNullThrowable(String message) {
+    metadata.failForNullThrowable(message);
   }
 
   /**
@@ -1361,10 +1377,6 @@ public class Subject {
             ? subjectClass.substring(0, subjectClass.length() - "Subject".length())
             : "Object";
     return UPPER_CAMEL.to(LOWER_CAMEL, actualClass);
-  }
-
-  private void doFail(ImmutableList<Fact> facts) {
-    metadata.fail(facts);
   }
 
   static Factory<Subject, Object> objects() {

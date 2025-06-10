@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -64,6 +62,13 @@ public class ThrowableSubject extends Subject {
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public final StringSubject hasMessageThat() {
+    // We provide a more helpful error message if hasCauseThat() methods are chained too deep, as in
+    // assertThat(new Exception()).hasCauseThat().hasMessageThat()....
+    // This message also triggers for the simpler case of assertThat(null).hasMessageThat()....
+    if (actual == null) {
+      failForNullThrowable("Attempt to assert about the message of a null Throwable");
+      return ignoreCheck().that("");
+    }
     StandardSubjectBuilder check = check("getMessage()");
     if (actual instanceof ErrorWithFacts && ((ErrorWithFacts) actual).facts().size() > 1) {
       check =
@@ -71,7 +76,7 @@ public class ThrowableSubject extends Subject {
               "(Note from Truth: When possible, instead of asserting on the full message, assert"
                   + " about individual facts by using ExpectFailure.assertThat.)");
     }
-    return check.that(checkNotNull(actual).getMessage());
+    return check.that(actual.getMessage());
   }
 
   /**
@@ -82,14 +87,11 @@ public class ThrowableSubject extends Subject {
   // Any Throwable is fine, and we use plain Throwable to emphasize that it's not used "for real."
   @SuppressWarnings("ShouldNotSubclass")
   public final ThrowableSubject hasCauseThat() {
-    // provides a more helpful error message if hasCauseThat() methods are chained too deep
-    // e.g. assertThat(new Exception()).hCT().hCT()....
-    // TODO(diamondm) in keeping with other subjects' behavior this should still NPE if the value
-    // *itself* is null, since there's no context to lose. See also b/37645583
+    // We provide a more helpful error message if hasCauseThat() methods are chained too deep, as in
+    // assertThat(new Exception()).hasCauseThat().hasCauseThat()....
+    // This message also triggers for the simpler case of assertThat(null).hasCauseThat()....
     if (actual == null) {
-      check("getCause()")
-          .withMessage("Causal chain is not deep enough - add a .isNotNull() check?")
-          .fail();
+      failForNullThrowable("Attempt to assert about the cause of a null Throwable");
       return ignoreCheck()
           .that(
               new Throwable() {

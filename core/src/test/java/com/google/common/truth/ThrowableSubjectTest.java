@@ -30,6 +30,8 @@ import org.junit.runners.JUnit4;
  *
  * @author Kurt Alfred Kluever
  */
+// We don't want to use ThrowableSubject when testing ThrowableSubject.
+@SuppressWarnings({"GetMessageTruth", "AssertThatThrowableGetMessage"})
 @RunWith(JUnit4.class)
 public class ThrowableSubjectTest {
 
@@ -55,16 +57,36 @@ public class ThrowableSubjectTest {
   }
 
   @Test
-  public void hasMessageThat_MessageHasNullMessage_failure() {
+  public void hasMessageThat_messageHasNullMessage_failure() {
     expectFailure(
         whenTesting ->
             whenTesting.that(new NullPointerException("message")).hasMessageThat().isNull());
   }
 
   @Test
-  public void hasMessageThat_NullMessageHasMessage_failure() {
+  public void hasMessageThat_nullMessageHasMessage_failure() {
     NullPointerException npe = new NullPointerException(null);
     expectFailure(whenTesting -> whenTesting.that(npe).hasMessageThat().isEqualTo("message"));
+  }
+
+  @Test
+  public void hasMessageThat_tooDeep_failure() {
+    Exception actual = new Exception("foobar");
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(actual).hasCauseThat().hasMessageThat().isNull());
+    assertThat(e.getMessage())
+        .isEqualTo(
+            "Attempt to assert about the message of a null Throwable\n"
+                + "null Throwable was: throwable.getCause()");
+    assertErrorHasActualAsCause(actual, e);
+  }
+
+  @Test
+  public void hasMessageThat_onNull() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Throwable) null).hasMessageThat());
+    assertThat(e.getMessage()).isEqualTo("Attempt to assert about the message of a null Throwable");
   }
 
   @Test
@@ -117,9 +139,16 @@ public class ThrowableSubjectTest {
             whenTesting -> whenTesting.that(actual).hasCauseThat().hasCauseThat().isNull());
     assertThat(e.getMessage())
         .isEqualTo(
-            "Causal chain is not deep enough - add a .isNotNull() check?\n"
-                + "value of: throwable.getCause().getCause()");
+            "Attempt to assert about the cause of a null Throwable\n"
+                + "null Throwable was: throwable.getCause()");
     assertErrorHasActualAsCause(actual, e);
+  }
+
+  @Test
+  public void hasCauseThat_onNull() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Throwable) null).hasCauseThat());
+    assertThat(e.getMessage()).isEqualTo("Attempt to assert about the cause of a null Throwable");
   }
 
   @Test
