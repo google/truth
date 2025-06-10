@@ -59,6 +59,12 @@ public class StringSubjectTest {
   }
 
   @Test
+  public void hasLengthNullString() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((String) null).hasLength(5));
+    assertFailureKeys(e, "expected a string with length", "but was");
+  }
+
+  @Test
   public void stringIsEmpty() {
     assertThat("").isEmpty();
   }
