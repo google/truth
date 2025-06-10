@@ -1903,6 +1903,7 @@ public class IterableSubject extends Subject {
      * Checks that the actual iterable contains no elements that correspond to any of the given
      * elements.
      */
+    @SuppressWarnings("nullness") // TODO: b/423853632 - Remove after checker is fixed.
     public void containsNoneIn(Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
       ListMultimap<E, A> present = LinkedListMultimap.create();
