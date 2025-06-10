@@ -55,4 +55,12 @@ public class ClassSubjectTest {
             whenTesting -> whenTesting.that(String.class).isAssignableTo(Exception.class));
     assertFailureValue(e, "expected to be assignable to", "java.lang.Exception");
   }
+
+  @Test
+  public void testIsAssignableTo_forNullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Class<?>) null).isAssignableTo(Exception.class));
+    assertFailureValue(e, "expected to be assignable to", "java.lang.Exception");
+  }
 }

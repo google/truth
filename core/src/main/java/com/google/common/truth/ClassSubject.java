@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
 
@@ -40,7 +38,7 @@ public final class ClassSubject extends Subject {
    * subclasses of themselves.
    */
   public void isAssignableTo(Class<?> clazz) {
-    if (!clazz.isAssignableFrom(checkNotNull(actual))) {
+    if (actual == null || !clazz.isAssignableFrom(actual)) {
       failWithActual("expected to be assignable to", clazz.getName());
     }
   }
