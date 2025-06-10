@@ -789,6 +789,14 @@ public class Subject {
    *
    * <p>Example usage: The check {@code contains(String)} calls {@code failWithActual("expected to
    * contain", string)}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    */
   protected final void failWithActual(String key, @Nullable Object value) {
     failWithActual(fact(key, value));
@@ -807,18 +815,45 @@ public class Subject {
    *
    * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
    * to be empty"))}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    */
   protected final void failWithActual(Fact first, Fact... rest) {
     doFail(sandwich(first, rest, butWas()));
   }
 
   // TODO(cpovirk): Consider making this protected if there's a need for it.
+  /**
+   * Internal variant of {@link #failWithActual(Fact, Fact...)} that accepts an {@link Iterable}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
+   */
   final void failWithActual(Iterable<Fact> facts) {
     doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
   /**
-   * Reports a failure constructing a message from a simple verb.
+   * Legacy failure method. Prefer the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param check the check being asserted
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
@@ -833,7 +868,15 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message and passes such to the FailureStrategy
+   * Legacy failure method. Prefer the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param verb the check being asserted
    * @param other the value against which the value under test is compared
@@ -848,7 +891,15 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message and passes such to the FailureStrategy
+   * Legacy failure method. Prefer the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param verb the check being asserted
    * @param messageParts the expectations against which the value under test is compared
@@ -880,11 +931,30 @@ public class Subject {
   /**
    * Special version of {@link #failEqualityCheck} for use from {@link IterableSubject}, documented
    * further there.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    */
   final void failEqualityCheckForEqualsWithoutDescription(@Nullable Object expected) {
     failEqualityCheck(EqualityCheck.EQUAL, expected, ComparisonResult.differentNoDescription());
   }
 
+  /**
+   * Fails, potentially producing a {@code ComparisonFailure}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
+   */
   private void failEqualityCheck(
       EqualityCheck equalityCheck, @Nullable Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
@@ -1061,7 +1131,15 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message and passes it to the FailureStrategy
+   * Legacy failure method. Prefer the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param verb the check being asserted
    * @param expected the expectations against which the value under test is compared
@@ -1086,8 +1164,16 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message with an alternative representation of the wrapped value under test
-   * and passes it to the FailureStrategy
+   * Legacy failure method that accepts an alternative representation of the actual value. Prefer
+   * the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param verb the check being asserted
    * @param expected the expected value of the check
@@ -1107,6 +1193,16 @@ public class Subject {
   }
 
   /**
+   * Legacy failure method. Prefer the {@code fail*Actual(...)} family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
+   *
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
    *     #failWithoutActual(Fact, Fact...) failWithoutActual}{@code (}{@link Fact#simpleFact
    *     simpleFact(...)}{@code )}. However, if you want to preserve your exact failure message as a
@@ -1136,6 +1232,14 @@ public class Subject {
    *
    * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
    * to be empty"))}.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    */
   protected final void failWithoutActual(Fact first, Fact... rest) {
     doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
@@ -1147,8 +1251,16 @@ public class Subject {
   }
 
   /**
-   * Assembles a failure message without a given value under test and passes it to the
-   * FailureStrategy.
+   * Legacy failure method that excludes the actual value. Prefer the {@code fail*Actual(...)}
+   * family of methods.
+   *
+   * <p><b>Note:</b> While Truth's {@code fail*()} methods usually throw {@link AssertionError},
+   * they do not do so in all cases: When users use an alternative {@link FailureStrategy}, such as
+   * {@link Expect}, the {@code fail*()} methods may instead record the failure somewhere and then
+   * return. To accommodate this, {@link Subject} methods should typically {@code return} after
+   * calling a {@code fail*()} method, rather than continue onward to potentially fail a second time
+   * or throw an exception. For cases in which a method needs to return another {@link Subject} to
+   * the user, see {@link #ignoreCheck()}.
    *
    * @param check the check being asserted
    * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
