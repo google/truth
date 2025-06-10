@@ -73,9 +73,10 @@ public final class OptionalSubject extends Subject {
    */
   public void hasValue(@Nullable Object expected) {
     if (expected == null) {
-      throw new NullPointerException("Optional cannot have a null value.");
-    }
-    if (actual == null) {
+      failWithoutActual(
+          simpleFact("expected an optional with a null value, but that is impossible"),
+          fact("was", actual));
+    } else if (actual == null) {
       failWithActual("expected an optional with value", expected);
     } else if (!actual.isPresent()) {
       failWithoutActual(fact("expected to have value", expected), simpleFact("but was empty"));
