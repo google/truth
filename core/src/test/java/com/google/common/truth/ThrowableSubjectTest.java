@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -75,10 +76,9 @@ public class ThrowableSubjectTest {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(actual).hasCauseThat().hasMessageThat().isNull());
-    assertThat(e.getMessage())
-        .isEqualTo(
-            "Attempt to assert about the message of a null Throwable\n"
-                + "null Throwable was: throwable.getCause()");
+    assertFailureKeys(
+        e, "Attempt to assert about the message of a null Throwable", "null Throwable was");
+    assertFailureValue(e, "null Throwable was", "throwable.getCause()");
     assertErrorHasActualAsCause(actual, e);
   }
 
@@ -86,7 +86,7 @@ public class ThrowableSubjectTest {
   public void hasMessageThat_onNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Throwable) null).hasMessageThat());
-    assertThat(e.getMessage()).isEqualTo("Attempt to assert about the message of a null Throwable");
+    assertFailureKeys(e, "Attempt to assert about the message of a null Throwable");
   }
 
   @Test
@@ -137,10 +137,9 @@ public class ThrowableSubjectTest {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(actual).hasCauseThat().hasCauseThat().isNull());
-    assertThat(e.getMessage())
-        .isEqualTo(
-            "Attempt to assert about the cause of a null Throwable\n"
-                + "null Throwable was: throwable.getCause()");
+    assertFailureKeys(
+        e, "Attempt to assert about the cause of a null Throwable", "null Throwable was");
+    assertFailureValue(e, "null Throwable was", "throwable.getCause()");
     assertErrorHasActualAsCause(actual, e);
   }
 
@@ -148,7 +147,7 @@ public class ThrowableSubjectTest {
   public void hasCauseThat_onNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Throwable) null).hasCauseThat());
-    assertThat(e.getMessage()).isEqualTo("Attempt to assert about the cause of a null Throwable");
+    assertFailureKeys(e, "Attempt to assert about the cause of a null Throwable");
   }
 
   @Test

@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.ComparisonFailures.makeComparisonFailureFacts;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
 import static com.google.common.truth.Platform.inferDescription;
@@ -192,8 +193,12 @@ public final class FailureMetadata {
   void failForNullThrowable(String message) {
     doFail(
         AssertionErrorWithFacts.create(
-            evaluateAll(append(messages, new LazyMessage("%s", message))),
-            concat(description(/* factKey= */ "null Throwable was"), rootUnlessThrowable()),
+            evaluateAll(messages),
+            concat(
+                // unusual case: put a fact *before* the description
+                ImmutableList.of(simpleFact(message)),
+                description(/* factKey= */ "null Throwable was"),
+                rootUnlessThrowable()),
             rootCause()));
   }
 
