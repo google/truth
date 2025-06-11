@@ -21,7 +21,6 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.Range;
 import org.junit.Test;
@@ -37,15 +36,27 @@ import org.junit.runners.JUnit4;
 public class ComparableSubjectTest {
 
   @Test
+  @SuppressWarnings("deprecation") // test of an unnecessary use of isEquivalentAccordingToCompareTo
+  public void testNullActual() {
+    expectFailure(
+        whenTesting -> whenTesting.that((Integer) null).isEquivalentAccordingToCompareTo(6));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isGreaterThan(6));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isLessThan(6));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isAtMost(6));
+    expectFailure(whenTesting -> whenTesting.that((Integer) null).isAtLeast(6));
+  }
+
+  @Test
   // test of a mistaken call and of unnecessary use of isEquivalentAccordingToCompareTo
   @SuppressWarnings({"deprecation", "IntegerComparison"})
-  public void testNulls() {
-    assertThrows(
-        NullPointerException.class, () -> assertThat(6).isEquivalentAccordingToCompareTo(null));
-    assertThrows(NullPointerException.class, () -> assertThat(6).isGreaterThan(null));
-    assertThrows(NullPointerException.class, () -> assertThat(6).isLessThan(null));
-    assertThrows(NullPointerException.class, () -> assertThat(6).isAtMost(null));
-    assertThrows(NullPointerException.class, () -> assertThat(6).isAtLeast(null));
+  public void testNullExpected() {
+    expectFailure(whenTesting -> whenTesting.that(6).isEquivalentAccordingToCompareTo(null));
+    expectFailure(whenTesting -> whenTesting.that(6).isGreaterThan(null));
+    expectFailure(whenTesting -> whenTesting.that(6).isLessThan(null));
+    expectFailure(whenTesting -> whenTesting.that(6).isAtMost(null));
+    expectFailure(whenTesting -> whenTesting.that(6).isAtLeast(null));
+    expectFailure(whenTesting -> whenTesting.that(6).isIn((Range<Integer>) null));
+    expectFailure(whenTesting -> whenTesting.that(6).isNotIn((Range<Integer>) null));
   }
 
   @Test

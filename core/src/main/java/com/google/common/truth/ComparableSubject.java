@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.Range;
 import org.jspecify.annotations.Nullable;
@@ -53,15 +54,27 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
   }
 
   /** Checks that the actual value is in {@code range}. */
-  public final void isIn(Range<T> range) {
-    if (!range.contains(actualAsT())) {
+  public final void isIn(@Nullable Range<T> range) {
+    T actual = actualAsT();
+    if (range == null) {
+      failWithoutActual(
+          simpleFact("could not perform range check because range is null"),
+          fact("value to test for membership was", actual));
+    } else if (actual == null || !range.contains(actual)) {
       failWithActual("expected to be in range", range);
     }
   }
 
   /** Checks that the actual value is <i>not</i> in {@code range}. */
-  public final void isNotIn(Range<T> range) {
-    if (range.contains(actualAsT())) {
+  public final void isNotIn(@Nullable Range<T> range) {
+    T actual = actualAsT();
+    if (range == null) {
+      failWithoutActual(
+          simpleFact("could not perform range check because range is null"),
+          fact("value to test for membership was", actual));
+    } else if (actual == null) {
+      failWithActual("expected a non-null value outside range", range);
+    } else if (range.contains(actual)) {
       failWithActual("expected not to be in range", range);
     }
   }
@@ -74,7 +87,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * #isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(@Nullable T expected) {
-    if (actualAsComparable().compareTo(checkNotNull(expected)) != 0) {
+    Comparable<Object> actual = actualAsComparable();
+    if (expected == null) {
+      failWithoutActual(
+          simpleFact(
+              "expected a value equivalent to null according to compareTo, but compareTo is"
+                  + " required to reject null"),
+          fact("was", actual));
+    } else if (actual == null || actual.compareTo(expected) != 0) {
       failWithActual("expected value that sorts equal to", expected);
     }
   }
@@ -86,7 +106,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * #isAtLeast}.
    */
   public final void isGreaterThan(@Nullable T other) {
-    if (actualAsComparable().compareTo(checkNotNull(other)) <= 0) {
+    Comparable<Object> actual = actualAsComparable();
+    if (other == null) {
+      failWithoutActual(
+          simpleFact(
+              "expected a value greater than null according to compareTo, but compareTo is required"
+                  + " to reject null"),
+          fact("was", actual));
+    } else if (actual == null || actual.compareTo(other) <= 0) {
       failWithActual("expected to be greater than", other);
     }
   }
@@ -98,7 +125,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * #isAtMost}.
    */
   public final void isLessThan(@Nullable T other) {
-    if (actualAsComparable().compareTo(checkNotNull(other)) >= 0) {
+    Comparable<Object> actual = actualAsComparable();
+    if (other == null) {
+      failWithoutActual(
+          simpleFact(
+              "expected a value less than null according to compareTo, but compareTo is required to"
+                  + " reject null"),
+          fact("was", actual));
+    } else if (actual == null || actual.compareTo(other) >= 0) {
       failWithActual("expected to be less than", other);
     }
   }
@@ -110,7 +144,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * #isLessThan}.
    */
   public final void isAtMost(@Nullable T other) {
-    if (actualAsComparable().compareTo(checkNotNull(other)) > 0) {
+    Comparable<Object> actual = actualAsComparable();
+    if (other == null) {
+      failWithoutActual(
+          simpleFact(
+              "expected a value that is at most null according to compareTo, but compareTo is"
+                  + " required to reject null"),
+          fact("was", actual));
+    } else if (actual == null || actual.compareTo(other) > 0) {
       failWithActual("expected to be at most", other);
     }
   }
@@ -122,7 +163,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * #isGreaterThan}.
    */
   public final void isAtLeast(@Nullable T other) {
-    if (actualAsComparable().compareTo(checkNotNull(other)) < 0) {
+    Comparable<Object> actual = actualAsComparable();
+    if (other == null) {
+      failWithoutActual(
+          simpleFact(
+              "expected a value that is at least null according to compareTo, but compareTo is"
+                  + " required to reject null"),
+          fact("was", actual));
+    } else if (actual == null || actual.compareTo(other) < 0) {
       failWithActual("expected to be at least", other);
     }
   }
@@ -136,12 +184,12 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
   }
 
   @SuppressWarnings("unchecked")
-  private Comparable<Object> actualAsComparable() {
-    return checkNotNull((Comparable<Object>) actual);
+  private @Nullable Comparable<Object> actualAsComparable() {
+    return (Comparable<Object>) actual;
   }
 
   @SuppressWarnings("unchecked")
-  private T actualAsT() {
-    return (T) checkNotNull(actual);
+  private @Nullable T actualAsT() {
+    return (T) actual;
   }
 }
