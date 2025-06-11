@@ -510,4 +510,24 @@ public class DoubleSubjectTest {
     assertThat(2.0).isAtMost(2);
     assertThat(2.0).isAtMost(3);
   }
+
+  @Test
+  public void testNullActual_isWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Double) null).isWithin(10.0).of(5.0));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Double) null).isNotWithin(10.0).of(5.0));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
 }

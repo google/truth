@@ -522,4 +522,24 @@ public class FloatSubjectTest {
   public void isAtMost_int_withNoExactFloatRepresentation() {
     expectFailure(whenTesting -> whenTesting.that(0x1.0p30f).isAtMost((1 << 30) - 1));
   }
+
+  @Test
+  public void testNullActual_isWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Float) null).isWithin(10.0f).of(5.0f));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Float) null).isNotWithin(10.0f).of(5.0f));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
 }

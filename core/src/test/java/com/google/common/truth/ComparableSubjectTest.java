@@ -227,4 +227,79 @@ public class ComparableSubjectTest {
       return Integer.toString(wrapped);
     }
   }
+
+  @Test
+  public void testNullActual_isGreaterThan() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isGreaterThan(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null comparable");
+    assertThat(e).factValue("expected a non-null comparable").isNull();
+  }
+
+  @Test
+  public void testNullActual_isLessThan() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isLessThan(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null comparable");
+    assertThat(e).factValue("expected a non-null comparable").isNull();
+  }
+
+  @Test
+  public void testNullActual_isAtLeast() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isAtLeast(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null comparable");
+    assertThat(e).factValue("expected a non-null comparable").isNull();
+  }
+
+  @Test
+  public void testNullActual_isAtMost() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isAtMost(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null comparable");
+    assertThat(e).factValue("expected a non-null comparable").isNull();
+  }
+
+  @Test
+  public void testNullActual_isEquivalentAccordingToCompareTo() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((StringComparedByLength) null)
+                    .isEquivalentAccordingToCompareTo(new StringComparedByLength("xyz")));
+    assertThat(e).factKeys().containsExactly("expected a non-null comparable");
+    assertThat(e).factValue("expected a non-null comparable").isNull();
+  }
+
+  @Test
+  public void testNullActual_isInRange() {
+    Range<Integer> oneToFive = Range.closed(1, 5);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isIn(oneToFive));
+    // This calls actualAsT() which uses "expected a non-null value"
+    assertThat(e).factKeys().containsExactly("expected a non-null value");
+    assertThat(e).factValue("expected a non-null value").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotInRange() {
+    Range<Integer> oneToFive = Range.closed(1, 5);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isNotIn(oneToFive));
+    // This calls actualAsT() which uses "expected a non-null value"
+    assertThat(e).factKeys().containsExactly("expected a non-null value");
+    assertThat(e).factValue("expected a non-null value").isNull();
+  }
 }

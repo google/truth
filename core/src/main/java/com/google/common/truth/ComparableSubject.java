@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.Range;
 import org.jspecify.annotations.Nullable;
@@ -137,11 +138,24 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
 
   @SuppressWarnings("unchecked")
   private Comparable<Object> actualAsComparable() {
-    return checkNotNull((Comparable<Object>) actual);
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null comparable"));
+      return new Comparable<Object>() {
+        @Override
+        public int compareTo(Object o) {
+          return 0;
+        }
+      };
+    }
+    return (Comparable<Object>) actual;
   }
 
   @SuppressWarnings("unchecked")
   private T actualAsT() {
-    return (T) checkNotNull(actual);
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null value"));
+      return null;
+    }
+    return (T) actual;
   }
 }

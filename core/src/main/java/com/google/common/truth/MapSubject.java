@@ -81,38 +81,61 @@ public class MapSubject extends Subject {
 
   /** Checks that the actual map is empty. */
   public final void isEmpty() {
-    if (!checkNotNull(actual).isEmpty()) {
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null map to be empty"));
+      return;
+    }
+    if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Checks that the actual map is not empty. */
   public final void isNotEmpty() {
-    if (checkNotNull(actual).isEmpty()) {
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null map to not be empty"));
+      return;
+    }
+    if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
   /** Checks that the actual map has the given size. */
   public final void hasSize(int expectedSize) {
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null map to have size", expectedSize));
+      return;
+    }
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
+    check("size()").that(actual.size()).isEqualTo(expectedSize);
   }
 
   /** Checks that the actual map contains the given key. */
   public final void containsKey(@Nullable Object key) {
-    check("keySet()").that(checkNotNull(actual).keySet()).contains(key);
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null map to contain key", key));
+      return;
+    }
+    check("keySet()").that(actual.keySet()).contains(key);
   }
 
   /** Checks that the actual map does not contain the given key. */
   public final void doesNotContainKey(@Nullable Object key) {
-    check("keySet()").that(checkNotNull(actual).keySet()).doesNotContain(key);
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null map to not contain key", key));
+      return; // If null, it doesn't contain the key. But original would fail.
+    }
+    check("keySet()").that(actual.keySet()).doesNotContain(key);
   }
 
   /** Checks that the actual map contains the given entry. */
   public final void containsEntry(@Nullable Object key, @Nullable Object value) {
     Map.Entry<@Nullable Object, @Nullable Object> entry = immutableEntry(key, value);
-    checkNotNull(actual);
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null map to contain entry", entry));
+      return;
+    }
     if (!actual.entrySet().contains(entry)) {
       List<@Nullable Object> keyList = singletonList(key);
       List<@Nullable Object> valueList = singletonList(value);
@@ -183,8 +206,12 @@ public class MapSubject extends Subject {
 
   /** Checks that the actual map does not contain the given entry. */
   public final void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null map to not contain entry", immutableEntry(key, value)));
+      return; // If null, it doesn't contain the entry. But original would fail.
+    }
     checkNoNeedToDisplayBothValues("entrySet()")
-        .that(checkNotNull(actual).entrySet())
+        .that(actual.entrySet())
         .doesNotContain(immutableEntry(key, value));
   }
 
@@ -243,7 +270,11 @@ public class MapSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
-      if (checkNotNull(actual).isEmpty()) {
+      if (actual == null) {
+        failWithoutActual(simpleFact("expected a non-null map to be empty (for containsExactlyEntriesIn with empty expected map)"));
+        return ALREADY_FAILED;
+      }
+      if (actual.isEmpty()) {
         return IN_ORDER;
       } else {
         isEmpty(); // fails
@@ -274,8 +305,14 @@ public class MapSubject extends Subject {
 
   @CanIgnoreReturnValue
   private boolean containsEntriesInAnyOrder(Map<?, ?> expectedMap, boolean allowUnexpected) {
+    if (actual == null) {
+      failWithoutActual(fact(
+          allowUnexpected ? "expected to contain at least" : "expected to contain exactly",
+          expectedMap));
+      return false; // This method returns boolean, indicates failure
+    }
     MapDifference<@Nullable Object, @Nullable Object, @Nullable Object> diff =
-        MapDifference.create(checkNotNull(actual), expectedMap, allowUnexpected, Objects::equals);
+        MapDifference.create(actual, expectedMap, allowUnexpected, Objects::equals);
     if (diff.isEmpty()) {
       return true;
     }
@@ -454,12 +491,19 @@ public class MapSubject extends Subject {
      */
     @Override
     public void inOrder() {
+      if (MapSubject.this.actual == null) {
+        // This case should ideally be caught by the calling method (e.g. containsExactlyEntriesIn)
+        // before MapInOrder is even instantiated or inOrder is called.
+        // However, as a safeguard:
+        MapSubject.this.failWithoutActual(simpleFact("expected a non-null map for inOrder check"));
+        return;
+      }
       // We're using the fact that Sets.intersection keeps the order of the first set.
-      checkNotNull(actual);
+      // Null check done by MapSubject.this.actual above or in outer method
       List<?> expectedKeyOrder =
-          new ArrayList<>(Sets.intersection(expectedMap.keySet(), actual.keySet()));
+          new ArrayList<>(Sets.intersection(expectedMap.keySet(), MapSubject.this.actual.keySet()));
       List<?> actualKeyOrder =
-          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMap.keySet()));
+          new ArrayList<>(Sets.intersection(MapSubject.this.actual.keySet(), expectedMap.keySet()));
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
         ImmutableList.Builder<Fact> facts =
             ImmutableList.<Fact>builder()
@@ -571,7 +615,11 @@ public class MapSubject extends Subject {
      */
     @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
-      if (checkNotNull(actual).containsKey(expectedKey)) {
+      if (actual == null) {
+        subject.failWithoutActual(fact("expected a non-null map to check for entry", immutableEntry(expectedKey, expectedValue)));
+        return;
+      }
+      if (actual.containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
@@ -646,7 +694,11 @@ public class MapSubject extends Subject {
      */
     @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
     public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
-      if (checkNotNull(actual).containsKey(excludedKey)) {
+      if (actual == null) {
+        subject.failWithoutActual(fact("expected a non-null map to check for non-containment of entry", immutableEntry(excludedKey, excludedValue)));
+        return;
+      }
+      if (actual.containsKey(excludedKey)) {
         // Found matching key. Fail if the value matches, too.
         A actualValue = getCastSubject().get(excludedKey);
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
@@ -725,7 +777,11 @@ public class MapSubject extends Subject {
     @CanIgnoreReturnValue
     public Ordered containsExactlyEntriesIn(Map<?, ? extends E> expectedMap) {
       if (expectedMap.isEmpty()) {
-        if (checkNotNull(actual).isEmpty()) {
+        if (actual == null) {
+          subject.failWithoutActual(simpleFact("expected a non-null map to be empty (for correspondence containsExactlyEntriesIn with empty expected map)"));
+          return ALREADY_FAILED;
+        }
+        if (actual.isEmpty()) {
           return IN_ORDER;
         } else {
           subject.isEmpty(); // fails
@@ -781,7 +837,17 @@ public class MapSubject extends Subject {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Map<?, A> getCastSubject() {
-      return (Map<?, A>) checkNotNull(actual);
+      @SuppressWarnings("unchecked") // Existing cast
+      Map<?, A> actualMap = (Map<?, A>) actual;
+      if (actualMap == null) {
+        // This method is called internally by other assertion methods in UsingCorrespondence.
+        // Those methods should have already checked for actual == null and failed.
+        // However, if called directly or unexpectedly:
+        subject.failWithoutActual(simpleFact("expected a non-null map for correspondence assertion"));
+        // Return an empty map to satisfy type, failure already reported.
+        return ImmutableMap.of();
+      }
+      return actualMap;
     }
 
     private String actualCustomStringRepresentationForPackageMembersToCall() {

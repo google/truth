@@ -243,4 +243,24 @@ public class LongSubjectTest {
           .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
   }
+
+  @Test
+  public void testNullActual_isWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Long) null).isWithin(10L).of(5L));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Long) null).isNotWithin(10L).of(5L));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
 }

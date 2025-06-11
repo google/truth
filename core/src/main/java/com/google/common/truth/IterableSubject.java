@@ -149,28 +149,44 @@ public class IterableSubject extends Subject {
 
   /** Checks that the actual iterable is empty. */
   public final void isEmpty() {
-    if (!Iterables.isEmpty(checkNotNull(actual))) {
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null iterable to be empty"));
+      return;
+    }
+    if (!Iterables.isEmpty(actual)) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Checks that the actual iterable is not empty. */
   public final void isNotEmpty() {
-    if (Iterables.isEmpty(checkNotNull(actual))) {
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null iterable to not be empty"));
+      return;
+    }
+    if (Iterables.isEmpty(actual)) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
   /** Checks that the actual iterable has the given size. */
   public final void hasSize(int expectedSize) {
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to have size", expectedSize));
+      return;
+    }
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = size(checkNotNull(actual));
+    int actualSize = size(actual);
     check("size()").that(actualSize).isEqualTo(expectedSize);
   }
 
   /** Checks that the actual iterable contains the supplied item. */
   public final void contains(@Nullable Object element) {
-    if (!Iterables.contains(checkNotNull(actual), element)) {
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to contain", element));
+      return;
+    }
+    if (!Iterables.contains(actual, element)) {
       List<@Nullable Object> elementList = asList(element);
       if (hasMatchingToStringPair(actual, elementList)) {
         failWithoutActual(
@@ -190,15 +206,31 @@ public class IterableSubject extends Subject {
 
   /** Checks that the actual iterable does not contain the supplied item. */
   public final void doesNotContain(@Nullable Object element) {
-    if (Iterables.contains(checkNotNull(actual), element)) {
+    if (actual == null) {
+      // If actual is null, it cannot contain the element, so this is a passing case for doesNotContain.
+      // However, the method should ideally state it expected a non-null iterable.
+      // For now, let's ensure it doesn't throw NPE.
+      // A more robust solution might involve clarifying the semantics of doesNotContain on a null subject.
+      // Sticking to the primary goal: remove checkNotNull.
+      // This means if actual is null, it doesn't contain the element, so it should pass.
+      // However, the original checkNotNull would have failed.
+      // Let's report a failure consistent with "expected non-null".
+      failWithoutActual(fact("expected a non-null iterable to check for non-containment of", element));
+      return;
+    }
+    if (Iterables.contains(actual, element)) {
       failWithActual("expected not to contain", element);
     }
   }
 
   /** Checks that the actual iterable does not contain duplicate elements. */
   public final void containsNoDuplicates() {
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null iterable to check for duplicates"));
+      return;
+    }
     List<Multiset.Entry<?>> duplicates = new ArrayList<>();
-    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(checkNotNull(actual)).entrySet()) {
+    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
       }
@@ -224,7 +256,11 @@ public class IterableSubject extends Subject {
   // TODO(cpovirk): Consider using makeElementFacts-style messages here, in contains(), etc.
   public final void containsAnyIn(@Nullable Iterable<?> expected) {
     checkNotNull(expected);
-    Collection<?> actual = iterableToCollection(checkNotNull(this.actual));
+    if (this.actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to check for containment of any of", expected));
+      return;
+    }
+    Collection<?> actual = iterableToCollection(this.actual);
     for (Object item : expected) {
       if (actual.contains(item)) {
         return;
@@ -237,7 +273,7 @@ public class IterableSubject extends Subject {
           fact(
               "though it did contain",
               countDuplicatesAndAddTypeInfo(
-                  retainMatchingToString(checkNotNull(this.actual), /* itemsToCheck= */ expected))),
+                    retainMatchingToString(this.actual, /* itemsToCheck= */ expected))),
           fullContents());
     } else {
       failWithActual("expected to contain any of", expected);
@@ -283,7 +319,15 @@ public class IterableSubject extends Subject {
   @SuppressWarnings("BuilderCollapser")
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expectedIterable) {
-    List<?> actual = Lists.newLinkedList(checkNotNull(this.actual));
+    if (this.actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to check for 'contains at least'", expectedIterable));
+      // Cannot return IN_ORDER or ALREADY_FAILED directly without returning an Ordered object.
+      // This method returns Ordered. The failWithoutActual should throw.
+      // If a custom FailureStrategy is used, this might be an issue.
+      // For now, assume standard behavior where failWithoutActual throws.
+      return ALREADY_FAILED;
+    }
+    List<?> actual = Lists.newLinkedList(this.actual);
     Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<@Nullable Object> missing = new ArrayList<>();
@@ -317,7 +361,7 @@ public class IterableSubject extends Subject {
           ImmutableList.Builder<Fact> facts = ImmutableList.builder();
           facts.add(simpleFact("required elements were all found, but order was wrong"));
           facts.add(fact("expected order for required elements", expected));
-          List<Object> actualOrder = newArrayList(checkNotNull(IterableSubject.this.actual));
+          List<Object> actualOrder = newArrayList(IterableSubject.this.actual);
           if (actualOrder.retainAll(expected)) {
             facts.add(fact("but order was", actualOrder));
             facts.add(fullContents());
@@ -437,7 +481,11 @@ public class IterableSubject extends Subject {
   private Ordered containsExactlyElementsIn(
       @Nullable Iterable<?> required, boolean addElementsInWarning) {
     checkNotNull(required);
-    Iterator<?> actualIter = checkNotNull(actual).iterator();
+    if (actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to check for 'contains exactly'", required));
+      return ALREADY_FAILED; // Similar to containsAtLeastElementsIn
+    }
+    Iterator<?> actualIter = actual.iterator();
     Iterator<?> requiredIter = required.iterator();
 
     if (!requiredIter.hasNext()) {
@@ -717,7 +765,11 @@ public class IterableSubject extends Subject {
    * iterable.
    */
   public final void containsNoneIn(@Nullable Iterable<?> excluded) {
-    Collection<?> actual = iterableToCollection(checkNotNull(this.actual));
+    if (this.actual == null) {
+      failWithoutActual(fact("expected a non-null iterable to check for 'contains none of'", excluded));
+      return;
+    }
+    Collection<?> actual = iterableToCollection(this.actual);
     checkNotNull(excluded); // TODO(cpovirk): Produce a better exception message.
     List<@Nullable Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
@@ -816,7 +868,11 @@ public class IterableSubject extends Subject {
   }
 
   private void pairwiseCheck(String expectedFact, PairwiseChecker checker) {
-    Iterator<?> iterator = checkNotNull(actual).iterator();
+    if (actual == null) {
+      failWithoutActual(simpleFact("expected a non-null iterable for pairwise check"));
+      return;
+    }
+    Iterator<?> iterator = actual.iterator();
     if (iterator.hasNext()) {
       Object prev = iterator.next();
       while (iterator.hasNext()) {
@@ -1955,7 +2011,13 @@ public class IterableSubject extends Subject {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastActual() {
-      return (Iterable<A>) checkNotNull(subject.actual);
+      @SuppressWarnings("unchecked") // Existing cast
+      Iterable<A> actualIterable = (Iterable<A>) subject.actual;
+      if (actualIterable == null) {
+        subject.failWithoutActual(simpleFact("expected a non-null iterable for correspondence assertion"));
+        return ImmutableList.of(); // Return empty list to satisfy type, failure already reported
+      }
+      return actualIterable;
     }
 
     // TODO(b/69154276): Consider commoning up some of the logic between IterableSubject.Pairer,

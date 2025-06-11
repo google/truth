@@ -29,6 +29,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.truth.Correspondence;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
@@ -2491,5 +2492,213 @@ public class MapSubjectTest {
     assertFailureValue(e, "expected value", "200");
     assertFailureValue(e, "but got value", "201");
     assertFailureValue(e, "diff", "1");
+  }
+
+  @Test
+  public void testNullActual_isEmpty() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).isEmpty());
+    assertThat(e).factKeys().containsExactly("expected a non-null map to be empty");
+    assertThat(e).factValue("expected a non-null map to be empty").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotEmpty() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).isNotEmpty());
+    assertThat(e).factKeys().containsExactly("expected a non-null map to not be empty");
+    assertThat(e).factValue("expected a non-null map to not be empty").isNull();
+  }
+
+  @Test
+  public void testNullActual_hasSize() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).hasSize(2));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to have size");
+    assertThat(e).factValue("expected a non-null map to have size").isEqualTo("2");
+  }
+
+  @Test
+  public void testNullActual_containsKey() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).containsKey("key"));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain key");
+    assertThat(e).factValue("expected a non-null map to contain key").isEqualTo("key");
+  }
+
+  @Test
+  public void testNullActual_doesNotContainKey() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).doesNotContainKey("key"));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to not contain key");
+    assertThat(e).factValue("expected a non-null map to not contain key").isEqualTo("key");
+  }
+
+  @Test
+  public void testNullActual_containsEntry() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<?, ?>) null).containsEntry("key", "value"));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain entry");
+    assertThat(e).factValue("expected a non-null map to contain entry").isEqualTo("key=value");
+  }
+
+  @Test
+  public void testNullActual_doesNotContainEntry() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<?, ?>) null).doesNotContainEntry("key", "value"));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to not contain entry");
+    assertThat(e).factValue("expected a non-null map to not contain entry").isEqualTo("key=value");
+  }
+
+  @Test
+  public void testNullActual_containsExactly_varargs() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<String, String>) null).containsExactly("k", "v"));
+    // This comes from containsEntriesInAnyOrder
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain exactly");
+    assertThat(e).factValue("expected a non-null map to contain exactly").isEqualTo("{k=v}");
+  }
+
+  @Test
+  public void testNullActual_containsExactlyEntriesIn_nonEmptyExpected() {
+    Map<String, String> expected = ImmutableMap.of("key", "value");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Map<String, String>) null).containsExactlyEntriesIn(expected));
+    // This comes from containsEntriesInAnyOrder
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain exactly");
+    assertThat(e).factValue("expected a non-null map to contain exactly").isEqualTo(expected.toString());
+  }
+
+  @Test
+  public void testNullActual_containsExactlyEntriesIn_emptyExpected() {
+    Map<String, String> expected = ImmutableMap.of();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Map<String, String>) null).containsExactlyEntriesIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly(
+            "expected a non-null map to be empty (for containsExactlyEntriesIn with empty expected map)");
+    assertThat(e)
+        .factValue(
+            "expected a non-null map to be empty (for containsExactlyEntriesIn with empty expected map)")
+        .isNull();
+  }
+
+  @Test
+  public void testNullActual_containsAtLeast_varargs() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<String, String>) null).containsAtLeast("k", "v"));
+    // This comes from containsEntriesInAnyOrder
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain at least");
+    assertThat(e).factValue("expected a non-null map to contain at least").isEqualTo("{k=v}");
+  }
+
+  @Test
+  public void testNullActual_containsAtLeastEntriesIn_nonEmptyExpected() {
+    Map<String, String> expected = ImmutableMap.of("key", "value");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Map<String, String>) null).containsAtLeastEntriesIn(expected));
+    // This comes from containsEntriesInAnyOrder
+    assertThat(e).factKeys().containsExactly("expected a non-null map to contain at least");
+    assertThat(e).factValue("expected a non-null map to contain at least").isEqualTo(expected.toString());
+  }
+
+  @Test
+  public void testNullActual_containsAtLeastEntriesIn_emptyExpected_inOrder() {
+    // Unlike containsExactly, containsAtLeast with empty expected should not fail for null actual,
+    // because a null map does "contain at least" nothing.
+    // The inOrder() call is what would trigger the null check in MapInOrder if not caught earlier.
+    // The earlier check in containsAtLeastEntriesIn (which calls containsEntriesInAnyOrder)
+    // will handle the null if expected is non-empty.
+    // If expected is empty, containsEntriesInAnyOrder returns true, and MapInOrder is constructed.
+    // Then inOrder() is called.
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Map<String, String>) null)
+                    .containsAtLeastEntriesIn(ImmutableMap.of())
+                    .inOrder());
+    assertThat(e).factKeys().containsExactly("expected a non-null map for inOrder check");
+    assertThat(e).factValue("expected a non-null map for inOrder check").isNull();
+  }
+
+  @Test
+  public void testNullActual_comparingValuesUsing_containsEntry() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Map<String, String>) null)
+                    .comparingValuesUsing(correspondence)
+                    .containsEntry("key", "value"));
+    assertThat(e).factKeys().containsExactly("expected a non-null map to check for entry");
+    assertThat(e).factValue("expected a non-null map to check for entry").isEqualTo("key=value");
+  }
+
+  @Test
+  public void testNullActual_comparingValuesUsing_doesNotContainEntry() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Map<String, String>) null)
+                    .comparingValuesUsing(correspondence)
+                    .doesNotContainEntry("key", "value"));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null map to check for non-containment of entry");
+    assertThat(e)
+        .factValue("expected a non-null map to check for non-containment of entry")
+        .isEqualTo("key=value");
+  }
+
+  @Test
+  public void testNullActual_comparingValuesUsing_containsExactlyEntriesIn_emptyExpected() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    Map<String, String> expected = ImmutableMap.of();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Map<String, String>) null)
+                    .comparingValuesUsing(correspondence)
+                    .containsExactlyEntriesIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly(
+            "expected a non-null map to be empty (for correspondence containsExactlyEntriesIn with empty expected map)");
+    assertThat(e)
+        .factValue(
+            "expected a non-null map to be empty (for correspondence containsExactlyEntriesIn with empty expected map)")
+        .isNull();
+  }
+
+  @Test
+  public void testNullActual_comparingValuesUsing_containsExactlyEntriesIn_nonEmptyExpected() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    Map<String, String> expected = ImmutableMap.of("k", "v");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Map<String, String>) null)
+                    .comparingValuesUsing(correspondence)
+                    .containsExactlyEntriesIn(expected));
+    // This failure comes from internalContainsEntriesIn -> MapDifference.create -> getCastSubject()
+    assertThat(e).factKeys().containsExactly("expected a non-null map for correspondence assertion");
+    assertThat(e).factValue("expected a non-null map for correspondence assertion").isNull();
   }
 }

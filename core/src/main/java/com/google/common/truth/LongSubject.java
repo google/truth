@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
 import org.jspecify.annotations.Nullable;
@@ -96,8 +97,10 @@ public class LongSubject extends ComparableSubject<Long> {
       @Override
       public void of(long expected) {
         Long actual = LongSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
@@ -123,8 +126,10 @@ public class LongSubject extends ComparableSubject<Long> {
       @Override
       public void of(long expected) {
         Long actual = LongSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (equalWithinTolerance(actual, expected, tolerance)) {

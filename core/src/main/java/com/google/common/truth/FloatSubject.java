@@ -110,8 +110,10 @@ public final class FloatSubject extends ComparableSubject<Float> {
       @Override
       public void of(float expected) {
         Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
@@ -149,8 +151,10 @@ public final class FloatSubject extends ComparableSubject<Float> {
       @Override
       public void of(float expected) {
         Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {

@@ -216,4 +216,24 @@ public class IntegerSubjectTest {
           .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
   }
+
+  @Test
+  public void testNullActual_isWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isWithin(10).of(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotWithin() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Integer) null).isNotWithin(10).of(5));
+    assertThat(e).factKeys().containsExactly("expected a non-null number");
+    assertThat(e).factValue("expected a non-null number").isNull();
+  }
 }

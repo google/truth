@@ -105,8 +105,10 @@ public final class DoubleSubject extends ComparableSubject<Double> {
       @Override
       public void of(double expected) {
         Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
@@ -144,8 +146,10 @@ public final class DoubleSubject extends ComparableSubject<Double> {
       @Override
       public void of(double expected) {
         Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
+        if (actual == null) {
+          failWithoutActual(simpleFact("expected a non-null number"));
+          return;
+        }
         checkTolerance(tolerance);
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {

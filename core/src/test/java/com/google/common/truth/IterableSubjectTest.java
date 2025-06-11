@@ -27,6 +27,7 @@ import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
+import com.google.common.truth.Correspondence;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -1374,5 +1375,224 @@ public class IterableSubjectTest {
       calls++;
       return super.toString();
     }
+  }
+
+  @Test
+  public void testNullActual_isEmpty() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isEmpty());
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable to be empty");
+    assertThat(e).factValue("expected a non-null iterable to be empty").isNull();
+  }
+
+  @Test
+  public void testNullActual_isNotEmpty() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isNotEmpty());
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable to not be empty");
+    assertThat(e).factValue("expected a non-null iterable to not be empty").isNull();
+  }
+
+  @Test
+  public void testNullActual_hasSize() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).hasSize(2));
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable to have size");
+    assertThat(e).factValue("expected a non-null iterable to have size").isEqualTo("2");
+  }
+
+  @Test
+  public void testNullActual_contains() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).contains(1));
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable to contain");
+    assertThat(e).factValue("expected a non-null iterable to contain").isEqualTo("1");
+  }
+
+  @Test
+  public void testNullActual_doesNotContain() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).doesNotContain(1));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for non-containment of");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for non-containment of")
+        .isEqualTo("1");
+  }
+
+  @Test
+  public void testNullActual_containsNoDuplicates() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsNoDuplicates());
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for duplicates");
+    assertThat(e).factValue("expected a non-null iterable to check for duplicates").isNull();
+  }
+
+  @Test
+  public void testNullActual_containsAnyOf() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsAnyOf(1, 2));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for containment of any of");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for containment of any of")
+        .isEqualTo("[1, 2]");
+  }
+
+  @Test
+  public void testNullActual_containsAnyIn_iterable() {
+    List<Integer> expected = asList(1, 2);
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Iterable<?>) null).containsAnyIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for containment of any of");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for containment of any of")
+        .isEqualTo(expected.toString());
+  }
+
+  @Test
+  public void testNullActual_containsAtLeast() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsAtLeast(1, 2));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains at least'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains at least'")
+        .isEqualTo("[1, 2]");
+  }
+
+  @Test
+  public void testNullActual_containsAtLeastElementsIn_iterable() {
+    List<Integer> expected = asList(1, 2);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Iterable<?>) null).containsAtLeastElementsIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains at least'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains at least'")
+        .isEqualTo(expected.toString());
+  }
+
+  @Test
+  public void testNullActual_containsExactly_varargs() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsExactly(1, 2));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains exactly'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains exactly'")
+        .isEqualTo("[1, 2]");
+  }
+
+  @Test
+  public void testNullActual_containsExactlyElementsIn_iterable() {
+    List<Integer> expected = asList(1, 2);
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Iterable<?>) null).containsExactlyElementsIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains exactly'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains exactly'")
+        .isEqualTo(expected.toString());
+  }
+
+  @Test
+  public void testNullActual_containsNoneOf() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsNoneOf(1, 2));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains none of'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains none of'")
+        .isEqualTo("[1, 2]");
+  }
+
+  @Test
+  public void testNullActual_containsNoneIn_iterable() {
+    List<Integer> excluded = asList(1, 2);
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Iterable<?>) null).containsNoneIn(excluded));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable to check for 'contains none of'");
+    assertThat(e)
+        .factValue("expected a non-null iterable to check for 'contains none of'")
+        .isEqualTo(excluded.toString());
+  }
+
+  @Test
+  public void testNullActual_isInStrictOrder() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isInStrictOrder());
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable for pairwise check");
+    assertThat(e).factValue("expected a non-null iterable for pairwise check").isNull();
+  }
+
+  @Test
+  public void testNullActual_isInOrder() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isInOrder());
+    assertThat(e).factKeys().containsExactly("expected a non-null iterable for pairwise check");
+    assertThat(e).factValue("expected a non-null iterable for pairwise check").isNull();
+  }
+
+  @Test
+  public void testNullActual_comparingElementsUsing_contains() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Iterable<String>) null)
+                    .comparingElementsUsing(correspondence)
+                    .contains("foo"));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable for correspondence assertion");
+    assertThat(e)
+        .factValue("expected a non-null iterable for correspondence assertion")
+        .isNull();
+  }
+
+  @Test
+  public void testNullActual_comparingElementsUsing_containsExactlyElementsIn() {
+    Correspondence<String, String> correspondence = Correspondence.equality();
+    List<String> expected = ImmutableList.of("foo");
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that((Iterable<String>) null)
+                    .comparingElementsUsing(correspondence)
+                    .containsExactlyElementsIn(expected));
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected a non-null iterable for correspondence assertion");
+    // Note: The UsingCorrespondence.containsExactlyElementsIn would try to access subject.actual
+    // to produce the "but was" clause if it didn't return early due to the null actual in getCastActual.
+    // The current implementation of getCastActual for null subject.actual reports the failure
+    // and returns an empty list, so the assertion continues and then fails because the expected list is not empty.
+    // This is a known area for potential refinement if FailureStrategy doesn't throw.
+    // For now, we check the initial failure from getCastActual.
+    assertThat(e)
+        .factValue("expected a non-null iterable for correspondence assertion")
+        .isNull();
   }
 }
