@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Strings.lenientFormat;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
@@ -40,7 +39,7 @@ final class LazyMessage {
 
   @Override
   public String toString() {
-    return lenientFormat(format, args);
+    return String.format(format, args);
   }
 
   @VisibleForTesting

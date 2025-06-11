@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Multisets.immutableEntry;
@@ -109,7 +108,7 @@ final class SubjectUtils {
     String homogeneousTypeName = getHomogeneousTypeName(items);
 
     return homogeneousTypeName != null
-        ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName)
+        ? String.format("%s (%s)", countDuplicates(items), homogeneousTypeName)
         : countDuplicates(addTypeInfoToEveryItem(items));
   }
 
@@ -284,7 +283,7 @@ final class SubjectUtils {
       String valueTypeName =
           entry.getValue() == entry ? "Map.Entry" : objectToTypeName(entry.getValue());
 
-      return lenientFormat("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
+      return String.format("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
     } else {
       return item.getClass().getName();
     }
@@ -317,7 +316,7 @@ final class SubjectUtils {
   private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
     List<String> itemsWithTypeInfo = new ArrayList<>();
     for (Object item : items) {
-      itemsWithTypeInfo.add(lenientFormat("%s (%s)", item, objectToTypeName(item)));
+      itemsWithTypeInfo.add(String.format("%s (%s)", item, objectToTypeName(item)));
     }
     return itemsWithTypeInfo;
   }

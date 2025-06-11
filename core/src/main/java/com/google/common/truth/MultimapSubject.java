@@ -198,7 +198,7 @@ public class MultimapSubject extends Subject {
           fact("but was", actualCustomStringRepresentationForPackageMembersToCall()),
           fact("an instance of", actualType),
           simpleFact(
-              lenientFormat(
+              String.format(
                   "a %s cannot equal a %s if either is non-empty", actualType, otherType)));
     } else if (actual instanceof ListMultimap) {
       containsExactlyEntriesIn((Multimap<?, ?>) checkNotNull(other)).inOrder();
