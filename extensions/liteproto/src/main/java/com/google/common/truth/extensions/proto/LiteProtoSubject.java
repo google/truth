@@ -116,11 +116,14 @@ public class LiteProtoSubject extends Subject {
       super.isEqualTo(expected);
     } else if (actual.getClass() != expected.getClass()) {
       failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that (%s) proto is equal to the expected (%s) object. "
-                      + "They are not of the same class.",
-                  actual.getClass().getName(), expected.getClass().getName())));
+          fact(
+              "expected",
+              expected instanceof MessageLite
+                  ? getTrimmedToString((MessageLite) expected)
+                  : expected),
+          fact("an instance of", expected.getClass().getName()),
+          fact("but was", getTrimmedToString(actual)),
+          fact("an instance of", actual.getClass().getName()));
     } else {
       /*
        * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this

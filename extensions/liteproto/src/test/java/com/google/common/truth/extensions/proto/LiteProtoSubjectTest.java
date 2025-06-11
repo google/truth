@@ -191,10 +191,10 @@ public class LiteProtoSubjectTest {
                 whenTesting
                     .that(config.nonEmptyMessage())
                     .isEqualTo(config.nonEmptyMessageOfOtherType()));
-    expectRegex(
-        e,
-        "Not true that \\(.*\\) proto is equal to the expected \\(.*\\) object\\.\\s*"
-            + "They are not of the same class\\.");
+    assertThat(e)
+        .factKeys()
+        .containsExactly("expected", "an instance of", "but was", "an instance of")
+        .inOrder();
 
     e =
         expectFailure(
