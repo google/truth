@@ -16,13 +16,13 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.MathUtil.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
 
 import org.jspecify.annotations.Nullable;
 
@@ -53,7 +53,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(double expected);
+    public abstract void of(double other);
 
     /**
      * @throws UnsupportedOperationException always
@@ -103,15 +103,37 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   public TolerantDoubleComparison isWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
-      public void of(double expected) {
-        Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
+      public void of(double other) {
+        if (!Double.isFinite(tolerance)) {
           failWithoutActual(
-              numericFact("expected", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is not finite"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (Double.compare(tolerance, 0.0) < 0) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!Double.isFinite(other)) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because expected value is not"
+                      + " finite"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null || !Double.isFinite(actual)) {
+          failWithoutActual(
+              numericFact("expected a finite value near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!equalWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected", other),
               numericFact("but was", actual),
               numericFact("outside tolerance", tolerance));
         }
@@ -142,15 +164,37 @@ public final class DoubleSubject extends ComparableSubject<Double> {
   public TolerantDoubleComparison isNotWithin(double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
-      public void of(double expected) {
-        Double actual = DoubleSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (!notEqualWithinTolerance(actual, expected, tolerance)) {
+      public void of(double other) {
+        if (!Double.isFinite(tolerance)) {
           failWithoutActual(
-              numericFact("expected not to be", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is not finite"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (Double.compare(tolerance, 0.0) < 0) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!Double.isFinite(other)) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because expected value is not"
+                      + " finite"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null || !Double.isFinite(actual)) {
+          failWithoutActual(
+              numericFact("expected a finite value that is not near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!notEqualWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected not to be", other),
               numericFact("but was", actual),
               numericFact("within tolerance", tolerance));
         }
@@ -222,12 +266,12 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
   /** Asserts that the actual value is {@link Double#POSITIVE_INFINITY}. */
   public void isPositiveInfinity() {
-    isEqualTo(Double.POSITIVE_INFINITY);
+    isEqualTo(POSITIVE_INFINITY);
   }
 
   /** Asserts that the actual value is {@link Double#NEGATIVE_INFINITY}. */
   public void isNegativeInfinity() {
-    isEqualTo(Double.NEGATIVE_INFINITY);
+    isEqualTo(NEGATIVE_INFINITY);
   }
 
   /** Asserts that the actual value is {@link Double#NaN}. */

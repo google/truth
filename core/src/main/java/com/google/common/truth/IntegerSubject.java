@@ -15,9 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 
 import org.jspecify.annotations.Nullable;
@@ -57,7 +56,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(int expected);
+    public abstract void of(int other);
 
     /**
      * @throws UnsupportedOperationException always
@@ -93,15 +92,22 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   public TolerantIntegerComparison isWithin(int tolerance) {
     return new TolerantIntegerComparison() {
       @Override
-      public void of(int expected) {
-        Integer actual = IntegerSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
+      public void of(int other) {
+        if (tolerance < 0) {
           failWithoutActual(
-              numericFact("expected", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null) {
+          failWithoutActual(
+              numericFact("expected a value near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!equalWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected", other),
               numericFact("but was", actual),
               numericFact("outside tolerance", tolerance));
         }
@@ -120,15 +126,22 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   public TolerantIntegerComparison isNotWithin(int tolerance) {
     return new TolerantIntegerComparison() {
       @Override
-      public void of(int expected) {
-        Integer actual = IntegerSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (equalWithinTolerance(actual, expected, tolerance)) {
+      public void of(int other) {
+        if (tolerance < 0) {
           failWithoutActual(
-              numericFact("expected not to be", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null) {
+          failWithoutActual(
+              numericFact("expected a value that is not near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (equalWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected not to be", other),
               numericFact("but was", actual),
               numericFact("within tolerance", tolerance));
         }
@@ -143,11 +156,6 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(@Nullable Integer other) {
     super.isEquivalentAccordingToCompareTo(other);
-  }
-
-  /** Ensures that the given tolerance is a non-negative value. */
-  private static void checkTolerance(int tolerance) {
-    checkArgument(tolerance >= 0, "tolerance (%s) cannot be negative", tolerance);
   }
 
   static Factory<IntegerSubject, Integer> integers() {

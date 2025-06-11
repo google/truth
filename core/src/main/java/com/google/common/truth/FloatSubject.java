@@ -16,14 +16,13 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.NaN;
-import static java.lang.Float.floatToIntBits;
+import static java.lang.Float.POSITIVE_INFINITY;
 
 import org.jspecify.annotations.Nullable;
 
@@ -33,8 +32,6 @@ import org.jspecify.annotations.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class FloatSubject extends ComparableSubject<Float> {
-  private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
-
   private final @Nullable Float actual;
   private final DoubleSubject asDouble;
 
@@ -58,7 +55,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(float expected);
+    public abstract void of(float other);
 
     /**
      * @throws UnsupportedOperationException always
@@ -108,15 +105,37 @@ public final class FloatSubject extends ComparableSubject<Float> {
   public TolerantFloatComparison isWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
-      public void of(float expected) {
-        Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (!equalWithinTolerance(actual, expected, tolerance)) {
+      public void of(float other) {
+        if (!Float.isFinite(tolerance)) {
           failWithoutActual(
-              numericFact("expected", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is not finite"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (Float.compare(tolerance, 0.0f) < 0) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!Float.isFinite(other)) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because expected value is not"
+                      + " finite"),
+              numericFact("expected", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null || !Float.isFinite(actual)) {
+          failWithoutActual(
+              numericFact("expected a finite value near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!equalWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected", other),
               numericFact("but was", actual),
               numericFact("outside tolerance", tolerance));
         }
@@ -147,15 +166,37 @@ public final class FloatSubject extends ComparableSubject<Float> {
   public TolerantFloatComparison isNotWithin(float tolerance) {
     return new TolerantFloatComparison() {
       @Override
-      public void of(float expected) {
-        Float actual = FloatSubject.this.actual;
-        checkNotNull(
-            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
-        checkTolerance(tolerance);
-
-        if (!notEqualWithinTolerance(actual, expected, tolerance)) {
+      public void of(float other) {
+        if (!Float.isFinite(tolerance)) {
           failWithoutActual(
-              numericFact("expected not to be", expected),
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is not finite"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (Float.compare(tolerance, 0.0f) < 0) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because tolerance is negative"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!Float.isFinite(other)) {
+          failWithoutActual(
+              simpleFact(
+                  "could not perform approximate-equality check because expected value is not"
+                      + " finite"),
+              numericFact("expected not to be", other),
+              numericFact("was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (actual == null || !Float.isFinite(actual)) {
+          failWithoutActual(
+              numericFact("expected a finite value that is not near", other),
+              numericFact("but was", actual),
+              numericFact("tolerance", tolerance));
+        } else if (!notEqualWithinTolerance(actual, other, tolerance)) {
+          failWithoutActual(
+              numericFact("expected not to be", other),
               numericFact("but was", actual),
               numericFact("within tolerance", tolerance));
         }
@@ -206,18 +247,6 @@ public final class FloatSubject extends ComparableSubject<Float> {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  /**
-   * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Float.NaN},
-   * {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}.
-   */
-  static void checkTolerance(float tolerance) {
-    checkArgument(!Float.isNaN(tolerance), "tolerance cannot be NaN");
-    checkArgument(tolerance >= 0.0f, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(
-        floatToIntBits(tolerance) != NEG_ZERO_BITS, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(tolerance != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
-  }
-
   /** Asserts that the actual value is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
   public void isZero() {
     if (actual == null || actual != 0.0f) {
@@ -239,12 +268,12 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
   /** Asserts that the actual value is {@link Float#POSITIVE_INFINITY}. */
   public void isPositiveInfinity() {
-    isEqualTo(Float.POSITIVE_INFINITY);
+    isEqualTo(POSITIVE_INFINITY);
   }
 
   /** Asserts that the actual value is {@link Float#NEGATIVE_INFINITY}. */
   public void isNegativeInfinity() {
-    isEqualTo(Float.NEGATIVE_INFINITY);
+    isEqualTo(NEGATIVE_INFINITY);
   }
 
   /** Asserts that the actual value is {@link Float#NaN}. */
@@ -281,6 +310,18 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isAtLeast}.
    */
   public void isGreaterThan(int other) {
+    /*
+     * We must perform the comparison as a `double` in order to compare `float` to `int` without
+     * loss of precision.
+     *
+     * The only downside to delegating to `DoubleSubject` should be that we may display the actual
+     * value with greater precision than would be required to uniquely identify it as a `float`.
+     * (Similarly, we will display the `int` as a `double`. But that may be just as well for
+     * consistency reasons.)
+     *
+     * We could instead perform the comparison manually here, but it would require duplicating the
+     * code from `ComparableSubject.isGreaterThan`.
+     */
     asDouble.isGreaterThan(other);
   }
 
@@ -291,6 +332,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isAtMost} .
    */
   public void isLessThan(int other) {
+    // For discussion of this delegation, see isGreaterThan.
     asDouble.isLessThan(other);
   }
 
@@ -301,6 +343,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isLessThan}.
    */
   public void isAtMost(int other) {
+    // For discussion of this delegation, see isGreaterThan.
     asDouble.isAtMost(other);
   }
 
@@ -311,6 +354,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isGreaterThan}.
    */
   public void isAtLeast(int other) {
+    // For discussion of this delegation, see isGreaterThan.
     asDouble.isAtLeast(other);
   }
 

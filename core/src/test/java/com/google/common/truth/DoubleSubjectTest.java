@@ -20,8 +20,9 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.formatNumericValue;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
 
 import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
@@ -48,7 +49,7 @@ public class DoubleSubjectTest {
   @GwtIncompatible("Math.nextAfter")
   public void testDoubleConstants_matchNextAfter() {
     assertThat(Math.nextAfter(Double.MIN_VALUE, 1.0)).isEqualTo(OVER_MIN);
-    assertThat(Math.nextAfter(1.23, Double.POSITIVE_INFINITY)).isEqualTo(OVER_GOLDEN);
+    assertThat(Math.nextAfter(1.23, POSITIVE_INFINITY)).isEqualTo(OVER_GOLDEN);
     assertThat(Math.nextAfter(Double.MAX_VALUE, 0.0)).isEqualTo(NEARLY_MAX);
     assertThat(Math.nextAfter(-1.0 * Double.MAX_VALUE, 0.0)).isEqualTo(NEGATIVE_NEARLY_MAX);
     assertThat(Math.nextAfter(-1.0 * Double.MIN_VALUE, -1.0)).isEqualTo(UNDER_NEGATIVE_MIN);
@@ -62,9 +63,9 @@ public class DoubleSubjectTest {
 
   @Test
   @GwtIncompatible("GWT behavior difference")
-  public void testJ2clCornerCaseDoubleVsFloat() {
+  public void j2clCornerCaseDoubleVsFloat() {
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
-    // TODO(b/35377736): Consider making Truth add the types anyway.
+    // TODO(b/35377736): Consider making Truth add the types manually.
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(1.23).isEqualTo(1.23f));
     assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
   }
@@ -77,10 +78,10 @@ public class DoubleSubjectTest {
     assertThat(2.0).isWithin(1.00001).of(3.0);
     assertThatIsWithinFails(2.0, 0.99999, 3.0);
     assertThatIsWithinFails(2.0, 1000.0, 1003.0);
-    assertThatIsWithinFails(2.0, 1000.0, Double.POSITIVE_INFINITY);
-    assertThatIsWithinFails(2.0, 1000.0, Double.NaN);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 1000.0, 2.0);
-    assertThatIsWithinFails(Double.NaN, 1000.0, 2.0);
+    assertThatIsWithinFailsForNonFiniteExpected(2.0, 1000.0, POSITIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteExpected(2.0, 1000.0, NaN);
+    assertThatIsWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 1000.0, 2.0);
+    assertThatIsWithinFailsForNonFiniteActual(NaN, 1000.0, 2.0);
   }
 
   private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
@@ -95,6 +96,38 @@ public class DoubleSubjectTest {
     assertThat(failure).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
+  private static void assertThatIsWithinFailsForNonFiniteExpected(
+      double actual, double tolerance, double expected) {
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
+    assertThat(failure)
+        .factKeys()
+        .containsExactly(
+            "could not perform approximate-equality check because expected value is not finite",
+            "expected",
+            "was",
+            "tolerance")
+        .inOrder();
+    assertThat(failure).factValue("expected").isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("was").isEqualTo(formatNumericValue(actual));
+    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+  }
+
+  private static void assertThatIsWithinFailsForNonFiniteActual(
+      double actual, double tolerance, double expected) {
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
+    assertThat(failure)
+        .factKeys()
+        .containsExactly("expected a finite value near", "but was", "tolerance")
+        .inOrder();
+    assertThat(failure)
+        .factValue("expected a finite value near")
+        .isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("but was").isEqualTo(formatNumericValue(actual));
+    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+  }
+
   @Test
   public void isNotWithinOf() {
     assertThatIsNotWithinFails(2.0, 0.0, 2.0);
@@ -103,10 +136,10 @@ public class DoubleSubjectTest {
     assertThatIsNotWithinFails(2.0, 1.00001, 3.0);
     assertThat(2.0).isNotWithin(0.99999).of(3.0);
     assertThat(2.0).isNotWithin(1000.0).of(1003.0);
-    assertThatIsNotWithinFails(2.0, 0.0, Double.POSITIVE_INFINITY);
-    assertThatIsNotWithinFails(2.0, 0.0, Double.NaN);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 1000.0, 2.0);
-    assertThatIsNotWithinFails(Double.NaN, 1000.0, 2.0);
+    assertThatIsNotWithinFailsForNonFiniteExpected(2.0, 0.0, POSITIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteExpected(2.0, 0.0, NaN);
+    assertThatIsNotWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 1000.0, 2.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NaN, 1000.0, 2.0);
   }
 
   private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
@@ -116,98 +149,136 @@ public class DoubleSubjectTest {
     assertThat(failure).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
+  private static void assertThatIsNotWithinFailsForNonFiniteExpected(
+      double actual, double tolerance, double expected) {
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
+    assertThat(failure)
+        .factKeys()
+        .containsExactly(
+            "could not perform approximate-equality check because expected value is not finite",
+            "expected not to be",
+            "was",
+            "tolerance");
+    assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("was").isEqualTo(formatNumericValue(actual));
+    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+  }
+
+  private static void assertThatIsNotWithinFailsForNonFiniteActual(
+      double actual, double tolerance, double expected) {
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
+    assertThat(failure)
+        .factValue("expected a finite value that is not near")
+        .isEqualTo(formatNumericValue(expected));
+    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+  }
+
   @Test
   public void negativeTolerances() {
-    isWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.9);
-    isWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.0);
-
-    isNotWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.9);
-    isNotWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.0);
-
-    isWithinNegativeToleranceThrowsIAE(+0.0, -0.00001, +0.0);
-    isWithinNegativeToleranceThrowsIAE(+0.0, -0.00001, -0.0);
-    isWithinNegativeToleranceThrowsIAE(-0.0, -0.00001, +0.0);
-    isWithinNegativeToleranceThrowsIAE(-0.0, -0.00001, -0.0);
-
-    isNotWithinNegativeToleranceThrowsIAE(+0.0, -0.00001, +1.0);
-    isNotWithinNegativeToleranceThrowsIAE(+0.0, -0.00001, -1.0);
-    isNotWithinNegativeToleranceThrowsIAE(-0.0, -0.00001, +1.0);
-    isNotWithinNegativeToleranceThrowsIAE(-0.0, -0.00001, -1.0);
-
-    isNotWithinNegativeToleranceThrowsIAE(+1.0, -0.00001, +0.0);
-    isNotWithinNegativeToleranceThrowsIAE(+1.0, -0.00001, -0.0);
-    isNotWithinNegativeToleranceThrowsIAE(-1.0, -0.00001, +0.0);
-    isNotWithinNegativeToleranceThrowsIAE(-1.0, -0.00001, -0.0);
+    isWithinNegativeToleranceThrows(-0.5);
+    isNotWithinNegativeToleranceThrows(-0.5);
 
     // You know what's worse than zero? Negative zero.
 
-    isWithinNegativeToleranceThrowsIAE(+0.0, -0.0, +0.0);
-    isWithinNegativeToleranceThrowsIAE(+0.0, -0.0, -0.0);
-    isWithinNegativeToleranceThrowsIAE(-0.0, -0.0, +0.0);
-    isWithinNegativeToleranceThrowsIAE(-0.0, -0.0, -0.0);
-
-    isNotWithinNegativeToleranceThrowsIAE(+1.0, -0.0, +0.0);
-    isNotWithinNegativeToleranceThrowsIAE(+1.0, -0.0, -0.0);
-    isNotWithinNegativeToleranceThrowsIAE(-1.0, -0.0, +0.0);
-    isNotWithinNegativeToleranceThrowsIAE(-1.0, -0.0, -0.0);
+    isWithinNegativeToleranceThrows(-0.0);
+    isNotWithinNegativeToleranceThrows(-0.0);
   }
 
-  private static void isWithinNegativeToleranceThrowsIAE(
-      double actual, double tolerance, double expected) {
-    try {
-      assertThat(actual).isWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException iae) {
-      assertThat(iae)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
-    }
+  private static void isWithinNegativeToleranceThrows(double tolerance) {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(5.0).isWithin(tolerance).of(5.0));
+    assertFailureKeys(
+        e,
+        "could not perform approximate-equality check because tolerance is negative",
+        "expected",
+        "was",
+        "tolerance");
   }
 
-  private static void isNotWithinNegativeToleranceThrowsIAE(
-      double actual, double tolerance, double expected) {
-    try {
-      assertThat(actual).isNotWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException iae) {
-      assertThat(iae)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
-    }
+  private static void isNotWithinNegativeToleranceThrows(double tolerance) {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(5.0).isNotWithin(tolerance).of(5.0));
+    assertFailureKeys(
+        e,
+        "could not perform approximate-equality check because tolerance is negative",
+        "expected not to be",
+        "was",
+        "tolerance");
   }
 
   @Test
   public void nanTolerances() {
     {
-      IllegalArgumentException iae =
-          assertThrows(
-              IllegalArgumentException.class, () -> assertThat(1.0).isWithin(Double.NaN).of(1.0));
-      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
+      AssertionError e = expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(NaN).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected",
+          "was",
+          "tolerance");
     }
     {
-      IllegalArgumentException iae =
-          assertThrows(
-              IllegalArgumentException.class,
-              () -> assertThat(1.0).isNotWithin(Double.NaN).of(2.0));
-      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
+      AssertionError e =
+          expectFailure(whenTesting -> whenTesting.that(1.0).isNotWithin(NaN).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected not to be",
+          "was",
+          "tolerance");
     }
   }
 
   @Test
-  public void infiniteTolerances() {
+  public void positiveInfinityTolerances() {
     {
-      IllegalArgumentException iae =
-          assertThrows(
-              IllegalArgumentException.class,
-              () -> assertThat(1.0).isWithin(Double.POSITIVE_INFINITY).of(1.0));
-      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
+      AssertionError e =
+          expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(POSITIVE_INFINITY).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected",
+          "was",
+          "tolerance");
     }
     {
-      IllegalArgumentException iae =
-          assertThrows(
-              IllegalArgumentException.class,
-              () -> assertThat(1.0).isNotWithin(Double.POSITIVE_INFINITY).of(2.0));
-      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
+      AssertionError e =
+          expectFailure(
+              whenTesting -> whenTesting.that(1.0).isNotWithin(POSITIVE_INFINITY).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected not to be",
+          "was",
+          "tolerance");
+    }
+  }
+
+  @SuppressWarnings("FloatingPointAssertionWithinEpsilon") // test of a bogus call
+  @Test
+  public void negativeInfinityTolerances() {
+    {
+      AssertionError e =
+          expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(NEGATIVE_INFINITY).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected",
+          "was",
+          "tolerance");
+    }
+    {
+      AssertionError e =
+          expectFailure(
+              whenTesting -> whenTesting.that(1.0).isNotWithin(NEGATIVE_INFINITY).of(1.0));
+      assertFailureKeys(
+          e,
+          "could not perform approximate-equality check because tolerance is not finite",
+          "expected not to be",
+          "was",
+          "tolerance");
     }
   }
 
@@ -288,61 +359,61 @@ public class DoubleSubjectTest {
 
   @Test
   public void isWithinNonFinite() {
-    assertThatIsWithinFails(Double.NaN, 0.00001, Double.NaN);
-    assertThatIsWithinFails(Double.NaN, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsWithinFails(Double.NaN, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsWithinFails(Double.NaN, 0.00001, +0.0);
-    assertThatIsWithinFails(Double.NaN, 0.00001, -0.0);
-    assertThatIsWithinFails(Double.NaN, 0.00001, +1.0);
-    assertThatIsWithinFails(Double.NaN, 0.00001, -0.0);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, +0.0);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, +1.0);
-    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +0.0);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +1.0);
-    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsWithinFails(+1.0, 0.00001, Double.NaN);
-    assertThatIsWithinFails(+1.0, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsWithinFails(+1.0, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteExpected(NaN, 0.00001, NaN);
+    assertThatIsWithinFailsForNonFiniteExpected(NaN, 0.00001, POSITIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteExpected(NaN, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteActual(NaN, 0.00001, +0.0);
+    assertThatIsWithinFailsForNonFiniteActual(NaN, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteActual(NaN, 0.00001, +1.0);
+    assertThatIsWithinFailsForNonFiniteActual(NaN, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteExpected(POSITIVE_INFINITY, 0.00001, POSITIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteExpected(POSITIVE_INFINITY, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteExpected(NEGATIVE_INFINITY, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFailsForNonFiniteExpected(+1.0, 0.00001, NaN);
+    assertThatIsWithinFailsForNonFiniteExpected(+1.0, 0.00001, POSITIVE_INFINITY);
+    assertThatIsWithinFailsForNonFiniteExpected(+1.0, 0.00001, NEGATIVE_INFINITY);
   }
 
   @Test
   public void isNotWithinNonFinite() {
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.NaN);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, +0.0);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, -0.0);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, +1.0);
-    assertThatIsNotWithinFails(Double.NaN, 0.00001, -0.0);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, +0.0);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, +1.0);
-    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +0.0);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +1.0);
-    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
-    assertThatIsNotWithinFails(+1.0, 0.00001, Double.NaN);
-    assertThatIsNotWithinFails(+1.0, 0.00001, Double.POSITIVE_INFINITY);
-    assertThatIsNotWithinFails(+1.0, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteExpected(NaN, 0.00001, NaN);
+    assertThatIsNotWithinFailsForNonFiniteExpected(NaN, 0.00001, POSITIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteExpected(NaN, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteActual(NaN, 0.00001, +0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NaN, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NaN, 0.00001, +1.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NaN, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteExpected(POSITIVE_INFINITY, 0.00001, POSITIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteExpected(POSITIVE_INFINITY, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteExpected(NEGATIVE_INFINITY, 0.00001, NEGATIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsNotWithinFailsForNonFiniteActual(NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFailsForNonFiniteExpected(+1.0, 0.00001, NaN);
+    assertThatIsNotWithinFailsForNonFiniteExpected(+1.0, 0.00001, POSITIVE_INFINITY);
+    assertThatIsNotWithinFailsForNonFiniteExpected(+1.0, 0.00001, NEGATIVE_INFINITY);
   }
 
-  @SuppressWarnings("TruthSelfEquals")
+  @SuppressWarnings({"TruthSelfEquals", "PositiveInfinity", "NaN"})
   @Test
   public void isEqualTo() {
     assertThat(1.23).isEqualTo(1.23);
     assertThatIsEqualToFails(GOLDEN, OVER_GOLDEN);
-    assertThat(Double.POSITIVE_INFINITY).isEqualTo(Double.POSITIVE_INFINITY);
-    assertThat(Double.NaN).isEqualTo(Double.NaN);
+    assertThat(POSITIVE_INFINITY).isEqualTo(POSITIVE_INFINITY);
+    assertThat(NaN).isEqualTo(NaN);
     assertThat((Double) null).isEqualTo(null);
     assertThat(1.0).isEqualTo(1);
   }
@@ -355,8 +426,8 @@ public class DoubleSubjectTest {
   public void isNotEqualTo() {
     assertThatIsNotEqualToFails(1.23);
     assertThat(GOLDEN).isNotEqualTo(OVER_GOLDEN);
-    assertThatIsNotEqualToFails(Double.POSITIVE_INFINITY);
-    assertThatIsNotEqualToFails(Double.NaN);
+    assertThatIsNotEqualToFails(POSITIVE_INFINITY);
+    assertThatIsNotEqualToFails(NaN);
     assertThat(-0.0).isNotEqualTo(0.0);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23).isNotEqualTo(1.23f);
@@ -374,8 +445,8 @@ public class DoubleSubjectTest {
     assertThat(-0.0).isZero();
     assertThatIsZeroFails(Double.MIN_VALUE);
     assertThatIsZeroFails(-1.23);
-    assertThatIsZeroFails(Double.POSITIVE_INFINITY);
-    assertThatIsZeroFails(Double.NaN);
+    assertThatIsZeroFails(POSITIVE_INFINITY);
+    assertThatIsZeroFails(NaN);
     assertThatIsZeroFails(null);
   }
 
@@ -390,8 +461,8 @@ public class DoubleSubjectTest {
     assertThatIsNonZeroFails(-0.0, "expected not to be zero");
     assertThat(Double.MIN_VALUE).isNonZero();
     assertThat(-1.23).isNonZero();
-    assertThat(Double.POSITIVE_INFINITY).isNonZero();
-    assertThat(Double.NaN).isNonZero();
+    assertThat(POSITIVE_INFINITY).isNonZero();
+    assertThat(NaN).isNonZero();
     assertThatIsNonZeroFails(null, "expected a double other than zero");
   }
 
@@ -402,10 +473,10 @@ public class DoubleSubjectTest {
 
   @Test
   public void isPositiveInfinity() {
-    assertThat(Double.POSITIVE_INFINITY).isPositiveInfinity();
+    assertThat(POSITIVE_INFINITY).isPositiveInfinity();
     assertThatIsPositiveInfinityFails(1.23);
-    assertThatIsPositiveInfinityFails(Double.NEGATIVE_INFINITY);
-    assertThatIsPositiveInfinityFails(Double.NaN);
+    assertThatIsPositiveInfinityFails(NEGATIVE_INFINITY);
+    assertThatIsPositiveInfinityFails(NaN);
     assertThatIsPositiveInfinityFails(null);
   }
 
@@ -415,10 +486,10 @@ public class DoubleSubjectTest {
 
   @Test
   public void isNegativeInfinity() {
-    assertThat(Double.NEGATIVE_INFINITY).isNegativeInfinity();
+    assertThat(NEGATIVE_INFINITY).isNegativeInfinity();
     assertThatIsNegativeInfinityFails(1.23);
-    assertThatIsNegativeInfinityFails(Double.POSITIVE_INFINITY);
-    assertThatIsNegativeInfinityFails(Double.NaN);
+    assertThatIsNegativeInfinityFails(POSITIVE_INFINITY);
+    assertThatIsNegativeInfinityFails(NaN);
     assertThatIsNegativeInfinityFails(null);
   }
 
@@ -428,10 +499,10 @@ public class DoubleSubjectTest {
 
   @Test
   public void isNaN() {
-    assertThat(Double.NaN).isNaN();
+    assertThat(NaN).isNaN();
     assertThatIsNaNFails(1.23);
-    assertThatIsNaNFails(Double.POSITIVE_INFINITY);
-    assertThatIsNaNFails(Double.NEGATIVE_INFINITY);
+    assertThatIsNaNFails(POSITIVE_INFINITY);
+    assertThatIsNaNFails(NEGATIVE_INFINITY);
     assertThatIsNaNFails(null);
   }
 
@@ -444,9 +515,9 @@ public class DoubleSubjectTest {
     assertThat(1.23).isFinite();
     assertThat(Double.MAX_VALUE).isFinite();
     assertThat(-1.0 * Double.MIN_VALUE).isFinite();
-    assertThatIsFiniteFails(Double.POSITIVE_INFINITY);
-    assertThatIsFiniteFails(Double.NEGATIVE_INFINITY);
-    assertThatIsFiniteFails(Double.NaN);
+    assertThatIsFiniteFails(POSITIVE_INFINITY);
+    assertThatIsFiniteFails(NEGATIVE_INFINITY);
+    assertThatIsFiniteFails(NaN);
     assertThatIsFiniteFails(null);
   }
 
@@ -460,13 +531,13 @@ public class DoubleSubjectTest {
     assertThat(1.23).isNotNaN();
     assertThat(Double.MAX_VALUE).isNotNaN();
     assertThat(-1.0 * Double.MIN_VALUE).isNotNaN();
-    assertThat(Double.POSITIVE_INFINITY).isNotNaN();
-    assertThat(Double.NEGATIVE_INFINITY).isNotNaN();
+    assertThat(POSITIVE_INFINITY).isNotNaN();
+    assertThat(NEGATIVE_INFINITY).isNotNaN();
   }
 
   @Test
   public void isNotNaNIsNaN() {
-    expectFailure(whenTesting -> whenTesting.that(Double.NaN).isNotNaN());
+    expectFailure(whenTesting -> whenTesting.that(NaN).isNotNaN());
   }
 
   @Test

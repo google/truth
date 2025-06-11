@@ -17,7 +17,8 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.isFinite;
+import static java.lang.Math.abs;
 import static java.lang.Math.subtractExact;
 
 
@@ -31,8 +32,8 @@ final class MathUtil {
    */
   /* package */ static boolean equalWithinTolerance(long left, long right, long tolerance) {
     try {
-      long absDiff = Math.abs(subtractExact(left, right));
-      return 0 <= absDiff && absDiff <= Math.abs(tolerance);
+      long absDiff = abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= abs(tolerance);
     } catch (ArithmeticException e) {
       // The numbers are so far apart their difference isn't even a long.
       return false;
@@ -45,8 +46,8 @@ final class MathUtil {
    */
   /* package */ static boolean equalWithinTolerance(int left, int right, int tolerance) {
     try {
-      int absDiff = Math.abs(subtractExact(left, right));
-      return 0 <= absDiff && absDiff <= Math.abs(tolerance);
+      int absDiff = abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= abs(tolerance);
     } catch (ArithmeticException e) {
       // The numbers are so far apart their difference isn't even a int.
       return false;
@@ -59,7 +60,7 @@ final class MathUtil {
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean equalWithinTolerance(double left, double right, double tolerance) {
-    return Math.abs(left - right) <= Math.abs(tolerance);
+    return abs(left - right) <= abs(tolerance);
   }
 
   /**
@@ -77,11 +78,7 @@ final class MathUtil {
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean notEqualWithinTolerance(double left, double right, double tolerance) {
-    if (Double.isFinite(left) && Double.isFinite(right)) {
-      return Math.abs(left - right) > Math.abs(tolerance);
-    } else {
-      return false;
-    }
+    return isFinite(left) && isFinite(right) && abs(left - right) > abs(tolerance);
   }
 
   /**
@@ -99,13 +96,8 @@ final class MathUtil {
    */
   static void checkTolerance(double tolerance) {
     checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
-    checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(
-        doubleToLongBits(tolerance) != NEG_ZERO_BITS,
-        "tolerance (%s) cannot be negative",
-        tolerance);
+        Double.compare(tolerance, 0.0) >= 0, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
-
-  private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 }

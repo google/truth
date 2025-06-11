@@ -18,8 +18,8 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Fact.formatNumericValue;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -214,33 +214,32 @@ public class LongSubjectTest {
 
   @Test
   public void isWithinNegativeTolerance() {
-    isWithinNegativeToleranceThrowsIAE(0L, -10, 5);
-    isWithinNegativeToleranceThrowsIAE(0L, -10, 20);
-    isNotWithinNegativeToleranceThrowsIAE(0L, -10, 5);
-    isNotWithinNegativeToleranceThrowsIAE(0L, -10, 20);
+    isWithinNegativeToleranceThrows(0L, -10, 0L);
+    isWithinNegativeToleranceThrows(0L, -10, 0L);
+    isNotWithinNegativeToleranceThrows(0L, -10, 0L);
+    isNotWithinNegativeToleranceThrows(0L, -10, 0L);
   }
 
-  private static void isWithinNegativeToleranceThrowsIAE(
-      long actual, long tolerance, long expected) {
-    try {
-      assertThat(actual).isWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException iae) {
-      assertThat(iae)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
-    }
+  private static void isWithinNegativeToleranceThrows(long actual, long tolerance, long expected) {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
+    assertFailureKeys(
+        e,
+        "could not perform approximate-equality check because tolerance is negative",
+        "expected",
+        "was",
+        "tolerance");
   }
 
-  private static void isNotWithinNegativeToleranceThrowsIAE(
+  private static void isNotWithinNegativeToleranceThrows(
       long actual, long tolerance, long expected) {
-    try {
-      assertThat(actual).isNotWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
-    } catch (IllegalArgumentException iae) {
-      assertThat(iae)
-          .hasMessageThat()
-          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
-    }
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
+    assertFailureKeys(
+        e,
+        "could not perform approximate-equality check because tolerance is negative",
+        "expected",
+        "was",
+        "tolerance");
   }
 }
