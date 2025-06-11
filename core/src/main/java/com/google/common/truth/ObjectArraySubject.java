@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.simpleFact;
+import static java.util.Collections.emptyList;
 
 import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
@@ -34,7 +35,11 @@ public final class ObjectArraySubject<T extends @Nullable Object> extends Abstra
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(checkNotNull(actual)));
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(emptyList());
+    }
+    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual));
   }
 
   static <T extends @Nullable Object> Factory<ObjectArraySubject<T>, T[]> objectArrays() {

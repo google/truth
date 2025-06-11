@@ -55,6 +55,12 @@ public class ObjectArraySubjectTest {
   }
 
   @Test
+  public void asListOnNull() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Object[]) null).asList());
+    assertFailureKeys(e, "cannot perform assertions on the contents of a null array");
+  }
+
+  @Test
   public void hasLength() {
     assertThat(EMPTY).hasLength(0);
     assertThat(objectArray("A", 5L)).hasLength(2);
