@@ -757,7 +757,7 @@ public class Subject {
 
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, @Nullable Object[] args) {
-    LazyMessage message = new LazyMessage(format, args);
+    LazyMessage message = LazyMessage.create(format, args);
     return new StandardSubjectBuilder(
         metadata.updateForCheckCall(
             valuesAreSimilar, /* descriptionUpdate= */ input -> input + "." + message));

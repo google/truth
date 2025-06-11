@@ -252,7 +252,8 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ false);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
+      return MapInOrder.create(
+          this, expectedMap, /* allowUnexpected= */ false, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -266,7 +267,8 @@ public class MapSubject extends Subject {
     }
     boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ true);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
+      return MapInOrder.create(
+          this, expectedMap, /* allowUnexpected= */ true, /* correspondence= */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -311,7 +313,7 @@ public class MapSubject extends Subject {
   // the requirement that the values of the two maps are of the same type and are compared with a
   // symmetric Equivalence.
   @SuppressWarnings("ImmutableMemberCollection") // null elements (b/173628387#comment8)
-  private static class MapDifference<
+  private static final class MapDifference<
       K extends @Nullable Object, A extends @Nullable Object, E extends @Nullable Object> {
     private final Map<K, E> missing;
     private final Map<K, A> unexpected;
@@ -334,7 +336,7 @@ public class MapSubject extends Subject {
           @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
           A actualValue = (A) unexpected.remove(expectedKey);
           if (!valueTester.test(actualValue, expectedValue)) {
-            wrongValues.put(expectedKey, new ValueDifference<>(actualValue, expectedValue));
+            wrongValues.put(expectedKey, ValueDifference.create(actualValue, expectedValue));
           }
         } else {
           missing.put(expectedKey, expectedValue);
@@ -400,11 +402,12 @@ public class MapSubject extends Subject {
     }
   }
 
-  private static class ValueDifference<A extends @Nullable Object, E extends @Nullable Object> {
+  private static final class ValueDifference<
+      A extends @Nullable Object, E extends @Nullable Object> {
     private final A actual;
     private final E expected;
 
-    ValueDifference(A actual, E expected) {
+    private ValueDifference(A actual, E expected) {
       this.actual = actual;
       this.expected = expected;
     }
@@ -425,22 +428,29 @@ public class MapSubject extends Subject {
       }
       return facts.build();
     }
+
+    static <A extends @Nullable Object, E extends @Nullable Object> ValueDifference<A, E> create(
+        A actual, E expected) {
+      return new ValueDifference<>(actual, expected);
+    }
   }
 
   private static String maybeAddType(@Nullable Object o, boolean includeTypes) {
     return includeTypes ? lenientFormat("%s (%s)", o, objectToTypeName(o)) : String.valueOf(o);
   }
 
-  private class MapInOrder implements Ordered {
-
+  private static final class MapInOrder implements Ordered {
+    private final MapSubject subject;
     private final Map<?, ?> expectedMap;
     private final boolean allowUnexpected;
     private final @Nullable Correspondence<?, ?> correspondence;
 
-    MapInOrder(
+    private MapInOrder(
+        MapSubject subject,
         Map<?, ?> expectedMap,
         boolean allowUnexpected,
         @Nullable Correspondence<?, ?> correspondence) {
+      this.subject = subject;
       this.expectedMap = expectedMap;
       this.allowUnexpected = allowUnexpected;
       this.correspondence = correspondence;
@@ -455,11 +465,11 @@ public class MapSubject extends Subject {
     @Override
     public void inOrder() {
       // We're using the fact that Sets.intersection keeps the order of the first set.
-      checkNotNull(actual);
+      checkNotNull(subject.actual);
       List<?> expectedKeyOrder =
-          new ArrayList<>(Sets.intersection(expectedMap.keySet(), actual.keySet()));
+          new ArrayList<>(Sets.intersection(expectedMap.keySet(), subject.actual.keySet()));
       List<?> actualKeyOrder =
-          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMap.keySet()));
+          new ArrayList<>(Sets.intersection(subject.actual.keySet(), expectedMap.keySet()));
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
         ImmutableList.Builder<Fact> facts =
             ImmutableList.<Fact>builder()
@@ -475,8 +485,16 @@ public class MapSubject extends Subject {
         if (correspondence != null) {
           facts.addAll(correspondence.describeForMapValues());
         }
-        failWithActual(facts.build());
+        subject.failWithActual(facts.build());
       }
+    }
+
+    static MapInOrder create(
+        MapSubject subject,
+        Map<?, ?> expectedMap,
+        boolean allowUnexpected,
+        @Nullable Correspondence<?, ?> correspondence) {
+      return new MapInOrder(subject, expectedMap, allowUnexpected, correspondence);
     }
   }
 
@@ -761,7 +779,7 @@ public class MapSubject extends Subject {
         // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would
         // record that we had the wrong value for that key.
-        return subject.new MapInOrder(expectedMap, allowUnexpected, correspondence);
+        return MapInOrder.create(subject, expectedMap, allowUnexpected, correspondence);
       }
       failWithoutActual(
           ImmutableList.<Fact>builder()

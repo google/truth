@@ -944,7 +944,7 @@ public class IterableSubject extends Subject {
 
     private final IterableSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
-    private final @Nullable Pairer pairer;
+    private final @Nullable Pairer<A, E> pairer;
 
     UsingCorrespondence(
         IterableSubject subject, Correspondence<? super A, ? super E> correspondence) {
@@ -956,7 +956,7 @@ public class IterableSubject extends Subject {
     UsingCorrespondence(
         IterableSubject subject,
         Correspondence<? super A, ? super E> correspondence,
-        Pairer pairer) {
+        Pairer<A, E> pairer) {
       this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
       this.pairer = pairer;
@@ -1089,7 +1089,7 @@ public class IterableSubject extends Subject {
     public UsingCorrespondence<A, E> displayingDiffsPairedBy(
         Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
       return new UsingCorrespondence<>(
-          subject, correspondence, new Pairer(actualKeyFunction, expectedKeyFunction));
+          subject, correspondence, Pairer.create(actualKeyFunction, expectedKeyFunction));
     }
 
     /**
@@ -1371,7 +1371,7 @@ public class IterableSubject extends Subject {
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
       if (pairer != null) {
-        Pairing pairing = pairer.pair(missing, extra, exceptions);
+        Pairing<A, E> pairing = pairer.pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingOrExtraWithPairing(pairing, exceptions);
         } else {
@@ -1400,7 +1400,7 @@ public class IterableSubject extends Subject {
     }
 
     private ImmutableList<Fact> describeMissingOrExtraWithPairing(
-        Pairing pairing, Correspondence.ExceptionStore exceptions) {
+        Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
       ImmutableList.Builder<Fact> facts = ImmutableList.builder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
@@ -1705,7 +1705,7 @@ public class IterableSubject extends Subject {
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
       if (pairer != null) {
-        Pairing pairing = pairer.pair(missing, extra, exceptions);
+        Pairing<A, E> pairing = pairer.pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingWithPairing(pairing, exceptions);
         } else {
@@ -1731,7 +1731,7 @@ public class IterableSubject extends Subject {
     }
 
     private ImmutableList<Fact> describeMissingWithPairing(
-        Pairing pairing, Correspondence.ExceptionStore exceptions) {
+        Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
       ImmutableList.Builder<Fact> facts = ImmutableList.builder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
@@ -1821,7 +1821,8 @@ public class IterableSubject extends Subject {
       }
       // Found no match. Fail, reporting elements that have a correct key if there are any.
       if (pairer != null) {
-        Pairing pairing = pairer.pair(iterableToList(expected), iterableToList(actual), exceptions);
+        Pairing<A, E> pairing =
+            pairer.pair(iterableToList(expected), iterableToList(actual), exceptions);
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
             subject.failWithoutActual(
@@ -1876,7 +1877,7 @@ public class IterableSubject extends Subject {
     }
 
     private ImmutableList<Fact> describeAnyMatchesByKey(
-        Pairing pairing, Correspondence.ExceptionStore exceptions) {
+        Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
       ImmutableList.Builder<Fact> facts = ImmutableList.builder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E expected = pairing.pairedKeysToExpectedValues.get(key);
@@ -1969,12 +1970,12 @@ public class IterableSubject extends Subject {
      * A class which knows how to pair the actual and expected elements (see {@link
      * #displayingDiffsPairedBy}).
      */
-    private final class Pairer {
-
+    private static final class Pairer<A extends @Nullable Object, E extends @Nullable Object> {
       private final Function<? super A, ?> actualKeyFunction;
       private final Function<? super E, ?> expectedKeyFunction;
 
-      Pairer(Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+      private Pairer(
+          Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
         this.actualKeyFunction = actualKeyFunction;
         this.expectedKeyFunction = expectedKeyFunction;
       }
@@ -1983,11 +1984,11 @@ public class IterableSubject extends Subject {
        * Returns a {@link Pairing} of the given expected and actual values, or {@code null} if the
        * expected values are not uniquely keyed.
        */
-      @Nullable Pairing pair(
+      @Nullable Pairing<A, E> pair(
           List<? extends E> expectedValues,
           List<? extends A> actualValues,
           Correspondence.ExceptionStore exceptions) {
-        Pairing pairing = new Pairing();
+        Pairing<A, E> pairing = Pairing.create();
 
         // Populate expectedKeys with the keys of the corresponding elements of expectedValues.
         // We do this ahead of time to avoid invoking the key function twice for each element.
@@ -2068,11 +2069,15 @@ public class IterableSubject extends Subject {
           return null;
         }
       }
+
+      static <A extends @Nullable Object, E extends @Nullable Object> Pairer<A, E> create(
+          Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+        return new Pairer<>(actualKeyFunction, expectedKeyFunction);
+      }
     }
 
     /** A description of a pairing between expected and actual values. N.B. This is mutable. */
-    private final class Pairing {
-
+    private static final class Pairing<A extends @Nullable Object, E extends @Nullable Object> {
       /**
        * Map from keys used in the pairing to the expected value with that key. Iterates in the
        * order the expected values appear in the input. Will never contain null keys.
@@ -2097,6 +2102,12 @@ public class IterableSubject extends Subject {
        * input.
        */
       private final List<A> unpairedActualValues = new ArrayList<>();
+
+      private Pairing() {}
+
+      static <A extends @Nullable Object, E extends @Nullable Object> Pairing<A, E> create() {
+        return new Pairing<>();
+      }
     }
   }
 

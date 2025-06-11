@@ -27,7 +27,6 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -221,12 +220,19 @@ final class Platform {
       comparisonFailureClass = Class.forName("com.google.common.truth.ComparisonFailureWithFacts");
     } catch (LinkageError | ClassNotFoundException probablyJunitNotOnClasspath) {
       /*
-       * LinkageError makes sense, but ClassNotFoundException shouldn't happen:
-       * ComparisonFailureWithFacts should be there, even if its JUnit 4 dependency is not. But it's
-       * harmless to catch an "impossible" exception, and if someone decides to strip the class out
-       * (perhaps along with Platform.PlatformComparisonFailure, to satisfy a tool that is unhappy
-       * because it can't find the latter's superclass because JUnit 4 is also missing?), presumably
-       * we should still fall back to a plain AssertionError.
+       * We're using reflection because ComparisonFailureWithFacts depends on JUnit 4, a dependency
+       * that we want to allow open-source users to exclude:
+       * https://github.com/google/truth/issues/333
+       *
+       * Even if users do exclude JUnit 4, Truth's ComparisonFailureWithFacts class itself should
+       * still exist; it's only the subsequent class loading that should ever fail. That means that
+       * we should see only LinkageError in practice, not ClassNotFoundException.
+       *
+       * Still, we catch ClassNotFoundException anyway because the compiler makes us. Fortunately,
+       * it's harmless to catch an "impossible" exception, and if someone decides to strip the class
+       * out (perhaps along with Platform.PlatformComparisonFailure, to satisfy a tool that is
+       * unhappy because it can't find the latter's superclass because JUnit 4 is also missing?),
+       * presumably we should still fall back to a plain AssertionError.
        *
        * TODO(cpovirk): Consider creating and using yet another class like AssertionErrorWithFacts,
        * not actually extending ComparisonFailure but still exposing getExpected() and getActual()
@@ -234,33 +240,29 @@ final class Platform {
        */
       return AssertionErrorWithFacts.create(messages, facts, cause);
     }
-    Class<? extends AssertionError> asAssertionErrorSubclass =
-        comparisonFailureClass.asSubclass(AssertionError.class);
 
-    Constructor<? extends AssertionError> constructor;
+    Method createMethod;
     try {
-      constructor =
-          asAssertionErrorSubclass.getDeclaredConstructor(
+      createMethod =
+          comparisonFailureClass.getDeclaredMethod(
+              "create",
               ImmutableList.class,
               ImmutableList.class,
               String.class,
               String.class,
               Throwable.class);
     } catch (NoSuchMethodException e) {
-      // That constructor exists.
+      // Should not happen: the factory method exists.
       throw newLinkageError(e);
     }
 
     try {
-      return constructor.newInstance(messages, facts, expected, actual, cause);
+      return (AssertionError) createMethod.invoke(null, messages, facts, expected, actual, cause);
     } catch (InvocationTargetException e) {
-      // That constructor has no `throws` clause.
+      // The factory method has no `throws` clause so this will be an unchecked exception anyway.
       throw sneakyThrow(e.getCause());
-    } catch (InstantiationException e) {
-      // The class is a concrete class.
-      throw newLinkageError(e);
     } catch (IllegalAccessException e) {
-      // We're accessing a class from within its package.
+      // Should not happen: we're accessing a package-private method from within its package.
       throw newLinkageError(e);
     }
   }

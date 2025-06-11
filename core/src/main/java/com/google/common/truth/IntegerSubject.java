@@ -46,17 +46,21 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    *
    * @since 1.2
    */
-  public abstract static class TolerantIntegerComparison {
+  public static final class TolerantIntegerComparison {
+    private final IntegerComparer comparer;
 
-    // Prevent subclassing outside of this class
-    private TolerantIntegerComparison() {}
+    private TolerantIntegerComparison(IntegerComparer comparer) {
+      this.comparer = comparer;
+    }
 
     /**
      * Checks that the actual value is within the tolerance of the given value or <i>not</i> within
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public abstract void of(int other);
+    public void of(int other) {
+      comparer.compareAgainst(other);
+    }
 
     /**
      * @throws UnsupportedOperationException always
@@ -79,6 +83,14 @@ public class IntegerSubject extends ComparableSubject<Integer> {
     public int hashCode() {
       throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
     }
+
+    static TolerantIntegerComparison create(IntegerComparer comparer) {
+      return new TolerantIntegerComparison(comparer);
+    }
+  }
+
+  private interface IntegerComparer {
+    void compareAgainst(int other);
   }
 
   /**
@@ -90,29 +102,27 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isWithin(int tolerance) {
-    return new TolerantIntegerComparison() {
-      @Override
-      public void of(int other) {
-        if (tolerance < 0) {
-          failWithoutActual(
-              simpleFact(
-                  "could not perform approximate-equality check because tolerance is negative"),
-              numericFact("expected", other),
-              numericFact("was", actual),
-              numericFact("tolerance", tolerance));
-        } else if (actual == null) {
-          failWithoutActual(
-              numericFact("expected a value near", other),
-              numericFact("but was", actual),
-              numericFact("tolerance", tolerance));
-        } else if (!equalWithinTolerance(actual, other, tolerance)) {
-          failWithoutActual(
-              numericFact("expected", other),
-              numericFact("but was", actual),
-              numericFact("outside tolerance", tolerance));
-        }
-      }
-    };
+    return TolerantIntegerComparison.create(
+        other -> {
+          if (tolerance < 0) {
+            failWithoutActual(
+                simpleFact(
+                    "could not perform approximate-equality check because tolerance is negative"),
+                numericFact("expected", other),
+                numericFact("was", actual),
+                numericFact("tolerance", tolerance));
+          } else if (actual == null) {
+            failWithoutActual(
+                numericFact("expected a value near", other),
+                numericFact("but was", actual),
+                numericFact("tolerance", tolerance));
+          } else if (!equalWithinTolerance(actual, other, tolerance)) {
+            failWithoutActual(
+                numericFact("expected", other),
+                numericFact("but was", actual),
+                numericFact("outside tolerance", tolerance));
+          }
+        });
   }
 
   /**
@@ -124,29 +134,27 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isNotWithin(int tolerance) {
-    return new TolerantIntegerComparison() {
-      @Override
-      public void of(int other) {
-        if (tolerance < 0) {
-          failWithoutActual(
-              simpleFact(
-                  "could not perform approximate-equality check because tolerance is negative"),
-              numericFact("expected", other),
-              numericFact("was", actual),
-              numericFact("tolerance", tolerance));
-        } else if (actual == null) {
-          failWithoutActual(
-              numericFact("expected a value that is not near", other),
-              numericFact("but was", actual),
-              numericFact("tolerance", tolerance));
-        } else if (equalWithinTolerance(actual, other, tolerance)) {
-          failWithoutActual(
-              numericFact("expected not to be", other),
-              numericFact("but was", actual),
-              numericFact("within tolerance", tolerance));
-        }
-      }
-    };
+    return TolerantIntegerComparison.create(
+        other -> {
+          if (tolerance < 0) {
+            failWithoutActual(
+                simpleFact(
+                    "could not perform approximate-equality check because tolerance is negative"),
+                numericFact("expected", other),
+                numericFact("was", actual),
+                numericFact("tolerance", tolerance));
+          } else if (actual == null) {
+            failWithoutActual(
+                numericFact("expected a value that is not near", other),
+                numericFact("but was", actual),
+                numericFact("tolerance", tolerance));
+          } else if (equalWithinTolerance(actual, other, tolerance)) {
+            failWithoutActual(
+                numericFact("expected not to be", other),
+                numericFact("but was", actual),
+                numericFact("within tolerance", tolerance));
+          }
+        });
   }
 
   /**

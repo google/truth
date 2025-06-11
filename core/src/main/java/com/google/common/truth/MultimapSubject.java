@@ -261,7 +261,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ false, expectedMultimap);
+    return MultimapInOrder.create(this, /* allowUnexpected= */ false, expectedMultimap);
   }
 
   /**
@@ -288,7 +288,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(/* allowUnexpected= */ true, expectedMultimap);
+    return MultimapInOrder.create(this, /* allowUnexpected= */ true, expectedMultimap);
   }
 
   /** Checks that the actual multimap is empty. */
@@ -343,13 +343,14 @@ public class MultimapSubject extends Subject {
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {
     return (metadata, actual) ->
-        new IterableEntries(metadata, checkNotNull(actual), MultimapSubject.this);
+        IterableEntries.create(metadata, checkNotNull(actual), MultimapSubject.this);
   }
 
-  private static class IterableEntries extends IterableSubject {
+  private static final class IterableEntries extends IterableSubject {
     private final MultimapSubject multimapSubject;
 
-    IterableEntries(FailureMetadata metadata, Iterable<?> actual, MultimapSubject multimapSubject) {
+    private IterableEntries(
+        FailureMetadata metadata, Iterable<?> actual, MultimapSubject multimapSubject) {
       super(metadata, actual);
       this.multimapSubject = multimapSubject;
     }
@@ -359,13 +360,21 @@ public class MultimapSubject extends Subject {
       // We want to use the multimap's toString() instead of the iterable of entries' toString():
       return multimapSubject.actualCustomStringRepresentationForPackageMembersToCall();
     }
+
+    static IterableEntries create(
+        FailureMetadata metadata, Iterable<?> actual, MultimapSubject multimapSubject) {
+      return new IterableEntries(metadata, actual, multimapSubject);
+    }
   }
 
-  private class MultimapInOrder implements Ordered {
+  private static final class MultimapInOrder implements Ordered {
+    private final MultimapSubject subject;
     private final Multimap<?, ?> expectedMultimap;
     private final boolean allowUnexpected;
 
-    MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+    private MultimapInOrder(
+        MultimapSubject subject, boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+      this.subject = subject;
       this.expectedMultimap = expectedMultimap;
       this.allowUnexpected = allowUnexpected;
     }
@@ -379,15 +388,15 @@ public class MultimapSubject extends Subject {
     @Override
     public void inOrder() {
       // We use the fact that Sets.intersection's result has the same order as the first parameter
-      checkNotNull(actual);
+      checkNotNull(subject.actual);
       @SuppressWarnings("nullness") // TODO: b/339070656: Remove suppression after fix.
       boolean keysInOrder =
-          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMultimap.keySet()))
+          new ArrayList<>(Sets.intersection(subject.actual.keySet(), expectedMultimap.keySet()))
               .equals(new ArrayList<>(expectedMultimap.keySet()));
 
       LinkedHashSet<@Nullable Object> keysWithValuesOutOfOrder = new LinkedHashSet<>();
       for (Object key : expectedMultimap.keySet()) {
-        List<?> actualVals = new ArrayList<>(get(actual, key));
+        List<?> actualVals = new ArrayList<@Nullable Object>(get(subject.actual, key));
         List<?> expectedVals = new ArrayList<>(get(expectedMultimap, key));
         Iterator<?> actualIterator = actualVals.iterator();
         for (Object value : expectedVals) {
@@ -400,7 +409,7 @@ public class MultimapSubject extends Subject {
 
       if (!keysInOrder) {
         if (!keysWithValuesOutOfOrder.isEmpty()) {
-          failWithActual(
+          subject.failWithActual(
               simpleFact("contents match, but order was wrong"),
               simpleFact("keys are not in order"),
               fact("keys with out-of-order values", keysWithValuesOutOfOrder),
@@ -408,7 +417,7 @@ public class MultimapSubject extends Subject {
               fact(
                   allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         } else {
-          failWithActual(
+          subject.failWithActual(
               simpleFact("contents match, but order was wrong"),
               simpleFact("keys are not in order"),
               simpleFact("---"),
@@ -416,12 +425,17 @@ public class MultimapSubject extends Subject {
                   allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
-        failWithActual(
+        subject.failWithActual(
             simpleFact("contents match, but order was wrong"),
             fact("keys with out-of-order values", keysWithValuesOutOfOrder),
             simpleFact("---"),
             fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
       }
+    }
+
+    static MultimapInOrder create(
+        MultimapSubject subject, boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
+      return new MultimapInOrder(subject, allowUnexpected, expectedMultimap);
     }
   }
 

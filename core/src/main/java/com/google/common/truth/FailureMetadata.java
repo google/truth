@@ -163,7 +163,7 @@ public final class FailureMetadata {
    * {@code Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, @Nullable Object[] args) {
-    ImmutableList<LazyMessage> messages = append(this.messages, new LazyMessage(format, args));
+    ImmutableList<LazyMessage> messages = append(this.messages, LazyMessage.create(format, args));
     return derive(messages, steps);
   }
 

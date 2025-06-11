@@ -274,7 +274,7 @@ public class ComparisonFailureWithFactsTest {
     String actual = "actual";
     Throwable cause = new Throwable("cause");
     ComparisonFailureWithFacts original =
-        new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
+        ComparisonFailureWithFacts.create(messages, facts, expected, actual, cause);
 
     ComparisonFailureWithFacts reserialized = reserialize(original);
     assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
