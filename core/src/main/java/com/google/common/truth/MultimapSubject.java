@@ -343,21 +343,21 @@ public class MultimapSubject extends Subject {
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {
     return (metadata, actual) ->
-        new IterableEntries(metadata, MultimapSubject.this, checkNotNull(actual));
+        new IterableEntries(metadata, checkNotNull(actual), MultimapSubject.this);
   }
 
   private static class IterableEntries extends IterableSubject {
-    private final String stringRepresentation;
+    private final MultimapSubject multimapSubject;
 
-    IterableEntries(FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+    IterableEntries(FailureMetadata metadata, Iterable<?> actual, MultimapSubject multimapSubject) {
       super(metadata, actual);
-      // We want to use the multimap's toString() instead of the iterable of entries' toString():
-      this.stringRepresentation = String.valueOf(multimapSubject.actual);
+      this.multimapSubject = multimapSubject;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return stringRepresentation;
+      // We want to use the multimap's toString() instead of the iterable of entries' toString():
+      return multimapSubject.actualCustomStringRepresentationForPackageMembersToCall();
     }
   }
 
