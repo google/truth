@@ -38,169 +38,169 @@ public final class LongStreamSubjectTest {
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
-  public void testIsEqualTo() throws Exception {
+  public void testIsEqualTo() {
     LongStream stream = LongStream.of(42);
     assertThat(stream).isEqualTo(stream);
   }
 
   @Test
-  public void testIsEqualToList() throws Exception {
+  public void testIsEqualToList() {
     LongStream stream = LongStream.of(42);
     List<Long> list = asList(42L);
     AssertionError unused = expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
   }
 
   @Test
-  public void testNullStream_fails() throws Exception {
+  public void testNullStream_fails() {
     LongStream nullStream = null;
     assertThrows(NullPointerException.class, () -> assertThat(nullStream).isEmpty());
   }
 
   @Test
-  public void testNullStreamIsNull() throws Exception {
+  public void testNullStreamIsNull() {
     LongStream nullStream = null;
     assertThat(nullStream).isNull();
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
-  public void testIsSameInstanceAs() throws Exception {
+  public void testIsSameInstanceAs() {
     LongStream stream = LongStream.of(1);
     assertThat(stream).isSameInstanceAs(stream);
   }
 
   @Test
-  public void testIsEmpty() throws Exception {
+  public void testIsEmpty() {
     assertThat(LongStream.of()).isEmpty();
   }
 
   @Test
-  public void testIsEmpty_fails() throws Exception {
+  public void testIsEmpty_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).isEmpty());
   }
 
   @Test
-  public void testIsNotEmpty() throws Exception {
+  public void testIsNotEmpty() {
     assertThat(LongStream.of(42)).isNotEmpty();
   }
 
   @Test
-  public void testIsNotEmpty_fails() throws Exception {
+  public void testIsNotEmpty_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of()).isNotEmpty());
   }
 
   @Test
-  public void testHasSize() throws Exception {
+  public void testHasSize() {
     assertThat(LongStream.of(42)).hasSize(1);
   }
 
   @Test
-  public void testHasSize_fails() throws Exception {
+  public void testHasSize_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).hasSize(2));
   }
 
   @Test
-  public void testContainsNoDuplicates() throws Exception {
+  public void testContainsNoDuplicates() {
     assertThat(LongStream.of(42)).containsNoDuplicates();
   }
 
   @Test
-  public void testContainsNoDuplicates_fails() throws Exception {
+  public void testContainsNoDuplicates_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting -> whenTesting.that(LongStream.of(42, 42)).containsNoDuplicates());
   }
 
   @Test
-  public void testContains() throws Exception {
+  public void testContains() {
     assertThat(LongStream.of(42)).contains(42);
   }
 
   @Test
-  public void testContains_fails() throws Exception {
+  public void testContains_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).contains(100));
   }
 
   @Test
-  public void testContainsAnyOf() throws Exception {
+  public void testContainsAnyOf() {
     assertThat(LongStream.of(42)).containsAnyOf(42, 43);
   }
 
   @Test
-  public void testContainsAnyOf_fails() throws Exception {
+  public void testContainsAnyOf_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).containsAnyOf(43, 44));
   }
 
   @Test
-  public void testContainsAnyIn() throws Exception {
+  public void testContainsAnyIn() {
     assertThat(LongStream.of(42)).containsAnyIn(asList(42L, 43L));
   }
 
   @Test
-  public void testContainsAnyIn_fails() throws Exception {
+  public void testContainsAnyIn_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting -> whenTesting.that(LongStream.of(42)).containsAnyIn(asList(43, 44)));
   }
 
   @Test
-  public void testDoesNotContain() throws Exception {
+  public void testDoesNotContain() {
     assertThat(LongStream.of(42)).doesNotContain(43);
   }
 
   @Test
-  public void testDoesNotContain_fails() throws Exception {
+  public void testDoesNotContain_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).doesNotContain(42));
   }
 
   @Test
-  public void testContainsNoneOf() throws Exception {
+  public void testContainsNoneOf() {
     assertThat(LongStream.of(42)).containsNoneOf(43, 44);
   }
 
   @Test
-  public void testContainsNoneOf_fails() throws Exception {
+  public void testContainsNoneOf_fails() {
     AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).containsNoneOf(42, 43));
   }
 
   @Test
-  public void testContainsNoneIn() throws Exception {
+  public void testContainsNoneIn() {
     assertThat(LongStream.of(42)).containsNoneIn(asList(43, 44));
   }
 
   @Test
-  public void testContainsNoneIn_fails() throws Exception {
+  public void testContainsNoneIn_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting -> whenTesting.that(LongStream.of(42)).containsNoneIn(asList(42L, 43L)));
   }
 
   @Test
-  public void testContainsAtLeast() throws Exception {
+  public void testContainsAtLeast() {
     assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43);
   }
 
   @Test
-  public void testContainsAtLeast_fails() throws Exception {
+  public void testContainsAtLeast_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting -> whenTesting.that(LongStream.of(42, 43)).containsAtLeast(42, 43, 44));
   }
 
   @Test
-  public void testContainsAtLeast_inOrder() throws Exception {
+  public void testContainsAtLeast_inOrder() {
     assertThat(LongStream.of(42, 43)).containsAtLeast(42, 43).inOrder();
   }
 
   @Test
-  public void testContainsAtLeast_inOrder_fails() throws Exception {
+  public void testContainsAtLeast_inOrder_fails() {
     AssertionError expected =
         expectFailure(
             whenTesting ->
@@ -214,12 +214,12 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAtLeastElementsIn() throws Exception {
+  public void testContainsAtLeastElementsIn() {
     assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L));
   }
 
   @Test
-  public void testContainsAtLeastElementsIn_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting ->
@@ -229,7 +229,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAtLeastElementsIn_wrongType_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_wrongType_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting ->
@@ -239,12 +239,12 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAtLeastElementsIn_inOrder() throws Exception {
+  public void testContainsAtLeastElementsIn_inOrder() {
     assertThat(LongStream.of(42, 43)).containsAtLeastElementsIn(asList(42L, 43L)).inOrder();
   }
 
   @Test
-  public void testContainsAtLeastElementsIn_inOrder_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_inOrder_fails() {
     AssertionError expected =
         expectFailure(
             whenTesting ->
@@ -261,7 +261,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAtLeastElementsIn_inOrder_wrongType_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_inOrder_wrongType_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting ->
@@ -272,12 +272,12 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactly() throws Exception {
+  public void testContainsExactly() {
     assertThat(LongStream.of(42, 43)).containsExactly(42, 43);
   }
 
   @Test
-  public void testContainsExactly_fails() throws Exception {
+  public void testContainsExactly_fails() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(LongStream.of(42, 43)).containsExactly(42));
     assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
@@ -285,12 +285,12 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactly_inOrder() throws Exception {
+  public void testContainsExactly_inOrder() {
     assertThat(LongStream.of(42, 43)).containsExactly(42, 43).inOrder();
   }
 
   @Test
-  public void testContainsExactly_inOrder_fails() throws Exception {
+  public void testContainsExactly_inOrder_fails() {
     AssertionError expected =
         expectFailure(
             whenTesting ->
@@ -300,13 +300,13 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactlyElementsIn() throws Exception {
+  public void testContainsExactlyElementsIn() {
     assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L));
     assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(43L, 42L));
   }
 
   @Test
-  public void testContainsExactlyElementsIn_fails() throws Exception {
+  public void testContainsExactlyElementsIn_fails() {
     AssertionError expected =
         expectFailure(
             whenTesting ->
@@ -316,7 +316,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactlyElementsIn_wrongType_fails() throws Exception {
+  public void testContainsExactlyElementsIn_wrongType_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting ->
@@ -324,12 +324,12 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactlyElementsIn_inOrder() throws Exception {
+  public void testContainsExactlyElementsIn_inOrder() {
     assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L, 43L)).inOrder();
   }
 
   @Test
-  public void testContainsExactlyElementsIn_inOrder_fails() throws Exception {
+  public void testContainsExactlyElementsIn_inOrder_fails() {
     AssertionError expected =
         expectFailure(
             whenTesting ->
@@ -342,7 +342,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactlyElementsIn_inOrder_wrongType_fails() throws Exception {
+  public void testContainsExactlyElementsIn_inOrder_wrongType_fails() {
     AssertionError unused =
         expectFailure(
             whenTesting ->
@@ -353,7 +353,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
-  public void testContainsExactlyElementsIn_inOrder_LongStream() throws Exception {
+  public void testContainsExactlyElementsIn_inOrder_LongStream() {
     assertThat(LongStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
   }
 
