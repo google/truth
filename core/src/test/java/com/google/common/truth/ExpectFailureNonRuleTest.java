@@ -40,7 +40,7 @@ public class ExpectFailureNonRuleTest {
     runNotifier.addListener(
         new RunListener() {
           @Override
-          public void testFailure(Failure failure) throws Exception {
+          public void testFailure(Failure failure) {
             reportedFailure.add(failure);
           }
         });
@@ -64,7 +64,7 @@ public class ExpectFailureNonRuleTest {
     runNotifier.addListener(
         new RunListener() {
           @Override
-          public void testFailure(Failure failure) throws Exception {
+          public void testFailure(Failure failure) {
             reportedFailure.add(failure);
           }
         });

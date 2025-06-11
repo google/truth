@@ -384,7 +384,7 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void containsEntry_failsWithSameToString() throws Exception {
+  public void containsEntry_failsWithSameToString() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -813,8 +813,7 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void containsExactlyEntriesIn_homogeneousMultimap_failsWithSameToString()
-      throws Exception {
+  public void containsExactlyEntriesIn_homogeneousMultimap_failsWithSameToString() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -829,8 +828,7 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void containsExactlyEntriesIn_heterogeneousMultimap_failsWithSameToString()
-      throws Exception {
+  public void containsExactlyEntriesIn_heterogeneousMultimap_failsWithSameToString() {
     AssertionError e =
         expectFailure(
             whenTesting ->
