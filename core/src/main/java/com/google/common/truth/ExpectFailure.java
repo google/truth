@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
@@ -141,7 +140,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     if (failure != null) {
       // TODO(diamondm) is it worthwhile to add the failures as suppressed exceptions?
       throw new AssertionError(
-          lenientFormat(
+          String.format(
               "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
               Platform.getStackTraceAsString(failure), Platform.getStackTraceAsString(captured)));
     }

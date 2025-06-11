@@ -1,0 +1,41 @@
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:19:import static com.google.common.base.Strings.lenientFormat;
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:120:              lenientFormat(
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:184:                lenientFormat(
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:207:              lenientFormat(
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:213:              lenientFormat(
+./extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java:224:              lenientFormat(
+./core/src/main/java/com/google/common/truth/LazyMessage.java:19:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/LazyMessage.java:43:    return lenientFormat(format, args);
+./core/src/main/java/com/google/common/truth/IterableSubject.java:20:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/IterableSubject.java:628:    return lenientFormat("%s (%s)", label, elements.totalCopies());
+./core/src/main/java/com/google/common/truth/IterableSubject.java:646:    return count == 1 ? lenientFormat("#%s", n) : lenientFormat("#%s [%s copies]", n, count);
+./core/src/main/java/com/google/common/truth/IterableSubject.java:866:              lenientFormat(
+./core/src/main/java/com/google/common/truth/IterableSubject.java:1439:        extraFacts.add(simpleFact(lenientFormat("%s (%s)", label, extras.size())));
+./core/src/main/java/com/google/common/truth/IterableSubject.java:1442:          extraFacts.add(fact(lenientFormat("#%s", i + 1), extra));
+./core/src/main/java/com/google/common/truth/IterableSubject.java:1450:            fact(lenientFormat("%s (%s)", label, extras.size()), countDuplicates(extras)));
+./core/src/main/java/com/google/common/truth/ExpectFailure.java:20:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/ExpectFailure.java:144:          lenientFormat(
+./core/src/main/java/com/google/common/truth/Subject.java:24:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/Subject.java:1156:        lenientFormat(
+./core/src/main/java/com/google/common/truth/Subject.java:1189:        lenientFormat(
+./core/src/main/java/com/google/common/truth/Subject.java:1213:    failWithoutActual(simpleFact(lenientFormat("Not true that the subject %s", check)));
+./core/src/main/java/com/google/common/truth/StandardSubjectBuilder.java:297:   * com.google.common.base.Strings#lenientFormat Strings.lenientFormat}. Note this only supports
+./core/src/main/java/com/google/common/truth/MultimapSubject.java:20:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/MultimapSubject.java:201:              lenientFormat(
+./core/src/main/java/com/google/common/truth/MultimapSubject.java:843:        lenientFormat(
+./core/src/main/java/com/google/common/truth/Truth.java:115:   * com.google.common.base.Strings#lenientFormat Strings.lenientFormat}. Note this only supports
+./core/src/main/java/com/google/common/truth/MapSubject.java:20:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/MapSubject.java:431:    return includeTypes ? lenientFormat("%s (%s)", o, objectToTypeName(o)) : String.valueOf(o);
+./core/src/main/java/com/google/common/truth/SubjectUtils.java:19:import static com.google.common.base.Strings.lenientFormat;
+./core/src/main/java/com/google/common/truth/SubjectUtils.java:112:        ? lenientFormat("%s (%s)", countDuplicates(items), homogeneousTypeName)
+./core/src/main/java/com/google/common/truth/SubjectUtils.java:287:      return lenientFormat("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
+./core/src/main/java/com/google/common/truth/SubjectUtils.java:320:      itemsWithTypeInfo.add(lenientFormat("%s (%s)", item, objectToTypeName(item)));
+./core/src/main/java/com/google/common/truth/Correspondence.java:549:      return Strings.lenientFormat(
+./core/src/test/java/com/google/common/truth/ExpectFailureTest.java:18:import static com.google.common.base.Strings.lenientFormat;
+./core/src/test/java/com/google/common/truth/ExpectFailureTest.java:155:            simpleFact(lenientFormat("expected <%s> is equal to <%s>", actual, expected)));
+./core/src/test/java/com/google/common/truth/ExpectFailureTest.java:157:            simpleFact(lenientFormat("expected <%s> is equal to <%s>", expected, actual)));
+./core/src/test/java/com/google/common/truth/PrimitiveFloatArraySubjectTest.java:18:import static com.google.common.base.Strings.lenientFormat;
+./core/src/test/java/com/google/common/truth/PrimitiveFloatArraySubjectTest.java:349:        e, "expected order for required elements", lenientFormat("[%s, %s]", 2.2f, 1.1f));
+./core/src/test/java/com/google/common/truth/PrimitiveFloatArraySubjectTest.java:418:    assertFailureValue(e, "expected", lenientFormat("[%s, %s, %s]", 2.2f, 1.1f, 3.3f));
+./core/src/test/java/com/google/common/truth/PrimitiveFloatArraySubjectTest.java:732:        e, "expected order for required elements", lenientFormat("[%s, %s]", 2.2f, 1.1f));
+./core/src/test/java/com/google/common/truth/PrimitiveFloatArraySubjectTest.java:798:    assertFailureValue(e, "expected", lenientFormat("[%s, %s, %s]", 2.2f, 1.1f, 3.3f));

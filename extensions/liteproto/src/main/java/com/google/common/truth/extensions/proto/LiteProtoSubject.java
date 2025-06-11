@@ -16,7 +16,6 @@
 
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
@@ -116,11 +115,9 @@ public class LiteProtoSubject extends Subject {
       super.isEqualTo(expected);
     } else if (actual.getClass() != expected.getClass()) {
       failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that (%s) proto is equal to the expected (%s) object. "
-                      + "They are not of the same class.",
-                  actual.getClass().getName(), expected.getClass().getName())));
+          fact("expected instance of", expected.getClass().getName()),
+          fact("but was instance of", actual.getClass().getName()),
+          simpleFact("Proto messages are not of the same class."));
     } else {
       /*
        * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this
@@ -180,10 +177,9 @@ public class LiteProtoSubject extends Subject {
         super.isNotEqualTo(expected);
       } else {
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that protos are different. Both are (%s) <%s>.",
-                    actual.getClass().getName(), getTrimmedToString(actual))));
+            fact("expected not to be", getTrimmedToString(actual)),
+            fact("but was", getTrimmedToString(actual)), // Explicitly state it to avoid ambiguity
+            simpleFact(String.format("(is %s)", actual.getClass().getName())));
       }
     }
   }
@@ -202,29 +198,19 @@ public class LiteProtoSubject extends Subject {
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
   public void isEqualToDefaultInstance() {
     if (actual == null) {
-      failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that <%s> is a default proto instance. It is null.",
-                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
+      failWithActual(simpleFact("expected a default proto instance"));
     } else if (!actual.equals(actual.getDefaultInstanceForType())) {
-      failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that <%s> is a default proto instance. It has set values.",
-                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
+      failWithActual(
+          simpleFact("expected a default proto instance"), simpleFact("(it has set values)"));
     }
   }
 
   /** Checks whether the subject is not equivalent to a {@link MessageLite} with no fields set. */
   public void isNotEqualToDefaultInstance() {
     if (actual != null && actual.equals(actual.getDefaultInstanceForType())) {
-      failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that (%s) <%s> is not a default proto instance. It has no set values.",
-                  actual.getClass().getName(),
-                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
+      failWithActual(
+          simpleFact("expected not to be a default proto instance"),
+          simpleFact(String.format("(%s, has no set values)", actual.getClass().getName())));
     }
   }
 

@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
@@ -625,7 +624,7 @@ public class IterableSubject extends Subject {
      * any), so we don't want to include it here. (And it's better to have it in the value, rather
      * than in the key, so that it doesn't push the horizontally aligned values over too far.)
      */
-    return lenientFormat("%s (%s)", label, elements.totalCopies());
+    return String.format("%s (%s)", label, elements.totalCopies());
   }
 
   private static String keyToServeAsHeader(String label, DuplicateGroupedAndTyped elements) {
@@ -643,7 +642,7 @@ public class IterableSubject extends Subject {
   }
 
   private static String numberString(int n, int count) {
-    return count == 1 ? lenientFormat("#%s", n) : lenientFormat("#%s [%s copies]", n, count);
+    return count == 1 ? String.format("#%s", n) : String.format("#%s [%s copies]", n, count);
   }
 
   private static ElementFactGrouping pickGrouping(
@@ -863,7 +862,7 @@ public class IterableSubject extends Subject {
     if (!nonIterables.isEmpty()) {
       failWithoutActual(
           simpleFact(
-              lenientFormat(
+              String.format(
                   "The actual value is an Iterable, and you've written a test that compares it to "
                       + "some objects that are not Iterables. Did you instead mean to check "
                       + "whether its *contents* match any of the *contents* of the given values? "
@@ -1436,10 +1435,10 @@ public class IterableSubject extends Subject {
       }
       if (hasDiffs) {
         ImmutableList.Builder<Fact> extraFacts = ImmutableList.builder();
-        extraFacts.add(simpleFact(lenientFormat("%s (%s)", label, extras.size())));
+        extraFacts.add(simpleFact(String.format("%s (%s)", label, extras.size())));
         for (int i = 0; i < extras.size(); i++) {
           A extra = extras.get(i);
-          extraFacts.add(fact(lenientFormat("#%s", i + 1), extra));
+          extraFacts.add(fact(String.format("#%s", i + 1), extra));
           if (diffs.get(i) != null) {
             extraFacts.add(fact("diff", diffs.get(i)));
           }
@@ -1447,7 +1446,7 @@ public class IterableSubject extends Subject {
         return extraFacts.build();
       } else {
         return ImmutableList.of(
-            fact(lenientFormat("%s (%s)", label, extras.size()), countDuplicates(extras)));
+            fact(String.format("%s (%s)", label, extras.size()), countDuplicates(extras)));
       }
     }
 

@@ -21,7 +21,6 @@ import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
@@ -1152,15 +1151,10 @@ public class Subject {
   @Deprecated
   final void failWithBadResults(
       String verb, @Nullable Object expected, String failVerb, @Nullable Object actual) {
-    String message =
-        lenientFormat(
-            "Not true that <%s> %s <%s>. It %s <%s>",
-            actualCustomStringRepresentation(),
-            verb,
-            expected,
-            failVerb,
-            actual == null ? "null reference" : actual);
-    failWithoutActual(simpleFact(message));
+    failWithoutActual(
+        fact("value", actualCustomStringRepresentation()),
+        fact("expected to " + verb, expected),
+        fact("but " + failVerb, (actual == null ? "null reference" : String.valueOf(actual))));
   }
 
   /**
@@ -1185,11 +1179,9 @@ public class Subject {
   @Deprecated
   final void failWithCustomSubject(
       String verb, @Nullable Object expected, @Nullable Object actual) {
-    String message =
-        lenientFormat(
-            "Not true that <%s> %s <%s>",
-            actual == null ? "null reference" : actual, verb, expected);
-    failWithoutActual(simpleFact(message));
+    failWithoutActual(
+        fact("value", (actual == null ? "null reference" : String.valueOf(actual))),
+        fact("expected to " + verb, expected));
   }
 
   /**
@@ -1210,7 +1202,7 @@ public class Subject {
    */
   @Deprecated
   final void failWithoutSubject(String check) {
-    failWithoutActual(simpleFact(lenientFormat("Not true that the subject %s", check)));
+    failWithoutActual(simpleFact("Not true that the subject " + check));
   }
 
   /**
