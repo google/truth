@@ -386,7 +386,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testAnyMessageComparingExpectedFieldsOnly() throws Exception {
+  public void testAnyMessageComparingExpectedFieldsOnly() {
 
     String typeUrl =
         isProto3()
@@ -410,7 +410,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testInvalidAnyMessageComparingExpectedFieldsOnly() throws Exception {
+  public void testInvalidAnyMessageComparingExpectedFieldsOnly() {
 
     Message message = parse("o_any_message { type_url: 'invalid-type' value: 'abc123' }");
     Message eqMessage = parse("o_any_message { type_url: 'invalid-type' value: 'abc123' }");
@@ -427,7 +427,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testDifferentAnyMessagesComparingExpectedFieldsOnly() throws Exception {
+  public void testDifferentAnyMessagesComparingExpectedFieldsOnly() {
 
     // 'o_int' and 'o_float' have the same field numbers in both messages. However, to compare
     // accurately, we incorporate the unpacked Descriptor type into the FieldNumberTree as well to
@@ -857,17 +857,17 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         assertThrows(
             Exception.class, () -> assertThat(message1).ignoringFields(999).isEqualTo(message2));
     Throwable cause = expected;
-      while (cause != null) {
-        if (cause
-            .getMessage()
-            .contains("Message type " + fullMessageName() + " has no field with number 999.")) {
-          break;
-        } else {
-          cause = cause.getCause();
-        }
+    while (cause != null) {
+      if (cause
+          .getMessage()
+          .contains("Message type " + fullMessageName() + " has no field with number 999.")) {
+        break;
+      } else {
+        cause = cause.getCause();
       }
-      if (cause == null) {
-        fail("No cause with field number error message.");
+    }
+    if (cause == null) {
+      fail("No cause with field number error message.");
     }
   }
 
@@ -1042,7 +1042,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .that(expected)
         .hasMessageThat()
         .contains("Cannot create scope from messages with different descriptors");
-      expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
+    expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
     expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
   }
 
@@ -1074,7 +1074,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .contains(
             "Message given to FieldScopes.fromSetFields() "
                 + "does not have the same descriptor as the message being tested");
-      expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
+    expect.that(expected).hasMessageThat().contains(TestMessage2.getDescriptor().getFullName());
     expect.that(expected).hasMessageThat().contains(TestMessage3.getDescriptor().getFullName());
   }
 

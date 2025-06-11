@@ -29,7 +29,7 @@ import org.junit.runners.JUnit4;
 public final class ExpectFailure8Test {
 
   @Test
-  public void testExpectFailure() throws Exception {
+  public void testExpectFailure() {
     AssertionError failure1 = expectFailure(whenTesting -> whenTesting.that(4).isEqualTo(5));
     assertThat(failure1).factValue("expected").isEqualTo("5");
 
