@@ -65,16 +65,9 @@ public class MultimapSubject extends Subject {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  protected MultimapSubject(FailureMetadata metadata, @Nullable Multimap<?, ?> multimap) {
-    this(metadata, multimap, null);
-  }
-
-  private MultimapSubject(
-      FailureMetadata metadata,
-      @Nullable Multimap<?, ?> multimap,
-      @Nullable String typeDescriptionOverride) {
-    super(metadata, multimap, typeDescriptionOverride);
-    this.actual = multimap;
+  protected MultimapSubject(FailureMetadata metadata, @Nullable Multimap<?, ?> actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   /** Checks that the actual multimap is empty. */
@@ -860,6 +853,6 @@ public class MultimapSubject extends Subject {
   }
 
   static Factory<MultimapSubject, Multimap<?, ?>> multimaps() {
-    return (metadata, actual) -> new MultimapSubject(metadata, actual, "multimap");
+    return MultimapSubject::new;
   }
 }

@@ -32,7 +32,7 @@ public final class OptionalIntSubject extends Subject {
   private final @Nullable OptionalInt actual;
 
   private OptionalIntSubject(FailureMetadata failureMetadata, @Nullable OptionalInt actual) {
-    super(failureMetadata, actual, /* typeDescriptionOverride= */ "optionalInt");
+    super(failureMetadata, actual);
     this.actual = actual;
   }
 

@@ -33,9 +33,9 @@ import org.jspecify.annotations.Nullable;
 public final class TableSubject extends Subject {
   private final @Nullable Table<?, ?, ?> actual;
 
-  private TableSubject(FailureMetadata metadata, @Nullable Table<?, ?, ?> table) {
-    super(metadata, table);
-    this.actual = table;
+  private TableSubject(FailureMetadata metadata, @Nullable Table<?, ?, ?> actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   /** Checks that the actual table is empty. */

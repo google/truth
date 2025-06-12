@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.IterableSubject.iterables;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -61,7 +60,7 @@ public final class StreamSubject extends Subject {
       FailureMetadata metadata,
       @Nullable Stream<?> actual,
       Supplier<@Nullable List<?>> listSupplier) {
-    super(metadata, actual, /* typeDescriptionOverride= */ "stream");
+    super(metadata, actual);
     this.actual = actual;
     this.listSupplier = listSupplier;
   }
@@ -354,9 +353,7 @@ public final class StreamSubject extends Subject {
 
   /** Be careful with using this, as documented on {@link Subject#substituteCheck}. */
   private IterableSubject checkThatContentsList() {
-    return substituteCheck()
-        .about(iterables(/* typeDescriptionOverride= */ "stream"))
-        .that(listSupplier.get());
+    return substituteCheck().that(listSupplier.get());
   }
 
   private static Supplier<@Nullable List<?>> listCollector(@Nullable Stream<?> actual) {

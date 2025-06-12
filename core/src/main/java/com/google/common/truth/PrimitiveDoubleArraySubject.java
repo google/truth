@@ -33,9 +33,9 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double @Nullable [] actual;
 
-  private PrimitiveDoubleArraySubject(FailureMetadata metadata, double @Nullable [] o) {
-    super(metadata, o, /* typeDescriptionOverride= */ "array");
-    this.actual = o;
+  private PrimitiveDoubleArraySubject(FailureMetadata metadata, double @Nullable [] actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   /**

@@ -37,6 +37,7 @@ import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Booleans;
@@ -101,44 +102,9 @@ public class Subject {
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @Nullable Object actual) {
-    this(metadata, actual, /* typeDescriptionOverride= */ null);
-  }
-
-  /**
-   * Special constructor that lets subclasses provide a description of the type they're testing. For
-   * example, {@link ThrowableSubject} passes the description "throwable." Normally, Truth is able
-   * to infer this name from the class name. However, if we lack runtime type information (notably,
-   * under j2cl with class metadata off), we might not have access to the original class name.
-   *
-   * <p>We don't expect to make this a public API: Class names are nearly always available. It's
-   * just that we want to be able to run Truth's own tests run with class metadata off, and it's
-   * easier to tweak the subjects to know their own names rather than generalize the tests to accept
-   * obfuscated names.
-   *
-   * <p>Even within Truth itself, we rarely need to pass a {@code typeDescriptionOverride}: At least
-   * with Truth's current failure messages, the type appears only when a {@link Subject} uses
-   * assertion chaining. (This can happen because the {@link Subject} exposes chaining it in its
-   * API, like in {@link ThrowableSubject#hasCauseThat}, or because it uses it internally, like in
-   * {@link MultisetSubject#hasCount}.)
-   *
-   * <p>When we do want to pass a {@code typeDescriptionOverride}, we have two main approaches:
-   *
-   * <ul>
-   *   <li>For a {@code FooSubject} subclass that is {@code final}, the constructor uses {@code
-   *       super(metadata, actual, "foo")}.
-   *   <li>For a {@code FooSubject} subclass that is not {@code final}, the constructor that is
-   *       accessible to subclasses uses {@code super(metadata, actual, null)} (so that we don't set
-   *       a potentially misleading type description, like "comparable" for a type that only
-   *       "incidentally" implements {@link Comparable}), and the {@link Factory} for the class
-   *       (which is used for creating "plain" {@code FooSubject} instances) passes {@code "foo"} to
-   *       a second constructor that accepts a {@code typeDescriptionOverride}.
-   * </ul>
-   */
-  Subject(
-      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
-    this.typeDescriptionOverride = typeDescriptionOverride;
+    this.typeDescriptionOverride = TYPE_DESCRIPTION_OVERRIDES.get(getClass());
   }
 
   /** Checks that the value under test is null. */
@@ -1382,4 +1348,61 @@ public class Subject {
   static Factory<Subject, Object> objects() {
     return Subject::new;
   }
+
+  /**
+   * A mapping from some {@code Subject} subclasses to descriptions of the types they're testing.
+   * For example, {@link ThrowableSubject} has the description "throwable." Normally, Truth is able
+   * to infer this description from the class name. However, if we lack runtime type information
+   * (notably, under J2CL with class metadata off), we might not have access to the original class
+   * name.
+   *
+   * <p>Since Truth can normally infer this on its own, this mechanism is not something that would
+   * normally be useful outside of core Truth. But to support running Truth's own tests run with
+   * class metadata off, it's easier to tweak the {@code Subject} code to hard-code the descriptions
+   * we want than to generalize the tests to accept obfuscated names.
+   *
+   * <p>That said, we do sometimes use this mechanism to provide a simpler description than the one
+   * derived from the class name. For example, rather than say "primitiveBooleanArray," we say just
+   * "array." In theory, users could want to do that, too. Maybe someday we will provide them with a
+   * way to plug in their own descriptions.
+   *
+   * <p>Even within Truth itself, not all types need a {@code TYPE_DESCRIPTION_OVERRIDES} entry: At
+   * least with Truth's current failure messages, the type appears only when a {@link Subject} uses
+   * assertion chaining. (This can happen because the {@link Subject} exposes chaining it in its
+   * API, like in {@link ThrowableSubject#hasCauseThat}, or because it uses it internally, like in
+   * {@link MultisetSubject#hasCount}.)
+   *
+   * <p>Notice that we look up map values by the exact runtime {@code Subject} class, not using
+   * {@link Class#isInstance}. We do this so that a subclass does not inherit a description override
+   * from its superclass. That way, Truth can normally infer a description for it, which is likely
+   * to be more specific. For example, FooExceptionSubject would produce "fooException," not
+   * "throwable").
+   */
+  @SuppressWarnings("GoogleInternalApi") // The reference to a Google-internal class is stripped
+  private static final ImmutableMap<Class<? extends Subject>, String> TYPE_DESCRIPTION_OVERRIDES =
+      new ImmutableMap.Builder<Class<? extends Subject>, String>()
+          // keep-sorted start
+          .put(GuavaOptionalSubject.class, "optional")
+          .put(IntStreamSubject.class, "stream")
+          .put(LongStreamSubject.class, "stream")
+          .put(MultimapSubject.class, "multimap")
+          .put(MultisetSubject.class, "multiset")
+          .put(ObjectArraySubject.class, "array")
+          .put(OptionalDoubleSubject.class, "optionalDouble")
+          .put(OptionalIntSubject.class, "optionalInt")
+          .put(OptionalLongSubject.class, "optionalLong")
+          .put(OptionalSubject.class, "optional")
+          .put(PrimitiveBooleanArraySubject.class, "array")
+          .put(PrimitiveByteArraySubject.class, "array")
+          .put(PrimitiveCharArraySubject.class, "array")
+          .put(PrimitiveDoubleArraySubject.class, "array")
+          .put(PrimitiveFloatArraySubject.class, "array")
+          .put(PrimitiveIntArraySubject.class, "array")
+          .put(PrimitiveLongArraySubject.class, "array")
+          .put(PrimitiveShortArraySubject.class, "array")
+          .put(StreamSubject.class, "stream")
+          .put(ThrowableSubject.class, "throwable")
+          .put(TruthFailureSubject.class, "failure")
+          // keep-sorted end
+          .buildOrThrow();
 }

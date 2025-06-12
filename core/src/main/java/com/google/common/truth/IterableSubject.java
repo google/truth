@@ -95,17 +95,9 @@ public class IterableSubject extends Subject {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> iterable) {
-    this(metadata, iterable, null);
-  }
-
-  /** Constructor for use by package-private callers. */
-  IterableSubject(
-      FailureMetadata metadata,
-      @Nullable Iterable<?> iterable,
-      @Nullable String typeDescriptionOverride) {
-    super(metadata, iterable, typeDescriptionOverride);
-    this.actual = iterable;
+  protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   @Override
@@ -2113,9 +2105,5 @@ public class IterableSubject extends Subject {
 
   static Factory<IterableSubject, Iterable<?>> iterables() {
     return IterableSubject::new;
-  }
-
-  static Factory<IterableSubject, Iterable<?>> iterables(String typeDescriptionOverride) {
-    return (metadata, actual) -> new IterableSubject(metadata, actual, typeDescriptionOverride);
   }
 }

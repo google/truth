@@ -35,9 +35,9 @@ public final class OptionalSubject extends Subject {
   private OptionalSubject(
       FailureMetadata failureMetadata,
       @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
-          @Nullable Optional<?> subject) {
-    super(failureMetadata, subject, /* typeDescriptionOverride= */ "optional");
-    this.actual = subject;
+          @Nullable Optional<?> actual) {
+    super(failureMetadata, actual);
+    this.actual = actual;
   }
 
   // TODO(cpovirk): Consider making OptionalIntSubject and OptionalLongSubject delegate to this.

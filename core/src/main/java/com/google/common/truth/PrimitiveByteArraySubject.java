@@ -28,9 +28,9 @@ import org.jspecify.annotations.Nullable;
 public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   private final byte @Nullable [] actual;
 
-  private PrimitiveByteArraySubject(FailureMetadata metadata, byte @Nullable [] o) {
-    super(metadata, o, /* typeDescriptionOverride= */ "array");
-    this.actual = o;
+  private PrimitiveByteArraySubject(FailureMetadata metadata, byte @Nullable [] actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   public IterableSubject asList() {

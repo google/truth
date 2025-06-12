@@ -28,9 +28,9 @@ import org.jspecify.annotations.Nullable;
 public final class ClassSubject extends Subject {
   private final @Nullable Class<?> actual;
 
-  private ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
-    super(metadata, o);
-    this.actual = o;
+  private ClassSubject(FailureMetadata metadata, @Nullable Class<?> actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   /**

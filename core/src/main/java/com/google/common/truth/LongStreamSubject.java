@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.truth.IterableSubject.iterables;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -58,7 +57,7 @@ public final class LongStreamSubject extends Subject {
   private final Supplier<@Nullable List<?>> listSupplier;
 
   private LongStreamSubject(FailureMetadata metadata, @Nullable LongStream actual) {
-    super(metadata, actual, /* typeDescriptionOverride= */ "stream");
+    super(metadata, actual);
     // For discussion of when we collect(), see the Javadoc and also StreamSubject.
     this.listSupplier = memoize(listCollector(actual));
   }
@@ -264,9 +263,7 @@ public final class LongStreamSubject extends Subject {
 
   /** Be careful with using this, as documented on {@link Subject#substituteCheck}. */
   private IterableSubject checkThatContentsList() {
-    return substituteCheck()
-        .about(iterables(/* typeDescriptionOverride= */ "stream"))
-        .that(listSupplier.get());
+    return substituteCheck().that(listSupplier.get());
   }
 
   private static Supplier<@Nullable List<?>> listCollector(@Nullable LongStream actual) {

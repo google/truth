@@ -30,9 +30,9 @@ public final class MultisetSubject extends IterableSubject {
 
   private final @Nullable Multiset<?> actual;
 
-  private MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> multiset) {
-    super(metadata, multiset, /* typeDescriptionOverride= */ "multiset");
-    this.actual = multiset;
+  private MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> actual) {
+    super(metadata, actual);
+    this.actual = actual;
   }
 
   /**
