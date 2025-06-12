@@ -384,11 +384,12 @@ public class IterableSubject extends Subject {
    * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
-    List<@Nullable Object> expected =
-        varargs == null ? asList((@Nullable Object) null) : asList(varargs);
+  public final Ordered containsExactly(@Nullable Object @Nullable ... expected) {
+    List<@Nullable Object> expectedAsList =
+        expected == null ? asList((@Nullable Object) null) : asList(expected);
     return containsExactlyElementsIn(
-        expected, varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
+        expectedAsList,
+        expected != null && expected.length == 1 && expected[0] instanceof Iterable);
   }
 
   /**

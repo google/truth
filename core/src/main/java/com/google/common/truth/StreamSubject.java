@@ -208,8 +208,8 @@ public final class StreamSubject extends Subject {
    * containsExactly(null).
    */
   @SuppressWarnings("ContainsExactlyVariadic")
-  public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
-    return checkThatContentsList().containsExactly(varargs);
+  public Ordered containsExactly(@Nullable Object @Nullable ... expected) {
+    return checkThatContentsList().containsExactly(expected);
   }
 
   /**

@@ -174,7 +174,7 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(long @Nullable ... varargs) {
+  public Ordered containsExactly(long @Nullable ... expected) {
     /*
      * We declare a parameter type that lets callers pass a nullable array, even though the
      * assertion will fail if the array is ever actually null. This can be convenient if the
@@ -186,8 +186,8 @@ public final class LongStreamSubject extends Subject {
      *
      * TODO(cpovirk): Actually produce such a better exception message.
      */
-    checkNotNull(varargs);
-    return checkThatContentsList().containsExactlyElementsIn(box(varargs));
+    checkNotNull(expected);
+    return checkThatContentsList().containsExactlyElementsIn(box(expected));
   }
 
   /**
