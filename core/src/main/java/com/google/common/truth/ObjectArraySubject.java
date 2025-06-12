@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.simpleFact;
-import static java.util.Collections.emptyList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
@@ -37,7 +37,7 @@ public final class ObjectArraySubject<T extends @Nullable Object> extends Subjec
   public IterableSubject asList() {
     if (actual == null) {
       failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
-      return ignoreCheck().that(emptyList());
+      return ignoreCheck().that(ImmutableList.of());
     }
     return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual));
   }
@@ -52,11 +52,7 @@ public final class ObjectArraySubject<T extends @Nullable Object> extends Subjec
     arrayIsNotEmptyImpl();
   }
 
-  /**
-   * Checks that the actual array has the given length.
-   *
-   * @throws IllegalArgumentException if {@code length < 0}
-   */
+  /** Checks that the actual array has the given length. */
   public void hasLength(int length) {
     arrayHasLengthImpl(length);
   }

@@ -75,6 +75,13 @@ public class PrimitiveIntArraySubjectTest {
   }
 
   @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((int[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
+  @Test
   public void isEmpty() {
     assertThat(EMPTY).isEmpty();
   }

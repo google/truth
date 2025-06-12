@@ -99,6 +99,13 @@ public class PrimitiveCharArraySubjectTest {
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((char[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
   private static char[] array(char... ts) {
     return ts;
   }

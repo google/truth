@@ -106,6 +106,13 @@ public class PrimitiveShortArraySubjectTest {
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((short[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
   private static short[] array(int a, int b, int c) {
     return new short[] {(short) a, (short) b, (short) c};
   }

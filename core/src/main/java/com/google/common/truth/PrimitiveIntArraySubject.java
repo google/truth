@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.simpleFact;
+import static java.util.Collections.emptyList;
 
 import com.google.common.primitives.Ints;
 import org.jspecify.annotations.Nullable;
@@ -34,7 +35,11 @@ public final class PrimitiveIntArraySubject extends Subject {
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(checkNotNull(actual)));
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(emptyList());
+    }
+    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(actual));
   }
 
   /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
@@ -47,11 +52,7 @@ public final class PrimitiveIntArraySubject extends Subject {
     arrayIsNotEmptyImpl();
   }
 
-  /**
-   * Checks that the actual array has the given length.
-   *
-   * @throws IllegalArgumentException if {@code length < 0}
-   */
+  /** Checks that the actual array has the given length. */
   public void hasLength(int length) {
     arrayHasLengthImpl(length);
   }

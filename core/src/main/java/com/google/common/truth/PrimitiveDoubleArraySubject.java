@@ -19,6 +19,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.Fact.simpleFact;
+import static java.lang.Double.doubleToLongBits;
 
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -112,15 +114,16 @@ public final class PrimitiveDoubleArraySubject extends Subject {
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public DoubleArrayAsIterable usingTolerance(double tolerance) {
-    return DoubleArrayAsIterable.create(tolerance(tolerance), iterableSubject());
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(new double[0]).usingTolerance(tolerance);
+    }
+    return DoubleArrayAsIterable.create(tolerance(tolerance), iterableSubject(actual));
   }
 
   private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
       Correspondence.from(
-          // If we were allowed lambdas, this would be:
-          // (a, e) -> Double.doubleToLongBits(a) == Double.doubleToLongBits(checkedToDouble(e)),
-          (actual, expected) ->
-              Double.doubleToLongBits(actual) == Double.doubleToLongBits(checkedToDouble(expected)),
+          (a, e) -> doubleToLongBits(a) == doubleToLongBits(checkedToDouble(e)),
           "is exactly equal to");
 
   private static double checkedToDouble(Number expected) {
@@ -177,7 +180,11 @@ public final class PrimitiveDoubleArraySubject extends Subject {
    * </ul>
    */
   public DoubleArrayAsIterable usingExactEquality() {
-    return DoubleArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(new double[0]).usingExactEquality();
+    }
+    return DoubleArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject(actual));
   }
 
   /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
@@ -190,11 +197,7 @@ public final class PrimitiveDoubleArraySubject extends Subject {
     arrayIsNotEmptyImpl();
   }
 
-  /**
-   * Checks that the actual array has the given length.
-   *
-   * @throws IllegalArgumentException if {@code length < 0}
-   */
+  /** Checks that the actual array has the given length. */
   public void hasLength(int length) {
     arrayHasLengthImpl(length);
   }
@@ -249,34 +252,40 @@ public final class PrimitiveDoubleArraySubject extends Subject {
     }
   }
 
-  private IterableSubject iterableSubject() {
+  private IterableSubject iterableSubject(double[] actual) {
     return checkNoNeedToDisplayBothValues("asList()")
-        .about(iterablesWithCustomDoubleToString())
-        .that(Doubles.asList(checkNotNull(actual)));
+        .about(IterableSubjectWithInheritedToString.iterablesWithCustomDoubleToString(this))
+        .that(Doubles.asList(actual));
   }
 
-  /*
-   * TODO(cpovirk): Should we make Doubles.asList().toString() smarter rather than do all this?
-   *
-   * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
-   * note that here we don't use _exactly_ PrimitiveDoubleArraySubject.this.toString(), as that
-   * contains "double[]." Or maybe we should stop including that in
-   * PrimitiveDoubleArraySubject.this.toString(), too, someday?
-   */
-  private Factory<IterableSubject, Iterable<?>> iterablesWithCustomDoubleToString() {
-    return IterableSubjectWithInheritedToString::new;
-  }
+  private static final class IterableSubjectWithInheritedToString extends IterableSubject {
+    private final PrimitiveDoubleArraySubject arraySubject;
 
-  private final class IterableSubjectWithInheritedToString extends IterableSubject {
-
-    IterableSubjectWithInheritedToString(FailureMetadata metadata, @Nullable Iterable<?> actual) {
+    private IterableSubjectWithInheritedToString(
+        FailureMetadata metadata,
+        @Nullable Iterable<?> actual,
+        PrimitiveDoubleArraySubject arraySubject) {
       super(metadata, actual);
+      this.arraySubject = arraySubject;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return PrimitiveDoubleArraySubject.this
-          .actualCustomStringRepresentationForPackageMembersToCall();
+      return arraySubject.actualCustomStringRepresentationForPackageMembersToCall();
+    }
+
+    /*
+     * TODO(cpovirk): Should we make Doubles.asList().toString() smarter rather than do all this?
+     *
+     * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
+     * note that here we don't use _exactly_ PrimitiveDoubleArraySubject.this.toString(), as that
+     * contains "double[]." Or maybe we should stop including that in
+     * PrimitiveDoubleArraySubject.this.toString(), too, someday?
+     */
+    static Factory<IterableSubject, Iterable<?>> iterablesWithCustomDoubleToString(
+        PrimitiveDoubleArraySubject arraySubject) {
+      return (metadata, actual) ->
+          new IterableSubjectWithInheritedToString(metadata, actual, arraySubject);
     }
   }
 

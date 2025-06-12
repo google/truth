@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -106,6 +107,13 @@ public class PrimitiveByteArraySubjectTest {
   public void isNotEqualTo_FailSame() {
     byte[] same = array(BYTE_0, BYTE_1);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
+  }
+
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((byte[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
   }
 
   private static byte[] array(byte... ts) {

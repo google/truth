@@ -99,6 +99,13 @@ public class PrimitiveLongArraySubjectTest {
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((long[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
   private static long[] array(long... ts) {
     return ts;
   }

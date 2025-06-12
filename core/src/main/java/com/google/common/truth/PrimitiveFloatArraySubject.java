@@ -19,6 +19,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.Fact.simpleFact;
+import static java.lang.Float.floatToIntBits;
 
 import com.google.common.primitives.Floats;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -111,16 +113,16 @@ public final class PrimitiveFloatArraySubject extends Subject {
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public FloatArrayAsIterable usingTolerance(double tolerance) {
-    return FloatArrayAsIterable.create(tolerance(tolerance), iterableSubject());
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(new float[0]).usingTolerance(tolerance);
+    }
+    return FloatArrayAsIterable.create(tolerance(tolerance), iterableSubject(actual));
   }
 
   private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
       Correspondence.from(
-          // If we were allowed lambdas, this would be:
-          // (a, e) -> Float.floatToIntBits(a) == Float.floatToIntBits(checkedToFloat(e)),
-          (actual, expected) ->
-              Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected)),
-          "is exactly equal to");
+          (a, e) -> floatToIntBits(a) == floatToIntBits(checkedToFloat(e)), "is exactly equal to");
 
   private static float checkedToFloat(Number expected) {
     checkNotNull(expected);
@@ -184,7 +186,11 @@ public final class PrimitiveFloatArraySubject extends Subject {
    * </ul>
    */
   public FloatArrayAsIterable usingExactEquality() {
-    return FloatArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
+    if (actual == null) {
+      failWithoutActual(simpleFact("cannot perform assertions on the contents of a null array"));
+      return ignoreCheck().that(new float[0]).usingExactEquality();
+    }
+    return FloatArrayAsIterable.create(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject(actual));
   }
 
   /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
@@ -197,11 +203,7 @@ public final class PrimitiveFloatArraySubject extends Subject {
     arrayIsNotEmptyImpl();
   }
 
-  /**
-   * Checks that the actual array has the given length.
-   *
-   * @throws IllegalArgumentException if {@code length < 0}
-   */
+  /** Checks that the actual array has the given length. */
   public void hasLength(int length) {
     arrayHasLengthImpl(length);
   }
@@ -254,34 +256,40 @@ public final class PrimitiveFloatArraySubject extends Subject {
     }
   }
 
-  private IterableSubject iterableSubject() {
+  private IterableSubject iterableSubject(float[] actual) {
     return checkNoNeedToDisplayBothValues("asList()")
-        .about(iterablesWithCustomFloatToString())
-        .that(Floats.asList(checkNotNull(actual)));
+        .about(IterableSubjectWithInheritedToString.iterablesWithCustomFloatToString(this))
+        .that(Floats.asList(actual));
   }
 
-  /*
-   * TODO(cpovirk): Should we make Floats.asList().toString() smarter rather than do all this?
-   *
-   * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
-   * note that here we don't use _exactly_ PrimitiveFloatArraySubject.this.toString(), as that
-   * contains "float[]." Or maybe we should stop including that in
-   * PrimitiveFloatArraySubject.this.toString(), too, someday?
-   */
-  private Factory<IterableSubject, Iterable<?>> iterablesWithCustomFloatToString() {
-    return IterableSubjectWithInheritedToString::new;
-  }
+  private static final class IterableSubjectWithInheritedToString extends IterableSubject {
+    private final PrimitiveFloatArraySubject arraySubject;
 
-  private final class IterableSubjectWithInheritedToString extends IterableSubject {
-
-    IterableSubjectWithInheritedToString(FailureMetadata metadata, @Nullable Iterable<?> actual) {
+    private IterableSubjectWithInheritedToString(
+        FailureMetadata metadata,
+        @Nullable Iterable<?> actual,
+        PrimitiveFloatArraySubject arraySubject) {
       super(metadata, actual);
+      this.arraySubject = arraySubject;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return PrimitiveFloatArraySubject.this
-          .actualCustomStringRepresentationForPackageMembersToCall();
+      return arraySubject.actualCustomStringRepresentationForPackageMembersToCall();
+    }
+
+    /*
+     * TODO(cpovirk): Should we make Floats.asList().toString() smarter rather than do all this?
+     *
+     * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
+     * note that here we don't use _exactly_ PrimitiveFloatArraySubject.this.toString(), as that
+     * contains "float[]." Or maybe we should stop including that in
+     * PrimitiveFloatArraySubject.this.toString(), too, someday?
+     */
+    static Factory<IterableSubject, Iterable<?>> iterablesWithCustomFloatToString(
+        PrimitiveFloatArraySubject arraySubject) {
+      return (metadata, actual) ->
+          new IterableSubjectWithInheritedToString(metadata, actual, arraySubject);
     }
   }
 

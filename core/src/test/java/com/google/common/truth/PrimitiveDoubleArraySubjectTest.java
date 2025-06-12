@@ -774,6 +774,13 @@ public class PrimitiveDoubleArraySubjectTest {
     assertFailureValue(e, "but was", "[10000.0]");
   }
 
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((double[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
   private static double[] array(double... primitives) {
     return primitives;
   }

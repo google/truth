@@ -828,6 +828,13 @@ public class PrimitiveFloatArraySubjectTest {
     assertFailureValue(e, "corresponding to", Float.toString(2.2f));
   }
 
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((float[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
   private static float[] array(float... primitives) {
     return primitives;
   }

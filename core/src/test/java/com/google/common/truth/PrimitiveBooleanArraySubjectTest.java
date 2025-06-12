@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -89,6 +90,14 @@ public class PrimitiveBooleanArraySubjectTest {
   public void isNotEqualTo_FailSame() {
     boolean[] same = array(true, false);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
+  }
+
+  @Test
+  public void hasLengthNullArray() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((boolean[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
   }
 
   private static boolean[] array(boolean... ts) {
