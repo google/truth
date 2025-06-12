@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.Multiset;
 import org.jspecify.annotations.Nullable;
@@ -39,10 +39,22 @@ public final class MultisetSubject extends IterableSubject {
    * Checks that the actual multiset has exactly the given number of occurrences of the given
    * element.
    */
-  public final void hasCount(@Nullable Object element, int expectedCount) {
-    checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
-    int actualCount = checkNotNull(actual).count(element);
-    check("count(%s)", element).that(actualCount).isEqualTo(expectedCount);
+  public void hasCount(@Nullable Object element, int expectedCount) {
+    if (actual == null) {
+      failWithoutActual(
+          simpleFact("cannot perform assertions on the contents of a null multiset"),
+          fact("element", element),
+          fact("expected count", expectedCount));
+    } else if (expectedCount < 0) {
+      failWithoutActual(
+          simpleFact("expected an element count that is negative, but that is impossible"),
+          fact("element", element),
+          fact("expected count", expectedCount),
+          fact("actual count", actual.count(element)),
+          fact("multiset was", actualCustomStringRepresentationForPackageMembersToCall()));
+    } else {
+      check("count(%s)", element).that(actual.count(element)).isEqualTo(expectedCount);
+    }
   }
 
   static Factory<MultisetSubject, Multiset<?>> multisets() {
