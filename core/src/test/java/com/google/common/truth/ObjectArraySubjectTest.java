@@ -20,7 +20,6 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
@@ -39,19 +38,19 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isEqualTo() {
-    assertThat(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
+    assertThat(array("A", 5L)).isEqualTo(array("A", 5L));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_same() {
-    Object[] same = objectArray("A", 5L);
+    Object[] same = array("A", 5L);
     assertThat(same).isEqualTo(same);
   }
 
   @Test
   public void asList() {
-    assertThat(objectArray("A", 5L)).asList().contains("A");
+    assertThat(array("A", 5L)).asList().contains("A");
   }
 
   @Test
@@ -63,15 +62,14 @@ public class ObjectArraySubjectTest {
   @Test
   public void hasLength() {
     assertThat(EMPTY).hasLength(0);
-    assertThat(objectArray("A", 5L)).hasLength(2);
+    assertThat(array("A", 5L)).hasLength(2);
     assertThat(new Object[][] {}).hasLength(0);
     assertThat(new Object[][] {{}}).hasLength(1);
   }
 
   @Test
   public void hasLengthFail() {
-    AssertionError e =
-        expectFailure(whenTesting -> whenTesting.that(objectArray("A", 5L)).hasLength(1));
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).hasLength(1));
     assertFailureValue(e, "value of", "array.length");
   }
 
@@ -83,8 +81,22 @@ public class ObjectArraySubjectTest {
   }
 
   @Test
+  public void hasLengthNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Object[]) null).hasLength(1));
+    assertFailureKeys(e, "expected an array with length", "but was");
+    assertFailureValue(e, "expected an array with length", "1");
+  }
+
+  @Test
   public void hasLengthNegative() {
-    assertThrows(IllegalArgumentException.class, () -> assertThat(objectArray(2, 5)).hasLength(-1));
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array(2, 5)).hasLength(-1));
+    assertFailureKeys(
+        e,
+        "could not perform length check because expected length is negative",
+        "expected length",
+        "array was");
+    assertFailureValue(e, "expected length", "-1");
+    assertFailureValue(e, "array was", "[2, 5]");
   }
 
   @Test
@@ -95,14 +107,19 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isEmptyFail() {
-    AssertionError e =
-        expectFailure(whenTesting -> whenTesting.that(objectArray("A", 5L)).isEmpty());
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isEmpty());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
+  public void isEmptyNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Object[]) null).isEmpty());
+    assertFailureKeys(e, "expected an empty array", "but was");
+  }
+
+  @Test
   public void isNotEmpty() {
-    assertThat(objectArray("A", 5L)).isNotEmpty();
+    assertThat(array("A", 5L)).isNotEmpty();
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEmpty();
   }
 
@@ -113,10 +130,15 @@ public class ObjectArraySubjectTest {
   }
 
   @Test
+  public void isNotEmptyNullArray() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Object[]) null).isNotEmpty());
+    assertFailureKeys(e, "expected a nonempty array", "but was");
+  }
+
+  @Test
   public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting -> whenTesting.that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A")));
+        expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isEqualTo(array(5L, "A")));
     assertFailureValue(e, "differs at index", "[0]");
   }
 
@@ -159,31 +181,30 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isEqualTo_fail_notAnArray() {
-    expectFailure(whenTesting -> whenTesting.that(objectArray("A", 5L)).isEqualTo(new Object()));
+    expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isEqualTo(new Object()));
   }
 
   @Test
   public void isNotEqualTo_sameLengths() {
-    assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
+    assertThat(array("A", 5L)).isNotEqualTo(array("C", 5L));
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"C"}, {5L}});
   }
 
   @Test
   public void isNotEqualTo_differentLengths() {
-    assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
+    assertThat(array("A", 5L)).isNotEqualTo(array("A", 5L, "c"));
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A", "c"}, {5L}});
     assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A"}, {5L}, {"C"}});
   }
 
   @Test
   public void isNotEqualTo_differentTypes() {
-    assertThat(objectArray("A", 5L)).isNotEqualTo(new Object());
+    assertThat(array("A", 5L)).isNotEqualTo(new Object());
   }
 
   @Test
   public void isNotEqualTo_failEquals() {
-    expectFailure(
-        whenTesting -> whenTesting.that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L)));
+    expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isNotEqualTo(array("A", 5L)));
   }
 
   @Test
@@ -200,7 +221,7 @@ public class ObjectArraySubjectTest {
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_failSame() {
-    Object[] same = objectArray("A", 5L);
+    Object[] same = array("A", 5L);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
 
@@ -213,13 +234,13 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void stringArrayIsEqualTo() {
-    assertThat(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
+    assertThat(array("A", "B")).isEqualTo(array("A", "B"));
     assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}, {"B"}});
   }
 
   @Test
   public void stringArrayAsList() {
-    assertThat(objectArray("A", "B")).asList().contains("A");
+    assertThat(array("A", "B")).asList().contains("A");
   }
 
   @Test
@@ -231,8 +252,7 @@ public class ObjectArraySubjectTest {
   @Test
   public void stringArrayIsEqualTo_fail_unequalLength() {
     AssertionError e =
-        expectFailure(
-            whenTesting -> whenTesting.that(objectArray("A", "B")).isEqualTo(objectArray("B")));
+        expectFailure(whenTesting -> whenTesting.that(array("A", "B")).isEqualTo(array("B")));
     assertFailureKeys(e, "expected", "but was", "wrong length", "expected", "but was");
     assertFailureValueIndexed(e, "expected", 1, "1");
     assertFailureValueIndexed(e, "but was", 1, "2");
@@ -252,9 +272,7 @@ public class ObjectArraySubjectTest {
   @Test
   public void stringArrayIsEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(objectArray("A", "B")).isEqualTo(objectArray("B", "A")));
+        expectFailure(whenTesting -> whenTesting.that(array("A", "B")).isEqualTo(array("B", "A")));
     assertFailureValue(e, "differs at index", "[0]");
   }
 
@@ -275,8 +293,8 @@ public class ObjectArraySubjectTest {
         expectFailure(
             whenTesting ->
                 whenTesting
-                    .that(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
-                    .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A"))));
+                    .that(array(ImmutableSet.of("A"), ImmutableSet.of("B")))
+                    .isEqualTo(array(ImmutableSet.of("B"), ImmutableSet.of("A"))));
     assertFailureValue(e, "differs at index", "[0]");
     // Maybe one day:
     // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
@@ -329,15 +347,15 @@ public class ObjectArraySubjectTest {
     assertFailureValueIndexed(e, "but was", 1, "int[]");
   }
 
-  private static Object[] objectArray(Object... ts) {
+  private static Object[] array(Object... ts) {
     return ts;
   }
 
-  private static String[] objectArray(String... ts) {
+  private static String[] array(String... ts) {
     return ts;
   }
 
-  private static Set<?>[] objectArray(Set<?>... ts) {
+  private static Set<?>[] array(Set<?>... ts) {
     return ts;
   }
 }

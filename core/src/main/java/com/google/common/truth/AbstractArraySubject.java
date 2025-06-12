@@ -15,11 +15,10 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static java.lang.reflect.Array.getLength;
 
-import java.lang.reflect.Array;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -37,14 +36,18 @@ abstract class AbstractArraySubject extends Subject {
 
   /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
   public final void isEmpty() {
-    if (length() > 0) {
+    if (actual == null) {
+      failWithActual(simpleFact("expected an empty array"));
+    } else if (getLength(actual) > 0) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Checks that the actual array is not empty (i.e., that {@code array.length > 0}). */
   public final void isNotEmpty() {
-    if (length() == 0) {
+    if (actual == null) {
+      failWithActual(simpleFact("expected a nonempty array"));
+    } else if (getLength(actual) == 0) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -55,11 +58,15 @@ abstract class AbstractArraySubject extends Subject {
    * @throws IllegalArgumentException if {@code length < 0}
    */
   public final void hasLength(int length) {
-    checkArgument(length >= 0, "length (%s) must be >= 0", length);
-    check("length").that(length()).isEqualTo(length);
-  }
-
-  private int length() {
-    return Array.getLength(checkNotNull(actual));
+    if (length < 0) {
+      failWithoutActual(
+          simpleFact("could not perform length check because expected length is negative"),
+          fact("expected length", length),
+          fact("array was", actualCustomStringRepresentationForPackageMembersToCall()));
+    } else if (actual == null) {
+      failWithActual(fact("expected an array with length", length));
+    } else {
+      check("length").that(getLength(actual)).isEqualTo(length);
+    }
   }
 }

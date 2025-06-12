@@ -19,7 +19,6 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +64,14 @@ public class PrimitiveIntArraySubjectTest {
 
   @Test
   public void hasLengthNegative() {
-    assertThrows(IllegalArgumentException.class, () -> assertThat(array(2, 5)).hasLength(-1));
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(array(2, 5)).hasLength(-1));
+    assertFailureKeys(
+        e,
+        "could not perform length check because expected length is negative",
+        "expected length",
+        "array was");
+    assertFailureValue(e, "expected length", "-1");
+    assertFailureValue(e, "array was", "[2, 5]");
   }
 
   @Test
