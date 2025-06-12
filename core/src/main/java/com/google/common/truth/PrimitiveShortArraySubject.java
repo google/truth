@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class PrimitiveShortArraySubject extends AbstractArraySubject {
+public final class PrimitiveShortArraySubject extends Subject {
   private final short @Nullable [] actual;
 
   private PrimitiveShortArraySubject(FailureMetadata metadata, short @Nullable [] actual) {
@@ -35,6 +35,25 @@ public final class PrimitiveShortArraySubject extends AbstractArraySubject {
 
   public IterableSubject asList() {
     return checkNoNeedToDisplayBothValues("asList()").that(Shorts.asList(checkNotNull(actual)));
+  }
+
+  /** Checks that the actual array is empty (i.e., that {@code array.length == 0}). */
+  public void isEmpty() {
+    arrayIsEmptyImpl();
+  }
+
+  /** Checks that the actual array is not empty (i.e., that {@code array.length > 0}). */
+  public void isNotEmpty() {
+    arrayIsNotEmptyImpl();
+  }
+
+  /**
+   * Checks that the actual array has the given length.
+   *
+   * @throws IllegalArgumentException if {@code length < 0}
+   */
+  public void hasLength(int length) {
+    arrayHasLengthImpl(length);
   }
 
   static Factory<PrimitiveShortArraySubject, short[]> shortArrays() {

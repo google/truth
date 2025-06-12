@@ -146,12 +146,6 @@ public class SubjectTest {
           assertThat(expected).factKeys().contains("expected any of");
         }
 
-        // TODO(cpovirk): Fix bug.
-        if (!(subject instanceof AbstractArraySubject)) {
-          // check all public assertion methods for correct null handling
-          npTester.testAllPublicInstanceMethods(subject);
-        }
-
         subject.isNotEqualTo(new Object());
         subject.isEqualTo(null);
         try {

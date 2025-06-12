@@ -34,6 +34,7 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
+import static java.lang.reflect.Array.getLength;
 import static java.util.Arrays.asList;
 
 import com.google.common.collect.ImmutableList;
@@ -552,8 +553,8 @@ public class Subject {
       return ComparisonResult.differentWithDescription(
           indexFact, fact("expected", expectedType), fact("but was", actualType));
     }
-    int actualLength = Array.getLength(actualArray);
-    int expectedLength = Array.getLength(expectedArray);
+    int actualLength = getLength(actualArray);
+    int expectedLength = getLength(expectedArray);
     if (expectedLength != actualLength) {
       Fact indexFact =
           lastIndex.isEmpty()
@@ -1324,6 +1325,35 @@ public class Subject {
    */
   final String typeDescription() {
     return typeDescriptionOrGuess(getClass(), typeDescriptionOverride);
+  }
+
+  final void arrayIsEmptyImpl() {
+    if (actual == null) {
+      failWithActual(simpleFact("expected an empty array"));
+    } else if (getLength(actual) > 0) {
+      failWithActual(simpleFact("expected to be empty"));
+    }
+  }
+
+  final void arrayIsNotEmptyImpl() {
+    if (actual == null) {
+      failWithActual(simpleFact("expected a nonempty array"));
+    } else if (getLength(actual) == 0) {
+      failWithoutActual(simpleFact("expected not to be empty"));
+    }
+  }
+
+  final void arrayHasLengthImpl(int length) {
+    if (length < 0) {
+      failWithoutActual(
+          simpleFact("could not perform length check because expected length is negative"),
+          fact("expected length", length),
+          fact("array was", actualCustomStringRepresentationForPackageMembersToCall()));
+    } else if (actual == null) {
+      failWithActual(fact("expected an array with length", length));
+    } else {
+      check("length").that(getLength(actual)).isEqualTo(length);
+    }
   }
 
   private static String typeDescriptionOrGuess(
