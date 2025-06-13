@@ -104,4 +104,30 @@ public class BigDecimalSubjectTest {
     assertFailureValue(e, "expected", "3.4");
     assertFailureValue(e, "but was", "10.4");
   }
+
+  @Test
+  public void isEqualToIgnoringScale_nullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((BigDecimal) null).isEqualToIgnoringScale("3.4"));
+    assertFailureKeys(e, "expected", "but was");
+    assertFailureValue(e, "expected", "3.4");
+    assertFailureValue(e, "but was", "null");
+  }
+
+  @Test
+  public void isEqualToIgnoringScale_nullExpected() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(new BigDecimal("3.4")).isEqualToIgnoringScale((BigDecimal) null));
+    assertFailureKeys(e, "expected", "but was");
+    assertFailureValue(e, "expected", "null");
+    assertFailureValue(e, "but was", "3.4");
+  }
+
+  @Test
+  public void isEqualToIgnoringScale_bothNull() {
+    assertThat((BigDecimal) null).isEqualToIgnoringScale((BigDecimal) null);
+  }
 }

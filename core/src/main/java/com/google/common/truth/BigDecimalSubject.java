@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 
@@ -42,7 +41,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
    * the scales, use {@link #isEqualTo(Object)}.
    */
-  public void isEqualToIgnoringScale(BigDecimal expected) {
+  public void isEqualToIgnoringScale(@Nullable BigDecimal expected) {
     compareValues(expected);
   }
 
@@ -94,7 +93,10 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   }
 
   private void compareValues(@Nullable BigDecimal expected) {
-    if (checkNotNull(actual).compareTo(checkNotNull(expected)) != 0) {
+    if (actual == null || expected == null) {
+      // This won't mention "(scale is ignored)" if it fails, but that seems tolerable or even good?
+      isEqualTo(expected);
+    } else if (actual.compareTo(expected) != 0) {
       failWithoutActual(
           numericFact("expected", expected),
           numericFact("but was", actual),
