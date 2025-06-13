@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Contains part of the code responsible for creating a JUnit {@code ComparisonFailure} (if
- * available) or a plain {@code AssertionError} (if not).
+ * available) or a plain {@link AssertionError} (if not).
  *
  * <p>This particular class is responsible for the fallback when a platform offers {@code
  * ComparisonFailure} but it is not available in a particular test environment. In practice, that
@@ -38,7 +38,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>(This class also includes logic to format expected and actual values for easier reading.)
  *
- * <p>Another part of the fallback logic is {@code Platform.ComparisonFailureWithFacts}, which has a
+ * <p>Another part of the fallback logic is {@link Platform.ComparisonFailureWithFacts}, which has a
  * different implementation under GWT/j2cl, where {@code ComparisonFailure} is also unavailable but
  * we can't just recover from that at runtime.
  */

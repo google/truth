@@ -81,7 +81,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * Legacy method that returns a subject builder that expects the chained assertion to fail, and
    * makes the failure available via {@link #getFailure}.
    *
-   * <p>An instance of {@code ExpectFailure} supports only one {@code whenTesting} call per test
+   * <p>An instance of {@link ExpectFailure} supports only one {@code whenTesting} call per test
    * method. The static {@link #expectFailure} method, by contrast, does not have this limitation.
    */
   public StandardSubjectBuilder whenTesting() {
@@ -206,7 +206,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   }
 
   /**
-   * A "functional interface" for {@link #expectFailure expectFailure()} to invoke and capture
+   * A functional interface for {@link #expectFailure expectFailure()} to invoke and capture
    * failures.
    *
    * <p>Users should pass a lambda to {@code .expectFailure()} rather than directly implement this
@@ -217,7 +217,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   }
 
   /**
-   * A "functional interface" for {@link #expectFailureAbout expectFailureAbout()} to invoke and
+   * A functional interface for {@link #expectFailureAbout expectFailureAbout()} to invoke and
    * capture failures.
    *
    * <p>Users should pass a lambda to {@code .expectFailureAbout()} rather than directly implement

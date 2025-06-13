@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Assertions for {@link Path} instances.
+ * A subject for {@link Path} values.
  *
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */

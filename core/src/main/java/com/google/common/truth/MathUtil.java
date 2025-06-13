@@ -91,8 +91,8 @@ final class MathUtil {
   }
 
   /**
-   * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Double.NaN},
-   * {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}.
+   * Ensures that the given tolerance is a non-negative finite value, i.e., not {@link Double#NaN},
+   * {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}.
    */
   static void checkTolerance(double tolerance) {
     checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");

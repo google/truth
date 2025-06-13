@@ -189,11 +189,11 @@ final class ActualValueInference {
   }
 
   /**
-   * An entry for a {@link Subject} (or a similar object derived with a {@code Subject}, like {@link
+   * An entry for a {@link Subject} (or a similar object derived with a {@link Subject}, like {@link
    * Ordered}).
    *
    * <p>The entry contains the "root actual value" of the assertion. In an assertion like {@code
-   * assertThat(e).hasMessageThat().contains("foo")}, the root actual value is the {@code Throwable}
+   * assertThat(e).hasMessageThat().contains("foo")}, the root actual value is the {@link Throwable}
    * {@code e}, even though the {@code contains} assertion operates on a string message.
    */
   @AutoValue

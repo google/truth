@@ -22,7 +22,7 @@ import com.google.common.primitives.Chars;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for {@code char[]}.
+ * A subject for {@code char[]} values.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

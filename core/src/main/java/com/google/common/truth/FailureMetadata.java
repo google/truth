@@ -36,8 +36,8 @@ import org.jspecify.annotations.Nullable;
  * An opaque, immutable object containing state from the previous calls in the fluent assertion
  * chain. It appears primarily as a parameter to {@link Subject} constructors (and {@link
  * Subject.Factory} methods), which should pass it to the superclass constructor and not otherwise
- * use or store it. In particular, users should not attempt to call {@code Subject} constructors or
- * {@code Subject.Factory} methods directly. Instead, they should use the appropriate factory
+ * use or store it. In particular, users should not attempt to call {@link Subject} constructors or
+ * {@link Subject.Factory} methods directly. Instead, they should use the appropriate factory
  * method:
  *
  * <ul>
@@ -160,7 +160,7 @@ public final class FailureMetadata {
   /**
    * Returns a new instance whose failures will contain the given message. The way for Truth users
    * to set a message is {@code check(...).withMessage(...).that(...)} (for calls from within a
-   * {@code Subject}) or {@link Truth#assertWithMessage} (for most other calls).
+   * {@link Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, @Nullable Object[] args) {
     ImmutableList<LazyMessage> messages = append(this.messages, LazyMessage.create(format, args));

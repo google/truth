@@ -31,7 +31,7 @@ import org.jspecify.annotations.Nullable;
 public abstract class ComparableSubject<T extends Comparable<?>> extends Subject {
   /**
    * The actual value, which has type {@code T} except in unusual circumstances. The unusual
-   * circumstances can happen under J2CL, where {@code JsEnum} types implement {@code Comparable} at
+   * circumstances can happen under J2CL, where {@code JsEnum} types implement {@link Comparable} at
    * compile time (b/132736149) but not at runtime.
    */
   private final @Nullable Object actual;
@@ -176,7 +176,7 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
   }
 
   /**
-   * Factory for {@link ComparableSubject}, with an actual-value type of {@code Object} to work
+   * Factory for {@link ComparableSubject}, with an actual-value type of {@link Object} to work
    * around the J2CL strangeness documented on {@link #actual}.
    */
   static <T extends Comparable<?>> Factory<ComparableSubject<T>, Object> comparables() {

@@ -171,7 +171,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *
    * @param tolerance an exclusive lower bound on the difference between the actual value and
    *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@code Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(float tolerance) {
     return TolerantFloatComparison.create(
@@ -214,7 +214,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
   /**
    * Asserts that the actual value is exactly equal to the given value, with equality defined as by
-   * {@code Float#equals}. This method is <i>not</i> recommended when the code under test is doing
+   * {@link Float#equals}. This method is <i>not</i> recommended when the code under test is doing
    * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
    * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
@@ -234,7 +234,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
 
   /**
    * Asserts that the actual value is not exactly equal to the given value, with equality defined as
-   * by {@code Float#equals}. See {@link #isEqualTo} for advice on when exact equality is
+   * by {@link Float#equals}. See {@link #isEqualTo} for advice on when exact equality is
    * recommended. Use {@link #isNotWithin} for an assertion with a tolerance.
    *
    * <p><b>Note:</b> The assertion {@code isNotEqualTo(0.0f)} passes for {@code -0.0f}, and vice

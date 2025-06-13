@@ -34,9 +34,9 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>Most Truth users will never interact with this type. It appears in the Truth API only as a
  * parameter to methods like {@link Subject#failWithActual(Fact, Fact...)}, which are used only by
- * custom {@code Subject} implementations.
+ * custom {@link Subject} implementations.
  *
- * <p>If you are writing a custom {@code Subject}, see <a
+ * <p>If you are writing a custom {@link Subject}, see <a
  * href="https://truth.dev/failure_messages">our tips on writing failure messages</a>.
  */
 public final class Fact implements Serializable {
@@ -78,7 +78,7 @@ public final class Fact implements Serializable {
   /**
    * Formats the given numeric value as a string with delimiting commas.
    *
-   * <p><b>Note:</b> only {@code Long}, {@code Integer}, {@code Float}, {@code Double} and {@link
+   * <p><b>Note:</b> only {@link Long}, {@link Integer}, {@link Float}, {@link Double} and {@link
    * BigDecimal} are supported.
    */
   static String formatNumericValue(@Nullable Number value) {

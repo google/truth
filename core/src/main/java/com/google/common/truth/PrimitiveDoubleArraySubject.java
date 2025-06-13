@@ -28,7 +28,7 @@ import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for {@code double[]}.
+ * A subject for {@code double[]} values.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

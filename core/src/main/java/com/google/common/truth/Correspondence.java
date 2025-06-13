@@ -563,8 +563,8 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     /**
      * Returns a String describing the exception stored. This includes a stack trace (except under
      * j2cl, where this is not available). It also has a separator at the end, so that when this
-     * appears at the end of an {@code AssertionError} message, the stack trace of the stored
-     * exception is distinguishable from the stack trace of the {@code AssertionError}.
+     * appears at the end of an {@link AssertionError} message, the stack trace of the stored
+     * exception is distinguishable from the stack trace of the {@link AssertionError}.
      */
     private String describe() {
       return Strings.lenientFormat(

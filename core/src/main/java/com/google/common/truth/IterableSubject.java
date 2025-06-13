@@ -690,7 +690,7 @@ public class IterableSubject extends Subject {
 
   /**
    * Whether to output each missing/unexpected item as its own {@link Fact} or to group all those
-   * items together into a single {@code Fact}.
+   * items together into a single {@link Fact}.
    */
   enum ElementFactGrouping {
     ALL_IN_ONE_FACT,

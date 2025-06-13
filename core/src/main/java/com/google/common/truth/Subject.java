@@ -126,11 +126,11 @@ public class Subject {
    *   <li>they are equal according to {@link Objects#equals}
    *   <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals}
    *       overload
-   *   <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
-   *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
-   *   <li>the actual value is a boxed floating-point type ({@code Double} or {@code Float}), the
-   *       expected value is an {@code Integer}, and the two are numerically equal when converted to
-   *       {@code Double}. (This allows {@code assertThat(someDouble).isEqualTo(0)} to pass.)
+   *   <li>they are boxed integer types ({@link Byte}, {@link Short}, {@link Character}, {@link
+   *       Integer}, or {@link Long}) and they are numerically equal when converted to {@link Long}.
+   *   <li>the actual value is a boxed floating-point type ({@link Double} or {@link Float}), the
+   *       expected value is an {@link Integer}, and the two are numerically equal when converted to
+   *       {@link Double}. (This allows {@code assertThat(someDouble).isEqualTo(0)} to pass.)
    * </ul>
    *
    * <p><b>Note:</b> This method does not test the {@link Object#equals} implementation itself; it
@@ -388,7 +388,7 @@ public class Subject {
    *
    * <p>Subjects should override this with care.
    *
-   * <p>By default, this returns {@code String.ValueOf(getActualValue())}.
+   * <p>By default, this returns {@code String.valueOf(getActualValue())}.
    */
   /*
    * TODO(cpovirk): Consider whether this API pulls its weight. If users want to format the actual
@@ -733,7 +733,7 @@ public class Subject {
   /**
    * Begins a new call chain that ignores any failures. This is useful for subjects that normally
    * delegate with to other subjects by using {@link #check} but have already reported a failure. In
-   * such cases it may still be necessary to return a {@code Subject} instance even though any
+   * such cases it may still be necessary to return a {@link Subject} instance even though any
    * subsequent assertions are meaningless. For example, if a user chains together more {@link
    * ThrowableSubject#hasCauseThat} calls than the actual exception has causes, {@code hasCauseThat}
    * returns {@code ignoreCheck().that(... a dummy exception ...)}.
@@ -1380,7 +1380,7 @@ public class Subject {
   }
 
   /**
-   * A mapping from some {@code Subject} subclasses to descriptions of the types they're testing.
+   * A mapping from some {@link Subject} subclasses to descriptions of the types they're testing.
    * For example, {@link ThrowableSubject} has the description "throwable." Normally, Truth is able
    * to infer this description from the class name. However, if we lack runtime type information
    * (notably, under J2CL with class metadata off), we might not have access to the original class
@@ -1388,7 +1388,7 @@ public class Subject {
    *
    * <p>Since Truth can normally infer this on its own, this mechanism is not something that would
    * normally be useful outside of core Truth. But to support running Truth's own tests run with
-   * class metadata off, it's easier to tweak the {@code Subject} code to hard-code the descriptions
+   * class metadata off, it's easier to tweak the {@link Subject} code to hard-code the descriptions
    * we want than to generalize the tests to accept obfuscated names.
    *
    * <p>That said, we do sometimes use this mechanism to provide a simpler description than the one
@@ -1402,7 +1402,7 @@ public class Subject {
    * API, like in {@link ThrowableSubject#hasCauseThat}, or because it uses it internally, like in
    * {@link MultisetSubject#hasCount}.)
    *
-   * <p>Notice that we look up map values by the exact runtime {@code Subject} class, not using
+   * <p>Notice that we look up map values by the exact runtime {@link Subject} class, not using
    * {@link Class#isInstance}. We do this so that a subclass does not inherit a description override
    * from its superclass. That way, Truth can normally infer a description for it, which is likely
    * to be more specific. For example, FooExceptionSubject would produce "fooException," not

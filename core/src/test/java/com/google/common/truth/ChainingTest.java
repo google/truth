@@ -312,7 +312,7 @@ public final class ChainingTest {
     }
 
     /**
-     * Returns a new {@code MyObjectSubject} for the given actual value, chaining it to the current
+     * Returns a new {@link MyObjectSubject} for the given actual value, chaining it to the current
      * subject with {@link Subject#check}.
      */
     MyObjectSubject delegatingTo(Object actual) {
@@ -320,7 +320,7 @@ public final class ChainingTest {
     }
 
     /**
-     * Returns a new {@code MyObjectSubject} for the given actual value, chaining it to the current
+     * Returns a new {@link MyObjectSubject} for the given actual value, chaining it to the current
      * subject with {@link Subject#check}.
      */
     MyObjectSubject delegatingToNamed(Object actual, String name) {

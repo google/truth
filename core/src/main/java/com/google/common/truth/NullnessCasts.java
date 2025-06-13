@@ -24,7 +24,7 @@ final class NullnessCasts {
    *
    * <p>This method is intended to help with usages of type parameters that have parametric
    * nullness. If a type parameter instead ranges over only non-null types (or if the type is a
-   * non-variable type, like {@code String}), then code should almost never use this method,
+   * non-variable type, like {@link String}), then code should almost never use this method,
    * preferring instead to call {@code requireNonNull} so as to benefit from its runtime check.
    *
    * <p>An example use case for this method is in implementing an {@code Iterator<T>} whose {@code
@@ -34,7 +34,7 @@ final class NullnessCasts {
    * nullness analysis might not understand that the field has been populated. To avoid that problem
    * without having to add {@code @SuppressWarnings}, the code can call this method.
    *
-   * <p>Why <i>not</i> just add {@code SuppressWarnings}? The problem is that this method is
+   * <p>Why <i>not</i> just add {@link SuppressWarnings}? The problem is that this method is
    * typically useful for {@code return} statements. That leaves the code with two options: Either
    * add the suppression to the whole method (which turns off checking for a large section of code),
    * or extract a variable, and put the suppression on that. However, a local variable typically

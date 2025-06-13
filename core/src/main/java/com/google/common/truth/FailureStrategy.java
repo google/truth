@@ -55,7 +55,7 @@ package com.google.common.truth;
  */
 public interface FailureStrategy {
   /**
-   * Handles a failure. The parameter is an {@code AssertionError} or subclass thereof, and it
+   * Handles a failure. The parameter is an {@link AssertionError} or subclass thereof, and it
    * contains information about the failure, which may include:
    *
    * <ul>

@@ -22,7 +22,7 @@ import com.google.common.primitives.Ints;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for {@code int[]}.
+ * A subject for {@code int[]} values.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

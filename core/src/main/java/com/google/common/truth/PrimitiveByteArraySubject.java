@@ -22,7 +22,7 @@ import com.google.common.primitives.Bytes;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subject for {@code byte[]}.
+ * A subject for {@code byte[]} values.
  *
  * @author Kurt Alfred Kluever
  */

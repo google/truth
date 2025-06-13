@@ -26,16 +26,16 @@ import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
- * methods for asserting about the individual "facts" of those failures. This allows tests to avoid
- * asserting about the same fact more often than necessary, including avoiding asserting about facts
- * that are set by other subjects that the main subject delegates to. This keeps tests shorter and
- * less fragile.
+ * A subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject}
+ * contains methods for asserting about the individual "facts" of those failures. This allows tests
+ * to avoid asserting about the same fact more often than necessary, including avoiding asserting
+ * about facts that are set by other subjects that the main subject delegates to. This keeps tests
+ * shorter and less fragile.
  *
  * <p>To create an instance, call {@link ExpectFailure#assertThat}. Or, if you're using a custom
  * message or failure strategy, pass {@link #truthFailures} to your {@code about(...)} call.
  *
- * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
+ * <p>This class accepts any {@link AssertionError} value, but it will throw an exception if a
  * caller tries to access the facts of an error that wasn't produced by Truth.
  */
 public final class TruthFailureSubject extends ThrowableSubject {
