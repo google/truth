@@ -539,7 +539,7 @@ public interface MapWithProtoValuesFluentAssertion<M extends Message> {
    */
   @Override
   @Deprecated
-  boolean equals(Object o);
+  boolean equals(@Nullable Object o);
 
   /**
    * @deprecated {@code MapWithProtoValuesFluentAssertion} does not support {@code hashCode()}.

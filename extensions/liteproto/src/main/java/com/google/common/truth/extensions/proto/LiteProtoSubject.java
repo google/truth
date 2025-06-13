@@ -62,7 +62,7 @@ public class LiteProtoSubject extends Subject {
    * TODO(b/134064106): Use a better API for this if one is addded.
    */
   private final FailureMetadata metadata;
-  private final MessageLite actual;
+  private final @Nullable MessageLite actual;
 
   protected LiteProtoSubject(FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
     super(failureMetadata, messageLite);

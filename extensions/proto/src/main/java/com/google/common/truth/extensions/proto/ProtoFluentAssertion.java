@@ -499,7 +499,7 @@ public interface ProtoFluentAssertion {
    */
   @Override
   @Deprecated
-  boolean equals(Object o);
+  boolean equals(@Nullable Object o);
 
   /**
    * @deprecated {@code ProtoFluentAssertion} does not support {@code hashCode()}. Use {@link

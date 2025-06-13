@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -92,7 +93,7 @@ public class ExpectWithStackTest {
     throw new AssertionError("Always fail", throwable);
   }
 
-  private static Exception getFirstException(String message, Throwable cause) {
+  private static Exception getFirstException(String message, @Nullable Throwable cause) {
     if (cause != null) {
       return new RuntimeException(message, cause);
     } else {
@@ -100,7 +101,7 @@ public class ExpectWithStackTest {
     }
   }
 
-  private static Exception getSecondException(String message, Throwable cause) {
+  private static Exception getSecondException(String message, @Nullable Throwable cause) {
     if (cause != null) {
       return new RuntimeException(message, cause);
     } else {

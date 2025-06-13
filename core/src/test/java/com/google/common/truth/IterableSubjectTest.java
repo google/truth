@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -774,7 +775,7 @@ public class IterableSubjectTest {
 
   private static class HashCodeThrower {
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
       return this == other;
     }
 

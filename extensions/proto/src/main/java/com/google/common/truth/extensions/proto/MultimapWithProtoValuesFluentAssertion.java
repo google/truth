@@ -544,7 +544,7 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
    */
   @Override
   @Deprecated
-  boolean equals(Object o);
+  boolean equals(@Nullable Object o);
 
   /**
    * @deprecated {@code MultimapWithProtoValuesFluentAssertion} does not support {@code hashCode()}.

@@ -938,7 +938,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
     @SuppressWarnings({"DoNotCall", "deprecation"})
     @Override
     @Deprecated
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
       return subject.equals(o);
     }
 

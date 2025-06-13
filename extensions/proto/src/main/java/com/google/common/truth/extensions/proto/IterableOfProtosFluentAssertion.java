@@ -19,6 +19,7 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Fluent API to perform detailed, customizable comparison of iterables of protocol buffers. The
@@ -491,7 +492,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message>
    */
   @Override
   @Deprecated
-  boolean equals(Object o);
+  boolean equals(@Nullable Object o);
 
   /**
    * @deprecated {@code IterableOfProtosFluentAssertion} does not support {@code hashCode()}.

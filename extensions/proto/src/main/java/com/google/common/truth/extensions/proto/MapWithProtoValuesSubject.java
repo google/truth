@@ -890,7 +890,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
       return subject.equals(o);
     }
 

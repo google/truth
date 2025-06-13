@@ -289,11 +289,12 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
   private static SetMultimap<ParentType, NewClassTree> findCalls(
       Symbol classSymbol, VisitorState state) {
     SetMultimap<ParentType, NewClassTree> calls = HashMultimap.create();
-    new TreeScanner<Void, Void>() {
+    new TreeScanner<@Nullable Void, @Nullable Void>() {
       private ParentType parentType = ParentType.OTHER;
 
       @Override
-      public @Nullable Void visitMethodInvocation(MethodInvocationTree node, Void unused) {
+      public @Nullable Void visitMethodInvocation(
+          MethodInvocationTree node, @Nullable Void unused) {
         boolean isComparingElementsUsing =
             Optional.of(node.getMethodSelect())
                 .filter(t -> t.getKind() == MEMBER_SELECT)
@@ -312,7 +313,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       }
 
       @Override
-      public @Nullable Void visitNewClass(NewClassTree node, Void unused) {
+      public @Nullable Void visitNewClass(NewClassTree node, @Nullable Void unused) {
         if (getSymbol(node.getIdentifier()).equals(classSymbol)) {
           calls.put(parentType, node);
         }
@@ -330,9 +331,9 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
    */
   private static Set<Tree> findTypeReferences(Symbol classSymbol, VisitorState state) {
     Set<Tree> references = new HashSet<>();
-    new TreeScanner<Void, Void>() {
+    new TreeScanner<@Nullable Void, @Nullable Void>() {
       @Override
-      public @Nullable Void scan(Tree node, Void unused) {
+      public @Nullable Void scan(Tree node, @Nullable Void unused) {
         if (Objects.equals(getSymbol(node), classSymbol)
             && getDeclaredSymbol(node) == null // Don't touch the ClassTree that we're replacing.
         ) {
@@ -342,7 +343,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       }
 
       @Override
-      public @Nullable Void visitNewClass(NewClassTree node, Void aVoid) {
+      public @Nullable Void visitNewClass(NewClassTree node, @Nullable Void aVoid) {
         scan(node.getEnclosingExpression(), null);
         // Do NOT scan node.getIdentifier().
         scan(node.getTypeArguments(), null);
@@ -478,9 +479,9 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
             .map(p -> getDeclaredSymbol(p))
             .collect(toImmutableSet());
     boolean[] referenceFound = new boolean[1];
-    new TreeScanner<Void, Void>() {
+    new TreeScanner<@Nullable Void, @Nullable Void>() {
       @Override
-      public @Nullable Void scan(Tree node, Void aVoid) {
+      public @Nullable Void scan(Tree node, @Nullable Void aVoid) {
         if (paramsOfEnclosingMethod.contains(getSymbol(node))) {
           referenceFound[0] = true;
         }
@@ -654,7 +655,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
             overridable, (TypeSymbol) overridable.owner, state.getTypes(), /* checkResult= */ true);
   }
 
-  private static boolean isCorrespondence(Tree supertypeTree, VisitorState state) {
+  private static boolean isCorrespondence(@Nullable Tree supertypeTree, VisitorState state) {
     Type correspondenceType = COM_GOOGLE_COMMON_TRUTH_CORRESPONDENCE.get(state);
     if (correspondenceType == null) {
       return false;

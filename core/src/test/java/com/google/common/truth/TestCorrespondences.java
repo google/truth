@@ -97,7 +97,8 @@ final class TestCorrespondences {
    * behavior documented below.
    */
   @SuppressWarnings("Casing_StringEqualsIgnoreCase")
-  private static boolean equalsIgnoreCaseHalfNullSafe(String actual, String expected) {
+  private static boolean equalsIgnoreCaseHalfNullSafe(
+      @Nullable String actual, @Nullable String expected) {
     if (actual == null && expected == null) {
       return true;
     }

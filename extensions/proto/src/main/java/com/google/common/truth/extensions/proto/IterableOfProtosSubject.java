@@ -64,7 +64,7 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
    * explanation of why it works out OK here, see LiteProtoSubject.
    */
   private final FailureMetadata metadata;
-  private final Iterable<M> actual;
+  private final @Nullable Iterable<M> actual;
   private final FluentEqualityConfig config;
   private final TextFormat.Printer protoPrinter;
 
@@ -1117,7 +1117,7 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     @SuppressWarnings("DoNotCall")
     @Override
     @Deprecated
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
       return subject.equals(o);
     }
 

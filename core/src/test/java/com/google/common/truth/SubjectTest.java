@@ -468,7 +468,7 @@ public class SubjectTest {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
       return o instanceof IntId && id == ((IntId) o).id;
     }
 
@@ -811,7 +811,7 @@ public class SubjectTest {
 
     @SuppressWarnings({"EqualsHashCode", "SuperCallToObjectMethod"})
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
       checkNotNull(obj); // buggy implementation but one that we're working around, at least for now
       return super.equals(obj);
     }
@@ -821,7 +821,7 @@ public class SubjectTest {
 
     @SuppressWarnings("EqualsHashCode")
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
       throw new UnsupportedOperationException();
       // buggy implementation but one that we're working around, at least for now
     }
