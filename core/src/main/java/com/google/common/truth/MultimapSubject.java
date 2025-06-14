@@ -119,13 +119,13 @@ public class MultimapSubject extends Subject {
                 "though it did contain",
                 countDuplicatesAndAddTypeInfo(
                     retainMatchingToString(actual.entries(), /* itemsToCheck= */ entryList))),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else if (actual.containsKey(key)) {
         failWithoutActual(
             fact("expected to contain entry", entry),
             simpleFact("but did not"),
             fact("though it did contain values with that key", actual.asMap().get(key)),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else if (actual.containsValue(value)) {
         Set<@Nullable Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entries()) {
@@ -137,7 +137,7 @@ public class MultimapSubject extends Subject {
             fact("expected to contain entry", entry),
             simpleFact("but did not"),
             fact("though it did contain keys with that value", keys),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else {
         failWithActual("expected to contain entry", immutableEntry(key, value));
       }
@@ -188,7 +188,7 @@ public class MultimapSubject extends Subject {
       failWithoutActual(
           fact("expected", other),
           fact("an instance of", otherType),
-          fact("but was", actualCustomStringRepresentationForPackageMembersToCall()),
+          butWas(),
           fact("an instance of", actualType),
           simpleFact(
               lenientFormat(
@@ -850,6 +850,10 @@ public class MultimapSubject extends Subject {
         lenientFormat(
             "has a key that is equal to and a value that %s the key and value of",
             valueCorrespondence));
+  }
+
+  private Fact fullContents() {
+    return actualValue("full contents");
   }
 
   static Factory<MultimapSubject, Multimap<?, ?>> multimaps() {

@@ -51,7 +51,7 @@ public final class MultisetSubject extends IterableSubject {
           fact("element", element),
           fact("expected count", expectedCount),
           fact("actual count", actual.count(element)),
-          fact("multiset was", actualCustomStringRepresentationForPackageMembersToCall()));
+          actualValue("multiset was"));
     } else {
       check("count(%s)", element).that(actual.count(element)).isEqualTo(expectedCount);
     }

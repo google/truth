@@ -152,7 +152,7 @@ public class MapSubject extends Subject {
                 "though it did contain keys",
                 countDuplicatesAndAddTypeInfo(
                     retainMatchingToString(actual.keySet(), /* itemsToCheck= */ keyList))),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else if (actual.containsValue(value)) {
         Set<@Nullable Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entrySet()) {
@@ -164,7 +164,7 @@ public class MapSubject extends Subject {
             fact("expected to contain entry", entry),
             simpleFact("but did not"),
             fact("though it did contain keys with that value", keys),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else if (hasMatchingToStringPair(actual.values(), valueList)) {
         failWithoutActual(
             fact("expected to contain entry", entry),
@@ -174,7 +174,7 @@ public class MapSubject extends Subject {
                 "though it did contain values",
                 countDuplicatesAndAddTypeInfo(
                     retainMatchingToString(actual.values(), /* itemsToCheck= */ valueList))),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+            fullContents());
       } else {
         failWithActual("expected to contain entry", entry);
       }
@@ -819,6 +819,10 @@ public class MapSubject extends Subject {
             MapSubject subject, Correspondence<? super A, ? super E> correspondence) {
       return new UsingCorrespondence<>(subject, correspondence);
     }
+  }
+
+  private Fact fullContents() {
+    return actualValue("full contents");
   }
 
   static Factory<MapSubject, Map<?, ?>> maps() {

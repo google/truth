@@ -129,12 +129,12 @@ public class StringSubject extends ComparableSubject<String> {
       if (regex.equals(actual)) {
         failWithoutActual(
             fact("expected to match", regex),
-            fact("but was", actual),
+            butWas(),
             simpleFact("Looks like you want to use .isEqualTo() for an exact equality assertion."));
       } else if (Platform.containsMatch(actual, regex)) {
         failWithoutActual(
             fact("expected to match", regex),
-            fact("but was", actual),
+            butWas(),
             simpleFact("Did you mean to call containsMatch() instead of match()?"));
       } else {
         failWithActual("expected to match", regex);
@@ -152,14 +152,14 @@ public class StringSubject extends ComparableSubject<String> {
       if (regex.toString().equals(actual)) {
         failWithoutActual(
             fact("expected to match", regex),
-            fact("but was", actual),
+            butWas(),
             simpleFact(
                 "If you want an exact equality assertion you can escape your regex with"
                     + " Pattern.quote()."));
       } else if (regex.matcher(actual).find()) {
         failWithoutActual(
             fact("expected to match", regex),
-            fact("but was", actual),
+            butWas(),
             simpleFact("Did you mean to call containsMatch() instead of match()?"));
       } else {
         failWithActual("expected to match", regex);
@@ -222,7 +222,7 @@ public class StringSubject extends ComparableSubject<String> {
       failWithoutActual(
           fact("expected not to contain a match for", regex),
           fact("but contained", matcher.group()),
-          fact("full string", actualCustomStringRepresentationForPackageMembersToCall()));
+          actualValue("full string"));
     }
   }
 

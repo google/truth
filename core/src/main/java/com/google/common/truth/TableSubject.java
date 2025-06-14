@@ -63,7 +63,7 @@ public final class TableSubject extends Subject {
           simpleFact("expected a table with a negative size, but that is impossible"),
           fact("expected size", expectedSize),
           fact("actual size", actual.size()),
-          fact("table was", actualCustomStringRepresentationForPackageMembersToCall()));
+          tableWas());
     } else {
       check("size()").that(actual.size()).isEqualTo(expectedSize);
     }
@@ -101,7 +101,7 @@ public final class TableSubject extends Subject {
           fact("row key", rowKey),
           fact("column key", columnKey),
           fact("but contained value", actual.get(rowKey, columnKey)),
-          fact("full contents", actual));
+          fullContents());
     }
   }
 
@@ -117,8 +117,7 @@ public final class TableSubject extends Subject {
   public void containsCell(@Nullable Cell<?, ?, ?> cell) {
     if (cell == null) {
       failWithoutActual(
-          simpleFact("expected to contain a null cell, but that is impossible"),
-          fact("table was", actualCustomStringRepresentationForPackageMembersToCall()));
+          simpleFact("expected to contain a null cell, but that is impossible"), tableWas());
     } else if (actual == null) {
       failWithActual(
           simpleFact("expected a table that contains the given cell"),
@@ -149,7 +148,7 @@ public final class TableSubject extends Subject {
     if (cell == null) {
       failWithoutActual(
           simpleFact("refusing to check for a null cell because tables never contain null cells"),
-          fact("table was", actualCustomStringRepresentationForPackageMembersToCall()));
+          tableWas());
     } else if (actual == null) {
       failWithActual(
           simpleFact("expected a table that does not contain the given cell"),
@@ -186,6 +185,14 @@ public final class TableSubject extends Subject {
     } else {
       check("values()").that(actual.values()).contains(value);
     }
+  }
+
+  private Fact fullContents() {
+    return actualValue("full contents");
+  }
+
+  private Fact tableWas() {
+    return actualValue("table was");
   }
 
   static Factory<TableSubject, Table<?, ?, ?>> tables() {

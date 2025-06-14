@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.truth.Fact.fact;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -337,8 +336,7 @@ public final class StreamSubject extends Subject {
        * it doesn't seem necessary: The people we really want to warn are the people whose
        * assertions *pass*. And we've already attempted to do that with deprecation.
        */
-      failWithoutActual(
-          fact("expected not to be", actualCustomStringRepresentationForPackageMembersToCall()));
+      failWithoutActual(actualValue("expected not to be"));
       return;
     }
     /*

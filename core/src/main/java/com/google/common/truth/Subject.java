@@ -405,6 +405,12 @@ public class Subject {
     return formatActualOrExpected(actual);
   }
 
+  /**
+   * Access to {@link #actualCustomStringRepresentation()} from within the package. For creating
+   * {@link Fact} instances, we should use {@link #butWas} or {@link #actualValue} instead of this.
+   * This method is useful primarily for delegating from one subject's {@link
+   * #actualCustomStringRepresentation} method to another's.
+   */
   final String actualCustomStringRepresentationForPackageMembersToCall() {
     return actualCustomStringRepresentation();
   }
@@ -1300,7 +1306,7 @@ public class Subject {
   }
 
   /**
-   * Returns a "but was: <actual value>" string. This method should be rarely needed, since Truth
+   * Returns a "but was: [actual value]" fact. This method should be rarely needed, since Truth
    * inserts a "but was" fact by default for assertions. However, it's occasionally useful for calls
    * to {@code failWithoutActual} that want a "but was" fact but don't want it to come last, where
    * Truth inserts it by default.
@@ -1316,7 +1322,19 @@ public class Subject {
    * probably not enough reason to avoid adding this, but we can hold it back for now.
    */
   final Fact butWas() {
-    return fact("but was", actualCustomStringRepresentation());
+    return actualValue("but was");
+  }
+
+  /**
+   * Returns a "[key]: [actual value]" fact. This method should be rarely needed, since Truth
+   * inserts a "but was" fact by default for assertions. (Furthermore, for cases in which we want an
+   * acatual-value fact but not as the <i>final</i> fact, where Truth puts the actual value by
+   * default, Truth offers {@link #butWas()}.) However, {@code actualValue} occasionally useful when
+   * the actual value should be identified by a different key than "but was."
+   */
+  // TODO(cpovirk): Consider giving this protected access, as with butWas() itself.
+  final Fact actualValue(String key) {
+    return fact(key, actualCustomStringRepresentation());
   }
 
   /*
@@ -1348,7 +1366,7 @@ public class Subject {
       failWithoutActual(
           simpleFact("could not perform length check because expected length is negative"),
           fact("expected length", length),
-          fact("array was", actualCustomStringRepresentationForPackageMembersToCall()));
+          actualValue("array was"));
     } else if (actual == null) {
       failWithActual(fact("expected an array with length", length));
     } else {

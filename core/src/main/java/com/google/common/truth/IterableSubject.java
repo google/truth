@@ -867,7 +867,7 @@ public class IterableSubject extends Subject {
   }
 
   private Fact fullContents() {
-    return fact("full contents", actualCustomStringRepresentationForPackageMembersToCall());
+    return actualValue("full contents");
   }
 
   /**
