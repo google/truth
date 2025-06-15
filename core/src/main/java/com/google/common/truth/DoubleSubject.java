@@ -66,7 +66,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@Nullable Object other) {
       throw new UnsupportedOperationException(
           "If you meant to compare doubles, use .of(double) instead.");
     }
@@ -226,8 +226,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * #isZero}.
    */
   @Override
-  public void isEqualTo(@Nullable Object other) {
-    super.isEqualTo(other);
+  public void isEqualTo(@Nullable Object expected) {
+    super.isEqualTo(expected);
   }
 
   /**
@@ -249,8 +249,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    */
   @Override
   @Deprecated
-  public void isEquivalentAccordingToCompareTo(@Nullable Double other) {
-    super.isEquivalentAccordingToCompareTo(other);
+  public void isEquivalentAccordingToCompareTo(@Nullable Double expected) {
+    super.isEquivalentAccordingToCompareTo(expected);
   }
 
   /** Asserts that the actual value is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */

@@ -84,8 +84,8 @@ public final class PrimitiveFloatArraySubject extends Subject {
    * </ul>
    */
   @Override
-  public void isNotEqualTo(@Nullable Object expected) {
-    super.isNotEqualTo(expected);
+  public void isNotEqualTo(@Nullable Object other) {
+    super.isNotEqualTo(other);
   }
 
   /**

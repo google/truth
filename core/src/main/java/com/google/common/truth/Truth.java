@@ -104,8 +104,8 @@ public final class Truth {
    * StandardSubjectBuilder#about about(...)}, as discussed in <a
    * href="https://truth.dev/faq#java8">this FAQ entry</a>.
    */
-  public static StandardSubjectBuilder assertWithMessage(@Nullable String messageToPrepend) {
-    return assert_().withMessage(messageToPrepend);
+  public static StandardSubjectBuilder assertWithMessage(@Nullable String message) {
+    return assert_().withMessage(message);
   }
 
   /**

@@ -91,8 +91,8 @@ public class StandardSubjectBuilder {
    * users should not need this. If you think you do, see the documentation on {@link
    * FailureStrategy}.
    */
-  public static StandardSubjectBuilder forCustomFailureStrategy(FailureStrategy failureStrategy) {
-    return new StandardSubjectBuilder(FailureMetadata.forFailureStrategy(failureStrategy));
+  public static StandardSubjectBuilder forCustomFailureStrategy(FailureStrategy strategy) {
+    return new StandardSubjectBuilder(FailureMetadata.forFailureStrategy(strategy));
   }
 
   private final FailureMetadata metadataDoNotReferenceDirectly;
@@ -284,8 +284,8 @@ public class StandardSubjectBuilder {
    * this method is called multiple times, the messages will appear in the order that they were
    * specified.
    */
-  public final StandardSubjectBuilder withMessage(@Nullable String messageToPrepend) {
-    return withMessage("%s", messageToPrepend);
+  public final StandardSubjectBuilder withMessage(@Nullable String message) {
+    return withMessage("%s", message);
   }
 
   /**

@@ -104,8 +104,8 @@ public final class LongStreamSubject extends Subject {
    * <p>If you'd like to check that your stream contains more than {@link Integer#MAX_VALUE}
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
    */
-  public void hasSize(int expectedSize) {
-    checkThatContentsList().hasSize(expectedSize);
+  public void hasSize(int size) {
+    checkThatContentsList().hasSize(size);
   }
 
   /** Checks that the actual stream contains the given element. */

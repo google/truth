@@ -68,7 +68,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@Nullable Object other) {
       throw new UnsupportedOperationException(
           "If you meant to compare floats, use .of(float) instead.");
     }
@@ -228,8 +228,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isZero}.
    */
   @Override
-  public void isEqualTo(@Nullable Object other) {
-    super.isEqualTo(other);
+  public void isEqualTo(@Nullable Object expected) {
+    super.isEqualTo(expected);
   }
 
   /**
@@ -251,8 +251,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
    */
   @Override
   @Deprecated
-  public void isEquivalentAccordingToCompareTo(@Nullable Float other) {
-    super.isEquivalentAccordingToCompareTo(other);
+  public void isEquivalentAccordingToCompareTo(@Nullable Float expected) {
+    super.isEquivalentAccordingToCompareTo(expected);
   }
 
   /** Asserts that the actual value is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */

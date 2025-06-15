@@ -53,9 +53,9 @@ import org.jspecify.annotations.Nullable;
  * constructor.)
  */
 public final class FailureMetadata {
-  static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
+  static FailureMetadata forFailureStrategy(FailureStrategy strategy) {
     return new FailureMetadata(
-        failureStrategy, /* messages= */ ImmutableList.of(), /* steps= */ ImmutableList.of());
+        strategy, /* messages= */ ImmutableList.of(), /* steps= */ ImmutableList.of());
   }
 
   private final FailureStrategy strategy;

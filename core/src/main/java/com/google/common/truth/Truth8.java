@@ -44,40 +44,43 @@ import org.jspecify.annotations.Nullable;
   "StaticImportPreferredForTruth",
 })
 public final class Truth8 {
-  @SuppressWarnings("AssertAboutOptionals") // suggests infinite recursion
-  public static OptionalSubject assertThat(@Nullable Optional<?> target) {
-    return Truth.assertThat(target);
+  @SuppressWarnings({
+    "AssertAboutOptionals", // suggests infinite recursion
+    "NullableOptional", // Truth always accepts nulls, no matter the type
+  })
+  public static OptionalSubject assertThat(@Nullable Optional<?> actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
-    return Truth.assertThat(target);
+  public static OptionalIntSubject assertThat(@Nullable OptionalInt actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static OptionalLongSubject assertThat(@Nullable OptionalLong target) {
-    return Truth.assertThat(target);
+  public static OptionalLongSubject assertThat(@Nullable OptionalLong actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
-    return Truth.assertThat(target);
+  public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static StreamSubject assertThat(@Nullable Stream<?> target) {
-    return Truth.assertThat(target);
+  public static StreamSubject assertThat(@Nullable Stream<?> actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static IntStreamSubject assertThat(@Nullable IntStream target) {
-    return Truth.assertThat(target);
+  public static IntStreamSubject assertThat(@Nullable IntStream actual) {
+    return Truth.assertThat(actual);
   }
 
-  public static LongStreamSubject assertThat(@Nullable LongStream target) {
-    return Truth.assertThat(target);
+  public static LongStreamSubject assertThat(@Nullable LongStream actual) {
+    return Truth.assertThat(actual);
   }
 
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible
-  public static PathSubject assertThat(@Nullable Path target) {
-    return Truth.assertThat(target);
+  public static PathSubject assertThat(@Nullable Path actual) {
+    return Truth.assertThat(actual);
   }
 
   private Truth8() {}

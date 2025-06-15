@@ -69,7 +69,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@Nullable Object other) {
       throw new UnsupportedOperationException(
           "If you meant to compare ints, use .of(int) instead.");
     }
@@ -162,8 +162,8 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(@Nullable Integer other) {
-    super.isEquivalentAccordingToCompareTo(other);
+  public final void isEquivalentAccordingToCompareTo(@Nullable Integer expected) {
+    super.isEquivalentAccordingToCompareTo(expected);
   }
 
   static Factory<IntegerSubject, Integer> integers() {

@@ -130,8 +130,8 @@ public final class StreamSubject extends Subject {
    * <p>If you'd like to check that your stream contains more than {@link Integer#MAX_VALUE}
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
    */
-  public void hasSize(int expectedSize) {
-    checkThatContentsList().hasSize(expectedSize);
+  public void hasSize(int size) {
+    checkThatContentsList().hasSize(size);
   }
 
   /** Checks that the actual stream contains the given element. */
@@ -323,8 +323,8 @@ public final class StreamSubject extends Subject {
    */
   @Override
   @Deprecated
-  public void isNotEqualTo(@Nullable Object unexpected) {
-    if (actual() == unexpected) {
+  public void isNotEqualTo(@Nullable Object other) {
+    if (actual() == other) {
       /*
        * We override the supermethod's message: That method would ask for both
        * `String.valueOf(stream)` (for `unexpected`) and `actualCustomStringRepresentation()` (for
@@ -344,7 +344,7 @@ public final class StreamSubject extends Subject {
      * just in case someone has decided to override Stream.equals in a strange way. (I haven't
      * checked whether this comes up in Google's codebase. I hope that it doesn't.)
      */
-    super.isNotEqualTo(unexpected);
+    super.isNotEqualTo(other);
   }
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
