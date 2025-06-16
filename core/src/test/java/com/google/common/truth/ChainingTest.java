@@ -37,91 +37,13 @@ public final class ChainingTest {
   }
 
   @Test
-  public void oneLevel() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that("root").delegatingTo("child").isThePresentKingOfFrance());
-    assertNoCause(e, "message");
-  }
-
-  @Test
-  public void twoLevels() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingTo("child")
-                    .delegatingTo("grandchild")
-                    .isThePresentKingOfFrance());
-    assertNoCause(e, "message");
-  }
-
-  @Test
   public void noChainingRootThrowable() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(throwable).isThePresentKingOfFrance());
     assertHasCause(e, "message");
   }
 
-  @Test
-  public void oneLevelRootThrowable() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(throwable).delegatingTo("child").isThePresentKingOfFrance());
-    assertHasCause(e, "message");
-  }
-
-  @Test
-  public void twoLevelsRootThrowable() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(throwable)
-                    .delegatingTo("child")
-                    .delegatingTo("grandchild")
-                    .isThePresentKingOfFrance());
-    assertHasCause(e, "message");
-  }
-
   // e.g., future.failureCause()
-  @Test
-  public void oneLevelDerivedThrowable() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that("root").delegatingTo(throwable).isThePresentKingOfFrance());
-    assertHasCause(e, "message");
-  }
-
-  @Test
-  public void twoLevelsDerivedThrowableMiddle() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingTo(throwable)
-                    .delegatingTo("grandchild")
-                    .isThePresentKingOfFrance());
-    assertHasCause(e, "message");
-  }
-
-  @Test
-  public void twoLevelsDerivedThrowableLast() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingTo("child")
-                    .delegatingTo(throwable)
-                    .isThePresentKingOfFrance());
-    assertHasCause(e, "message");
-  }
 
   @Test
   public void oneLevelNamed() {
@@ -149,32 +71,6 @@ public final class ChainingTest {
   }
 
   @Test
-  public void twoLevelsOnlyFirstNamed() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingToNamed("child", "child")
-                    .delegatingTo("grandchild")
-                    .isThePresentKingOfFrance());
-    assertNoCause(e, "message\nmyObject was: root");
-  }
-
-  @Test
-  public void twoLevelsOnlySecondNamed() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingTo("child")
-                    .delegatingToNamed("grandchild", "grandchild")
-                    .isThePresentKingOfFrance());
-    assertNoCause(e, "value of    : myObject.grandchild\nmessage\nmyObject was: root");
-  }
-
-  @Test
   public void oneLevelNamedNoNeedToDisplayBoth() {
     AssertionError e =
         expectFailure(
@@ -197,32 +93,6 @@ public final class ChainingTest {
                     .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
                     .isThePresentKingOfFrance());
     assertNoCause(e, "value of: myObject.child.grandchild\nmessage");
-  }
-
-  @Test
-  public void twoLevelsOnlyFirstNamedNoNeedToDisplayBoth() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingToNamedNoNeedToDisplayBoth("child", "child")
-                    .delegatingTo("grandchild")
-                    .isThePresentKingOfFrance());
-    assertNoCause(e, "message");
-  }
-
-  @Test
-  public void twoLevelsOnlySecondNamedNoNeedToDisplayBoth() {
-    AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that("root")
-                    .delegatingTo("child")
-                    .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
-                    .isThePresentKingOfFrance());
-    assertNoCause(e, "value of: myObject.grandchild\nmessage");
   }
 
   @Test
@@ -266,12 +136,6 @@ public final class ChainingTest {
   }
 
   @Test
-  public void checkFail() {
-    AssertionError e = expectFailure(whenTesting -> whenTesting.that("root").doCheckFail());
-    assertNoCause(e, "message");
-  }
-
-  @Test
   public void checkFailWithName() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("root").doCheckFail("child"));
     assertNoCause(e, "message\nvalue of    : myObject.child\nmyObject was: root");
@@ -303,20 +167,8 @@ public final class ChainingTest {
       failWithoutActual(simpleFact("message"));
     }
 
-    void doCheckFail() {
-      check().withMessage("message").fail();
-    }
-
     void doCheckFail(String name) {
       check(name).withMessage("message").fail();
-    }
-
-    /**
-     * Returns a new {@link MyObjectSubject} for the given actual value, chaining it to the current
-     * subject with {@link Subject#check}.
-     */
-    MyObjectSubject delegatingTo(Object actual) {
-      return check().about(myObjects()).that(actual);
     }
 
     /**
