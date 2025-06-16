@@ -1140,11 +1140,11 @@ public class IterableSubject extends Subject {
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
-    public void doesNotContain(E element) {
+    public void doesNotContain(E expected) {
       Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       List<A> matchingElements = new ArrayList<>();
       for (A actual : getCastActual()) {
-        if (correspondence.safeCompare(actual, element, exceptions)) {
+        if (correspondence.safeCompare(actual, expected, exceptions)) {
           matchingElements.add(actual);
         }
       }
@@ -1152,7 +1152,7 @@ public class IterableSubject extends Subject {
       if (!matchingElements.isEmpty()) {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
-                .add(fact("expected not to contain", element))
+                .add(fact("expected not to contain", expected))
                 .addAll(correspondence.describeForIterable())
                 .add(fact("but contained", countDuplicates(matchingElements)))
                 .add(subject.fullContents())
@@ -1165,7 +1165,7 @@ public class IterableSubject extends Subject {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
-                .add(fact("expected not to contain", element))
+                .add(fact("expected not to contain", expected))
                 .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found no match (but failing because of exception)"))
                 .add(subject.fullContents())

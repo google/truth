@@ -81,42 +81,42 @@ public class StringSubject extends ComparableSubject<String> {
   }
 
   /** Checks that the actual value contains the given sequence. */
-  public void contains(@Nullable CharSequence string) {
-    checkNotNull(string);
+  public void contains(@Nullable CharSequence sequence) {
+    checkNotNull(sequence);
     if (actual == null) {
-      failWithActual("expected a string that contains", string);
-    } else if (!actual.contains(string)) {
-      failWithActual("expected to contain", string);
+      failWithActual("expected a string that contains", sequence);
+    } else if (!actual.contains(sequence)) {
+      failWithActual("expected to contain", sequence);
     }
   }
 
   /** Checks that the actual value does not contain the given sequence. */
-  public void doesNotContain(@Nullable CharSequence string) {
-    checkNotNull(string);
+  public void doesNotContain(@Nullable CharSequence sequence) {
+    checkNotNull(sequence);
     if (actual == null) {
-      failWithActual("expected a string that does not contain", string);
-    } else if (actual.contains(string)) {
-      failWithActual("expected not to contain", string);
+      failWithActual("expected a string that does not contain", sequence);
+    } else if (actual.contains(sequence)) {
+      failWithActual("expected not to contain", sequence);
     }
   }
 
   /** Checks that the actual value starts with the given string. */
-  public void startsWith(@Nullable String string) {
-    checkNotNull(string);
+  public void startsWith(@Nullable String prefix) {
+    checkNotNull(prefix);
     if (actual == null) {
-      failWithActual("expected a string that starts with", string);
-    } else if (!actual.startsWith(string)) {
-      failWithActual("expected to start with", string);
+      failWithActual("expected a string that starts with", prefix);
+    } else if (!actual.startsWith(prefix)) {
+      failWithActual("expected to start with", prefix);
     }
   }
 
   /** Checks that the actual value ends with the given string. */
-  public void endsWith(@Nullable String string) {
-    checkNotNull(string);
+  public void endsWith(@Nullable String suffix) {
+    checkNotNull(suffix);
     if (actual == null) {
-      failWithActual("expected a string that ends with", string);
-    } else if (!actual.endsWith(string)) {
-      failWithActual("expected to end with", string);
+      failWithActual("expected a string that ends with", suffix);
+    } else if (!actual.endsWith(suffix)) {
+      failWithActual("expected to end with", suffix);
     }
   }
 
@@ -294,25 +294,25 @@ public class StringSubject extends ComparableSubject<String> {
      * Checks that the actual value is not equal to the given string (while ignoring case). The
      * meaning of equality is the same as for the {@link #isEqualTo} method.
      */
-    public void isNotEqualTo(@Nullable String other) {
+    public void isNotEqualTo(@Nullable String expected) {
       if (actual == null) {
-        if (other == null) {
+        if (expected == null) {
           failWithoutActual(
               fact("expected a string that is not equal to", "null (null reference)"),
               simpleFact("(case is ignored)"));
         }
       } else {
-        if (actual.equalsIgnoreCase(other)) {
+        if (actual.equalsIgnoreCase(expected)) {
           failWithoutActual(
-              fact("expected not to be", other), butWas(), simpleFact("(case is ignored)"));
+              fact("expected not to be", expected), butWas(), simpleFact("(case is ignored)"));
         }
       }
     }
 
     /** Checks that the actual value contains the given sequence (while ignoring case). */
-    public void contains(@Nullable CharSequence string) {
-      checkNotNull(string);
-      String expected = string.toString();
+    public void contains(@Nullable CharSequence sequence) {
+      checkNotNull(sequence);
+      String expected = sequence.toString();
       if (actual == null) {
         failWithoutActual(
             fact("expected a string that contains", expected),
@@ -325,9 +325,9 @@ public class StringSubject extends ComparableSubject<String> {
     }
 
     /** Checks that the actual value does not contain the given sequence (while ignoring case). */
-    public void doesNotContain(@Nullable CharSequence string) {
-      checkNotNull(string);
-      String expected = string.toString();
+    public void doesNotContain(@Nullable CharSequence sequence) {
+      checkNotNull(sequence);
+      String expected = sequence.toString();
       if (actual == null) {
         failWithoutActual(
             fact("expected a string that does not contain", expected),
@@ -339,16 +339,16 @@ public class StringSubject extends ComparableSubject<String> {
       }
     }
 
-    private static boolean containsIgnoreCase(String actual, String string) {
+    private static boolean containsIgnoreCase(String actual, String sequence) {
       for (int actualOffset = 0;
-          actualOffset <= actual.length() - string.length();
+          actualOffset <= actual.length() - sequence.length();
           actualOffset++) {
         if (actual.regionMatches(
             /* ignoreCase= */ true,
             /* toffset= */ actualOffset,
-            /* other= */ string,
+            /* other= */ sequence,
             /* ooffset= */ 0,
-            /* len= */ string.length())) {
+            /* len= */ sequence.length())) {
           return true;
         }
       }

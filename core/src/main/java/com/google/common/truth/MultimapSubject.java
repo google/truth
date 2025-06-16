@@ -669,13 +669,13 @@ public class MultimapSubject extends Subject {
      * Checks that the actual multimap does not contain an entry with the given key and a value that
      * corresponds to the given value.
      */
-    public void doesNotContainEntry(@Nullable Object key, E value) {
+    public void doesNotContainEntry(@Nullable Object key, E expectedValue) {
       if (checkNotNull(actual).containsKey(key)) {
         Collection<A> actualValues = checkNotNull(getCastActual().asMap().get(key));
         List<A> matchingValues = new ArrayList<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (A actualValue : actualValues) {
-          if (correspondence.safeCompare(actualValue, value, exceptions)) {
+          if (correspondence.safeCompare(actualValue, expectedValue, exceptions)) {
             matchingValues.add(actualValue);
           }
         }
@@ -683,7 +683,7 @@ public class MultimapSubject extends Subject {
         if (!matchingValues.isEmpty()) {
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(fact("expected not to contain entry", immutableEntry(key, value)))
+                  .add(fact("expected not to contain entry", immutableEntry(key, expectedValue)))
                   .addAll(correspondence.describeForMapValues())
                   .add(fact("but contained that key with matching values", matchingValues))
                   .add(
@@ -698,7 +698,7 @@ public class MultimapSubject extends Subject {
             failWithoutActual(
                 ImmutableList.<Fact>builder()
                     .addAll(exceptions.describeAsMainCause())
-                    .add(fact("expected not to contain entry", immutableEntry(key, value)))
+                    .add(fact("expected not to contain entry", immutableEntry(key, expectedValue)))
                     .addAll(correspondence.describeForMapValues())
                     .add(simpleFact("found no match (but failing because of exception)"))
                     .add(

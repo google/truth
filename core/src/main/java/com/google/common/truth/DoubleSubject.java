@@ -55,8 +55,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public void of(double other) {
-      comparer.compareAgainst(other);
+    public void of(double expected) {
+      comparer.compareAgainst(expected);
     }
 
     /**
@@ -315,8 +315,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public void isGreaterThan(int other) {
-    isGreaterThan((double) other);
+  public void isGreaterThan(int expected) {
+    isGreaterThan((double) expected);
   }
 
   /**
@@ -325,8 +325,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
-  public void isLessThan(int other) {
-    isLessThan((double) other);
+  public void isLessThan(int expected) {
+    isLessThan((double) expected);
   }
 
   /**
@@ -335,8 +335,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public void isAtMost(int other) {
-    isAtMost((double) other);
+  public void isAtMost(int expected) {
+    isAtMost((double) expected);
   }
 
   /**
@@ -345,8 +345,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public void isAtLeast(int other) {
-    isAtLeast((double) other);
+  public void isAtLeast(int expected) {
+    isAtLeast((double) expected);
   }
 
   static Factory<DoubleSubject, Double> doubles() {

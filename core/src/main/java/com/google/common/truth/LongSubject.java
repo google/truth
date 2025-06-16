@@ -59,8 +59,8 @@ public class LongSubject extends ComparableSubject<Long> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public void of(long other) {
-      comparer.compareAgainst(other);
+    public void of(long expected) {
+      comparer.compareAgainst(expected);
     }
 
     /**
@@ -173,8 +173,8 @@ public class LongSubject extends ComparableSubject<Long> {
    * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public final void isGreaterThan(int other) {
-    isGreaterThan((long) other);
+  public final void isGreaterThan(int expected) {
+    isGreaterThan((long) expected);
   }
 
   /**
@@ -183,8 +183,8 @@ public class LongSubject extends ComparableSubject<Long> {
    * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
-  public final void isLessThan(int other) {
-    isLessThan((long) other);
+  public final void isLessThan(int expected) {
+    isLessThan((long) expected);
   }
 
   /**
@@ -193,8 +193,8 @@ public class LongSubject extends ComparableSubject<Long> {
    * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public final void isAtMost(int other) {
-    isAtMost((long) other);
+  public final void isAtMost(int expected) {
+    isAtMost((long) expected);
   }
 
   /**
@@ -203,8 +203,8 @@ public class LongSubject extends ComparableSubject<Long> {
    * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public final void isAtLeast(int other) {
-    isAtLeast((long) other);
+  public final void isAtLeast(int expected) {
+    isAtLeast((long) expected);
   }
 
   static Factory<LongSubject, Long> longs() {

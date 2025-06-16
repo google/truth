@@ -57,8 +57,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public void of(float other) {
-      comparer.compareAgainst(other);
+    public void of(float expected) {
+      comparer.compareAgainst(expected);
     }
 
     /**
@@ -317,7 +317,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public void isGreaterThan(int other) {
+  public void isGreaterThan(int expected) {
     /*
      * We must perform the comparison as a `double` in order to compare `float` to `int` without
      * loss of precision.
@@ -330,7 +330,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
      * We could instead perform the comparison manually here, but it would require duplicating the
      * code from `ComparableSubject.isGreaterThan`.
      */
-    asDouble.isGreaterThan(other);
+    asDouble.isGreaterThan(expected);
   }
 
   /**
@@ -339,9 +339,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost} .
    */
-  public void isLessThan(int other) {
+  public void isLessThan(int expected) {
     // For discussion of this delegation, see isGreaterThan.
-    asDouble.isLessThan(other);
+    asDouble.isLessThan(expected);
   }
 
   /**
@@ -350,9 +350,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public void isAtMost(int other) {
+  public void isAtMost(int expected) {
     // For discussion of this delegation, see isGreaterThan.
-    asDouble.isAtMost(other);
+    asDouble.isAtMost(expected);
   }
 
   /**
@@ -361,9 +361,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public void isAtLeast(int other) {
+  public void isAtLeast(int expected) {
     // For discussion of this delegation, see isGreaterThan.
-    asDouble.isAtLeast(other);
+    asDouble.isAtLeast(expected);
   }
 
   static Factory<FloatSubject, Float> floats() {

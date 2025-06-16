@@ -164,14 +164,14 @@ public class Subject {
    * Checks that the value under test is not equal to the given object. The meaning of equality is
    * the same as for the {@link #isEqualTo} method.
    */
-  public void isNotEqualTo(@Nullable Object other) {
-    standardIsNotEqualTo(other);
+  public void isNotEqualTo(@Nullable Object expected) {
+    standardIsNotEqualTo(expected);
   }
 
-  private void standardIsNotEqualTo(@Nullable Object other) {
-    ComparisonResult difference = compareForEquality(other);
+  private void standardIsNotEqualTo(@Nullable Object expected) {
+    ComparisonResult difference = compareForEquality(expected);
     if (difference.valuesAreEqual()) {
-      String otherAsString = formatActualOrExpected(other);
+      String otherAsString = formatActualOrExpected(expected);
       if (actualCustomStringRepresentation().equals(otherAsString)) {
         failWithoutActual(fact("expected not to be", otherAsString));
       } else {
@@ -273,8 +273,8 @@ public class Subject {
    * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
    * same instance as anything else.
    */
-  public final void isNotSameInstanceAs(@Nullable Object other) {
-    if (actual == other) {
+  public final void isNotSameInstanceAs(@Nullable Object expected) {
+    if (actual == expected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
        * actual.toString()/other.toString().

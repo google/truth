@@ -105,16 +105,16 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * <p>To check that the actual value is greater than <i>or equal to</i> {@code other}, use {@link
    * #isAtLeast}.
    */
-  public final void isGreaterThan(@Nullable T other) {
+  public final void isGreaterThan(@Nullable T expected) {
     Comparable<Object> actual = actualAsComparable();
-    if (other == null) {
+    if (expected == null) {
       failWithoutActual(
           simpleFact(
               "expected a value greater than null according to compareTo, but compareTo is required"
                   + " to reject null"),
           fact("was", actual));
-    } else if (actual == null || actual.compareTo(other) <= 0) {
-      failWithActual("expected to be greater than", other);
+    } else if (actual == null || actual.compareTo(expected) <= 0) {
+      failWithActual("expected to be greater than", expected);
     }
   }
 
@@ -124,16 +124,16 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * <p>To check that the actual value is less than <i>or equal to</i> {@code other}, use {@link
    * #isAtMost}.
    */
-  public final void isLessThan(@Nullable T other) {
+  public final void isLessThan(@Nullable T expected) {
     Comparable<Object> actual = actualAsComparable();
-    if (other == null) {
+    if (expected == null) {
       failWithoutActual(
           simpleFact(
               "expected a value less than null according to compareTo, but compareTo is required to"
                   + " reject null"),
           fact("was", actual));
-    } else if (actual == null || actual.compareTo(other) >= 0) {
-      failWithActual("expected to be less than", other);
+    } else if (actual == null || actual.compareTo(expected) >= 0) {
+      failWithActual("expected to be less than", expected);
     }
   }
 
@@ -143,16 +143,16 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * <p>To check that the actual value is <i>strictly</i> less than {@code other}, use {@link
    * #isLessThan}.
    */
-  public final void isAtMost(@Nullable T other) {
+  public final void isAtMost(@Nullable T expected) {
     Comparable<Object> actual = actualAsComparable();
-    if (other == null) {
+    if (expected == null) {
       failWithoutActual(
           simpleFact(
               "expected a value that is at most null according to compareTo, but compareTo is"
                   + " required to reject null"),
           fact("was", actual));
-    } else if (actual == null || actual.compareTo(other) > 0) {
-      failWithActual("expected to be at most", other);
+    } else if (actual == null || actual.compareTo(expected) > 0) {
+      failWithActual("expected to be at most", expected);
     }
   }
 
@@ -162,16 +162,16 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * <p>To check that the actual value is <i>strictly</i> greater than {@code other}, use {@link
    * #isGreaterThan}.
    */
-  public final void isAtLeast(@Nullable T other) {
+  public final void isAtLeast(@Nullable T expected) {
     Comparable<Object> actual = actualAsComparable();
-    if (other == null) {
+    if (expected == null) {
       failWithoutActual(
           simpleFact(
               "expected a value that is at least null according to compareTo, but compareTo is"
                   + " required to reject null"),
           fact("was", actual));
-    } else if (actual == null || actual.compareTo(other) < 0) {
-      failWithActual("expected to be at least", other);
+    } else if (actual == null || actual.compareTo(expected) < 0) {
+      failWithActual("expected to be at least", expected);
     }
   }
 

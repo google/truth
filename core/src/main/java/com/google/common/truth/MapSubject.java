@@ -663,17 +663,17 @@ public class MapSubject extends Subject {
      * corresponds to the given value.
      */
     @SuppressWarnings("UnnecessaryCast") // needed by nullness checker
-    public void doesNotContainEntry(@Nullable Object key, E value) {
+    public void doesNotContainEntry(@Nullable Object key, E expectedValue) {
       if (checkNotNull(actual).containsKey(key)) {
         // Found matching key. Fail if the value matches, too.
         A actualValue = getCastSubject().get(key);
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-        if (correspondence.safeCompare((A) actualValue, value, exceptions)) {
+        if (correspondence.safeCompare((A) actualValue, expectedValue, exceptions)) {
           // The matching key had a matching value. There's no need to check exceptions here,
           // because if Correspondence.compare() threw then safeCompare() would return false.
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(fact("expected not to contain", immutableEntry(key, value)))
+                  .add(fact("expected not to contain", immutableEntry(key, expectedValue)))
                   .addAll(correspondence.describeForMapValues())
                   .add(
                       fact(
@@ -688,7 +688,7 @@ public class MapSubject extends Subject {
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .addAll(exceptions.describeAsMainCause())
-                  .add(fact("expected not to contain", immutableEntry(key, value)))
+                  .add(fact("expected not to contain", immutableEntry(key, expectedValue)))
                   .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("found no match (but failing because of exception)"))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))

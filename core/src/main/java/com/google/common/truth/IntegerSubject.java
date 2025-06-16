@@ -58,8 +58,8 @@ public class IntegerSubject extends ComparableSubject<Integer> {
      * the tolerance of the given value, depending on the choice made earlier in the fluent call
      * chain. The actual value and tolerance are also specified earlier in the fluent call chain.
      */
-    public void of(int other) {
-      comparer.compareAgainst(other);
+    public void of(int expected) {
+      comparer.compareAgainst(expected);
     }
 
     /**
