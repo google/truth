@@ -233,8 +233,8 @@ While you can usually call `assertThat`, advanced features require you to write
 a longer chain of calls. We'll cover the most common shortcuts first, then the
 general case, and finally the less common shortcuts.
 
-**No custom parameters:** The simplest case is an assertion with no message on a type that Truth supports
-natively. There, you can use `assertThat`:
+**No custom parameters:** The simplest case is an assertion with no custom
+message on a type that Truth supports natively. There, you can use `assertThat`:
 
 ```java
 import static com.google.common.truth.Truth.assertThat;
