@@ -55,17 +55,17 @@ public final class TableSubject extends Subject {
   }
 
   /** Checks that the actual table has the given size. */
-  public void hasSize(int expectedSize) {
+  public void hasSize(int size) {
     if (actual == null) {
-      failWithActual(fact("expected a table with size", expectedSize));
-    } else if (expectedSize < 0) {
+      failWithActual(fact("expected a table with size", size));
+    } else if (size < 0) {
       failWithoutActual(
           simpleFact("expected a table with a negative size, but that is impossible"),
-          fact("expected size", expectedSize),
+          fact("expected size", size),
           fact("actual size", actual.size()),
           tableWas());
     } else {
-      check("size()").that(actual.size()).isEqualTo(expectedSize);
+      check("size()").that(actual.size()).isEqualTo(size);
     }
   }
 
@@ -107,10 +107,10 @@ public final class TableSubject extends Subject {
 
   /** Checks that the actual table contains the given cell. */
   public void containsCell(
-      @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
+      @Nullable Object rowKey, @Nullable Object columnKey, @Nullable Object value) {
     containsCell(
         Tables.<@Nullable Object, @Nullable Object, @Nullable Object>immutableCell(
-            rowKey, colKey, value));
+            rowKey, columnKey, value));
   }
 
   /** Checks that the actual table contains the given cell. */
@@ -137,10 +137,10 @@ public final class TableSubject extends Subject {
 
   /** Checks that the actual table does not contain the given cell. */
   public void doesNotContainCell(
-      @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
+      @Nullable Object rowKey, @Nullable Object columnKey, @Nullable Object value) {
     doesNotContainCell(
         Tables.<@Nullable Object, @Nullable Object, @Nullable Object>immutableCell(
-            rowKey, colKey, value));
+            rowKey, columnKey, value));
   }
 
   /** Checks that the actual table does not contain the given cell. */

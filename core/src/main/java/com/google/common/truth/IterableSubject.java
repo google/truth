@@ -154,10 +154,10 @@ public class IterableSubject extends Subject {
   }
 
   /** Checks that the actual iterable has the given size. */
-  public final void hasSize(int expectedSize) {
-    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
+  public final void hasSize(int size) {
+    checkArgument(size >= 0, "expected size (%s) must be >= 0", size);
     int actualSize = size(checkNotNull(actual));
-    check("size()").that(actualSize).isEqualTo(expectedSize);
+    check("size()").that(actualSize).isEqualTo(size);
   }
 
   /** Checks that the actual iterable contains the supplied item. */
@@ -256,10 +256,8 @@ public class IterableSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeast(
-      @Nullable Object firstExpected,
-      @Nullable Object secondExpected,
-      @Nullable Object @Nullable ... restOfExpected) {
-    return containsAtLeastElementsIn(accumulate(firstExpected, secondExpected, restOfExpected));
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+    return containsAtLeastElementsIn(accumulate(first, second, rest));
   }
 
   /**
@@ -699,10 +697,8 @@ public class IterableSubject extends Subject {
 
   /** Checks that the actual iterable contains none of the excluded objects. */
   public final void containsNoneOf(
-      @Nullable Object firstExcluded,
-      @Nullable Object secondExcluded,
-      @Nullable Object @Nullable ... restOfExcluded) {
-    containsNoneIn(accumulate(firstExcluded, secondExcluded, restOfExcluded));
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+    containsNoneIn(accumulate(first, second, rest));
   }
 
   /**
@@ -966,7 +962,7 @@ public class IterableSubject extends Subject {
             + " containsExactlyElementsIn(expected) instead of equals(expected)?")
     @Deprecated
     @Override
-    public final boolean equals(@Nullable Object o) {
+    public final boolean equals(@Nullable Object other) {
       throw new UnsupportedOperationException(
           "UsingCorrespondence.equals() is not supported. Did you mean to call"
               + " containsExactlyElementsIn(expected) instead of equals(expected)?");
@@ -1144,11 +1140,11 @@ public class IterableSubject extends Subject {
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
-    public void doesNotContain(E excluded) {
+    public void doesNotContain(E element) {
       Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       List<A> matchingElements = new ArrayList<>();
       for (A actual : getCastActual()) {
-        if (correspondence.safeCompare(actual, excluded, exceptions)) {
+        if (correspondence.safeCompare(actual, element, exceptions)) {
           matchingElements.add(actual);
         }
       }
@@ -1156,7 +1152,7 @@ public class IterableSubject extends Subject {
       if (!matchingElements.isEmpty()) {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
-                .add(fact("expected not to contain", excluded))
+                .add(fact("expected not to contain", element))
                 .addAll(correspondence.describeForIterable())
                 .add(fact("but contained", countDuplicates(matchingElements)))
                 .add(subject.fullContents())
@@ -1169,7 +1165,7 @@ public class IterableSubject extends Subject {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
-                .add(fact("expected not to contain", excluded))
+                .add(fact("expected not to contain", element))
                 .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found no match (but failing because of exception)"))
                 .add(subject.fullContents())
@@ -1888,9 +1884,8 @@ public class IterableSubject extends Subject {
      * elements.
      */
     @SafeVarargs
-    public final void containsNoneOf(
-        E firstExcluded, E secondExcluded, E @Nullable ... restOfExcluded) {
-      containsNoneIn(accumulate(firstExcluded, secondExcluded, restOfExcluded));
+    public final void containsNoneOf(E first, E second, E @Nullable ... rest) {
+      containsNoneIn(accumulate(first, second, rest));
     }
 
     /**

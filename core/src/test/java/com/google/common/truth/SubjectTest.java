@@ -844,7 +844,7 @@ public class SubjectTest {
     }
 
     @Override
-    public void isNotEqualTo(@Nullable Object unexpected) {
+    public void isNotEqualTo(@Nullable Object other) {
       throw new UnsupportedOperationException();
     }
   }

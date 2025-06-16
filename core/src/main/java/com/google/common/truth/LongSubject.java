@@ -70,7 +70,7 @@ public class LongSubject extends ComparableSubject<Long> {
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@Nullable Object other) {
       throw new UnsupportedOperationException(
           "If you meant to compare longs, use .of(long) instead.");
     }
@@ -163,8 +163,8 @@ public class LongSubject extends ComparableSubject<Long> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(@Nullable Long other) {
-    super.isEquivalentAccordingToCompareTo(other);
+  public final void isEquivalentAccordingToCompareTo(@Nullable Long expected) {
+    super.isEquivalentAccordingToCompareTo(expected);
   }
 
   /**

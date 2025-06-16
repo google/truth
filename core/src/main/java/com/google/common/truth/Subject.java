@@ -163,19 +163,19 @@ public class Subject {
    * Checks that the value under test is not equal to the given object. The meaning of equality is
    * the same as for the {@link #isEqualTo} method.
    */
-  public void isNotEqualTo(@Nullable Object unexpected) {
-    standardIsNotEqualTo(unexpected);
+  public void isNotEqualTo(@Nullable Object other) {
+    standardIsNotEqualTo(other);
   }
 
-  private void standardIsNotEqualTo(@Nullable Object unexpected) {
-    ComparisonResult difference = compareForEquality(unexpected);
+  private void standardIsNotEqualTo(@Nullable Object other) {
+    ComparisonResult difference = compareForEquality(other);
     if (difference.valuesAreEqual()) {
-      String unexpectedAsString = formatActualOrExpected(unexpected);
-      if (actualCustomStringRepresentation().equals(unexpectedAsString)) {
-        failWithoutActual(fact("expected not to be", unexpectedAsString));
+      String otherAsString = formatActualOrExpected(other);
+      if (actualCustomStringRepresentation().equals(otherAsString)) {
+        failWithoutActual(fact("expected not to be", otherAsString));
       } else {
         failWithoutActual(
-            fact("expected not to be", unexpectedAsString),
+            fact("expected not to be", otherAsString),
             fact(
                 "but was; string representation of actual value",
                 actualCustomStringRepresentation()));
@@ -272,11 +272,11 @@ public class Subject {
    * <p>This method considers {@code null} to be "the same instance as" {@code null} and not the
    * same instance as anything else.
    */
-  public final void isNotSameInstanceAs(@Nullable Object unexpected) {
-    if (actual == unexpected) {
+  public final void isNotSameInstanceAs(@Nullable Object other) {
+    if (actual == other) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
-       * actual.toString()/unexpected.toString().
+       * actual.toString()/other.toString().
        */
       failWithoutActual(
           fact("expected not to be specific instance", actualCustomStringRepresentation()));
@@ -1075,7 +1075,7 @@ public class Subject {
           + " assertThat(actual).equals(expected)?")
   @Deprecated
   @Override
-  public final boolean equals(@Nullable Object o) {
+  public final boolean equals(@Nullable Object other) {
     throw new UnsupportedOperationException(
         "Subject.equals() is not supported. Did you mean to call"
             + " assertThat(actual).isEqualTo(expected) instead of"

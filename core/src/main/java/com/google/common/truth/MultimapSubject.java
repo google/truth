@@ -85,9 +85,9 @@ public class MultimapSubject extends Subject {
   }
 
   /** Checks that the actual multimap has the given size. */
-  public final void hasSize(int expectedSize) {
-    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    check("size()").that(checkNotNull(actual).size()).isEqualTo(expectedSize);
+  public final void hasSize(int size) {
+    checkArgument(size >= 0, "expected size (%s) must be >= 0", size);
+    check("size()").that(checkNotNull(actual).size()).isEqualTo(size);
   }
 
   /** Checks that the actual multimap contains the given key. */
@@ -211,11 +211,11 @@ public class MultimapSubject extends Subject {
    * order, and the value collections for each key iterate in the same order.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
-    checkNotNull(expectedMultimap, "expectedMultimap");
+  public final Ordered containsExactlyEntriesIn(Multimap<?, ?> expected) {
+    checkNotNull(expected, "expected");
     checkNotNull(actual);
-    ListMultimap<?, ?> missing = difference(expectedMultimap, actual);
-    ListMultimap<?, ?> extra = difference(actual, expectedMultimap);
+    ListMultimap<?, ?> missing = difference(expected, actual);
+    ListMultimap<?, ?> extra = difference(actual, expected);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the actual multimap but not enough times. Similarly for unexpected extra items.
@@ -237,24 +237,24 @@ public class MultimapSubject extends Subject {
             fact("missing", missingDisplay),
             fact("unexpected", extraDisplay),
             simpleFact("---"),
-            fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
+            fact("expected", annotateEmptyStringsMultimap(expected)));
         return ALREADY_FAILED;
       } else {
         failWithActual(
             fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),
             simpleFact("---"),
-            fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
+            fact("expected", annotateEmptyStringsMultimap(expected)));
         return ALREADY_FAILED;
       }
     } else if (!extra.isEmpty()) {
       failWithActual(
           fact("unexpected", countDuplicatesMultimap(annotateEmptyStringsMultimap(extra))),
           simpleFact("---"),
-          fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
+          fact("expected", annotateEmptyStringsMultimap(expected)));
       return ALREADY_FAILED;
     }
 
-    return MultimapInOrder.create(this, /* allowUnexpected= */ false, expectedMultimap);
+    return MultimapInOrder.create(this, /* allowUnexpected= */ false, expected);
   }
 
   /**
@@ -266,10 +266,10 @@ public class MultimapSubject extends Subject {
    * value collections.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsAtLeastEntriesIn(Multimap<?, ?> expectedMultimap) {
-    checkNotNull(expectedMultimap, "expectedMultimap");
+  public final Ordered containsAtLeastEntriesIn(Multimap<?, ?> expected) {
+    checkNotNull(expected, "expected");
     checkNotNull(actual);
-    ListMultimap<?, ?> missing = difference(expectedMultimap, actual);
+    ListMultimap<?, ?> missing = difference(expected, actual);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the actual multimap but not enough times. Similarly for unexpected extra items.
@@ -277,11 +277,11 @@ public class MultimapSubject extends Subject {
       failWithActual(
           fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),
           simpleFact("---"),
-          fact("expected to contain at least", annotateEmptyStringsMultimap(expectedMultimap)));
+          fact("expected to contain at least", annotateEmptyStringsMultimap(expected)));
       return ALREADY_FAILED;
     }
 
-    return MultimapInOrder.create(this, /* allowUnexpected= */ true, expectedMultimap);
+    return MultimapInOrder.create(this, /* allowUnexpected= */ true, expected);
   }
 
   /** Checks that the actual multimap is empty. */
@@ -528,8 +528,8 @@ public class MultimapSubject extends Subject {
    *
    * <pre>{@code
    * assertThat(actualMultimap)
-   *   .comparingValuesUsing(correspondence)
-   *   .containsEntry(expectedKey, expectedValue);
+   *     .comparingValuesUsing(correspondence)
+   *     .containsEntry(expectedKey, expectedValue);
    * }</pre>
    *
    * where {@code actualMultimap} is a {@code Multimap<?, A>} (or, more generally, a {@code
@@ -576,28 +576,25 @@ public class MultimapSubject extends Subject {
      * corresponds to the given value.
      */
     @SuppressWarnings("nullness") // TODO: b/423853632 - Remove after checker is fixed.
-    public void containsEntry(@Nullable Object expectedKey, E expectedValue) {
-      if (checkNotNull(actual).containsKey(expectedKey)) {
+    public void containsEntry(@Nullable Object key, E value) {
+      if (checkNotNull(actual).containsKey(key)) {
         // Found matching key.
-        Collection<A> actualValues = checkNotNull(getCastActual().asMap().get(expectedKey));
+        Collection<A> actualValues = checkNotNull(getCastActual().asMap().get(key));
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (A actualValue : actualValues) {
-          if (correspondence.safeCompare(actualValue, expectedValue, exceptions)) {
+          if (correspondence.safeCompare(actualValue, value, exceptions)) {
             // Found matching key and value, but we still need to fail if we hit an exception along
             // the way.
             if (exceptions.hasCompareException()) {
               failWithoutActual(
                   ImmutableList.<Fact>builder()
                       .addAll(exceptions.describeAsMainCause())
-                      .add(
-                          fact(
-                              "expected to contain entry",
-                              immutableEntry(expectedKey, expectedValue)))
+                      .add(fact("expected to contain entry", immutableEntry(key, value)))
                       .addAll(correspondence.describeForMapValues())
                       .add(
                           fact(
                               "found match (but failing because of exception)",
-                              immutableEntry(expectedKey, actualValue)))
+                              immutableEntry(key, actualValue)))
                       .add(
                           fact(
                               "full contents",
@@ -610,7 +607,7 @@ public class MultimapSubject extends Subject {
         // Found matching key with non-matching values.
         failWithoutActual(
             ImmutableList.<Fact>builder()
-                .add(fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                .add(fact("expected to contain entry", immutableEntry(key, value)))
                 .addAll(correspondence.describeForMapValues())
                 .add(simpleFact("but did not"))
                 .add(fact("though it did contain values for that key", actualValues))
@@ -624,7 +621,7 @@ public class MultimapSubject extends Subject {
         Set<Map.Entry<?, ?>> entries = new LinkedHashSet<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (Map.Entry<?, A> actualEntry : getCastActual().entries()) {
-          if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
+          if (correspondence.safeCompare(actualEntry.getValue(), value, exceptions)) {
             entries.add(actualEntry);
           }
         }
@@ -632,8 +629,7 @@ public class MultimapSubject extends Subject {
           // Found matching values with non-matching keys.
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                  .add(fact("expected to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
                   // The corresponding failure in the non-Correspondence case reports the keys
@@ -651,8 +647,7 @@ public class MultimapSubject extends Subject {
           // Did not find matching key or value.
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                  .add(fact("expected to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
                   .add(
@@ -669,13 +664,13 @@ public class MultimapSubject extends Subject {
      * Checks that the actual multimap does not contain an entry with the given key and a value that
      * corresponds to the given value.
      */
-    public void doesNotContainEntry(@Nullable Object excludedKey, E excludedValue) {
-      if (checkNotNull(actual).containsKey(excludedKey)) {
-        Collection<A> actualValues = checkNotNull(getCastActual().asMap().get(excludedKey));
+    public void doesNotContainEntry(@Nullable Object key, E value) {
+      if (checkNotNull(actual).containsKey(key)) {
+        Collection<A> actualValues = checkNotNull(getCastActual().asMap().get(key));
         List<A> matchingValues = new ArrayList<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (A actualValue : actualValues) {
-          if (correspondence.safeCompare(actualValue, excludedValue, exceptions)) {
+          if (correspondence.safeCompare(actualValue, value, exceptions)) {
             matchingValues.add(actualValue);
           }
         }
@@ -683,10 +678,7 @@ public class MultimapSubject extends Subject {
         if (!matchingValues.isEmpty()) {
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      fact(
-                          "expected not to contain entry",
-                          immutableEntry(excludedKey, excludedValue)))
+                  .add(fact("expected not to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(fact("but contained that key with matching values", matchingValues))
                   .add(
@@ -701,10 +693,7 @@ public class MultimapSubject extends Subject {
             failWithoutActual(
                 ImmutableList.<Fact>builder()
                     .addAll(exceptions.describeAsMainCause())
-                    .add(
-                        fact(
-                            "expected not to contain entry",
-                            immutableEntry(excludedKey, excludedValue)))
+                    .add(fact("expected not to contain entry", immutableEntry(key, value)))
                     .addAll(correspondence.describeForMapValues())
                     .add(simpleFact("found no match (but failing because of exception)"))
                     .add(
@@ -727,8 +716,8 @@ public class MultimapSubject extends Subject {
      * order.
      */
     @CanIgnoreReturnValue
-    public Ordered containsExactlyEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
-      return internalContainsExactlyEntriesIn(expectedMultimap);
+    public Ordered containsExactlyEntriesIn(Multimap<?, ? extends E> expected) {
+      return internalContainsExactlyEntriesIn(expected);
     }
 
     /*
@@ -737,7 +726,7 @@ public class MultimapSubject extends Subject {
      * edition).
      */
     private <K extends @Nullable Object, V extends E> Ordered internalContainsExactlyEntriesIn(
-        Multimap<K, V> expectedMultimap) {
+        Multimap<K, V> expected) {
       // Note: The non-fuzzy MultimapSubject.containsExactlyEntriesIn has a custom implementation
       // and produces somewhat better failure messages simply asserting about the iterables of
       // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
@@ -749,7 +738,7 @@ public class MultimapSubject extends Subject {
           .about(subject.iterableEntries())
           .that(checkNotNull(actual).entries())
           .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
-          .containsExactlyElementsIn(expectedMultimap.entries());
+          .containsExactlyElementsIn(expected.entries());
     }
 
     /**
@@ -762,8 +751,8 @@ public class MultimapSubject extends Subject {
      * order.
      */
     @CanIgnoreReturnValue
-    public Ordered containsAtLeastEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
-      return internalContainsAtLeastEntriesIn(expectedMultimap);
+    public Ordered containsAtLeastEntriesIn(Multimap<?, ? extends E> expected) {
+      return internalContainsAtLeastEntriesIn(expected);
     }
 
     /*
@@ -772,7 +761,7 @@ public class MultimapSubject extends Subject {
      * edition).
      */
     private <K extends @Nullable Object, V extends E> Ordered internalContainsAtLeastEntriesIn(
-        Multimap<K, V> expectedMultimap) {
+        Multimap<K, V> expected) {
       // Note: The non-fuzzy MultimapSubject.containsAtLeastEntriesIn has a custom implementation
       // and produces somewhat better failure messages simply asserting about the iterables of
       // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
@@ -784,7 +773,7 @@ public class MultimapSubject extends Subject {
           .about(subject.iterableEntries())
           .that(checkNotNull(actual).entries())
           .comparingElementsUsing(MultimapSubject.<K, A, V>entryCorrespondence(correspondence))
-          .containsAtLeastElementsIn(expectedMultimap.entries());
+          .containsAtLeastElementsIn(expected.entries());
     }
 
     /**

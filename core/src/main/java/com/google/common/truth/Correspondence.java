@@ -862,7 +862,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
    */
   @Deprecated
   @Override
-  public final boolean equals(@Nullable Object o) {
+  public final boolean equals(@Nullable Object other) {
     throw new UnsupportedOperationException(
         "Correspondence.equals(object) is not supported. If you meant to compare objects, use"
             + " .compare(actual, expected) instead.");

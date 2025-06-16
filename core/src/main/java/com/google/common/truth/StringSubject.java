@@ -48,18 +48,18 @@ public class StringSubject extends ComparableSubject<String> {
    */
   @Override
   @Deprecated
-  public final void isEquivalentAccordingToCompareTo(@Nullable String other) {
-    super.isEquivalentAccordingToCompareTo(other);
+  public final void isEquivalentAccordingToCompareTo(@Nullable String expected) {
+    super.isEquivalentAccordingToCompareTo(expected);
   }
 
   /** Checks that the actual value has the given length. */
-  public void hasLength(int expectedLength) {
-    checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
+  public void hasLength(int length) {
+    checkArgument(length >= 0, "expected length (%s) must be >= 0", length);
     if (actual == null) {
-      failWithActual(fact("expected a string with length", expectedLength));
+      failWithActual(fact("expected a string with length", length));
       return;
     }
-    check("length()").that(actual.length()).isEqualTo(expectedLength);
+    check("length()").that(actual.length()).isEqualTo(length);
   }
 
   /** Checks that the actual value is the empty string. */
@@ -294,25 +294,25 @@ public class StringSubject extends ComparableSubject<String> {
      * Checks that the actual value is not equal to the given string (while ignoring case). The
      * meaning of equality is the same as for the {@link #isEqualTo} method.
      */
-    public void isNotEqualTo(@Nullable String unexpected) {
+    public void isNotEqualTo(@Nullable String other) {
       if (actual == null) {
-        if (unexpected == null) {
+        if (other == null) {
           failWithoutActual(
               fact("expected a string that is not equal to", "null (null reference)"),
               simpleFact("(case is ignored)"));
         }
       } else {
-        if (actual.equalsIgnoreCase(unexpected)) {
+        if (actual.equalsIgnoreCase(other)) {
           failWithoutActual(
-              fact("expected not to be", unexpected), butWas(), simpleFact("(case is ignored)"));
+              fact("expected not to be", other), butWas(), simpleFact("(case is ignored)"));
         }
       }
     }
 
     /** Checks that the actual value contains the given sequence (while ignoring case). */
-    public void contains(@Nullable CharSequence expectedSequence) {
-      checkNotNull(expectedSequence);
-      String expected = expectedSequence.toString();
+    public void contains(@Nullable CharSequence string) {
+      checkNotNull(string);
+      String expected = string.toString();
       if (actual == null) {
         failWithoutActual(
             fact("expected a string that contains", expected),
@@ -325,9 +325,9 @@ public class StringSubject extends ComparableSubject<String> {
     }
 
     /** Checks that the actual value does not contain the given sequence (while ignoring case). */
-    public void doesNotContain(@Nullable CharSequence expectedSequence) {
-      checkNotNull(expectedSequence);
-      String expected = expectedSequence.toString();
+    public void doesNotContain(@Nullable CharSequence string) {
+      checkNotNull(string);
+      String expected = string.toString();
       if (actual == null) {
         failWithoutActual(
             fact("expected a string that does not contain", expected),
