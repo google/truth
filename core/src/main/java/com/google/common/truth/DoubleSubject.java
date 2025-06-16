@@ -169,7 +169,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    *
    * @param tolerance an exclusive lower bound on the difference between the actual value and
    *     expected value allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@code Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   *     {@link Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public TolerantDoubleComparison isNotWithin(double tolerance) {
     return TolerantDoubleComparison.comparing(
@@ -212,7 +212,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
   /**
    * Asserts that the actual value is exactly equal to the given value, with equality defined as by
-   * {@code Double#equals}. This method is <i>not</i> recommended when the code under test is doing
+   * {@link Double#equals}. This method is <i>not</i> recommended when the code under test is doing
    * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
    * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
@@ -232,7 +232,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
   /**
    * Asserts that the actual value is not exactly equal to the given value, with equality defined as
-   * by {@code Double#equals}. See {@link #isEqualTo} for advice on when exact equality is
+   * by {link Double#equals}. See {@link #isEqualTo} for advice on when exact equality is
    * recommended. Use {@link #isNotWithin} for an assertion with a tolerance.
    *
    * <p><b>Note:</b> The assertion {@code isNotEqualTo(0.0)} passes for {@code -0.0}, and vice

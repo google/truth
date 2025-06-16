@@ -53,7 +53,10 @@ public class ThrowableSubject extends Subject {
    * as a suppressed exception
    */
 
-  /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
+  /**
+   * Returns a {@link StringSubject} to make assertions about the {@linkplain Throwable#getMessage
+   * message} of the {@link Throwable}.
+   */
   public final StringSubject hasMessageThat() {
     // We provide a more helpful error message if hasCauseThat() methods are chained too deep, as in
     // assertThat(new Exception()).hasCauseThat().hasMessageThat()....
@@ -73,9 +76,10 @@ public class ThrowableSubject extends Subject {
   }
 
   /**
-   * Returns a new {@code ThrowableSubject} that supports assertions on this throwable's direct
-   * cause. This method can be invoked repeatedly (e.g. {@code
-   * assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect cause.
+   * Returns a new {@link ThrowableSubject} to make assertions on the direct {@linkplain
+   * Throwable#getCause cause} of the {@link Throwable}. This method can be invoked repeatedly (e.g.
+   * {@code assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect
+   * cause.
    */
   // Any Throwable is fine, and we use plain Throwable to emphasize that it's not used "for real."
   @SuppressWarnings("ShouldNotSubclass")

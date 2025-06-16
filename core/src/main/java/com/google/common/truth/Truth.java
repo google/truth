@@ -129,8 +129,8 @@ public final class Truth {
   }
 
   /**
-   * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
-   * method creates instances of that class.
+   * Given a factory for some {@link Subject} class, returns a builder whose {@link
+   * SimpleSubjectBuilder#that that(actual)} method creates instances of that class.
    */
   public static <S extends Subject, T> SimpleSubjectBuilder<S, T> assertAbout(
       Subject.Factory<S, T> factory) {

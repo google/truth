@@ -72,8 +72,8 @@ import org.jspecify.annotations.Nullable;
  *
  * <ul>
  *   <li>Set an optional message with {@link #withMessage}.
- *   <li>Specify the type of {@code Subject} to create with {@link #about(Subject.Factory)}.
- *   <li>For the types of {@code Subject} built into Truth, directly specify the value under test
+ *   <li>Specify the type of {@link Subject} to create with {@link #about(Subject.Factory)}.
+ *   <li>For the types of {@link Subject} built into Truth, directly specify the value under test
  *       with {@link #that(Object)}.
  * </ul>
  *
@@ -87,7 +87,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class StandardSubjectBuilder {
   /**
-   * Returns a new instance that invokes the given {@code FailureStrategy} when a check fails. Most
+   * Returns a new instance that invokes the given {@link FailureStrategy} when a check fails. Most
    * users should not need this. If you think you do, see the documentation on {@link
    * FailureStrategy}.
    */
@@ -305,15 +305,19 @@ public class StandardSubjectBuilder {
   }
 
   /**
-   * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
-   * method creates instances of that class. Created subjects use the previously set failure
-   * strategy and any previously set failure message.
+   * Given a factory for some {@link Subject} class, returns a builder whose {@link
+   * SimpleSubjectBuilder#that that(actual)} method creates instances of that class. Created
+   * subjects use the previously set failure strategy and any previously set failure message.
    */
   public final <S extends Subject, A> SimpleSubjectBuilder<S, A> about(
       Subject.Factory<S, A> factory) {
     return SimpleSubjectBuilder.create(metadata(), factory);
   }
 
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
+   */
   public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(
       CustomSubjectBuilder.Factory<CustomSubjectBuilderT> factory) {
     return factory.createSubjectBuilder(metadata());
