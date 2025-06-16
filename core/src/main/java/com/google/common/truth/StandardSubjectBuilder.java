@@ -97,6 +97,10 @@ public class StandardSubjectBuilder {
 
   private final FailureMetadata metadataDoNotReferenceDirectly;
 
+  /**
+   * Constructor for use by {@link Expect}. To create an instance of {@link StandardSubjectBuilder},
+   * use {@link #forCustomFailureStrategy}.
+   */
   StandardSubjectBuilder(FailureMetadata metadata) {
     this.metadataDoNotReferenceDirectly = checkNotNull(metadata);
   }
