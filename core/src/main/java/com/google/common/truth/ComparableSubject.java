@@ -188,7 +188,14 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
     return (Comparable<Object>) actual;
   }
 
-  @SuppressWarnings("unchecked")
+  /*
+   * Every user-visible path for constructing a `ComparableSubject` requires a `T` instance, but we
+   * store the value in a field of type `Object` for J2CL reasons documented on the `actual` field.
+   *
+   * At runtime, this method will perform a cast to `Comparable`, so it could fail under J2CL. But
+   * it will never succeed in a way that introduces heap pollution.
+   */
+  @SuppressWarnings({"unchecked", "nullness"})
   private @Nullable T actualAsT() {
     return (T) actual;
   }
