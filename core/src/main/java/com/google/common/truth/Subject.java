@@ -380,24 +380,19 @@ public class Subject {
   }
 
   /**
-   * Supplies the direct string representation of the actual value to other methods which may prefix
-   * or otherwise position it in an error message. This should only be overridden to provide an
-   * improved string representation of the value under test, as it would appear in any given error
-   * message, and should not be used for additional prefixing.
+   * Returns a string representation of the actual value for inclusion in failure messages.
    *
    * <p>Subjects should override this with care.
    *
-   * <p>By default, this returns {@code String.valueOf(getActualValue())}.
+   * <p>By default, this method returns {@code String.valueOf(getActualValue())} for most types. It
+   * does have some special logic for a few cases, like arrays.
    */
   /*
-   * TODO(cpovirk): Consider whether this API pulls its weight. If users want to format the actual
-   * value, maybe they should do so themselves? Of course, they won't have a chance to use a custom
-   * format for inherited implementations like isEqualTo(). But if they want to format the actual
-   * value specially, then it seems likely that they'll want to format the expected value specially,
-   * too. And that applies just as well to APIs like isIn(). Maybe we'll want an API that supports
-   * formatting those values, too (like formatActualOrExpected below)? See also the related
-   * b/70930431. But note that we are likely to use this from FailureMetadata, at least in the short
-   * term, for better or for worse.
+   * TODO(cpovirk): Consider potential improvements to formatting APIs. For example, if users want
+   * to format the actual value specially, then it seems likely that they'll want to format the
+   * expected value specially, too. And that applies just as well to APIs like isIn(). Maybe we'll
+   * want an API that supports formatting those values, too (like formatActualOrExpected below)? See
+   * also the related b/70930431.
    */
   @ForOverride
   protected String actualCustomStringRepresentation() {
