@@ -946,7 +946,7 @@ public class IterableSubject extends Subject {
       this.pairer = null;
     }
 
-    UsingCorrespondence(
+    private UsingCorrespondence(
         IterableSubject subject,
         Correspondence<? super A, ? super E> correspondence,
         Pairer<A, E> pairer) {

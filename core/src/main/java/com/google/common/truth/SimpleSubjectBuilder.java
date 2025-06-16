@@ -35,7 +35,7 @@ public final class SimpleSubjectBuilder<SubjectT extends Subject, ActualT> {
   private final FailureMetadata metadata;
   private final Subject.Factory<SubjectT, ActualT> subjectFactory;
 
-  SimpleSubjectBuilder(
+  private SimpleSubjectBuilder(
       FailureMetadata metadata, Subject.Factory<SubjectT, ActualT> subjectFactory) {
     this.metadata = checkNotNull(metadata);
     this.subjectFactory = checkNotNull(subjectFactory);
@@ -43,5 +43,10 @@ public final class SimpleSubjectBuilder<SubjectT extends Subject, ActualT> {
 
   public SubjectT that(@Nullable ActualT actual) {
     return subjectFactory.createSubject(metadata, actual);
+  }
+
+  static <SubjectT extends Subject, ActualT> SimpleSubjectBuilder<SubjectT, ActualT> create(
+      FailureMetadata metadata, Subject.Factory<SubjectT, ActualT> subjectFactory) {
+    return new SimpleSubjectBuilder<>(metadata, subjectFactory);
   }
 }

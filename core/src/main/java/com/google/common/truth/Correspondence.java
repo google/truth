@@ -374,6 +374,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
    *     migration is usually to {@link #from}.
    */
   @Deprecated
+  private
   Correspondence() {}
 
   /**

@@ -311,7 +311,7 @@ public class StandardSubjectBuilder {
    */
   public final <S extends Subject, A> SimpleSubjectBuilder<S, A> about(
       Subject.Factory<S, A> factory) {
-    return new SimpleSubjectBuilder<>(metadata(), factory);
+    return SimpleSubjectBuilder.create(metadata(), factory);
   }
 
   public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(

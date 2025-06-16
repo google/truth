@@ -114,7 +114,7 @@ public final class FailureMetadata {
 
   private final ImmutableList<Step> steps;
 
-  FailureMetadata(
+  private FailureMetadata(
       FailureStrategy strategy, ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
     this.strategy = checkNotNull(strategy);
     this.messages = checkNotNull(messages);
