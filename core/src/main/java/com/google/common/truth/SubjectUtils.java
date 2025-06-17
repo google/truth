@@ -21,6 +21,7 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Multisets.immutableEntry;
 import static com.google.common.truth.NullnessCasts.uncheckedCastNullableTToT;
+import static com.google.common.truth.Platform.stringValueForFailure;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
@@ -81,7 +82,7 @@ final class SubjectUtils {
 
   static String entryString(Multiset.Entry<?> entry) {
     int count = entry.getCount();
-    String item = String.valueOf(entry.getElement());
+    String item = stringValueForFailure(entry.getElement());
     return (count > 1) ? item + " [" + count + " copies]" : item;
   }
 
@@ -256,12 +257,12 @@ final class SubjectUtils {
       Iterable<?> items, Iterable<?> itemsToCheck) {
     ListMultimap<String, @Nullable Object> stringValueToItemsToCheck = ArrayListMultimap.create();
     for (Object itemToCheck : itemsToCheck) {
-      stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
+      stringValueToItemsToCheck.put(stringValueForFailure(itemToCheck), itemToCheck);
     }
 
     List<@Nullable Object> result = new ArrayList<>();
     for (Object item : items) {
-      for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
+      for (Object itemToCheck : stringValueToItemsToCheck.get(stringValueForFailure(item))) {
         if (!Objects.equals(itemToCheck, item)) {
           result.add(item);
           break;

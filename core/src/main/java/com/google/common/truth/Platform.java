@@ -23,6 +23,7 @@ import static com.google.common.truth.SneakyThrows.sneakyThrow;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
@@ -172,8 +173,14 @@ final class Platform {
     return Float.toString(value);
   }
 
-  /** Turns a non-double, non-float object into a string. */
-  static String stringValueOfNonFloatingPoint(@Nullable Object o) {
+  /**
+   * Turns an object (typically an expected or actual value) into a string for use in a failure
+   * message. Note that this method does not handle floating-point values the way we want on all
+   * platforms, so some callers may wish to use {@link #doubleToString} or {@link #floatToString}
+   * where appropriate.
+   */
+  @SuppressWarnings("GoogleInternalApi")
+  static String stringValueForFailure(@Nullable Object o) {
     return String.valueOf(o);
   }
 
@@ -332,5 +339,11 @@ final class Platform {
     // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
     // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
     return false;
+  }
+
+  @SuppressWarnings("GoogleInternalApi")
+  static String lenientFormatForFailure(
+      @Nullable String template, @Nullable Object @Nullable ... args) {
+    return Strings.lenientFormat(template, args);
   }
 }

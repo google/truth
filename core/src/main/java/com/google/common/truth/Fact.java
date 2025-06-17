@@ -22,6 +22,7 @@ import static com.google.common.base.Strings.padEnd;
 import static com.google.common.base.Strings.padStart;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
+import static com.google.common.truth.Platform.stringValueForFailure;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
@@ -45,7 +46,7 @@ public final class Fact implements Serializable {
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
   public static Fact fact(String key, @Nullable Object value) {
-    return new Fact(key, String.valueOf(value), /* padStart= */ false);
+    return new Fact(key, stringValueForFailure(value), /* padStart= */ false);
   }
 
   /**

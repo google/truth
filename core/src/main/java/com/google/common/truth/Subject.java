@@ -27,7 +27,7 @@ import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.Platform.isKotlinRange;
 import static com.google.common.truth.Platform.kotlinRangeContains;
-import static com.google.common.truth.Platform.stringValueOfNonFloatingPoint;
+import static com.google.common.truth.Platform.stringValueForFailure;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
@@ -425,7 +425,7 @@ public class Subject {
        * formatActualOrExpected for its handling of byte[] and float/double? Or is there some other
        * restructuring of this set of methods that we should undertake?
        */
-      return stringValueOfNonFloatingPoint(o);
+      return stringValueForFailure(o);
     }
   }
 

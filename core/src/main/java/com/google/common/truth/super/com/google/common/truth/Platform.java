@@ -19,6 +19,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsProperty;
@@ -144,8 +145,13 @@ final class Platform {
     throw new Error();
   }-*/;
 
-  /** Turns a non-double, non-float object into a string. */
-  static String stringValueOfNonFloatingPoint(@Nullable Object o) {
+  /**
+   * Turns an object (typically an expected or actual value) into a string for use in a failure
+   * message. Note that this method does not handle floating-point values the way we want on all
+   * platforms, so some callers may wish to use {@link #doubleToString} or {@link #floatToString}
+   * where appropriate.
+   */
+  static String stringValueForFailure(@Nullable Object o) {
     // Check if we are in J2CL mode by probing a system property that only exists in GWT.
     boolean inJ2clMode = "doesntexist".equals(System.getProperty("superdevmode", "doesntexist"));
     if (inJ2clMode && o instanceof Message) {
@@ -266,6 +272,11 @@ final class Platform {
 
   static boolean classMetadataUnsupported() {
     return String.class.getSuperclass() == null;
+  }
+
+  static String lenientFormatForFailure(
+      @Nullable String template, @Nullable Object @Nullable ... args) {
+    return Strings.lenientFormat(template, args);
   }
 }
 

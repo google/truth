@@ -17,10 +17,11 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Platform.lenientFormatForFailure;
+import static com.google.common.truth.Platform.stringValueForFailure;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -436,7 +437,9 @@ public class MapSubject extends Subject {
   }
 
   private static String maybeAddType(@Nullable Object o, boolean includeTypes) {
-    return includeTypes ? lenientFormat("%s (%s)", o, objectToTypeName(o)) : String.valueOf(o);
+    return includeTypes
+        ? lenientFormatForFailure("%s (%s)", o, objectToTypeName(o))
+        : stringValueForFailure(o);
   }
 
   private static final class MapInOrder implements Ordered {

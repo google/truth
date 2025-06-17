@@ -25,6 +25,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
+import static com.google.common.truth.Platform.stringValueForFailure;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.asList;
@@ -108,7 +109,7 @@ public class IterableSubject extends Subject {
       // "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
       String objectToString =
           actual.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(actual));
-      if (actual.toString().equals(objectToString)) {
+      if (stringValueForFailure(actual).equals(objectToString)) {
         return Iterables.toString(actual);
       }
     }
@@ -655,7 +656,7 @@ public class IterableSubject extends Subject {
 
   private static boolean anyContainsCommaOrNewline(Iterable<Multiset.Entry<?>>... lists) {
     for (Multiset.Entry<?> entry : concat(lists)) {
-      String s = String.valueOf(entry.getElement());
+      String s = stringValueForFailure(entry.getElement());
       if (s.contains("\n") || s.contains(",")) {
         return true;
       }
