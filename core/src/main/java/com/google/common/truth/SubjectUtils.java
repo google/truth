@@ -15,10 +15,10 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Multisets.immutableEntry;
 import static com.google.common.truth.NullnessCasts.uncheckedCastNullableTToT;
 import static com.google.common.truth.Platform.stringValueForFailure;
@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Utility methods used in {@code Subject} implementors.
+ * Utility methods used in {@link Subject} implementors.
  *
  * @author Christian Gruber
  * @author Jens Nyman
@@ -98,8 +97,8 @@ final class SubjectUtils {
   }
 
   /**
-   * Makes a String representation of {@code items} with collapsed duplicates and additional class
-   * info.
+   * Makes a String representation of {@code itemsIterable} with collapsed duplicates and additional
+   * class info.
    *
    * <p>Example: {@code countDuplicatesAndAddTypeInfo([1, 2, 2, 3]) == "[1, 2 [3 copies]]
    * (java.lang.Integer)"} and {@code countDuplicatesAndAddTypeInfo([1, 2L]) == "[1
@@ -115,8 +114,12 @@ final class SubjectUtils {
   }
 
   /**
-   * Similar to {@link #countDuplicatesAndAddTypeInfo} and {@link #countDuplicates} but (a) only
-   * adds type info if requested and (b) returns a richer object containing the data.
+   * Similar to {@link #countDuplicatesAndAddTypeInfo} and {@link #countDuplicates} but:
+   *
+   * <ul>
+   *   <li>only adds type info if requested
+   *   <li>returns a richer object containing the data
+   * </ul>
    */
   static DuplicateGroupedAndTyped countDuplicatesAndMaybeAddTypeInfoReturnObject(
       Iterable<?> itemsIterable, boolean addTypeInfo) {
@@ -248,8 +251,8 @@ final class SubjectUtils {
 
   /**
    * Returns a new collection containing all elements in {@code items} for which there exists at
-   * least one element in {@code itemsToCheck} that has the same {@code toString()} value without
-   * being equal.
+   * least one element in {@code itemsToCheck} that has the same {@link String#valueOf(Object)}
+   * value without being equal.
    *
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
@@ -263,6 +266,7 @@ final class SubjectUtils {
     List<@Nullable Object> result = new ArrayList<>();
     for (Object item : items) {
       for (Object itemToCheck : stringValueToItemsToCheck.get(stringValueForFailure(item))) {
+        // This approach avoids hashing the items themselves.
         if (!Objects.equals(itemToCheck, item)) {
           result.add(item);
           break;
@@ -274,7 +278,7 @@ final class SubjectUtils {
 
   /**
    * Returns true if there is a pair of an item from {@code items1} and one in {@code items2} that
-   * has the same {@code toString()} value without being equal.
+   * has the same {@link String.valueOf(Object)} value without being equal.
    *
    * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
    */
@@ -306,6 +310,10 @@ final class SubjectUtils {
    * Returns the name of the single type of all given items or {@code null} if no such type exists.
    */
   private static @Nullable String getHomogeneousTypeName(Iterable<?> items) {
+    /*
+     * TODO(cpovirk): If we remove the null case below, just collect all the type names to a Set and
+     * return singleOrNull()?
+     */
     String homogeneousTypeName = null;
     for (Object item : items) {
       if (item == null) {
@@ -334,32 +342,24 @@ final class SubjectUtils {
     return itemsWithTypeInfo;
   }
 
-  static <T extends @Nullable Object> Collection<T> iterableToCollection(
-      @Nullable Iterable<T> iterable) {
-    // TODO(cpovirk): For null inputs, produce a better exception message (ideally in callers).
-    checkNotNull(iterable);
-    if (iterable instanceof Collection) {
-      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
-      // iterable, right? I sure hope so.
-      return (Collection<T>) iterable;
-    } else {
-      return Lists.newArrayList(iterable);
-    }
+  static <T extends @Nullable Object> Collection<T> iterableToCollection(Iterable<T> iterable) {
+    return iterable instanceof Collection
+        // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
+        // iterable, right? I sure hope so.
+        ? (Collection<T>) iterable
+        : newArrayList(iterable);
   }
 
   static <T extends @Nullable Object> List<T> iterableToList(Iterable<T> iterable) {
-    if (iterable instanceof List) {
-      return (List<T>) iterable;
-    } else {
-      return Lists.newArrayList(iterable);
-    }
+    return iterable instanceof List ? (List<T>) iterable : newArrayList(iterable);
   }
 
   /**
-   * Returns an iterable with all empty strings replaced by a non-empty human understandable
-   * indicator for an empty string.
+   * Returns an {@link Iterable} with each empty {@link String} replaced by a non-empty human
+   * understandable indicator for an empty {@link String}.
    *
-   * <p>Returns the given iterable if it contains no empty strings.
+   * @return a new {@link Iterable} with each empty {@link String} replaced or the given {@link
+   *     Iterable} if it contains no empty {@link String}
    */
   static <T extends @Nullable Object> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
     if (Iterables.contains(items, "")) {
@@ -387,18 +387,23 @@ final class SubjectUtils {
   }
 
   static <E> ImmutableList<E> append(E[] array, E e) {
-    return new ImmutableList.Builder<E>().add(array).add(e).build();
+    return ImmutableList.<E>builderWithExpectedSize(array.length + 1).add(array).add(e).build();
   }
 
   static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E e) {
-    return new ImmutableList.Builder<E>().addAll(list).add(e).build();
+    return ImmutableList.<E>builderWithExpectedSize(list.size() + 1).addAll(list).add(e).build();
   }
 
   static <E> ImmutableList<E> sandwich(E first, E[] array, E last) {
-    return new ImmutableList.Builder<E>().add(first).add(array).add(last).build();
+    return ImmutableList.<E>builderWithExpectedSize(array.length + 2)
+        .add(first)
+        .add(array)
+        .add(last)
+        .build();
   }
 
-  @SuppressWarnings("nullness") // TODO: b/316358623 - Remove suppression after fixing checker
+  // TODO: b/316358623 - Inline this helper method after fixing our nullness checker to not need it.
+  @SuppressWarnings("nullness") // the aforementioned checker bug
   static <E extends @Nullable Object> List<E> asList(E... a) {
     return Arrays.asList(a);
   }

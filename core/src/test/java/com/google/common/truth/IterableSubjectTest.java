@@ -50,6 +50,8 @@ import org.junit.runners.JUnit4;
   // We intentionally test mismatches.
   // TODO(cpovirk): Maybe suppress at a finer scope.
   "TruthIncompatibleType",
+  // We intentionally test the Iterable-accepting methods in addition to the varargs methods.
+  "TruthContainsExactlyElementsInUsage",
 })
 public class IterableSubjectTest {
 
@@ -102,6 +104,50 @@ public class IterableSubjectTest {
     assertFailureValue(e, "an instance of", "java.lang.Integer");
     assertFailureValue(e, "though it did contain", "[2 [2 copies]] (java.lang.Long)");
     assertFailureValue(e, "full contents", "[1, 2, 3, 2]");
+  }
+
+  @Test
+  public void iterableContainsFailsWithSameToStringLocalClass() {
+    class IntWrapper {
+      final int value;
+
+      IntWrapper(int value) {
+        this.value = value;
+      }
+
+      @Override
+      public boolean equals(Object obj) {
+        return obj instanceof IntWrapper && value == ((IntWrapper) obj).value;
+      }
+
+      @Override
+      public int hashCode() {
+        return value;
+      }
+
+      @Override
+      public String toString() {
+        return String.valueOf(value);
+      }
+    }
+
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(asList(1, 2)).contains(new IntWrapper(2)));
+    assertFailureKeys(
+        e,
+        "expected to contain",
+        "an instance of",
+        "but did not",
+        "though it did contain",
+        "full contents");
+    assertFailureValue(e, "expected to contain", "2");
+    /*
+     * We skip testing the value for "an instance of," which is something like
+     * "com.google.common.truth.IterableSubjectTest$1IntWrapper." We just want to make sure that we
+     * don't throw an exception from the lack of a canonical class name.
+     */
+    assertFailureValue(e, "though it did contain", "[2] (java.lang.Integer)");
+    assertFailureValue(e, "full contents", "[1, 2]");
   }
 
   @Test
@@ -1110,6 +1156,7 @@ public class IterableSubjectTest {
     assertThat((Iterable<?>) null).isEqualTo(null);
   }
 
+  @SuppressWarnings("UndefinedEquals") // It's well-defined when one value is null.
   @Test
   public void nullEqualToSomething() {
     expectFailure(

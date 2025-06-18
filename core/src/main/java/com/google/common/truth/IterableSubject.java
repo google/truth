@@ -275,7 +275,7 @@ public class IterableSubject extends Subject {
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(checkNotNull(this.actual));
-    Collection<?> expected = iterableToCollection(expectedIterable);
+    Collection<?> expected = iterableToCollection(checkNotNull(expectedIterable));
 
     List<@Nullable Object> missing = new ArrayList<>();
     List<@Nullable Object> actualNotInOrder = new ArrayList<>();
