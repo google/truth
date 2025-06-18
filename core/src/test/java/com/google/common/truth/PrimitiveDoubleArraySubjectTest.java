@@ -66,20 +66,20 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Success() {
+  public void isEqualTo_withoutToleranceParameter_success() {
     assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, 0.0, -0.0))
         .isEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, 0.0, -0.0));
   }
 
   @Test
   @GwtIncompatible("gwt Arrays.equals(double[], double[])")
-  public void isEqualTo_WithoutToleranceParameter_NaN_Success() {
+  public void isEqualTo_withoutToleranceParameter_naN_success() {
     assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
         .isEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
+  public void isEqualTo_withoutToleranceParameter_fail_notEqual() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array(2.2d)).isEqualTo(array(OVER_2POINT2)));
     assertFailureValue(e, "expected", "[2.2000000000000006]");
@@ -88,12 +88,12 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
+  public void isEqualTo_withoutToleranceParameter_fail_differentOrder() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d)));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
+  public void isEqualTo_withoutToleranceParameter_fail_longer() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d)));
@@ -103,12 +103,12 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
+  public void isEqualTo_withoutToleranceParameter_fail_shorter() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d)).isEqualTo(array(2.2d)));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
+  public void isEqualTo_withoutToleranceParameter_fail_plusMinusZero() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array(0.0d)).isEqualTo(array(-0.0d)));
     assertFailureValue(e, "expected", "[-0.0]");
@@ -116,12 +116,12 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
+  public void isEqualTo_withoutToleranceParameter_fail_notAnArray() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object()));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
+  public void isNotEqualTo_withoutToleranceParameter_failEquals() {
     expectFailure(
         whenTesting ->
             whenTesting
@@ -130,7 +130,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_NaN_plusZero_FailEquals() {
+  public void isNotEqualTo_withoutToleranceParameter_naN_plusZero_failEquals() {
     expectFailure(
         whenTesting ->
             whenTesting
@@ -140,32 +140,32 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_NotEqual() {
+  public void isNotEqualTo_withoutToleranceParameter_success_notEqual() {
     assertThat(array(2.2d)).isNotEqualTo(array(OVER_2POINT2));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_DifferentOrder() {
+  public void isNotEqualTo_withoutToleranceParameter_success_differentOrder() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(3.3d, 2.2d));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_Longer() {
+  public void isNotEqualTo_withoutToleranceParameter_success_longer() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d, 4.4d));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_Shorter() {
+  public void isNotEqualTo_withoutToleranceParameter_success_shorter() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_PlusMinusZero() {
+  public void isNotEqualTo_withoutToleranceParameter_success_plusMinusZero() {
     assertThat(array(0.0d)).isNotEqualTo(array(-0.0d));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_NotAnArray() {
+  public void isNotEqualTo_withoutToleranceParameter_success_notAnArray() {
     assertThat(array(2.2d, 3.3d, 4.4d)).isNotEqualTo(new Object());
   }
 

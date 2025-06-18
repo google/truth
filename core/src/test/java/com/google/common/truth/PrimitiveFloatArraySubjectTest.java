@@ -69,13 +69,13 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Success() {
+  public void isEqualTo_withoutToleranceParameter_success() {
     assertThat(array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f))
         .isEqualTo(array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
+  public void isEqualTo_withoutToleranceParameter_fail_notEqual() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(array(2.2f)).isEqualTo(array(JUST_OVER_2POINT2)));
@@ -86,12 +86,12 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
+  public void isEqualTo_withoutToleranceParameter_fail_differentOrder() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f)));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
+  public void isEqualTo_withoutToleranceParameter_fail_longer() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(array(2.2f, 3.3f)).isEqualTo(array(2.2f, 3.3f, 4.4f)));
@@ -101,12 +101,12 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
+  public void isEqualTo_withoutToleranceParameter_fail_shorter() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2f, 3.3f)).isEqualTo(array(2.2f)));
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
+  public void isEqualTo_withoutToleranceParameter_fail_plusMinusZero() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array(0.0f)).isEqualTo(array(-0.0f)));
     assertFailureValue(e, "expected", "[-0.0]");
@@ -114,12 +114,12 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
+  public void isEqualTo_withoutToleranceParameter_fail_notAnArray() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object()));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
+  public void isNotEqualTo_withoutToleranceParameter_failEquals() {
     expectFailure(
         whenTesting ->
             whenTesting
@@ -129,32 +129,32 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_NotEqual() {
+  public void isNotEqualTo_withoutToleranceParameter_success_notEqual() {
     assertThat(array(2.2f)).isNotEqualTo(array(JUST_OVER_2POINT2));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_DifferentOrder() {
+  public void isNotEqualTo_withoutToleranceParameter_success_differentOrder() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(3.3f, 2.2f));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_Longer() {
+  public void isNotEqualTo_withoutToleranceParameter_success_longer() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f, 4.4f));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_Shorter() {
+  public void isNotEqualTo_withoutToleranceParameter_success_shorter() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_PlusMinusZero() {
+  public void isNotEqualTo_withoutToleranceParameter_success_plusMinusZero() {
     assertThat(array(0.0f)).isNotEqualTo(array(-0.0f));
   }
 
   @Test
-  public void isNotEqualTo_WithoutToleranceParameter_Success_NotAnArray() {
+  public void isNotEqualTo_withoutToleranceParameter_success_notAnArray() {
     assertThat(array(2.2f, 3.3f, 4.4f)).isNotEqualTo(new Object());
   }
 

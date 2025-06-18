@@ -40,7 +40,7 @@ public class PrimitiveIntArraySubjectTest {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isEqualTo_Same() {
+  public void isEqualTo_same() {
     int[] same = array(2, 5);
     assertThat(same).isEqualTo(same);
   }
@@ -104,7 +104,7 @@ public class PrimitiveIntArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrdering() {
+  public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array(2, 3)).isEqualTo(array(3, 2)));
     assertFailureKeys(e, "expected", "but was", "differs at index");
@@ -114,33 +114,33 @@ public class PrimitiveIntArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_fail_notAnArray() {
     expectFailure(whenTesting -> whenTesting.that(array(2, 3, 4)).isEqualTo(new Object()));
   }
 
   @Test
-  public void isNotEqualTo_SameLengths() {
+  public void isNotEqualTo_sameLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(3, 2));
   }
 
   @Test
-  public void isNotEqualTo_DifferentLengths() {
+  public void isNotEqualTo_differentLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(2, 3, 1));
   }
 
   @Test
-  public void isNotEqualTo_DifferentTypes() {
+  public void isNotEqualTo_differentTypes() {
     assertThat(array(2, 3)).isNotEqualTo(new Object());
   }
 
   @Test
-  public void isNotEqualTo_FailEquals() {
+  public void isNotEqualTo_failEquals() {
     expectFailure(whenTesting -> whenTesting.that(array(2, 3)).isNotEqualTo(array(2, 3)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isNotEqualTo_FailSame() {
+  public void isNotEqualTo_failSame() {
     int[] same = array(2, 3);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }

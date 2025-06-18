@@ -39,7 +39,7 @@ public class PrimitiveBooleanArraySubjectTest {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isEqualTo_Same() {
+  public void isEqualTo_same() {
     boolean[] same = array(true, false, true);
     assertThat(same).isEqualTo(same);
   }
@@ -50,7 +50,7 @@ public class PrimitiveBooleanArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrdering() {
+  public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -59,35 +59,35 @@ public class PrimitiveBooleanArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_fail_notAnArray() {
     expectFailure(
         whenTesting -> whenTesting.that(array(true, false, true)).isEqualTo(new Object()));
   }
 
   @Test
-  public void isNotEqualTo_SameLengths() {
+  public void isNotEqualTo_sameLengths() {
     assertThat(array(true, false)).isNotEqualTo(array(true, true));
   }
 
   @Test
-  public void isNotEqualTo_DifferentLengths() {
+  public void isNotEqualTo_differentLengths() {
     assertThat(array(true, false)).isNotEqualTo(array(true, false, true));
   }
 
   @Test
-  public void isNotEqualTo_DifferentTypes() {
+  public void isNotEqualTo_differentTypes() {
     assertThat(array(true, false)).isNotEqualTo(new Object());
   }
 
   @Test
-  public void isNotEqualTo_FailEquals() {
+  public void isNotEqualTo_failEquals() {
     expectFailure(
         whenTesting -> whenTesting.that(array(true, false)).isNotEqualTo(array(true, false)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isNotEqualTo_FailSame() {
+  public void isNotEqualTo_failSame() {
     boolean[] same = array(true, false);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }

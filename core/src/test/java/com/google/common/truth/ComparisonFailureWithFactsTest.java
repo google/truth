@@ -267,7 +267,7 @@ public class ComparisonFailureWithFactsTest {
 
   @GwtIncompatible
   @Test
-  public void serialization_ComparisonFailureWithFacts() {
+  public void serialization_comparisonFailureWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
     ImmutableList<Fact> facts = ImmutableList.of(fact("first", "value"), simpleFact("second"));
     String expected = "expected";
@@ -288,7 +288,7 @@ public class ComparisonFailureWithFactsTest {
 
   @GwtIncompatible
   @Test
-  public void serialization_AssertionErrorWithFacts() {
+  public void serialization_assertionErrorWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
     ImmutableList<Fact> facts = ImmutableList.of(fact("first", "value"), simpleFact("second"));
     Throwable cause = new Throwable("cause");
@@ -304,7 +304,7 @@ public class ComparisonFailureWithFactsTest {
 
   @GwtIncompatible
   @Test
-  public void serialization_Fact() {
+  public void serialization_fact() {
     Fact original = fact("first", "value");
     Fact reserialized = reserialize(original);
     assertThat(reserialized.key).isEqualTo(original.key);

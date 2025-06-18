@@ -47,7 +47,7 @@ public class PrimitiveByteArraySubjectTest {
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isEqualTo_Same() {
+  public void isEqualTo_same() {
     byte[] same = array(BYTE_0, BYTE_1);
     assertThat(same).isEqualTo(same);
   }
@@ -58,7 +58,7 @@ public class PrimitiveByteArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrdering() {
+  public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -72,7 +72,7 @@ public class PrimitiveByteArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_fail_notAnArray() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {}));
@@ -82,29 +82,29 @@ public class PrimitiveByteArraySubjectTest {
   }
 
   @Test
-  public void isNotEqualTo_SameLengths() {
+  public void isNotEqualTo_sameLengths() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0));
   }
 
   @Test
-  public void isNotEqualTo_DifferentLengths() {
+  public void isNotEqualTo_differentLengths() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0, BYTE_2));
   }
 
   @Test
-  public void isNotEqualTo_DifferentTypes() {
+  public void isNotEqualTo_differentTypes() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(new Object());
   }
 
   @Test
-  public void isNotEqualTo_FailEquals() {
+  public void isNotEqualTo_failEquals() {
     expectFailure(
         whenTesting -> whenTesting.that(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1)));
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void isNotEqualTo_FailSame() {
+  public void isNotEqualTo_failSame() {
     byte[] same = array(BYTE_0, BYTE_1);
     expectFailure(whenTesting -> whenTesting.that(same).isNotEqualTo(same));
   }
