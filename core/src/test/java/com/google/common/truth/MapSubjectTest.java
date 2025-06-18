@@ -34,6 +34,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -52,7 +53,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsExactlyWithNullKey() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, String> actual = new HashMap<>();
     actual.put(null, "value");
 
     assertThat(actual).containsExactly(null, "value");
@@ -63,7 +64,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsExactlyWithNullValue() {
-    Map<String, String> actual = new HashMap<>();
+    Map<String, @Nullable String> actual = new HashMap<>();
     actual.put("key", null);
 
     assertThat(actual).containsExactly("key", null);
@@ -450,10 +451,10 @@ public class MapSubjectTest {
 
   @Test
   public void containsAtLeastWithNullKey() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, String> actual = new HashMap<>();
     actual.put(null, "value");
     actual.put("unexpectedKey", "unexpectedValue");
-    Map<String, String> expected = new HashMap<>();
+    Map<@Nullable String, String> expected = new HashMap<>();
     expected.put(null, "value");
 
     assertThat(actual).containsAtLeast(null, "value");
@@ -464,10 +465,10 @@ public class MapSubjectTest {
 
   @Test
   public void containsAtLeastWithNullValue() {
-    Map<String, String> actual = new HashMap<>();
+    Map<String, @Nullable String> actual = new HashMap<>();
     actual.put("key", null);
     actual.put("unexpectedKey", "unexpectedValue");
-    Map<String, String> expected = new HashMap<>();
+    Map<String, @Nullable String> expected = new HashMap<>();
     expected.put("key", null);
 
     assertThat(actual).containsAtLeast("key", null);
@@ -842,8 +843,7 @@ public class MapSubjectTest {
 
   @Test
   public void isEqualToFailureDiffering_sameToString() {
-    ImmutableMap<String, Number> actual =
-        ImmutableMap.<String, Number>of("jan", 1, "feb", 2, "march", 3L);
+    ImmutableMap<String, Number> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3L);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     AssertionError e =
@@ -1022,7 +1022,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullKey() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, String> actual = new HashMap<>();
     actual.put(null, "null");
     assertThat(actual).containsKey(null);
   }
@@ -1047,7 +1047,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullKey() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, String> actual = new HashMap<>();
     actual.put(null, "null");
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).doesNotContainKey(null));
@@ -1137,14 +1137,14 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullEntry() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, @Nullable String> actual = new HashMap<>();
     actual.put(null, null);
     assertThat(actual).containsEntry(null, null);
   }
 
   @Test
   public void containsNullEntryValue() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, @Nullable String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry("kurt", null));
@@ -1163,7 +1163,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsNullEntryKey() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, @Nullable String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry(null, "kluever"));
@@ -1209,7 +1209,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullEntry() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, @Nullable String> actual = new HashMap<>();
     actual.put(null, null);
     assertThat(actual).doesNotContainEntry("kurt", null);
     assertThat(actual).doesNotContainEntry(null, "kluever");
@@ -1217,7 +1217,7 @@ public class MapSubjectTest {
 
   @Test
   public void doesNotContainNullEntryFailure() {
-    Map<String, String> actual = new HashMap<>();
+    Map<@Nullable String, @Nullable String> actual = new HashMap<>();
     actual.put(null, null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).doesNotContainEntry(null, null));
@@ -1266,7 +1266,7 @@ public class MapSubjectTest {
 
   @Test
   public void containsKeyWithNullValueNullExpected() {
-    Map<String, String> actual = new HashMap<>();
+    Map<String, @Nullable String> actual = new HashMap<>();
     actual.put("a", null);
     assertThat(actual).containsEntry("a", null);
   }
@@ -1285,7 +1285,7 @@ public class MapSubjectTest {
 
   @Test
   public void failMapContainsKeyWithNullValuePresentExpected() {
-    Map<String, String> actual = new HashMap<>();
+    Map<String, @Nullable String> actual = new HashMap<>();
     actual.put("a", null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry("a", "A"));
@@ -1390,7 +1390,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesFormatDiffExceptions() {
-    Map<String, Integer> actual = new LinkedHashMap<>();
+    Map<String, @Nullable Integer> actual = new LinkedHashMap<>();
     actual.put("abc", 35);
     actual.put("def", null);
     AssertionError e =
@@ -1423,7 +1423,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesExceptions_expectedKeyHasWrongValue() {
-    Map<Integer, String> actual = new LinkedHashMap<>();
+    Map<Integer, @Nullable String> actual = new LinkedHashMap<>();
     actual.put(1, "one");
     actual.put(2, null);
     AssertionError e =
@@ -1451,7 +1451,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesExceptions_wrongKeyHasExpectedValue() {
-    Map<Integer, String> actual = new LinkedHashMap<>();
+    Map<Integer, @Nullable String> actual = new LinkedHashMap<>();
     actual.put(1, null);
     actual.put(2, "three");
     AssertionError e =
@@ -1522,7 +1522,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_doesNotContainEntry_handlesException() {
-    Map<Integer, String> actual = new LinkedHashMap<>();
+    Map<Integer, @Nullable String> actual = new LinkedHashMap<>();
     actual.put(1, "one");
     actual.put(2, null);
     AssertionError e =
@@ -1668,7 +1668,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsExactly_handlesExceptions() {
-    Map<Integer, String> actual = new LinkedHashMap<>();
+    Map<Integer, @Nullable String> actual = new LinkedHashMap<>();
     actual.put(1, "one");
     actual.put(2, null);
     AssertionError e =
@@ -1714,7 +1714,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsExactly_wrongValueTypeInActual() {
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -1925,7 +1925,7 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_handlesFormatDiffExceptions() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
-    Map<String, Integer> actual = new LinkedHashMap<>();
+    Map<String, @Nullable Integer> actual = new LinkedHashMap<>();
     actual.put("abc", 35);
     actual.put("def", null);
     actual.put("ghi", 95);
@@ -2002,7 +2002,7 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_wrongValueTypeInActual() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -2118,7 +2118,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsAtLeast_handlesExceptions() {
-    Map<Integer, String> actual = new LinkedHashMap<>();
+    Map<Integer, @Nullable String> actual = new LinkedHashMap<>();
     actual.put(1, "one");
     actual.put(2, null);
     actual.put(3, "three");
@@ -2169,7 +2169,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsAtLeast_wrongValueTypeInExpectedActual() {
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -2196,7 +2196,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsAtLeast_wrongValueTypeInUnexpectedActual_success() {
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("abc", 123);
@@ -2358,7 +2358,7 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsAtLeastEntriesIn_handlesFormatDiffExceptions() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
-    Map<String, Integer> actual = new LinkedHashMap<>();
+    Map<String, @Nullable Integer> actual = new LinkedHashMap<>();
     actual.put("abc", 35);
     actual.put("def", null);
     actual.put("ghi", 95);
@@ -2425,7 +2425,7 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsAtLeastEntriesIn_wrongValueTypeInExpectedActual() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456);
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -2454,7 +2454,7 @@ public class MapSubjectTest {
   public void
       comparingValuesUsing_containsAtLeastEntriesIn_wrongValueTypeInUnexpectedActual_success() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 123);
-    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.of("abc", "123", "def", 456);
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);

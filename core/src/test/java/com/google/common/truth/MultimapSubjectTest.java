@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -225,7 +226,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void containsKeyNull() {
-    Multimap<String, String> multimap = HashMultimap.create();
+    Multimap<@Nullable String, @Nullable String> multimap = HashMultimap.create();
     multimap.put(null, "null");
     assertThat(multimap).containsKey(null);
   }
@@ -283,7 +284,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void doesNotContainNullKeyFailure() {
-    Multimap<String, String> multimap = HashMultimap.create();
+    Multimap<@Nullable String, String> multimap = HashMultimap.create();
     multimap.put(null, "null");
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(multimap).doesNotContainKey(null));
@@ -311,7 +312,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void containsEntryWithNullValueNullExpected() {
-    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    ListMultimap<String, @Nullable String> actual = ArrayListMultimap.create();
     actual.put("a", null);
     assertThat(actual).containsEntry("a", null);
   }
@@ -342,7 +343,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void failContainsEntryWithNullValuePresentExpected() {
-    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    ListMultimap<String, @Nullable String> actual = ArrayListMultimap.create();
     actual.put("a", null);
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).containsEntry("a", "A"));
@@ -669,7 +670,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void containsExactlyVarargWithNull() {
-    Multimap<Integer, String> listMultimap =
+    Multimap<Integer, @Nullable String> listMultimap =
         LinkedListMultimap.create(ImmutableListMultimap.of(1, "one", 3, "six", 3, "two"));
     listMultimap.put(4, null);
 
@@ -1002,7 +1003,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void containsAtLeastVarargWithNull() {
-    Multimap<Integer, String> listMultimap =
+    Multimap<Integer, @Nullable String> listMultimap =
         LinkedListMultimap.create(ImmutableListMultimap.of(1, "one", 3, "six", 3, "two"));
     listMultimap.put(4, null);
 
@@ -1177,7 +1178,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesException_expectedKeyHasWrongValues() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, "two");
     actual.put(2, "deux");
@@ -1207,7 +1208,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesException_wrongKeyHasExpectedValue() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(3, "two");
     actual.put(3, null);
@@ -1238,7 +1239,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_handlesException_alwaysFails() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, "two");
     actual.put(2, null);
@@ -1344,7 +1345,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_doesNotContainEntry_handlesException_didContainEntry() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, "two");
     actual.put(2, null);
@@ -1373,7 +1374,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_doesNotContainEntry_handlesException_didNotContainEntry() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, "two");
     actual.put(2, "deux");
@@ -1509,7 +1510,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_handlesException() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, null);
     actual.put(2, "deux");
@@ -1542,12 +1543,12 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_handlesException_alwaysFails() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, null);
     actual.put(2, "two");
     actual.put(2, "deux");
-    ListMultimap<Integer, String> expected = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> expected = LinkedListMultimap.create();
     expected.put(1, "ONE");
     expected.put(2, "TWO");
     expected.put(2, "DEUX");
@@ -1579,8 +1580,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.<String, Object>of(
-            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999);
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
     AssertionError e =
@@ -1747,8 +1747,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsExactly_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.<String, Object>of(
-            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999);
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -1775,7 +1774,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsExactly_nullKey() {
-    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    ListMultimap<@Nullable String, String> actual = ArrayListMultimap.create();
     actual.put(null, "+123");
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -1883,7 +1882,7 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsAtLeastEntriesIn_handlesException() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, null);
     actual.put(2, "deux");
@@ -1914,12 +1913,12 @@ public class MultimapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsAtLeastEntriesIn_handlesException_alwaysFails() {
-    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> actual = LinkedListMultimap.create();
     actual.put(1, "one");
     actual.put(2, null);
     actual.put(2, "two");
     actual.put(2, "deux");
-    ListMultimap<Integer, String> expected = LinkedListMultimap.create();
+    ListMultimap<Integer, @Nullable String> expected = LinkedListMultimap.create();
     expected.put(1, "ONE");
     expected.put(2, "TWO");
     expected.put(2, "DEUX");
@@ -1952,8 +1951,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsAtLeastEntriesIn_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.<String, Object>of(
-            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999);
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
     AssertionError e =
@@ -2095,8 +2093,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsAtLeast_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.<String, Object>of(
-            "abc", "+123", "def", "+64", "def", "0x40", "def", 999, "m", "+1");
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999, "m", "+1");
     AssertionError e =
         expectFailure(
             whenTesting ->
