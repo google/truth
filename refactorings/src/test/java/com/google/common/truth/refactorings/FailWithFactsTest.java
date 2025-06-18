@@ -21,14 +21,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** @author cpovirk@google.com (Chris Povirk) */
 @RunWith(JUnit4.class)
 public class FailWithFactsTest {
   private final CompilationTestHelper compilationHelper =
       CompilationTestHelper.newInstance(FailWithFacts.class, getClass());
 
   @Test
-  public void testPositiveCase() {
+  public void positiveCase() {
     compilationHelper.addSourceFile("testdata/FailWithFactsPositiveCases.java").doTest();
   }
 }

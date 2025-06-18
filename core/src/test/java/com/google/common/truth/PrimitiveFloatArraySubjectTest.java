@@ -56,7 +56,7 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   @GwtIncompatible("Math.nextAfter")
-  public void testFloatConstants_matchNextAfter() {
+  public void floatConstants_matchNextAfter() {
     assertThat(nextAfter(2.2f, POSITIVE_INFINITY)).isEqualTo(JUST_OVER_2POINT2);
     assertThat(nextAfter(3.3f, POSITIVE_INFINITY)).isEqualTo(JUST_OVER_3POINT3);
     assertThat(nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_3POINT3);

@@ -91,12 +91,12 @@ public class LongSubjectTest {
 
   @SuppressWarnings("SelfAssertion")
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
+  public void numericTypeWithSameValue_shouldBeEqual_long_long() {
     expectFailure(whenTesting -> whenTesting.that(42L).isNotEqualTo(42L));
   }
 
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_int() {
+  public void numericTypeWithSameValue_shouldBeEqual_long_int() {
     expectFailure(whenTesting -> whenTesting.that(42L).isNotEqualTo(42));
   }
 

@@ -57,7 +57,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isEqualTo() {
+  public void plain_isEqualTo() {
     expectThat(mapOf(1, message1, 2, message2)).isEqualTo(mapOf(2, eqMessage2, 1, eqMessage1));
     expectThat(mapOf(1, message2)).isNotEqualTo(mapOf(1, message1));
 
@@ -71,7 +71,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isEmpty() {
+  public void plain_isEmpty() {
     expectThat(ImmutableMap.<Object, Message>of()).isEmpty();
     expectThat(mapOf(1, message1)).isNotEmpty();
 
@@ -83,7 +83,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_hasSize() {
+  public void plain_hasSize() {
     expectThat(mapOf(1, message1, 2, message2)).hasSize(2);
 
     expectFailureWhenTesting().that(mapOf(1, message1)).hasSize(3);
@@ -91,7 +91,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsKey() {
+  public void plain_containsKey() {
     expectThat(mapOf(1, message1, 2, message2)).containsKey(1);
     expectThat(mapOf(1, message1, 2, message2)).doesNotContainKey(3);
 
@@ -103,7 +103,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsEntry() {
+  public void plain_containsEntry() {
     expectThat(mapOf(1, message1, 2, message2)).containsEntry(2, eqMessage2);
     expectThat(mapOf(1, message1, 2, message2)).doesNotContainEntry(1, eqMessage2);
 
@@ -117,7 +117,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsExactly() {
+  public void plain_containsExactly() {
     expectThat(mapOf(1, message1, 2, message2)).containsExactly(2, eqMessage2, 1, eqMessage1);
     expectThat(mapOf(1, message1, 2, message2))
         .containsExactly(1, eqMessage1, 2, eqMessage2)
@@ -152,7 +152,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsEntry() {
+  public void fluent_containsEntry() {
     expectThat(mapOf(1, message1, 2, message2))
         .ignoringFieldsForValues(ignoreFieldNumber)
         .containsEntry(1, eqIgnoredMessage1);
@@ -186,7 +186,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsExactly() {
+  public void fluent_containsExactly() {
     expectThat(mapOf(1, message1, 2, message2))
         .ignoringFieldsForValues(ignoreFieldNumber)
         .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1);
@@ -230,7 +230,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testCompareMultipleMessageTypes() {
+  public void compareMultipleMessageTypes() {
     // Don't run this test twice.
     if (!testIsRunOnce()) {
       return;
@@ -249,7 +249,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMethodNamesEndWithForValues() {
+  public void methodNamesEndWithForValues() {
     checkMethodNamesEndWithForValues(MapWithProtoValuesSubject.class, MapSubject.class);
     checkMethodNamesEndWithForValues(MapWithProtoValuesFluentAssertion.class, MapSubject.class);
   }

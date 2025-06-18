@@ -19,7 +19,6 @@ import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 
-import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -27,9 +26,8 @@ import org.junit.runners.JUnit4;
 /** Tests of {@link ExpectFailure}'s Java 8 support. */
 @RunWith(JUnit4.class)
 public final class ExpectFailure8Test {
-
   @Test
-  public void testExpectFailure() {
+  public void builtInSubject() {
     AssertionError failure1 = expectFailure(whenTesting -> whenTesting.that(4).isEqualTo(5));
     assertThat(failure1).factValue("expected").isEqualTo("5");
 
@@ -39,10 +37,7 @@ public final class ExpectFailure8Test {
   }
 
   @Test
-  public void testExpectFailureAbout() {
-    expectFailureAbout(
-        StringSubject::new,
-        (SimpleSubjectBuilderCallback<StringSubject, String>)
-            whenTesting -> whenTesting.that("foo").contains("bar"));
+  public void subjectFactory() {
+    expectFailureAbout(StringSubject::new, whenTesting -> whenTesting.that("foo").contains("bar"));
   }
 }

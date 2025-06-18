@@ -53,7 +53,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   @GwtIncompatible("Math.nextAfter")
-  public void testDoubleConstants_matchNextAfter() {
+  public void doubleConstants_matchNextAfter() {
     assertThat(nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_2);
     assertThat(nextAfter(2.2 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_2POINT2);
     assertThat(nextAfter(2.2 + DEFAULT_TOLERANCE, POSITIVE_INFINITY))

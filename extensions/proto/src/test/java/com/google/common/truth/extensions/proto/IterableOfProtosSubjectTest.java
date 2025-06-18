@@ -60,7 +60,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isEmpty() {
+  public void plain_isEmpty() {
     expectThat(ImmutableList.<Message>of()).isEmpty();
     expectThat(listOf(message1)).isNotEmpty();
 
@@ -72,7 +72,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_hasSize() {
+  public void plain_hasSize() {
     expectThat(listOf(message1, message2)).hasSize(2);
 
     expectFailureWhenTesting().that(listOf(message1)).hasSize(3);
@@ -80,7 +80,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsNoDuplicates() {
+  public void plain_containsNoDuplicates() {
     expectThat(listOf(message1, message2)).containsNoDuplicates();
 
     expectFailureWhenTesting().that(listOf(message1, eqMessage1)).containsNoDuplicates();
@@ -88,7 +88,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_contains() {
+  public void plain_contains() {
     expectThat(listOf(message1, message2)).contains(eqMessage2);
     expectThat(listOf(message1, message2)).doesNotContain(eqIgnoredMessage1);
 
@@ -100,7 +100,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsAny() {
+  public void plain_containsAny() {
     expectThat(listOf(message1, message2)).containsAnyOf(eqIgnoredMessage1, eqMessage2);
     expectThat(listOf(message1, message2)).containsAnyIn(listOf(eqIgnoredMessage1, eqMessage2));
     expectThat(listOf(message1, message2)).containsAnyIn(arrayOf(eqIgnoredMessage1, eqMessage2));
@@ -122,7 +122,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsAtLeast() {
+  public void plain_containsAtLeast() {
     expectThat(listOf(message1, message2, eqIgnoredMessage1))
         .containsAtLeast(eqMessage1, eqMessage2);
     expectThat(listOf(message1, message2, eqIgnoredMessage1))
@@ -145,7 +145,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsExactly() {
+  public void plain_containsExactly() {
     expectThat(listOf(message1, message2)).containsExactly(eqMessage2, eqMessage1);
     expectThat(listOf(message1, message2)).containsExactly(eqMessage1, eqMessage2).inOrder();
     expectThat(listOf(message1, message2))
@@ -192,7 +192,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsNone() {
+  public void plain_containsNone() {
     expectThat(listOf(message1)).containsNoneOf(eqMessage2, eqIgnoredMessage1);
     expectThat(listOf(message1)).containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
     expectThat(listOf(message1)).containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
@@ -214,7 +214,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isInOrder() {
+  public void plain_isInOrder() {
     expectThat(listOf(message1, eqMessage1, message2)).isInOrder(compareByOIntAscending());
     expectThat(listOf(message1, message2)).isInStrictOrder(compareByOIntAscending());
 
@@ -228,7 +228,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_contains() {
+  public void fluent_contains() {
     expectThat(listOf(message1, message2))
         .ignoringFields(ignoreFieldNumber)
         .contains(eqIgnoredMessage1);
@@ -262,7 +262,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsAny() {
+  public void fluent_containsAny() {
     expectThat(listOf(message1, message2))
         .ignoringFields(ignoreFieldNumber)
         .containsAnyOf(eqIgnoredMessage1, eqRepeatedMessage2);
@@ -296,7 +296,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsAtLeast() {
+  public void fluent_containsAtLeast() {
     expectThat(listOf(message1, message2, eqRepeatedMessage2))
         .ignoringFields(ignoreFieldNumber)
         .containsAtLeast(eqIgnoredMessage1, eqIgnoredMessage2);
@@ -326,7 +326,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsExactly() {
+  public void fluent_containsExactly() {
     expectThat(listOf(message1, message2))
         .ignoringFields(ignoreFieldNumber)
         .containsExactly(eqIgnoredMessage2, eqIgnoredMessage1);
@@ -370,7 +370,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsNone() {
+  public void fluent_containsNone() {
     expectThat(listOf(message1))
         .ignoringFields(ignoreFieldNumber)
         .containsNoneOf(eqMessage2, eqRepeatedMessage1);
@@ -404,7 +404,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_correspondenceToString() {
+  public void fluent_correspondenceToString() {
     // Some arbitrary tests to ensure Correspondence.toString() is well-behaved.
     // Not intended to be comprehensive.
 
@@ -465,7 +465,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFormatDiff() {
+  public void formatDiff() {
     expectFailureWhenTesting()
         .that(listOf(message1))
         .ignoringRepeatedFieldOrder()
@@ -482,7 +482,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testDisplayingDiffsPairedBy() {
+  public void displayingDiffsPairedBy() {
     Message actualInt3 = parse("o_int: 3 r_string: 'foo'");
     Message actualInt4 = parse("o_int: 4 r_string: 'bar'");
     Message expectedInt3 = parse("o_int: 3 r_string: 'baz'");
@@ -500,7 +500,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testCompareMultipleMessageTypes() {
+  public void compareMultipleMessageTypes() {
     // Don't run this test twice.
     if (!testIsRunOnce()) {
       return;

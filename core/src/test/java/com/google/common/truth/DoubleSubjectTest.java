@@ -47,7 +47,7 @@ public class DoubleSubjectTest {
 
   @Test
   @GwtIncompatible("Math.nextAfter")
-  public void testDoubleConstants_matchNextAfter() {
+  public void doubleConstants_matchNextAfter() {
     assertThat(Math.nextAfter(Double.MIN_VALUE, 1.0)).isEqualTo(OVER_MIN);
     assertThat(Math.nextAfter(1.23, POSITIVE_INFINITY)).isEqualTo(OVER_GOLDEN);
     assertThat(Math.nextAfter(Double.MAX_VALUE, 0.0)).isEqualTo(NEARLY_MAX);
@@ -56,7 +56,7 @@ public class DoubleSubjectTest {
   }
 
   @Test
-  public void testJ2clCornerCaseZero() {
+  public void j2clCornerCaseZero() {
     // GWT considers -0.0 to be equal to 0.0. But we've added a special workaround inside Truth.
     assertThatIsEqualToFails(-0.0, 0.0);
   }

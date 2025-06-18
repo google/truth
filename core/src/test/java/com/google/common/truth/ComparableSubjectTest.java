@@ -37,7 +37,7 @@ public class ComparableSubjectTest {
 
   @Test
   @SuppressWarnings("deprecation") // test of an unnecessary use of isEquivalentAccordingToCompareTo
-  public void testNullActual() {
+  public void nullActual() {
     expectFailure(
         whenTesting -> whenTesting.that((Integer) null).isEquivalentAccordingToCompareTo(6));
     expectFailure(whenTesting -> whenTesting.that((Integer) null).isGreaterThan(6));
@@ -49,7 +49,7 @@ public class ComparableSubjectTest {
   @Test
   // test of a mistaken call and of unnecessary use of isEquivalentAccordingToCompareTo
   @SuppressWarnings({"deprecation", "IntegerComparison"})
-  public void testNullExpected() {
+  public void nullExpected() {
     expectFailure(whenTesting -> whenTesting.that(6).isEquivalentAccordingToCompareTo(null));
     expectFailure(whenTesting -> whenTesting.that(6).isGreaterThan(null));
     expectFailure(whenTesting -> whenTesting.that(6).isLessThan(null));

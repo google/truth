@@ -36,7 +36,7 @@ import org.junit.runners.JUnit4;
 public class NumericComparisonTest {
 
   @Test
-  public void testPrimitivesVsBoxedPrimitivesVsObject_int() {
+  public void primitivesVsBoxedPrimitivesVsObject_int() {
     int int42 = 42;
     Integer integer42 = 42;
     Object object42 = (Object) 42;
@@ -55,7 +55,7 @@ public class NumericComparisonTest {
   }
 
   @Test
-  public void testPrimitivesVsBoxedPrimitivesVsObject_long() {
+  public void primitivesVsBoxedPrimitivesVsObject_long() {
     long longPrim42 = 42;
     Long long42 = (long) 42;
     Object object42 = (Object) 42L;
@@ -74,7 +74,7 @@ public class NumericComparisonTest {
   }
 
   @Test
-  public void testAllCombinations_pass() {
+  public void allCombinations_pass() {
     assertThat(42).isEqualTo(42L);
     assertThat(42).isEqualTo(Long.valueOf(42L));
     assertThat(Integer.valueOf(42)).isEqualTo(42L);
@@ -95,17 +95,17 @@ public class NumericComparisonTest {
   }
 
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_long() {
+  public void numericTypeWithSameValue_shouldBeEqual_int_long() {
     expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo(42L));
   }
 
   @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_int() {
+  public void numericTypeWithSameValue_shouldBeEqual_int_int() {
     expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo(42));
   }
 
   @Test
-  public void testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
+  public void numericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(42).isNotEqualTo((char) 42));
     // 42 in ASCII is '*'
     assertFailureValue(e, "expected not to be", "*");
@@ -113,7 +113,7 @@ public class NumericComparisonTest {
   }
 
   @Test
-  public void testNumericPrimitiveTypes_isNotEqual_shouldFail_charToInt() {
+  public void numericPrimitiveTypes_isNotEqual_shouldFail_charToInt() {
     // Uses Object overload rather than Integer.
     AssertionError e = expectFailure(whenTesting -> whenTesting.that((char) 42).isNotEqualTo(42));
     // 42 in ASCII is '*'
@@ -122,7 +122,7 @@ public class NumericComparisonTest {
   }
 
   @Test
-  public void testNumericPrimitiveTypes() {
+  public void numericPrimitiveTypes() {
     byte byte42 = (byte) 42;
     short short42 = (short) 42;
     char char42 = (char) 42;

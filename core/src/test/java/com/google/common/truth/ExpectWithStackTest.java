@@ -34,7 +34,7 @@ public class ExpectWithStackTest {
   @Rule public final TestRuleVerifier verifyAssertionError = new TestRuleVerifier(expectWithTrace);
 
   @Test
-  public void testExpectTrace_simpleCase() {
+  public void expectTrace_simpleCase() {
     verifyAssertionError.setErrorVerifier(
         expected -> {
           assertThat(expected.getStackTrace()).hasLength(0);
@@ -47,13 +47,13 @@ public class ExpectWithStackTest {
   }
 
   @Test
-  public void testExpectTrace_loop() {
+  public void expectTrace_loop() {
     verifyAssertionError.setErrorVerifier(
         expected -> {
           assertThat(expected.getStackTrace()).hasLength(0);
           assertThat(expected).hasMessageThat().startsWith("4 expectations failed:");
           assertWithMessage("test method name should only show up once with following omitted")
-              .that(expected.getMessage().split("testExpectTrace_loop"))
+              .that(expected.getMessage().split("expectTrace_loop"))
               .hasLength(2);
         });
 
@@ -63,7 +63,7 @@ public class ExpectWithStackTest {
   }
 
   @Test
-  public void testExpectTrace_callerException() {
+  public void expectTrace_callerException() {
     verifyAssertionError.setErrorVerifier(
         expected -> {
           assertThat(expected.getStackTrace()).hasLength(0);
@@ -77,7 +77,7 @@ public class ExpectWithStackTest {
   }
 
   @Test
-  public void testExpectTrace_onlyCallerException() {
+  public void expectTrace_onlyCallerException() {
     verifyAssertionError.setErrorVerifier(
         expected ->
             assertWithMessage("Should throw exception as it is if only caller exception")

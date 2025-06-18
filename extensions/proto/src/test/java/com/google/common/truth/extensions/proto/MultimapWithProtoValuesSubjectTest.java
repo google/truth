@@ -58,7 +58,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isEmpty() {
+  public void plain_isEmpty() {
     expectThat(ImmutableMultimap.<Object, Message>of()).isEmpty();
     expectThat(multimapOf(1, message1)).isNotEmpty();
 
@@ -70,7 +70,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_hasSize() {
+  public void plain_hasSize() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).hasSize(3);
 
     expectFailureWhenTesting().that(multimapOf(1, message1)).hasSize(3);
@@ -78,7 +78,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsKey() {
+  public void plain_containsKey() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).containsKey(1);
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).doesNotContainKey(3);
 
@@ -94,7 +94,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsEntry() {
+  public void plain_containsEntry() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).containsEntry(1, eqMessage2);
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .doesNotContainEntry(2, eqMessage2);
@@ -111,7 +111,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsExactlyEntriesIn() {
+  public void plain_containsExactlyEntriesIn() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .containsExactlyEntriesIn(multimapOf(1, eqMessage2, 2, eqMessage1, 1, eqMessage1));
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
@@ -131,7 +131,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsExactlyNoArgs() {
+  public void plain_containsExactlyNoArgs() {
     expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly();
     expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly().inOrder();
 
@@ -140,7 +140,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsExactly() {
+  public void plain_containsExactly() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .containsExactly(1, eqMessage2, 2, eqMessage1, 1, eqMessage1);
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
@@ -160,7 +160,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_valuesForKey() {
+  public void plain_valuesForKey() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .valuesForKey(1)
         .containsExactly(eqMessage2, eqMessage1);
@@ -175,7 +175,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsEntry() {
+  public void fluent_containsEntry() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .ignoringFieldsForValues(ignoreFieldNumber)
         .containsEntry(1, eqIgnoredMessage2);
@@ -209,7 +209,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsExactlyEntriesIn() {
+  public void fluent_containsExactlyEntriesIn() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .ignoringFieldsForValues(ignoreFieldNumber)
         .containsExactlyEntriesIn(
@@ -235,7 +235,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsExactly_noArgs() {
+  public void fluent_containsExactly_noArgs() {
     expectThat(ImmutableMultimap.<Object, Message>of())
         .ignoringRepeatedFieldOrderForValues()
         .containsExactly();
@@ -252,7 +252,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_containsExactly() {
+  public void fluent_containsExactly() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .ignoringFieldsForValues(ignoreFieldNumber)
         .containsExactly(1, eqIgnoredMessage2, 2, eqIgnoredMessage1, 1, eqIgnoredMessage1);
@@ -276,7 +276,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFluent_valuesForKey() {
+  public void fluent_valuesForKey() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .valuesForKey(1)
         .ignoringFields(ignoreFieldNumber)
@@ -295,7 +295,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testCompareMultipleMessageTypes() {
+  public void compareMultipleMessageTypes() {
     // Don't run this test twice.
     if (!testIsRunOnce()) {
       return;
@@ -321,7 +321,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMethodNamesEndWithForValues() {
+  public void methodNamesEndWithForValues() {
     checkMethodNamesEndWithForValues(MultimapWithProtoValuesSubject.class, MultimapSubject.class);
     checkMethodNamesEndWithForValues(
         MultimapWithProtoValuesFluentAssertion.class, MultimapSubject.class);

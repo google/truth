@@ -31,25 +31,25 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ClassSubjectTest {
   @Test
-  public void testIsAssignableTo_same() {
+  public void isAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
   }
 
   @Test
-  public void testIsAssignableTo_parent() {
+  public void isAssignableTo_parent() {
     assertThat(String.class).isAssignableTo(Object.class);
     assertThat(NullPointerException.class).isAssignableTo(Exception.class);
   }
 
   @Test
-  public void testIsAssignableTo_reversed() {
+  public void isAssignableTo_reversed() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(Object.class).isAssignableTo(String.class));
     assertFailureValue(e, "expected to be assignable to", "java.lang.String");
   }
 
   @Test
-  public void testIsAssignableTo_differentTypes() {
+  public void isAssignableTo_differentTypes() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(String.class).isAssignableTo(Exception.class));
@@ -57,7 +57,7 @@ public class ClassSubjectTest {
   }
 
   @Test
-  public void testIsAssignableTo_forNullActual() {
+  public void isAssignableTo_forNullActual() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((Class<?>) null).isAssignableTo(Exception.class));

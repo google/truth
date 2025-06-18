@@ -46,7 +46,7 @@ public class FloatSubjectTest {
 
   @Test
   @GwtIncompatible("Math.nextAfter")
-  public void testFloatConstants_matchNextAfter() {
+  public void floatConstants_matchNextAfter() {
     assertThat(Math.nextAfter(Float.MAX_VALUE, 0.0f)).isEqualTo(NEARLY_MAX);
     assertThat(Math.nextAfter(-1.0f * Float.MAX_VALUE, 0.0f)).isEqualTo(NEGATIVE_NEARLY_MAX);
     assertThat(Math.nextAfter(Float.MIN_VALUE, 1.0f)).isEqualTo(JUST_OVER_MIN);
@@ -56,7 +56,7 @@ public class FloatSubjectTest {
   }
 
   @Test
-  public void testJ2clCornerCaseZero() {
+  public void j2clCornerCaseZero() {
     // GWT considers -0.0 to be equal to 0.0. But we've added a special workaround inside Truth.
     assertThatIsEqualToFails(-0.0f, 0.0f);
   }

@@ -142,7 +142,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testSubjectMethods() {
+  public void subjectMethods() {
     expectThat(config.nonEmptyMessage()).isSameInstanceAs(config.nonEmptyMessage());
     expectThat(config.nonEmptyMessage().toBuilder()).isNotSameInstanceAs(config.nonEmptyMessage());
 
@@ -161,7 +161,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testIsEqualTo_success() {
+  public void isEqualTo_success() {
     expectThat(null).isEqualTo(null);
     expectThat(null).isNull();
 
@@ -175,7 +175,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testIsEqualTo_failure() {
+  public void isEqualTo_failure() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -210,12 +210,12 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testHasAllRequiredFields_success() {
+  public void hasAllRequiredFields_success() {
     expectThat(config.nonEmptyMessage()).hasAllRequiredFields();
   }
 
   @Test
-  public void testHasAllRequiredFields_failures() {
+  public void hasAllRequiredFields_failures() {
     if (!config.messageWithoutRequiredFields().isPresent()) {
       return;
     }
@@ -233,7 +233,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testDefaultInstance_success() {
+  public void defaultInstance_success() {
     expectThat(config.defaultInstance()).isEqualToDefaultInstance();
     expectThat(config.defaultInstanceOfOtherType()).isEqualToDefaultInstance();
     expectThat(config.nonEmptyMessage().getDefaultInstanceForType()).isEqualToDefaultInstance();
@@ -243,7 +243,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testDefaultInstance_failure() {
+  public void defaultInstance_failure() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(config.nonEmptyMessage()).isEqualToDefaultInstance());
@@ -265,14 +265,14 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
-  public void testSerializedSize_success() {
+  public void serializedSize_success() {
     int size = config.nonEmptyMessage().getSerializedSize();
     expectThat(config.nonEmptyMessage()).serializedSize().isEqualTo(size);
     expectThat(config.defaultInstance()).serializedSize().isEqualTo(0);
   }
 
   @Test
-  public void testSerializedSize_failure() {
+  public void serializedSize_failure() {
     int size = config.nonEmptyMessage().getSerializedSize();
 
     AssertionError e =

@@ -50,7 +50,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testObjectOverloads_testMessages_normalMethods() {
+  public void objectOverloads_testMessages_normalMethods() {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 eqMessage = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 diffMessage = parse("r_string: \"bar\" r_string: \"foo\"");
@@ -67,7 +67,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testObjectOverloads_testMessages_specializedMethods() {
+  public void objectOverloads_testMessages_specializedMethods() {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 diffMessage = parse("r_string: \"bar\" r_string: \"foo\"");
 
@@ -75,7 +75,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testObjectOverloads_objects_actuallyMessages() {
+  public void objectOverloads_objects_actuallyMessages() {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 eqMessage = parse("r_string: \"foo\" r_string: \"bar\"");
     TestMessage2 diffMessage = parse("r_string: \"bar\" r_string: \"foo\"");
@@ -92,7 +92,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testObjectOverloads_objects_actuallyNotMessages() {
+  public void objectOverloads_objects_actuallyNotMessages() {
     TestMessage2 message = parse("r_string: \"foo\" r_string: \"bar\"");
     Object altObject = 1111;
     Object eqAltObject = (1 + 10 + 100 + 1000);
@@ -102,7 +102,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testIterableOverloads_assertAbout() {
+  public void iterableOverloads_assertAbout() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -111,7 +111,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testIterableOverloads_testMessages_normalMethods() {
+  public void iterableOverloads_testMessages_normalMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -128,7 +128,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testIterableOverloads_testMessages_specializedMethods() {
+  public void iterableOverloads_testMessages_specializedMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 message3 = parse("o_int: 3 r_string: \"baz\"");
@@ -142,7 +142,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testIterableOverloads_objects_actuallyMessages() {
+  public void iterableOverloads_objects_actuallyMessages() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -158,7 +158,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testIterableOverloads_objects_actuallyNotMessages() {
+  public void iterableOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
     ImmutableList<Object> altActualObjects = ImmutableList.<Object>of("Foo!", 42);
@@ -168,7 +168,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMapOverloads_assertAbout() {
+  public void mapOverloads_assertAbout() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -177,7 +177,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMapOverloads_testMessages_normalMethods() {
+  public void mapOverloads_testMessages_normalMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -193,7 +193,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMapOverloads_testMessages_specializedMethods() {
+  public void mapOverloads_testMessages_specializedMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 message3 = parse("o_int: 3 r_string: \"baz\"");
@@ -207,7 +207,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMapOverloads_objects_actuallyMessages() {
+  public void mapOverloads_objects_actuallyMessages() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -221,7 +221,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMapOverloads_objects_actuallyNotMessages() {
+  public void mapOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
     ImmutableMap<String, Object> altActualObjects = mapOf("a", (Object) "Foo!", "b", 42);
@@ -232,7 +232,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_assertAbout() {
+  public void multimapOverloads_assertAbout() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -243,7 +243,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_assertAbout_listAndSet() {
+  public void multimapOverloads_assertAbout_listAndSet() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     ImmutableMultimap<Integer, TestMessage2> multimap =
@@ -268,7 +268,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_testMessages_normalMethods() {
+  public void multimapOverloads_testMessages_normalMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -286,7 +286,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_testMessages_normalMethods_listAndSet() {
+  public void multimapOverloads_testMessages_normalMethods_listAndSet() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -311,7 +311,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_testMessages_specializedMethods() {
+  public void multimapOverloads_testMessages_specializedMethods() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 message3 = parse("o_int: 3 r_string: \"baz\"");
@@ -331,7 +331,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_objects_actuallyMessages() {
+  public void multimapOverloads_objects_actuallyMessages() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
@@ -348,7 +348,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testMultimapOverloads_objects_actuallyNotMessages() {
+  public void multimapOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
     ImmutableMultimap<String, Object> altActualObjects =
