@@ -75,8 +75,24 @@ public class IterableSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    assertThrows(
-        IllegalArgumentException.class, () -> assertThat(ImmutableList.of(1, 2, 3)).hasSize(-1));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(ImmutableList.of(1, 2, 3)).hasSize(-1));
+    assertFailureKeys(
+        e,
+        "expected an iterable with a negative size, but that is impossible",
+        "expected size",
+        "actual size",
+        "actual contents");
+    assertFailureValue(e, "expected size", "-1");
+    assertFailureValue(e, "actual size", "3");
+    assertFailureValue(e, "actual contents", "[1, 2, 3]");
+  }
+
+  @Test
+  public void hasSizeOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).hasSize(-1));
+    assertFailureKeys(e, "expected an iterable with size", "but was");
   }
 
   @Test
@@ -165,6 +181,13 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void containsOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).contains(5));
+    assertFailureKeys(e, "expected an iterable that contains", "but was");
+  }
+
+  @Test
   public void doesNotContain() {
     assertThat(asList(1, null, 3)).doesNotContain(5);
   }
@@ -183,22 +206,36 @@ public class IterableSubjectTest {
   }
 
   @Test
-  public void doesNotContainDuplicates() {
+  public void doesNotContainOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).doesNotContain(2));
+    assertFailureKeys(e, "expected an iterable that does not contain", "but was");
+  }
+
+  @Test
+  public void containsNoDuplicates() {
     assertThat(asList(1, 2, 3)).containsNoDuplicates();
   }
 
   @Test
-  public void doesNotContainDuplicatesMixedTypes() {
+  public void containsNoDuplicatesMixedTypes() {
     assertThat(asList(1, 2, 2L, 3)).containsNoDuplicates();
   }
 
   @Test
-  public void doesNotContainDuplicatesFailure() {
+  public void containsNoDuplicatesFailure() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1, 2, 2, 3)).containsNoDuplicates());
     assertFailureKeys(e, "expected not to contain duplicates", "but contained", "full contents");
     assertFailureValue(e, "but contained", "[2 x 2]");
     assertFailureValue(e, "full contents", "[1, 2, 2, 3]");
+  }
+
+  @Test
+  public void containsNoDuplicatesOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsNoDuplicates());
+    assertFailureKeys(e, "expected an iterable that does not contain duplicates", "but was");
   }
 
   @Test
@@ -280,6 +317,13 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void containsAnyOfOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsAnyOf(5, 6, 0));
+    assertFailureKeys(e, "expected an iterable that contains any of", "but was");
+  }
+
+  @Test
   public void containsAnyInIterable() {
     assertThat(asList(1, 2, 3)).containsAnyIn(asList(1, 10, 100));
 
@@ -303,6 +347,26 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void containsAnyInWithNullExpectedIterable() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(asList(1, 2, 3)).containsAnyIn((Iterable<?>) null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because expected iterable is null",
+        "actual contents");
+  }
+
+  @Test
+  public void containsAnyInWithNullExpectedArray() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(asList(1, 2, 3)).containsAnyIn((Object[]) null));
+    assertFailureKeys(
+        e, "could not perform containment check because expected array is null", "actual contents");
+  }
+
+  @Test
   public void containsAtLeast() {
     assertThat(asList(1, 2, 3)).containsAtLeast(1, 2);
   }
@@ -319,7 +383,7 @@ public class IterableSubjectTest {
 
   @Test
   public void containsAtLeastWithNull() {
-    assertThat(asList(1, null, 3)).containsAtLeast(3, (Integer) null);
+    assertThat(asList(1, null, 3)).containsAtLeast(3, null);
   }
 
   @Test
@@ -527,6 +591,13 @@ public class IterableSubjectTest {
     assertFailureValue(e, "but was", "BadIterable"); // TODO(b/231966021): Output its elements.
   }
 
+  @Test
+  public void containsAtLeastOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsAtLeast(1, 2, 4));
+    assertFailureKeys(e, "expected an iterable that contains at least", "but was");
+  }
+
   private static final class OneShotIterable<E> implements Iterable<E> {
     private final Iterator<E> iterator;
     private final String toString;
@@ -597,6 +668,28 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void containsAtLeastElementsInIterableWithNullExpected() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(asList(1, 2, 3)).containsAtLeastElementsIn((Iterable<?>) null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because expected iterable is null",
+        "actual contents");
+  }
+
+  @Test
+  public void containsAtLeastElementsInArrayWithNullExpected() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(asList(1, 2, 3)).containsAtLeastElementsIn((Object[]) null));
+    assertFailureKeys(
+        e, "could not perform containment check because expected array is null", "actual contents");
+  }
+
+  @Test
   public void containsNoneOf() {
     assertThat(asList(1, 2, 3)).containsNoneOf(4, 5, 6);
   }
@@ -609,6 +702,13 @@ public class IterableSubjectTest {
     assertFailureValue(e, "expected not to contain any of", "[1, 2, 4]");
     assertFailureValue(e, "but contained", "[1, 2]");
     assertFailureValue(e, "full contents", "[1, 2, 3]");
+  }
+
+  @Test
+  public void containsNoneOfOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsNoneOf(1, 2, 4));
+    assertFailureKeys(e, "expected an iterable that does not contain any of", "but was");
   }
 
   @Test
@@ -646,6 +746,26 @@ public class IterableSubjectTest {
     assertFailureValue(e, "expected not to contain any of", "[1, 2, 4]");
     assertFailureValue(e, "but contained", "[1, 2]");
     assertFailureValue(e, "full contents", "[1, 2, 3]");
+  }
+
+  @Test
+  public void containsNoneInNullIterable() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(asList(1, 2, 3)).containsNoneIn((Iterable<?>) null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because excluded iterable is null",
+        "actual contents");
+  }
+
+  @Test
+  public void containsNoneInNullArray() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(asList(1, 2, 3)).containsNoneIn((Object[]) null));
+    assertFailureKeys(
+        e, "could not perform containment check because excluded array is null", "actual contents");
   }
 
   @Test
@@ -722,7 +842,7 @@ public class IterableSubjectTest {
 
   @Test
   public void containsExactlyWithNullOutOfOrder() {
-    assertThat(asList(1, null, 3)).containsExactly(1, 3, (Integer) null);
+    assertThat(asList(1, null, 3)).containsExactly(1, 3, null);
   }
 
   @Test
@@ -817,6 +937,13 @@ public class IterableSubjectTest {
     HashCodeThrower two = new HashCodeThrower();
 
     expectFailure(whenTesting -> whenTesting.that(asList(one, one)).containsExactly(one, two));
+  }
+
+  @Test
+  public void containsExactlyOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).containsExactly(1, 2));
+    assertFailureKeys(e, "expected an iterable that contains exactly", "but was");
   }
 
   private static class HashCodeThrower {
@@ -1151,6 +1278,28 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void containsExactlyElementsInNullIterable() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(asList(1, 2)).containsExactlyElementsIn((Iterable<?>) null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because expected iterable is null",
+        "actual contents");
+  }
+
+  @Test
+  public void containsExactlyElementsInNullArray() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(asList(1, 2)).containsExactlyElementsIn((Object[]) null));
+    assertFailureKeys(
+        e, "could not perform containment check because expected array is null", "actual contents");
+  }
+
+  @Test
   @SuppressWarnings("UndefinedEquals") // Iterable equality isn't defined, but null equality is
   public void nullEqualToNull() {
     assertThat((Iterable<?>) null).isEqualTo(null);
@@ -1213,6 +1362,12 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void isEmptyOnNullIterable() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isEmpty());
+    assertFailureKeys(e, "expected an empty iterable", "but was");
+  }
+
+  @Test
   public void isNotEmpty() {
     assertThat(asList("foo")).isNotEmpty();
   }
@@ -1221,6 +1376,13 @@ public class IterableSubjectTest {
   public void isNotEmptyWithFailure() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(asList()).isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");
+  }
+
+  @Test
+  public void isNotEmptyOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isNotEmpty());
+    assertFailureKeys(e, "expected a nonempty iterable", "but was");
   }
 
   @Test
@@ -1278,6 +1440,21 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void isInOrderOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isInOrder());
+    assertFailureKeys(e, "expected an iterable that is in order", "but was");
+  }
+
+  @Test
+  public void isInOrderWithNullComparator() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(asList(1, 3, 2, 4)).isInOrder(null));
+    assertFailureKeys(
+        e, "could not perform ordering check because comparator is null", "actual contents");
+  }
+
+  @Test
   public void isInStrictOrderWithComparator() {
     Iterable<String> emptyStrings = asList();
     assertThat(emptyStrings).isInStrictOrder(COMPARE_AS_DECIMAL);
@@ -1318,6 +1495,21 @@ public class IterableSubjectTest {
     assertFailureValue(e, "but contained", "10");
     assertFailureValue(e, "followed by", "2");
     assertFailureValue(e, "full contents", "[1, 10, 2, 20]");
+  }
+
+  @Test
+  public void isInStrictOrderOnNullIterable() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).isInStrictOrder());
+    assertFailureKeys(e, "expected an iterable that is in strict order", "but was");
+  }
+
+  @Test
+  public void isInStrictOrderWithNullComparator() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(asList(1, 3, 2, 4)).isInStrictOrder(null));
+    assertFailureKeys(
+        e, "could not perform ordering check because comparator is null", "actual contents");
   }
 
   @SuppressWarnings("CompareProperty") // avoiding Java 8 API under Android
@@ -1386,6 +1578,16 @@ public class IterableSubjectTest {
                 + "objects that are not Iterables. Did you instead mean to check whether its "
                 + "*contents* match any of the *contents* of the given values? If so, call "
                 + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
+  }
+
+  @Test
+  @SuppressWarnings("deprecation") // test of a mistaken call
+  public void isNotInNullIterable() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(asList(1, 2)).isNotIn(null));
+    assertFailureKeys(
+        e,
+        "could not perform equality check because iterable of elements to compare to is null",
+        "value to compare was");
   }
 
   @Test

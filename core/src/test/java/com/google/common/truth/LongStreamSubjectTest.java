@@ -20,7 +20,6 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertThrows;
 
 import java.util.List;
 import java.util.stream.LongStream;
@@ -53,7 +52,7 @@ public final class LongStreamSubjectTest {
   @Test
   public void testNullStream_fails() {
     LongStream nullStream = null;
-    assertThrows(NullPointerException.class, () -> assertThat(nullStream).isEmpty());
+    expectFailure(whenTesting -> whenTesting.that(nullStream).isEmpty());
   }
 
   @Test
@@ -350,11 +349,6 @@ public final class LongStreamSubjectTest {
                     .that(LongStream.of(42, 43))
                     .containsExactlyElementsIn(asList(43, 42))
                     .inOrder());
-  }
-
-  @Test
-  public void testContainsExactlyElementsIn_inOrder_LongStream() {
-    assertThat(LongStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
   }
 
   @Test

@@ -278,7 +278,7 @@ final class SubjectUtils {
 
   /**
    * Returns true if there is a pair of an item from {@code items1} and one in {@code items2} that
-   * has the same {@link String.valueOf(Object)} value without being equal.
+   * has the same {@link String#valueOf(Object)} value without being equal.
    *
    * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
    */

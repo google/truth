@@ -39,21 +39,21 @@ public final class MultisetSubject extends IterableSubject {
    * Checks that the actual multiset has exactly the given number of occurrences of the given
    * element.
    */
-  public void hasCount(@Nullable Object element, int expectedCount) {
+  public void hasCount(@Nullable Object element, int count) {
     if (actual == null) {
       failWithoutActual(
           simpleFact("cannot perform assertions on the contents of a null multiset"),
           fact("element", element),
-          fact("expected count", expectedCount));
-    } else if (expectedCount < 0) {
+          fact("expected count", count));
+    } else if (count < 0) {
       failWithoutActual(
           simpleFact("expected an element count that is negative, but that is impossible"),
           fact("element", element),
-          fact("expected count", expectedCount),
+          fact("expected count", count),
           fact("actual count", actual.count(element)),
           actualValue("multiset was"));
     } else {
-      check("count(%s)", element).that(actual.count(element)).isEqualTo(expectedCount);
+      check("count(%s)", element).that(actual.count(element)).isEqualTo(count);
     }
   }
 

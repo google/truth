@@ -20,7 +20,6 @@ import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
@@ -341,7 +340,14 @@ public class Subject {
 
   /** Checks that the value under test is equal to any element in the given iterable. */
   public void isIn(@Nullable Iterable<?> iterable) {
-    checkNotNull(iterable);
+    if (iterable == null) {
+      failWithoutActual(
+          simpleFact(
+              "could not perform equality check because iterable of elements to compare to is"
+                  + " null"),
+          valueToCompareWas());
+      return;
+    }
     if (!contains(iterable, actual)) {
       failWithActual("expected any of", iterable);
     }
@@ -362,7 +368,14 @@ public class Subject {
 
   /** Checks that the value under test is not equal to any element in the given iterable. */
   public void isNotIn(@Nullable Iterable<?> iterable) {
-    checkNotNull(iterable);
+    if (iterable == null) {
+      failWithoutActual(
+          simpleFact(
+              "could not perform equality check because iterable of elements to compare to is"
+                  + " null"),
+          valueToCompareWas());
+      return;
+    }
     if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
@@ -704,9 +717,14 @@ public class Subject {
    *       the <i>list</i> for equality, but the message would suggest that it's comparing the
    *       <i>stream</i>.
    * </ul>
+   *
+   * Additionally, consider that the messages produced by the new {@link Subject} will be used
+   * directly. So, if the messages in {@code FooSubject} refers to "the actual foo," then any {@link
+   * Subject} that uses {@code substituteCheck()} to create a {@code FooSubject} will still see "the
+   * actual foo" in the messages, even if the original actual value was of some different type.
    */
   final StandardSubjectBuilder substituteCheck() {
-    return new StandardSubjectBuilder(checkNotNull(metadata));
+    return new StandardSubjectBuilder(metadata);
   }
 
   private StandardSubjectBuilder doCheck(
@@ -1192,6 +1210,10 @@ public class Subject {
             ? subjectClass.substring(0, subjectClass.length() - "Subject".length())
             : "Object";
     return UPPER_CAMEL.to(LOWER_CAMEL, actualClass);
+  }
+
+  private Fact valueToCompareWas() {
+    return actualValue("value to compare was");
   }
 
   static Factory<Subject, Object> objects() {

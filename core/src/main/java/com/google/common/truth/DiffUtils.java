@@ -228,4 +228,6 @@ final class DiffUtils {
       List<String> original, List<String> revised, int contextSize) {
     return new DiffUtils().diff(original, revised, contextSize);
   }
+
+  private DiffUtils() {}
 }

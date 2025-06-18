@@ -125,11 +125,7 @@ public class SubjectTest {
         }
 
         subject.isEqualTo(null);
-        try {
-          subject.isNotEqualTo(null); // should throw
-          throw new Error("assertThat(null).isNotEqualTo(null) should throw an exception!");
-        } catch (AssertionError expected) {
-        }
+        assertThrows(AssertionError.class, () -> subject.isNotEqualTo(null));
 
         subject.isSameInstanceAs(null);
         subject.isNotSameInstanceAs(new Object());
@@ -660,6 +656,15 @@ public class SubjectTest {
   }
 
   @Test
+  public void isInNullIterable() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(new Object()).isIn(null));
+    assertFailureKeys(
+        e,
+        "could not perform equality check because iterable of elements to compare to is null",
+        "value to compare was");
+  }
+
+  @Test
   public void isAnyOf() {
     assertThat("b").isAnyOf("a", "b", "c");
   }
@@ -718,6 +723,15 @@ public class SubjectTest {
   @Test
   public void isNotInEmpty() {
     assertThat("b").isNotIn(ImmutableList.<String>of());
+  }
+
+  @Test
+  public void isNotInNullIterable() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(new Object()).isNotIn(null));
+    assertFailureKeys(
+        e,
+        "could not perform equality check because iterable of elements to compare to is null",
+        "value to compare was");
   }
 
   @Test

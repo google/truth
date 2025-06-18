@@ -21,7 +21,6 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertThrows;
 
 import java.util.stream.Stream;
 import org.junit.Test;
@@ -33,7 +32,6 @@ import org.junit.runners.JUnit4;
  *
  * @author Kurt Alfred Kluever
  */
-// TODO: b/113905249 - Move this and other tests from extensions to core
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
@@ -111,7 +109,7 @@ public final class StreamSubjectTest {
   @Test
   public void testNullStream_fails() {
     Stream<String> nullStream = null;
-    assertThrows(NullPointerException.class, () -> assertThat(nullStream).isEmpty());
+    expectFailure(whenTesting -> whenTesting.that(nullStream).isEmpty());
   }
 
   @Test
