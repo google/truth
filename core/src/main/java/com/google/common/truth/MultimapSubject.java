@@ -364,12 +364,14 @@ public class MultimapSubject extends Subject {
     private final MultimapSubject subject;
     private final Multimap<?, ?> expectedMultimap;
     private final boolean allowUnexpected;
+    private final @Nullable Multimap<?, ?> actual;
 
     private MultimapInOrder(
         MultimapSubject subject, boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
       this.subject = subject;
       this.expectedMultimap = expectedMultimap;
       this.allowUnexpected = allowUnexpected;
+      this.actual = subject.actual;
     }
 
     /**
@@ -381,20 +383,20 @@ public class MultimapSubject extends Subject {
     @Override
     public void inOrder() {
       // We use the fact that Sets.intersection's result has the same order as the first parameter
-      checkNotNull(subject.actual);
+      checkNotNull(actual);
       @SuppressWarnings("nullness") // TODO: b/339070656: Remove suppression after fix.
       boolean keysInOrder =
-          new ArrayList<>(Sets.intersection(subject.actual.keySet(), expectedMultimap.keySet()))
+          new ArrayList<>(Sets.intersection(actual.keySet(), expectedMultimap.keySet()))
               .equals(new ArrayList<>(expectedMultimap.keySet()));
 
       LinkedHashSet<@Nullable Object> keysWithValuesOutOfOrder = new LinkedHashSet<>();
       for (Object key : expectedMultimap.keySet()) {
-        List<?> actualVals = new ArrayList<@Nullable Object>(get(subject.actual, key));
+        List<?> actualVals = new ArrayList<@Nullable Object>(get(actual, key));
         List<?> expectedVals = new ArrayList<>(get(expectedMultimap, key));
         Iterator<?> actualIterator = actualVals.iterator();
         for (Object value : expectedVals) {
           if (!advanceToFind(actualIterator, value)) {
-            boolean unused = keysWithValuesOutOfOrder.add(key);
+            keysWithValuesOutOfOrder.add(key);
             break;
           }
         }
@@ -402,7 +404,7 @@ public class MultimapSubject extends Subject {
 
       if (!keysInOrder) {
         if (!keysWithValuesOutOfOrder.isEmpty()) {
-          subject.failWithActual(
+          failWithActual(
               simpleFact("contents match, but order was wrong"),
               simpleFact("keys are not in order"),
               fact("keys with out-of-order values", keysWithValuesOutOfOrder),
@@ -410,7 +412,7 @@ public class MultimapSubject extends Subject {
               fact(
                   allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         } else {
-          subject.failWithActual(
+          failWithActual(
               simpleFact("contents match, but order was wrong"),
               simpleFact("keys are not in order"),
               simpleFact("---"),
@@ -418,12 +420,16 @@ public class MultimapSubject extends Subject {
                   allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
-        subject.failWithActual(
+        failWithActual(
             simpleFact("contents match, but order was wrong"),
             fact("keys with out-of-order values", keysWithValuesOutOfOrder),
             simpleFact("---"),
             fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
       }
+    }
+
+    private void failWithActual(Fact first, Fact... rest) {
+      subject.failWithActual(first, rest);
     }
 
     static MultimapInOrder create(
@@ -587,7 +593,7 @@ public class MultimapSubject extends Subject {
             // the way.
             if (exceptions.hasCompareException()) {
               failWithoutActual(
-                  ImmutableList.<Fact>builder()
+                  factsBuilder()
                       .addAll(exceptions.describeAsMainCause())
                       .add(fact("expected to contain entry", immutableEntry(key, value)))
                       .addAll(correspondence.describeForMapValues())
@@ -606,7 +612,7 @@ public class MultimapSubject extends Subject {
         }
         // Found matching key with non-matching values.
         failWithoutActual(
-            ImmutableList.<Fact>builder()
+            factsBuilder()
                 .add(fact("expected to contain entry", immutableEntry(key, value)))
                 .addAll(correspondence.describeForMapValues())
                 .add(simpleFact("but did not"))
@@ -628,7 +634,7 @@ public class MultimapSubject extends Subject {
         if (!entries.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
-              ImmutableList.<Fact>builder()
+              factsBuilder()
                   .add(fact("expected to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
@@ -646,7 +652,7 @@ public class MultimapSubject extends Subject {
         } else {
           // Did not find matching key or value.
           failWithoutActual(
-              ImmutableList.<Fact>builder()
+              factsBuilder()
                   .add(fact("expected to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
@@ -677,7 +683,7 @@ public class MultimapSubject extends Subject {
         // Fail if we found a matching value for the key.
         if (!matchingValues.isEmpty()) {
           failWithoutActual(
-              ImmutableList.<Fact>builder()
+              factsBuilder()
                   .add(fact("expected not to contain entry", immutableEntry(key, value)))
                   .addAll(correspondence.describeForMapValues())
                   .add(fact("but contained that key with matching values", matchingValues))
@@ -691,7 +697,7 @@ public class MultimapSubject extends Subject {
           // No value matched, but we still need to fail if we hit an exception along the way.
           if (exceptions.hasCompareException()) {
             failWithoutActual(
-                ImmutableList.<Fact>builder()
+                factsBuilder()
                     .addAll(exceptions.describeAsMainCause())
                     .add(fact("expected not to contain entry", immutableEntry(key, value)))
                     .addAll(correspondence.describeForMapValues())

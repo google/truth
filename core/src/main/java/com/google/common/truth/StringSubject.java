@@ -56,7 +56,7 @@ public class StringSubject extends ComparableSubject<String> {
   public void hasLength(int length) {
     checkArgument(length >= 0, "expected length (%s) must be >= 0", length);
     if (actual == null) {
-      failWithActual(fact("expected a string with length", length));
+      failWithActual("expected a string with length", length);
       return;
     }
     check("length()").that(actual.length()).isEqualTo(length);

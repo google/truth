@@ -57,7 +57,7 @@ public final class TableSubject extends Subject {
   /** Checks that the actual table has the given size. */
   public void hasSize(int size) {
     if (actual == null) {
-      failWithActual(fact("expected a table with size", size));
+      failWithActual("expected a table with size", size);
     } else if (size < 0) {
       failWithoutActual(
           simpleFact("expected a table with a negative size, but that is impossible"),
@@ -163,7 +163,7 @@ public final class TableSubject extends Subject {
   /** Checks that the actual table contains the given row key. */
   public void containsRow(@Nullable Object rowKey) {
     if (actual == null) {
-      failWithActual(fact("expected a table with row", rowKey));
+      failWithActual("expected a table with row", rowKey);
     } else {
       check("rowKeySet()").that(actual.rowKeySet()).contains(rowKey);
     }
@@ -172,7 +172,7 @@ public final class TableSubject extends Subject {
   /** Checks that the actual table contains the given column key. */
   public void containsColumn(@Nullable Object columnKey) {
     if (actual == null) {
-      failWithActual(fact("expected a table with column", columnKey));
+      failWithActual("expected a table with column", columnKey);
     } else {
       check("columnKeySet()").that(actual.columnKeySet()).contains(columnKey);
     }
@@ -181,7 +181,7 @@ public final class TableSubject extends Subject {
   /** Checks that the actual table contains the given value. */
   public void containsValue(@Nullable Object value) {
     if (actual == null) {
-      failWithActual(fact("expected a table with value", value));
+      failWithActual("expected a table with value", value);
     } else {
       check("values()").that(actual.values()).contains(value);
     }

@@ -1187,10 +1187,14 @@ public class Subject {
           fact("expected length", length),
           actualValue("array was"));
     } else if (actual == null) {
-      failWithActual(fact("expected an array with length", length));
+      failWithActual("expected an array with length", length);
     } else {
       check("length").that(getLength(actual)).isEqualTo(length);
     }
+  }
+
+  static ImmutableList.Builder<Fact> factsBuilder() {
+    return ImmutableList.builder();
   }
 
   private static String typeDescriptionOrGuess(
