@@ -132,8 +132,7 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsEmpty_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).isEmpty());
+    expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).isEmpty());
   }
 
   @Test
@@ -143,8 +142,7 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsNotEmpty_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of()).isNotEmpty());
+    expectFailure(whenTesting -> whenTesting.that(Stream.of()).isNotEmpty());
   }
 
   @Test
@@ -166,9 +164,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoDuplicates_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting -> whenTesting.that(Stream.of("hello", "hello")).containsNoDuplicates());
+    expectFailure(
+        whenTesting -> whenTesting.that(Stream.of("hello", "hello")).containsNoDuplicates());
   }
 
   @Test
@@ -178,8 +175,7 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContains_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).contains("goodbye"));
+    expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).contains("goodbye"));
   }
 
   @Test
@@ -189,9 +185,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAnyOf_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting -> whenTesting.that(Stream.of("hello")).containsAnyOf("goodbye", "good"));
+    expectFailure(
+        whenTesting -> whenTesting.that(Stream.of("hello")).containsAnyOf("goodbye", "good"));
   }
 
   @Test
@@ -201,10 +196,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAnyIn_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(Stream.of("hello")).containsAnyIn(asList("goodbye", "good")));
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(Stream.of("hello")).containsAnyIn(asList("goodbye", "good")));
   }
 
   @Test
@@ -214,8 +208,7 @@ public final class StreamSubjectTest {
 
   @Test
   public void testDoesNotContain_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).doesNotContain("hello"));
+    expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).doesNotContain("hello"));
   }
 
   @Test
@@ -225,9 +218,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoneOf_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting -> whenTesting.that(Stream.of("hello")).containsNoneOf("hello", "hell"));
+    expectFailure(
+        whenTesting -> whenTesting.that(Stream.of("hello")).containsNoneOf("hello", "hell"));
   }
 
   @Test
@@ -237,10 +229,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoneIn_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(Stream.of("hello")).containsNoneIn(asList("hello", "hell")));
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(Stream.of("hello")).containsNoneIn(asList("hello", "hell")));
   }
 
   @Test
@@ -250,12 +241,11 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAtLeast_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(Stream.of("hell", "hello"))
-                    .containsAtLeast("hell", "hello", "goodbye"));
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(Stream.of("hell", "hello"))
+                .containsAtLeast("hell", "hello", "goodbye"));
   }
 
   @Test
@@ -287,12 +277,11 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAtLeastElementsIn_fails() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(Stream.of("hell", "hello"))
-                    .containsAtLeastElementsIn(asList("hell", "hello", "goodbye")));
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(Stream.of("hell", "hello"))
+                .containsAtLeastElementsIn(asList("hell", "hello", "goodbye")));
   }
 
   @Test
@@ -405,8 +394,7 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsInOrder_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 3, 2, 4)).isInOrder());
+    expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 3, 2, 4)).isInOrder());
   }
 
   @Test
@@ -418,7 +406,6 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsInStrictOrder_fails() {
-    AssertionError unused =
-        expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 2, 2, 4)).isInStrictOrder());
+    expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 2, 2, 4)).isInStrictOrder());
   }
 }

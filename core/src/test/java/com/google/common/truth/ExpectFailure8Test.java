@@ -40,10 +40,9 @@ public final class ExpectFailure8Test {
 
   @Test
   public void testExpectFailureAbout() {
-    AssertionError unused =
-        expectFailureAbout(
-            StringSubject::new,
-            (SimpleSubjectBuilderCallback<StringSubject, String>)
-                whenTesting -> whenTesting.that("foo").contains("bar"));
+    expectFailureAbout(
+        StringSubject::new,
+        (SimpleSubjectBuilderCallback<StringSubject, String>)
+            whenTesting -> whenTesting.that("foo").contains("bar"));
   }
 }

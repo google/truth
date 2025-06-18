@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -63,77 +64,57 @@ public class ExpectFailureTest {
   @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsOnSuccess() {
     expectFailure.whenTesting().that(4).isEqualTo(4);
-    try {
-      @SuppressWarnings("unused")
-      AssertionError unused = expectFailure.getFailure();
-      throw new Error("Expected to fail");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("ExpectFailure did not capture a failure.");
-    }
+    AssertionError expected = assertThrows(AssertionError.class, () -> expectFailure.getFailure());
+    assertThat(expected).hasMessageThat().contains("ExpectFailure did not capture a failure.");
   }
 
   @Test
   public void expectFail_failsOnMultipleFailures() {
-    try {
-      expectFailure.whenTesting().about(BadSubject.badSubject()).that(5).isEqualTo(4);
-      throw new Error("Expected to fail");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("caught multiple failures");
-      assertThat(expected).hasMessageThat().contains("<4> is equal to <5>");
-      assertThat(expected).hasMessageThat().contains("<5> is equal to <4>");
-    }
+    AssertionError expected =
+        assertThrows(
+            AssertionError.class,
+            () -> expectFailure.whenTesting().about(BadSubject.badSubject()).that(5).isEqualTo(4));
+    assertThat(expected).hasMessageThat().contains("caught multiple failures");
+    assertThat(expected).hasMessageThat().contains("<4> is equal to <5>");
+    assertThat(expected).hasMessageThat().contains("<5> is equal to <4>");
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
-  public void expectFail_failsOnMultiplewhenTestings() {
-    try {
-      expectFailure.whenTesting().that(4).isEqualTo(4);
-      StandardSubjectBuilder unused = expectFailure.whenTesting();
-      throw new Error("Expected to fail");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .contains(
-              "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
-    }
+  public void expectFail_failsOnMultipleWhenTestings() {
+    expectFailure.whenTesting().that(4).isEqualTo(4);
+    AssertionError expected = assertThrows(AssertionError.class, () -> expectFailure.whenTesting());
+    assertThat(expected)
+        .hasMessageThat()
+        .contains("ExpectFailure.whenTesting() called previously, but did not capture a failure.");
   }
 
   @Test
-  public void expectFail_failsOnMultiplewhenTestings_thatFail() {
+  public void expectFail_failsOnMultipleWhenTestings_thatFail() {
     expectFailure.whenTesting().that(5).isEqualTo(4);
-    try {
-      StandardSubjectBuilder unused = expectFailure.whenTesting();
-      throw new Error("Expected to fail");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("ExpectFailure already captured a failure");
-    }
+    AssertionError expected = assertThrows(AssertionError.class, () -> expectFailure.whenTesting());
+    assertThat(expected).hasMessageThat().contains("ExpectFailure already captured a failure");
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
   public void expectFail_failsAfterTest() {
-    try {
-      expectFailure.whenTesting().that(4).isEqualTo(4);
-      expectFailure.ensureFailureCaught();
-      throw new Error("Expected to fail");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .contains("ExpectFailure.whenTesting() invoked, but no failure was caught.");
-    }
+    expectFailure.whenTesting().that(4).isEqualTo(4);
+    AssertionError expected =
+        assertThrows(AssertionError.class, () -> expectFailure.ensureFailureCaught());
+    assertThat(expected)
+        .hasMessageThat()
+        .contains("ExpectFailure.whenTesting() invoked, but no failure was caught.");
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
   public void expectFail_whenTestingWithoutInContext_shouldFail() {
     ExpectFailure expectFailure = new ExpectFailure();
-    try {
-      expectFailure.whenTesting().that(4).isEqualTo(4);
-      throw new Error("Expected to fail");
-    } catch (IllegalStateException expected) {
-      assertThat(expected).hasMessageThat().contains("ExpectFailure must be used as a JUnit @Rule");
-    }
+    IllegalStateException expected =
+        assertThrows(
+            IllegalStateException.class, () -> expectFailure.whenTesting().that(4).isEqualTo(4));
+    assertThat(expected).hasMessageThat().contains("ExpectFailure must be used as a JUnit @Rule");
   }
 
   private static Subject.Factory<StringSubject, String> strings() {
