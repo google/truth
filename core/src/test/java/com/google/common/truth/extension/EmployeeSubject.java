@@ -23,6 +23,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.LongSubject;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -30,6 +31,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Kurt Alfred Kluever (kak@google.com)
  */
+@NullMarked
 public final class EmployeeSubject extends Subject {
 
   // User-defined entry point
@@ -42,7 +44,7 @@ public final class EmployeeSubject extends Subject {
     return EmployeeSubject::new;
   }
 
-  private final Employee actual;
+  private final @Nullable Employee actual;
 
   private EmployeeSubject(FailureMetadata failureMetadata, @Nullable Employee subject) {
     super(failureMetadata, subject);

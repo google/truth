@@ -159,15 +159,12 @@ public class LongSubjectTest {
   }
 
   private static void assertThatIsWithinFails(long actual, long tolerance, long expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
-    assertThat(failure)
-        .factKeys()
-        .containsExactly("expected", "but was", "outside tolerance")
-        .inOrder();
-    assertThat(failure).factValue("expected").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("but was").isEqualTo(formatNumericValue(actual));
-    assertThat(failure).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factKeys().containsExactly("expected", "but was", "outside tolerance").inOrder();
+    assertThat(e).factValue("expected").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("but was").isEqualTo(formatNumericValue(actual));
+    assertThat(e).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test
@@ -193,10 +190,10 @@ public class LongSubjectTest {
   }
 
   private static void assertThatIsNotWithinFails(long actual, long tolerance, long expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
-    assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test

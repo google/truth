@@ -116,13 +116,9 @@ public class SubjectTest {
         Subject subject = (Subject) method.invoke(Truth.class, actual);
 
         subject.isNull();
-        try {
-          subject.isNotNull(); // should throw
-          throw new Error("assertThat(null).isNotNull() should throw an exception!");
-        } catch (AssertionError expected) {
-          assertThat(expected).factKeys().containsExactly("expected not to be");
-          assertThat(expected).factValue("expected not to be").isEqualTo("null");
-        }
+        AssertionError e = assertThrows(AssertionError.class, () -> subject.isNotNull());
+        assertThat(e).factKeys().containsExactly("expected not to be");
+        assertThat(e).factValue("expected not to be").isEqualTo("null");
 
         subject.isEqualTo(null);
         assertThrows(AssertionError.class, () -> subject.isNotEqualTo(null));
@@ -135,21 +131,13 @@ public class SubjectTest {
           subject.isNoneOf(new Object(), new Object());
         }
 
-        try {
-          subject.isIn(ImmutableList.of());
-          throw new Error("Expected to fail");
-        } catch (AssertionError expected) {
-          assertThat(expected).factKeys().contains("expected any of");
-        }
+        e = assertThrows(AssertionError.class, () -> subject.isIn(ImmutableList.of()));
+        assertThat(e).factKeys().contains("expected any of");
 
         subject.isNotEqualTo(new Object());
         subject.isEqualTo(null);
-        try {
-          subject.isEqualTo(new Object()); // should throw
-          throw new Error("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
-        } catch (AssertionError expected) {
-          assertThat(expected).factKeys().containsExactly("expected", "but was").inOrder();
-        }
+        e = assertThrows(AssertionError.class, () -> subject.isEqualTo(new Object()));
+        assertThat(e).factKeys().containsExactly("expected", "but was").inOrder();
       }
     }
   }

@@ -40,19 +40,15 @@ public class OptionalSubjectTest {
 
   @Test
   public void isPresentFailing() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.empty()).isPresent());
-    assertThat(expected).factKeys().containsExactly("expected to be present");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(Optional.empty()).isPresent());
+    assertThat(e).factKeys().containsExactly("expected to be present");
   }
 
   @Test
   public void isPresentFailingNull() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Optional<?>) null).isPresent());
-    assertThat(expected)
-        .factKeys()
-        .containsExactly("expected present optional", "but was")
-        .inOrder();
+    assertThat(e).factKeys().containsExactly("expected present optional", "but was").inOrder();
   }
 
   @Test
@@ -62,17 +58,15 @@ public class OptionalSubjectTest {
 
   @Test
   public void isEmptyFailing() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).isEmpty());
-    assertThat(expected).factKeys().contains("expected to be empty");
-    assertThat(expected).factValue("but was present with value").isEqualTo("foo");
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).isEmpty());
+    assertThat(e).factKeys().contains("expected to be empty");
+    assertThat(e).factValue("but was present with value").isEqualTo("foo");
   }
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that((Optional<?>) null).isEmpty());
-    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Optional<?>) null).isEmpty());
+    assertThat(e).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -82,13 +76,10 @@ public class OptionalSubjectTest {
 
   @Test
   public void hasValue_failingWithEmpty() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValue("foo"));
-    assertThat(expected)
-        .factKeys()
-        .containsExactly("expected to have value", "but was empty")
-        .inOrder();
-    assertThat(expected).factValue("expected to have value").isEqualTo("foo");
+    assertThat(e).factKeys().containsExactly("expected to have value", "but was empty").inOrder();
+    assertThat(e).factValue("expected to have value").isEqualTo("foo");
   }
 
   @Test
@@ -102,8 +93,8 @@ public class OptionalSubjectTest {
 
   @Test
   public void hasValue_failingWithWrongValue() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
-    assertThat(expected).factValue("value of").isEqualTo("optional.get()");
+    assertThat(e).factValue("value of").isEqualTo("optional.get()");
   }
 }

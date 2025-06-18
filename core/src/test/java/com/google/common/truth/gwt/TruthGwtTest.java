@@ -21,7 +21,6 @@ import static java.util.Arrays.asList;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +49,7 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -122,11 +122,11 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
   }
 
   public void testIterable() {
-    assertThat((Iterable<Integer>) asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
+    assertThat(asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testCollection() {
-    assertThat((Collection<Integer>) asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
+    assertThat(asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testList() {
@@ -134,18 +134,18 @@ public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
   }
 
   public void testObjectArray() {
-    Set<?>[] setOfString = {new HashSet<String>(asList("foo", "bar", "bash"))};
-    assertThat(setOfString).asList().contains(new HashSet<String>(asList("foo", "bar", "bash")));
+    Set<?>[] setOfString = {new HashSet<>(asList("foo", "bar", "bash"))};
+    assertThat(setOfString).asList().contains(new HashSet<>(asList("foo", "bar", "bash")));
   }
 
   @SuppressWarnings("IsInstanceIterable") // test of an intentionally trivially true assertion
   public void testDefault() {
     assertThat(new Object()).isNotNull();
-    assertThat(new ArrayList<String>()).isInstanceOf(AbstractList.class);
+    assertThat(new ArrayList<>()).isInstanceOf(AbstractList.class);
   }
 
   public void testLegacyAssert_() {
     assert_().that(new Object()).isNotNull();
-    assert_().that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
+    assert_().that(new ArrayList<>()).isInstanceOf(AbstractList.class);
   }
 }

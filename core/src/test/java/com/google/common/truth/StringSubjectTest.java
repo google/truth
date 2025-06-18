@@ -65,121 +65,121 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringIsEmpty() {
+  public void isEmpty() {
     assertThat("").isEmpty();
   }
 
   @Test
-  public void stringIsEmptyFail() {
+  public void isEmptyFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEmpty());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
-  public void stringIsEmptyFailNull() {
+  public void isEmptyFailNull() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that((String) null).isEmpty());
     assertFailureKeys(e, "expected an empty string", "but was");
   }
 
   @Test
-  public void stringIsNotEmpty() {
+  public void isNotEmpty() {
     assertThat("abc").isNotEmpty();
   }
 
   @Test
-  public void stringIsNotEmptyFail() {
+  public void isNotEmptyFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("").isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");
   }
 
   @Test
-  public void stringIsNotEmptyFailNull() {
+  public void isNotEmptyFailNull() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that((String) null).isNotEmpty());
     assertFailureKeys(e, "expected a non-empty string", "but was");
   }
 
   @Test
-  public void stringContains() {
+  public void contains() {
     assertThat("abc").contains("c");
   }
 
   @Test
-  public void stringContainsCharSeq() {
+  public void containsCharSeq() {
     CharSequence charSeq = new StringBuilder("c");
     assertThat("abc").contains(charSeq);
   }
 
   @Test
-  public void stringContainsFail() {
+  public void containsFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").contains("d"));
     assertFailureValue(e, "expected to contain", "d");
   }
 
   @Test
-  public void stringDoesNotContain() {
+  public void doesNotContain() {
     assertThat("abc").doesNotContain("d");
   }
 
   @Test
-  public void stringDoesNotContainCharSequence() {
+  public void doesNotContainCharSequence() {
     CharSequence charSeq = new StringBuilder("d");
     assertThat("abc").doesNotContain(charSeq);
   }
 
   @Test
-  public void stringDoesNotContainFail() {
+  public void doesNotContainFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").doesNotContain("b"));
     assertFailureValue(e, "expected not to contain", "b");
   }
 
   @Test
   @SuppressWarnings("TruthSelfEquals")
-  public void stringEquality() {
+  public void equality() {
     assertThat("abc").isEqualTo("abc");
   }
 
   @Test
-  public void stringEqualityToNull() {
+  public void equalityToNull() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEqualTo(null));
     assertThat(e).isNotInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
-  public void stringEqualityToEmpty() {
+  public void equalityToEmpty() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEqualTo(""));
     assertFailureKeys(e, "expected an empty string", "but was");
   }
 
   @Test
-  public void stringEqualityEmptyToNonEmpty() {
+  public void equalityEmptyToNonEmpty() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("").isEqualTo("abc"));
     assertFailureKeys(e, "expected", "but was an empty string");
   }
 
   @Test
-  public void stringEqualityFail() {
+  public void equalityFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEqualTo("ABC"));
     assertThat(e).isInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
-  public void stringStartsWith() {
+  public void startsWith() {
     assertThat("abc").startsWith("ab");
   }
 
   @Test
-  public void stringStartsWithFail() {
+  public void startsWithFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").startsWith("bc"));
     assertFailureValue(e, "expected to start with", "bc");
   }
 
   @Test
-  public void stringEndsWith() {
+  public void endsWith() {
     assertThat("abc").endsWith("bc");
   }
 
   @Test
-  public void stringEndsWithFail() {
+  public void endsWithFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").endsWith("ab"));
     assertFailureValue(e, "expected to end with", "ab");
   }
@@ -195,26 +195,26 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringMatchesString() {
+  public void matchesString() {
     assertThat("abcaaadev").matches(".*aaa.*");
   }
 
   @Test
-  public void stringMatchesStringWithFail() {
+  public void matchesStringWithFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abcaqadev").matches(".*aaa.*"));
     assertFailureValue(e, "expected to match", ".*aaa.*");
   }
 
   @Test
-  public void stringMatchesStringFailNull() {
+  public void matchesStringFailNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).matches(".*aaa.*"));
     assertFailureValue(e, "expected a string that matches", ".*aaa.*");
   }
 
   @Test
-  public void stringMatchesStringLiteralFail() {
+  public void matchesStringLiteralFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("$abc").matches("$abc"));
     assertFailureValue(e, "expected to match", "$abc");
     assertFailureValue(e, "but was", "$abc");
@@ -224,7 +224,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringMatchesStringLiteralFailButContainsMatchSuccess() {
+  public void matchesStringLiteralFailButContainsMatchSuccess() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("aba").matches("[b]"));
     assertFailureValue(e, "expected to match", "[b]");
     assertFailureValue(e, "but was", "aba");
@@ -233,13 +233,13 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringMatchesPattern() {
+  public void matchesPattern() {
     assertThat("abcaaadev").matches(Pattern.compile(".*aaa.*"));
   }
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringMatchesPatternWithFail() {
+  public void matchesPatternWithFail() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that("abcaqadev").matches(Pattern.compile(".*aaa.*")));
@@ -248,7 +248,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringMatchesPatternFailNull() {
+  public void matchesPatternFailNull() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((String) null).matches(Pattern.compile(".*aaa.*")));
@@ -257,7 +257,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringMatchesPatternLiteralFail() {
+  public void matchesPatternLiteralFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("$abc").matches(Pattern.compile("$abc")));
     assertFailureValue(e, "expected to match", "$abc");
@@ -271,7 +271,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringMatchesPatternLiteralFailButContainsMatchSuccess() {
+  public void matchesPatternLiteralFailButContainsMatchSuccess() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("aba").matches(Pattern.compile("[b]")));
     assertFailureValue(e, "expected to match", "[b]");
@@ -280,19 +280,19 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotMatchString() {
+  public void doesNotMatchString() {
     assertThat("abcaqadev").doesNotMatch(".*aaa.*");
   }
 
   @Test
-  public void stringDoesNotMatchStringWithFail() {
+  public void doesNotMatchStringWithFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abcaaadev").doesNotMatch(".*aaa.*"));
     assertFailureValue(e, "expected not to match", ".*aaa.*");
   }
 
   @Test
-  public void stringDoesNotMatchStringFailNull() {
+  public void doesNotMatchStringFailNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).doesNotMatch(".*aaa.*"));
     assertFailureValue(e, "expected a string that does not match", ".*aaa.*");
@@ -300,13 +300,13 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringDoesNotMatchPattern() {
+  public void doesNotMatchPattern() {
     assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
   }
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringDoesNotMatchPatternWithFail() {
+  public void doesNotMatchPatternWithFail() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*")));
@@ -315,7 +315,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringDoesNotMatchPatternFailNull() {
+  public void doesNotMatchPatternFailNull() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -325,13 +325,13 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringContainsMatchStringUsesFind() {
+  public void containsMatchStringUsesFind() {
     assertThat("aba").containsMatch("[b]");
     assertThat("aba").containsMatch(Pattern.compile("[b]"));
   }
 
   @Test
-  public void stringContainsMatchString() {
+  public void containsMatchString() {
     assertThat("aba").containsMatch(".*b.*");
 
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("aaa").containsMatch(".*b.*"));
@@ -339,7 +339,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringContainsMatchStringFailNull() {
+  public void containsMatchStringFailNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).containsMatch(".*b.*"));
     assertFailureValue(e, "expected a string that contains a match for", ".*b.*");
@@ -347,7 +347,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringContainsMatchPattern() {
+  public void containsMatchPattern() {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
     AssertionError e =
@@ -358,7 +358,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringContainsMatchPatternFailNull() {
+  public void containsMatchPatternFailNull() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((String) null).containsMatch(Pattern.compile(".*b.*")));
@@ -366,7 +366,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotContainMatchString() {
+  public void doesNotContainMatchString() {
     assertThat("aaa").doesNotContainMatch(".*b.*");
 
     AssertionError e =
@@ -375,14 +375,14 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotContainMatchStringUsesFind() {
+  public void doesNotContainMatchStringUsesFind() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("aba").doesNotContainMatch("[b]"));
     assertFailureValue(e, "expected not to contain a match for", "[b]");
   }
 
   @Test
-  public void stringDoesNotContainMatchStringUsesFindFailNull() {
+  public void doesNotContainMatchStringUsesFindFailNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).doesNotContainMatch("[b]"));
     assertFailureValue(e, "expected a string that does not contain a match for", "[b]");
@@ -390,7 +390,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringDoesNotContainMatchPattern() {
+  public void doesNotContainMatchPattern() {
     assertThat("zzaaazz").doesNotContainMatch(Pattern.compile(".b."));
 
     AssertionError e =
@@ -403,7 +403,7 @@ public class StringSubjectTest {
 
   @Test
   @GwtIncompatible("Pattern")
-  public void stringDoesNotContainMatchPatternFailNull() {
+  public void doesNotContainMatchPatternFailNull() {
     AssertionError e =
         expectFailure(
             whenTesting ->
@@ -412,17 +412,17 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringEqualityIgnoringCase() {
+  public void equalityIgnoringCase() {
     assertThat("café").ignoringCase().isEqualTo("CAFÉ");
   }
 
   @Test
-  public void stringEqualityIgnoringCaseWithNullSubject() {
+  public void equalityIgnoringCaseWithNullSubject() {
     assertThat((String) null).ignoringCase().isEqualTo(null);
   }
 
   @Test
-  public void stringEqualityIgnoringCaseFail() {
+  public void equalityIgnoringCaseFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abc").ignoringCase().isEqualTo("abd"));
 
@@ -431,7 +431,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringEqualityIgnoringCaseFailWithNullSubject() {
+  public void equalityIgnoringCaseFailWithNullSubject() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((String) null).ignoringCase().isEqualTo("abc"));
@@ -441,7 +441,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringEqualityIgnoringCaseFailWithNullExpectedString() {
+  public void equalityIgnoringCaseFailWithNullExpectedString() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abc").ignoringCase().isEqualTo(null));
 
@@ -450,22 +450,22 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringInequalityIgnoringCase() {
+  public void inequalityIgnoringCase() {
     assertThat("café").ignoringCase().isNotEqualTo("AFÉ");
   }
 
   @Test
-  public void stringInequalityIgnoringCaseWithNullSubject() {
+  public void inequalityIgnoringCaseWithNullSubject() {
     assertThat((String) null).ignoringCase().isNotEqualTo("abc");
   }
 
   @Test
-  public void stringInequalityIgnoringCaseWithNullExpectedString() {
+  public void inequalityIgnoringCaseWithNullExpectedString() {
     assertThat("abc").ignoringCase().isNotEqualTo(null);
   }
 
   @Test
-  public void stringInequalityIgnoringCaseFail() {
+  public void inequalityIgnoringCaseFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("café").ignoringCase().isNotEqualTo("CAFÉ"));
 
@@ -474,7 +474,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringInequalityIgnoringCaseFailWithNullSubject() {
+  public void inequalityIgnoringCaseFailWithNullSubject() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((String) null).ignoringCase().isNotEqualTo(null));
@@ -484,33 +484,33 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringContainsIgnoringCase() {
+  public void containsIgnoringCase() {
     assertThat("äbc").ignoringCase().contains("Ä");
   }
 
   @Test
-  public void stringContainsIgnoringCaseEmptyString() {
+  public void containsIgnoringCaseEmptyString() {
     assertThat("abc").ignoringCase().contains("");
   }
 
   @Test
-  public void stringContainsIgnoringCaseWithWord() {
+  public void containsIgnoringCaseWithWord() {
     assertThat("abcdé").ignoringCase().contains("CdÉ");
   }
 
   @Test
-  public void stringContainsIgnoringCaseWholeWord() {
+  public void containsIgnoringCaseWholeWord() {
     assertThat("abcde").ignoringCase().contains("ABCde");
   }
 
   @Test
-  public void stringContainsIgnoringCaseCharSeq() {
+  public void containsIgnoringCaseCharSeq() {
     CharSequence charSeq = new StringBuilder("C");
     assertThat("abc").ignoringCase().contains(charSeq);
   }
 
   @Test
-  public void stringContainsIgnoringCaseFail() {
+  public void containsIgnoringCaseFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abc").ignoringCase().contains("d"));
 
@@ -519,7 +519,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringContainsIgnoringCaseFailBecauseTooLarge() {
+  public void containsIgnoringCaseFailBecauseTooLarge() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abc").ignoringCase().contains("abcc"));
 
@@ -528,7 +528,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringContainsIgnoringCaseFailBecauseNullSubject() {
+  public void containsIgnoringCaseFailBecauseNullSubject() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).ignoringCase().contains("d"));
 
@@ -537,18 +537,18 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotContainIgnoringCase() {
+  public void doesNotContainIgnoringCase() {
     assertThat("äbc").ignoringCase().doesNotContain("Äc");
   }
 
   @Test
-  public void stringDoesNotContainIgnoringCaseCharSeq() {
+  public void doesNotContainIgnoringCaseCharSeq() {
     CharSequence charSeq = new StringBuilder("cb");
     assertThat("abc").ignoringCase().doesNotContain(charSeq);
   }
 
   @Test
-  public void stringDoesNotContainIgnoringCaseFail() {
+  public void doesNotContainIgnoringCaseFail() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("äbc").ignoringCase().doesNotContain("Äb"));
 
@@ -557,7 +557,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotContainIgnoringCaseFailWithEmptyString() {
+  public void doesNotContainIgnoringCaseFailWithEmptyString() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that("abc").ignoringCase().doesNotContain(""));
 
@@ -566,7 +566,7 @@ public class StringSubjectTest {
   }
 
   @Test
-  public void stringDoesNotContainIgnoringCaseFailBecauseNullSubject() {
+  public void doesNotContainIgnoringCaseFailBecauseNullSubject() {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((String) null).ignoringCase().doesNotContain("d"));

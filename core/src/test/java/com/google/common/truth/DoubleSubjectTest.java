@@ -85,22 +85,19 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
-    assertThat(failure)
-        .factKeys()
-        .containsExactly("expected", "but was", "outside tolerance")
-        .inOrder();
-    assertThat(failure).factValue("expected").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("but was").isEqualTo(formatNumericValue(actual));
-    assertThat(failure).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factKeys().containsExactly("expected", "but was", "outside tolerance").inOrder();
+    assertThat(e).factValue("expected").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("but was").isEqualTo(formatNumericValue(actual));
+    assertThat(e).factValue("outside tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   private static void assertThatIsWithinFailsForNonFiniteExpected(
       double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
-    assertThat(failure)
+    assertThat(e)
         .factKeys()
         .containsExactly(
             "could not perform approximate-equality check because expected value is not finite",
@@ -108,24 +105,22 @@ public class DoubleSubjectTest {
             "was",
             "tolerance")
         .inOrder();
-    assertThat(failure).factValue("expected").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("was").isEqualTo(formatNumericValue(actual));
-    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("expected").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("was").isEqualTo(formatNumericValue(actual));
+    assertThat(e).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   private static void assertThatIsWithinFailsForNonFiniteActual(
       double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
-    assertThat(failure)
+    assertThat(e)
         .factKeys()
         .containsExactly("expected a finite value near", "but was", "tolerance")
         .inOrder();
-    assertThat(failure)
-        .factValue("expected a finite value near")
-        .isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("but was").isEqualTo(formatNumericValue(actual));
-    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("expected a finite value near").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("but was").isEqualTo(formatNumericValue(actual));
+    assertThat(e).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test
@@ -143,36 +138,36 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
-    assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("within tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   private static void assertThatIsNotWithinFailsForNonFiniteExpected(
       double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
-    assertThat(failure)
+    assertThat(e)
         .factKeys()
         .containsExactly(
             "could not perform approximate-equality check because expected value is not finite",
             "expected not to be",
             "was",
             "tolerance");
-    assertThat(failure).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("was").isEqualTo(formatNumericValue(actual));
-    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("expected not to be").isEqualTo(formatNumericValue(expected));
+    assertThat(e).factValue("was").isEqualTo(formatNumericValue(actual));
+    assertThat(e).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   private static void assertThatIsNotWithinFailsForNonFiniteActual(
       double actual, double tolerance, double expected) {
-    AssertionError failure =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
-    assertThat(failure)
+    assertThat(e)
         .factValue("expected a finite value that is not near")
         .isEqualTo(formatNumericValue(expected));
-    assertThat(failure).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
+    assertThat(e).factValue("tolerance").isEqualTo(formatNumericValue(tolerance));
   }
 
   @Test
@@ -451,8 +446,8 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsZeroFails(@Nullable Double value) {
-    AssertionError failure = expectFailure(whenTesting -> whenTesting.that(value).isZero());
-    assertThat(failure).factKeys().containsExactly("expected zero", "but was").inOrder();
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(value).isZero());
+    assertThat(e).factKeys().containsExactly("expected zero", "but was").inOrder();
   }
 
   @Test
@@ -467,8 +462,8 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNonZeroFails(@Nullable Double value, String factKey) {
-    AssertionError failure = expectFailure(whenTesting -> whenTesting.that(value).isNonZero());
-    assertThat(failure).factKeys().containsExactly(factKey, "but was").inOrder();
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(value).isNonZero());
+    assertThat(e).factKeys().containsExactly(factKey, "but was").inOrder();
   }
 
   @Test
@@ -522,8 +517,8 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsFiniteFails(@Nullable Double value) {
-    AssertionError failure = expectFailure(whenTesting -> whenTesting.that(value).isFinite());
-    assertThat(failure).factKeys().containsExactly("expected to be finite", "but was").inOrder();
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(value).isFinite());
+    assertThat(e).factKeys().containsExactly("expected to be finite", "but was").inOrder();
   }
 
   @Test

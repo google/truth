@@ -154,8 +154,8 @@ public class MultimapSubjectTest {
         expectFailure(
             whenTesting ->
                 whenTesting
-                    .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
-                    .isEqualTo(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c")));
+                    .that(ImmutableListMultimap.of(1, "a", 1, "b", 2, "c"))
+                    .isEqualTo(ImmutableListMultimap.of(1L, "a", 1L, "b", 2L, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(
         e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)");
@@ -166,26 +166,26 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void multimapIsEmpty() {
+  public void isEmpty() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of();
     assertThat(multimap).isEmpty();
   }
 
   @Test
-  public void multimapIsEmptyWithFailure() {
+  public void isEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(multimap).isEmpty());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
-  public void multimapIsNotEmpty() {
+  public void isNotEmpty() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     assertThat(multimap).isNotEmpty();
   }
 
   @Test
-  public void multimapIsNotEmptyWithFailure() {
+  public void isNotEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of();
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(multimap).isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");

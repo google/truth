@@ -34,9 +34,9 @@ import org.junit.runners.model.Statement;
  * <p>Usage:
  *
  * <pre>{@code
- *   AssertionError failure =
+ *   AssertionError e =
  *       expectFailure(whenTesting -> whenTesting.that(cancelButton).isVisible());
- *   assertThat(failure).factKeys().containsExactly("expected to be visible");
+ *   assertThat(e).factKeys().containsExactly("expected to be visible");
  *
  * ...
  *
@@ -55,7 +55,7 @@ import org.junit.runners.model.Statement;
  * {@code ...
  *
  *     expectFailure.whenTesting().about(uiElements()).that(cancelButton).isVisible();
- *     assertThat(failure).factKeys().containsExactly("expected to be visible");
+ *     assertThat(expectFailure.getFailure()).factKeys().containsExactly("expected to be visible");
  * }</pre>
  *
  * <p>{@code ExpectFailure} is similar to JUnit's {@code assertThrows} (<a
@@ -152,7 +152,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * Captures and returns the failure produced by the assertion in the provided callback, similar to
    * {@code assertThrows()}:
    *
-   * <p>{@code AssertionError failure = expectFailure(whenTesting ->
+   * <p>{@code AssertionError e = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
    */
   @CanIgnoreReturnValue
@@ -167,7 +167,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * Captures and returns the failure produced by the assertion in the provided callback, similar to
    * {@code assertThrows()}:
    *
-   * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
+   * <p>{@code AssertionError e = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
    */
   @CanIgnoreReturnValue

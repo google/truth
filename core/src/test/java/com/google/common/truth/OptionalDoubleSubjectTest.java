@@ -34,9 +34,9 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void failOnNullSubject() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((OptionalDouble) null).isEmpty());
-    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
+    assertThat(e).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -46,9 +46,9 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isPresentFailing() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.empty()).isPresent());
-    assertThat(expected).factKeys().containsExactly("expected to be present");
+    assertThat(e).factKeys().containsExactly("expected to be present");
   }
 
   @Test
@@ -58,17 +58,17 @@ public class OptionalDoubleSubjectTest {
 
   @Test
   public void isEmptyFailing() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.of(1337.0)).isEmpty());
-    assertThat(expected).factKeys().contains("expected to be empty");
-    assertThat(expected).factValue("but was present with value").isEqualTo("1337.0");
+    assertThat(e).factKeys().contains("expected to be empty");
+    assertThat(e).factValue("but was present with value").isEqualTo("1337.0");
   }
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError expected =
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((OptionalDouble) null).isEmpty());
-    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
+    assertThat(e).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -77,20 +77,17 @@ public class OptionalDoubleSubjectTest {
   }
 
   @Test
-  public void hasValue_FailingWithEmpty() {
-    AssertionError expected =
+  public void hasValue_failingWithEmpty() {
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.empty()).hasValue(1337.0));
-    assertThat(expected)
-        .factKeys()
-        .containsExactly("expected to have value", "but was absent")
-        .inOrder();
-    assertThat(expected).factValue("expected to have value").isEqualTo("1337.0");
+    assertThat(e).factKeys().containsExactly("expected to have value", "but was absent").inOrder();
+    assertThat(e).factValue("expected to have value").isEqualTo("1337.0");
   }
 
   @Test
-  public void hasValue_FailingWithWrongValue() {
-    AssertionError expected =
+  public void hasValue_failingWithWrongValue() {
+    AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.of(1337.0)).hasValue(42.0));
-    assertThat(expected).factValue("value of").isEqualTo("optionalDouble.getAsDouble()");
+    assertThat(e).factValue("value of").isEqualTo("optionalDouble.getAsDouble()");
   }
 }

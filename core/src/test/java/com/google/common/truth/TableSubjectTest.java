@@ -39,40 +39,40 @@ import org.junit.runners.JUnit4;
 public class TableSubjectTest {
 
   @Test
-  public void tableIsEmpty() {
+  public void isEmpty() {
     ImmutableTable<String, String, String> table = ImmutableTable.of();
     assertThat(table).isEmpty();
   }
 
   @Test
-  public void tableIsEmptyWithFailure() {
+  public void isEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(table).isEmpty());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
   @Test
-  public void tableIsEmptyOnNullTable() {
+  public void isEmptyOnNullTable() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Table<?, ?, ?>) null).isEmpty());
     assertFailureKeys(e, "expected an empty table", "but was");
   }
 
   @Test
-  public void tableIsNotEmpty() {
+  public void isNotEmpty() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
     assertThat(table).isNotEmpty();
   }
 
   @Test
-  public void tableIsNotEmptyWithFailure() {
+  public void isNotEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of();
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(table).isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");
   }
 
   @Test
-  public void tableIsNotEmptyOnNullTable() {
+  public void isNotEmptyOnNullTable() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Table<?, ?, ?>) null).isNotEmpty());
     assertFailureKeys(e, "expected a nonempty table", "but was");

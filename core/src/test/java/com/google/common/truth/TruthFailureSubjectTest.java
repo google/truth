@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
@@ -25,6 +26,7 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -203,13 +205,12 @@ public class TruthFailureSubjectTest {
   }
 
   private static AssertionError expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<TruthFailureSubject, AssertionError>
-          assertionCallback) {
-    return ExpectFailure.expectFailureAbout(truthFailures(), assertionCallback);
+      SimpleSubjectBuilderCallback<TruthFailureSubject, AssertionError> assertionCallback) {
+    return expectFailureAbout(truthFailures(), assertionCallback);
   }
 
   private static AssertionErrorWithFacts failure(Fact... facts) {
     return AssertionErrorWithFacts.create(
-        ImmutableList.of(), ImmutableList.copyOf(facts), /* cause= */ null);
+        /* messages= */ ImmutableList.of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }
 }
