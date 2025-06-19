@@ -19,11 +19,12 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Platform.classMetadataUnsupported;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
+import static com.google.common.truth.Platform.isInstanceOfType;
 import static com.google.common.truth.Platform.isKotlinRange;
 import static com.google.common.truth.Platform.kotlinRangeContains;
 import static com.google.common.truth.Platform.stringValueForFailure;
@@ -236,7 +237,7 @@ public class Subject {
 
   private static long integralValue(Object o) {
     if (o instanceof Character) {
-      return (long) ((Character) o).charValue();
+      return (Character) o;
     } else if (o instanceof Number) {
       return ((Number) o).longValue();
     } else {
@@ -283,16 +284,20 @@ public class Subject {
   }
 
   /** Checks that the value under test is an instance of the given class. */
-  public void isInstanceOf(Class<?> clazz) {
+  public void isInstanceOf(@Nullable Class<?> clazz) {
     if (clazz == null) {
-      throw new NullPointerException("clazz");
+      failWithoutActual(
+          simpleFact("could not perform instanceof check because expected type was null"),
+          actualValue("value to check was"));
+      return;
     }
+    clazz = Primitives.wrap(clazz);
     if (actual == null) {
       failWithActual("expected instance of", clazz.getName());
       return;
     }
     if (!isInstanceOfType(actual, clazz)) {
-      if (Platform.classMetadataUnsupported()) {
+      if (classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
                 + ", an instance of "
@@ -309,11 +314,15 @@ public class Subject {
   }
 
   /** Checks that the value under test is not an instance of the given class. */
-  public void isNotInstanceOf(Class<?> clazz) {
+  public void isNotInstanceOf(@Nullable Class<?> clazz) {
     if (clazz == null) {
-      throw new NullPointerException("clazz");
+      failWithoutActual(
+          simpleFact("could not perform instanceof check because expected type was null"),
+          actualValue("value to check was"));
+      return;
     }
-    if (Platform.classMetadataUnsupported()) {
+    clazz = Primitives.wrap(clazz);
+    if (classMetadataUnsupported()) {
       throw new UnsupportedOperationException(
           "isNotInstanceOf is not supported under -XdisableClassMetadata");
     }
@@ -327,15 +336,6 @@ public class Subject {
        * subtype.
        */
     }
-  }
-
-  private static boolean isInstanceOfType(Object instance, Class<?> clazz) {
-    checkArgument(
-        !clazz.isPrimitive(),
-        "Cannot check instanceof for primitive type %s. Pass the wrapper class %s instead.",
-        clazz.getSimpleName(),
-        Primitives.wrap(clazz).getSimpleName());
-    return Platform.isInstanceOfType(instance, clazz);
   }
 
   /** Checks that the value under test is equal to any element in the given iterable. */

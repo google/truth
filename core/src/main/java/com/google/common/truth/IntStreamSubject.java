@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Suppliers.memoize;
+import static com.google.common.truth.Fact.simpleFact;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -175,18 +175,12 @@ public final class IntStreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(int @Nullable ... expected) {
-    /*
-     * We declare a parameter type that lets callers pass a nullable array, even though the
-     * assertion will fail if the array is ever actually null. This can be convenient if the
-     * expected value comes from a nullable source (e.g., a map lookup): Users would otherwise have
-     * to use {@code requireNonNull} or {@code !!} or similar, all to address a compile error
-     * warning about a runtime failure that might never happen—a runtime failure that Truth could
-     * produce a better exception message for, since it could make the message express that the
-     * caller is performing a containsExactly assertion.
-     *
-     * TODO(cpovirk): Actually produce such a better exception message.
-     */
-    checkNotNull(expected);
+    if (expected == null) {
+      failWithoutActual(
+          simpleFact("could not perform containment check because expected array is null"),
+          actualContents());
+      return ALREADY_FAILED;
+    }
     return checkThatContentsList().containsExactlyElementsIn(box(expected));
   }
 
@@ -273,6 +267,13 @@ public final class IntStreamSubject extends Subject {
   private static Object[] box(int[] rest) {
     return IntStream.of(rest).boxed().toArray(Integer[]::new);
   }
+
+  private Fact actualContents() {
+    return actualValue("actual contents");
+  }
+
+  /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  private static final Ordered ALREADY_FAILED = () -> {};
 
   // TODO: b/246961366 - Do we want to override + deprecate isEqualTo/isNotEqualTo?
 

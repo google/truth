@@ -550,11 +550,19 @@ public class SubjectTest {
     expectFailure(whenTesting -> whenTesting.that((Object) null).isInstanceOf(CharSequence.class));
   }
 
-  // false positive; actually an intentional trivially *false* check
-  @SuppressWarnings("IsInstanceInteger")
+  @SuppressWarnings("IsInstanceInteger") // test is an intentional trivially true check
   @Test
   public void isInstanceOfPrimitiveType() {
-    assertThrows(IllegalArgumentException.class, () -> assertThat(1).isInstanceOf(int.class));
+    assertThat(1).isInstanceOf(int.class);
+  }
+
+  @Test
+  public void isInstanceOfNull() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(1).isInstanceOf(null));
+    assertFailureKeys(
+        e,
+        "could not perform instanceof check because expected type was null",
+        "value to check was");
   }
 
   @Test
@@ -601,7 +609,16 @@ public class SubjectTest {
 
   @Test
   public void isNotInstanceOfPrimitiveType() {
-    assertThrows(IllegalArgumentException.class, () -> assertThat(1).isNotInstanceOf(int.class));
+    expectFailure(whenTesting -> whenTesting.that(1).isNotInstanceOf(int.class));
+  }
+
+  @Test
+  public void isNotInstanceOfNull() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that(1).isNotInstanceOf(null));
+    assertFailureKeys(
+        e,
+        "could not perform instanceof check because expected type was null",
+        "value to check was");
   }
 
   @Test

@@ -23,7 +23,6 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
-import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
@@ -114,6 +113,16 @@ public class TruthFailureSubjectTest {
     assertFailureValue(e, "for key", "foo");
   }
 
+  @Test
+  public void factValueFailNull() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(failure(simpleFact("foo"))).factValue(null));
+    assertFailureKeys(
+        e,
+        "could not perform fact-value check because requested key is null",
+        "for assertion about Truth failure");
+  }
+
   // factValue(String, int)
 
   @Test
@@ -130,9 +139,15 @@ public class TruthFailureSubjectTest {
 
   @Test
   public void factValueIntFailNegative() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> assertThat(fact("foo", "the foo")).factValue("foo", -1));
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(failure(fact("foo", "the foo"))).factValue("foo", -1));
+    assertFailureKeys(
+        e,
+        "could not perform fact-value check because requested index is null",
+        "requested key",
+        "for assertion about Truth failure");
+    assertFailureValue(e, "requested key", "foo");
   }
 
   @Test

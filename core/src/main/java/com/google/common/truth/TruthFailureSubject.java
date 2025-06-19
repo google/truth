@@ -17,8 +17,6 @@
 package com.google.common.truth;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
@@ -98,7 +96,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
    * fail the test. To assert about such a failure, use {@linkplain #factValue(String, int) the
    * other overload} of {@code factValue}.
    */
-  public StringSubject factValue(String key) {
+  public StringSubject factValue(@Nullable String key) {
     return doFactValue(key, null);
   }
 
@@ -107,13 +105,24 @@ public final class TruthFailureSubject extends ThrowableSubject {
    * name. Most Truth failures do not contain multiple facts with the same key, so most tests should
    * use {@linkplain #factValue(String) the other overload} of {@code factValue}.
    */
-  public StringSubject factValue(String key, int index) {
-    checkArgument(index >= 0, "index must be nonnegative: %s", index);
+  public StringSubject factValue(@Nullable String key, int index) {
+    if (index < 0) {
+      failWithoutActual(
+          simpleFact("could not perform fact-value check because requested index is null"),
+          fact("requested key", key),
+          actualValue("for assertion about Truth failure"));
+      return ignoreCheck().that("");
+    }
     return doFactValue(key, index);
   }
 
-  private StringSubject doFactValue(String key, @Nullable Integer index) {
-    checkNotNull(key);
+  private StringSubject doFactValue(@Nullable String key, @Nullable Integer index) {
+    if (key == null) {
+      failWithoutActual(
+          simpleFact("could not perform fact-value check because requested key is null"),
+          actualValue("for assertion about Truth failure"));
+      return ignoreCheck().that("");
+    }
     if (!(actual instanceof ErrorWithFacts)) {
       failWithActual(simpleFact("expected a failure thrown by Truth's failure API"));
       return ignoreCheck().that("");

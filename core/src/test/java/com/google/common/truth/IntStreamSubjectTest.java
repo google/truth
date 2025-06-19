@@ -246,6 +246,17 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
+  public void testContainsExactly_nullExpected() {
+    AssertionError expected =
+        expectFailure(
+            whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsExactly((int[]) null));
+    assertFailureKeys(
+        expected,
+        "could not perform containment check because expected array is null",
+        "actual contents");
+  }
+
+  @Test
   public void containsExactly_inOrder() {
     assertThat(IntStream.of(42, 43)).containsExactly(42, 43).inOrder();
   }
