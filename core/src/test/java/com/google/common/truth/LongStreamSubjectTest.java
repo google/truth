@@ -272,7 +272,7 @@ public final class LongStreamSubjectTest {
             whenTesting -> whenTesting.that(LongStream.of(42, 43)).containsExactly((long[]) null));
     assertFailureKeys(
         expected,
-        "could not perform containment check because expected array is null",
+        "could not perform containment check because expected array was null",
         "actual contents");
   }
 

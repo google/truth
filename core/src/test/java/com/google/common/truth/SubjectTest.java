@@ -665,7 +665,7 @@ public class SubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(new Object()).isIn(null));
     assertFailureKeys(
         e,
-        "could not perform equality check because iterable of elements to compare to is null",
+        "could not perform equality check because iterable of elements to compare to was null",
         "value to compare was");
   }
 
@@ -735,7 +735,7 @@ public class SubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(new Object()).isNotIn(null));
     assertFailureKeys(
         e,
-        "could not perform equality check because iterable of elements to compare to is null",
+        "could not perform equality check because iterable of elements to compare to was null",
         "value to compare was");
   }
 

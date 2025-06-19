@@ -108,7 +108,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   public StringSubject factValue(@Nullable String key, int index) {
     if (index < 0) {
       failWithoutActual(
-          simpleFact("could not perform fact-value check because requested index is null"),
+          simpleFact("could not perform fact-value check because requested index was null"),
           fact("requested key", key),
           actualValue("for assertion about Truth failure"));
       return ignoreCheck().that("");
@@ -119,7 +119,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private StringSubject doFactValue(@Nullable String key, @Nullable Integer index) {
     if (key == null) {
       failWithoutActual(
-          simpleFact("could not perform fact-value check because requested key is null"),
+          simpleFact("could not perform fact-value check because requested key was null"),
           actualValue("for assertion about Truth failure"));
       return ignoreCheck().that("");
     }

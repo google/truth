@@ -252,7 +252,7 @@ public final class IntStreamSubjectTest {
             whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsExactly((int[]) null));
     assertFailureKeys(
         expected,
-        "could not perform containment check because expected array is null",
+        "could not perform containment check because expected array was null",
         "actual contents");
   }
 

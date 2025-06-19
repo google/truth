@@ -353,7 +353,7 @@ public class IterableSubjectTest {
             whenTesting -> whenTesting.that(asList(1, 2, 3)).containsAnyIn((Iterable<?>) null));
     assertFailureKeys(
         e,
-        "could not perform containment check because expected iterable is null",
+        "could not perform containment check because expected iterable was null",
         "actual contents");
   }
 
@@ -363,7 +363,9 @@ public class IterableSubjectTest {
         expectFailure(
             whenTesting -> whenTesting.that(asList(1, 2, 3)).containsAnyIn((Object[]) null));
     assertFailureKeys(
-        e, "could not perform containment check because expected array is null", "actual contents");
+        e,
+        "could not perform containment check because expected array was null",
+        "actual contents");
   }
 
   @Test
@@ -675,7 +677,7 @@ public class IterableSubjectTest {
                 whenTesting.that(asList(1, 2, 3)).containsAtLeastElementsIn((Iterable<?>) null));
     assertFailureKeys(
         e,
-        "could not perform containment check because expected iterable is null",
+        "could not perform containment check because expected iterable was null",
         "actual contents");
   }
 
@@ -686,7 +688,9 @@ public class IterableSubjectTest {
             whenTesting ->
                 whenTesting.that(asList(1, 2, 3)).containsAtLeastElementsIn((Object[]) null));
     assertFailureKeys(
-        e, "could not perform containment check because expected array is null", "actual contents");
+        e,
+        "could not perform containment check because expected array was null",
+        "actual contents");
   }
 
   @Test
@@ -755,7 +759,7 @@ public class IterableSubjectTest {
             whenTesting -> whenTesting.that(asList(1, 2, 3)).containsNoneIn((Iterable<?>) null));
     assertFailureKeys(
         e,
-        "could not perform containment check because excluded iterable is null",
+        "could not perform containment check because excluded iterable was null",
         "actual contents");
   }
 
@@ -765,7 +769,9 @@ public class IterableSubjectTest {
         expectFailure(
             whenTesting -> whenTesting.that(asList(1, 2, 3)).containsNoneIn((Object[]) null));
     assertFailureKeys(
-        e, "could not perform containment check because excluded array is null", "actual contents");
+        e,
+        "could not perform containment check because excluded array was null",
+        "actual contents");
   }
 
   @Test
@@ -1285,7 +1291,7 @@ public class IterableSubjectTest {
                 whenTesting.that(asList(1, 2)).containsExactlyElementsIn((Iterable<?>) null));
     assertFailureKeys(
         e,
-        "could not perform containment check because expected iterable is null",
+        "could not perform containment check because expected iterable was null",
         "actual contents");
   }
 
@@ -1296,7 +1302,9 @@ public class IterableSubjectTest {
             whenTesting ->
                 whenTesting.that(asList(1, 2)).containsExactlyElementsIn((Object[]) null));
     assertFailureKeys(
-        e, "could not perform containment check because expected array is null", "actual contents");
+        e,
+        "could not perform containment check because expected array was null",
+        "actual contents");
   }
 
   @Test
@@ -1451,7 +1459,7 @@ public class IterableSubjectTest {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1, 3, 2, 4)).isInOrder(null));
     assertFailureKeys(
-        e, "could not perform ordering check because comparator is null", "actual contents");
+        e, "could not perform ordering check because comparator was null", "actual contents");
   }
 
   @Test
@@ -1509,7 +1517,7 @@ public class IterableSubjectTest {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1, 3, 2, 4)).isInStrictOrder(null));
     assertFailureKeys(
-        e, "could not perform ordering check because comparator is null", "actual contents");
+        e, "could not perform ordering check because comparator was null", "actual contents");
   }
 
   @SuppressWarnings("CompareProperty") // avoiding Java 8 API under Android
@@ -1586,7 +1594,7 @@ public class IterableSubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(asList(1, 2)).isNotIn(null));
     assertFailureKeys(
         e,
-        "could not perform equality check because iterable of elements to compare to is null",
+        "could not perform equality check because iterable of elements to compare to was null",
         "value to compare was");
   }
 

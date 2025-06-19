@@ -107,7 +107,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
           if (tolerance < 0) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is negative"),
+                    "could not perform approximate-equality check because tolerance was negative"),
                 numericFact("expected", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));
@@ -139,7 +139,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
           if (tolerance < 0) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is negative"),
+                    "could not perform approximate-equality check because tolerance was negative"),
                 numericFact("expected", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));

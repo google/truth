@@ -118,21 +118,22 @@ public final class DoubleSubject extends ComparableSubject<Double> {
           if (!Double.isFinite(tolerance)) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is not finite"),
+                    "could not perform approximate-equality check because tolerance was not"
+                        + " finite"),
                 numericFact("expected", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));
           } else if (Double.compare(tolerance, 0.0) < 0) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is negative"),
+                    "could not perform approximate-equality check because tolerance was negative"),
                 numericFact("expected", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));
           } else if (!Double.isFinite(other)) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because expected value is not"
+                    "could not perform approximate-equality check because expected value was not"
                         + " finite"),
                 numericFact("expected", other),
                 numericFact("was", actual),
@@ -177,21 +178,22 @@ public final class DoubleSubject extends ComparableSubject<Double> {
           if (!Double.isFinite(tolerance)) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is not finite"),
+                    "could not perform approximate-equality check because tolerance was not"
+                        + " finite"),
                 numericFact("expected not to be", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));
           } else if (Double.compare(tolerance, 0.0) < 0) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because tolerance is negative"),
+                    "could not perform approximate-equality check because tolerance was negative"),
                 numericFact("expected not to be", other),
                 numericFact("was", actual),
                 numericFact("tolerance", tolerance));
           } else if (!Double.isFinite(other)) {
             failWithoutActual(
                 simpleFact(
-                    "could not perform approximate-equality check because expected value is not"
+                    "could not perform approximate-equality check because expected value was not"
                         + " finite"),
                 numericFact("expected not to be", other),
                 numericFact("was", actual),

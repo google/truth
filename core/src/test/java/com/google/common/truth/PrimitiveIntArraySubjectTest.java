@@ -67,7 +67,7 @@ public class PrimitiveIntArraySubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(array(2, 5)).hasLength(-1));
     assertFailureKeys(
         e,
-        "could not perform length check because expected length is negative",
+        "could not perform length check because expected length was negative",
         "expected length",
         "array was");
     assertFailureValue(e, "expected length", "-1");

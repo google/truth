@@ -196,7 +196,7 @@ public class IntegerSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(actual).isWithin(tolerance).of(expected));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected",
         "was",
         "tolerance");
@@ -207,7 +207,7 @@ public class IntegerSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(actual).isNotWithin(tolerance).of(expected));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected",
         "was",
         "tolerance");

@@ -177,7 +177,7 @@ public final class LongStreamSubject extends Subject {
   public Ordered containsExactly(long @Nullable ... expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected array is null"),
+          simpleFact("could not perform containment check because expected array was null"),
           actualContents());
       return ALREADY_FAILED;
     }

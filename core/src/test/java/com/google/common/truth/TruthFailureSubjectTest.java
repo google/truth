@@ -119,7 +119,7 @@ public class TruthFailureSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(failure(simpleFact("foo"))).factValue(null));
     assertFailureKeys(
         e,
-        "could not perform fact-value check because requested key is null",
+        "could not perform fact-value check because requested key was null",
         "for assertion about Truth failure");
   }
 
@@ -144,7 +144,7 @@ public class TruthFailureSubjectTest {
             whenTesting -> whenTesting.that(failure(fact("foo", "the foo"))).factValue("foo", -1));
     assertFailureKeys(
         e,
-        "could not perform fact-value check because requested index is null",
+        "could not perform fact-value check because requested index was null",
         "requested key",
         "for assertion about Truth failure");
     assertFailureValue(e, "requested key", "foo");

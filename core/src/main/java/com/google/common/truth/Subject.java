@@ -343,7 +343,7 @@ public class Subject {
     if (iterable == null) {
       failWithoutActual(
           simpleFact(
-              "could not perform equality check because iterable of elements to compare to is"
+              "could not perform equality check because iterable of elements to compare to was"
                   + " null"),
           valueToCompareWas());
       return;
@@ -371,7 +371,7 @@ public class Subject {
     if (iterable == null) {
       failWithoutActual(
           simpleFact(
-              "could not perform equality check because iterable of elements to compare to is"
+              "could not perform equality check because iterable of elements to compare to was"
                   + " null"),
           valueToCompareWas());
       return;
@@ -1183,7 +1183,7 @@ public class Subject {
   final void arrayHasLengthImpl(int length) {
     if (length < 0) {
       failWithoutActual(
-          simpleFact("could not perform length check because expected length is negative"),
+          simpleFact("could not perform length check because expected length was negative"),
           fact("expected length", length),
           actualValue("array was"));
     } else if (actual == null) {

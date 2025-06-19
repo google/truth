@@ -239,7 +239,7 @@ public class IterableSubject extends Subject {
   public final void containsAnyIn(@Nullable Iterable<?> expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected iterable is null"),
+          simpleFact("could not perform containment check because expected iterable was null"),
           actualContents());
       return;
     } else if (actual == null) {
@@ -277,7 +277,7 @@ public class IterableSubject extends Subject {
   public final void containsAnyIn(@Nullable Object @Nullable [] expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected array is null"),
+          simpleFact("could not perform containment check because expected array was null"),
           actualContents());
       return;
     }
@@ -312,7 +312,7 @@ public class IterableSubject extends Subject {
   public final Ordered containsAtLeastElementsIn(@Nullable Iterable<?> expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected iterable is null"),
+          simpleFact("could not perform containment check because expected iterable was null"),
           actualContents());
       return ALREADY_FAILED;
     }
@@ -333,7 +333,7 @@ public class IterableSubject extends Subject {
   public final Ordered containsAtLeastElementsIn(@Nullable Object @Nullable [] expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected array is null"),
+          simpleFact("could not perform containment check because expected array was null"),
           actualContents());
       return ALREADY_FAILED;
     }
@@ -490,7 +490,7 @@ public class IterableSubject extends Subject {
   public final Ordered containsExactlyElementsIn(@Nullable Object @Nullable [] expected) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected array is null"),
+          simpleFact("could not perform containment check because expected array was null"),
           actualContents());
       return ALREADY_FAILED;
     }
@@ -501,7 +501,7 @@ public class IterableSubject extends Subject {
       @Nullable Iterable<?> expected, boolean addElementsInWarning) {
     if (expected == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because expected iterable is null"),
+          simpleFact("could not perform containment check because expected iterable was null"),
           actualContents());
       return ALREADY_FAILED;
     } else if (actual == null) {
@@ -788,7 +788,7 @@ public class IterableSubject extends Subject {
   public final void containsNoneIn(@Nullable Iterable<?> excluded) {
     if (excluded == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because excluded iterable is null"),
+          simpleFact("could not perform containment check because excluded iterable was null"),
           actualContents());
       return;
     } else if (actual == null) {
@@ -819,7 +819,7 @@ public class IterableSubject extends Subject {
   public final void containsNoneIn(@Nullable Object @Nullable [] excluded) {
     if (excluded == null) {
       failWithoutActual(
-          simpleFact("could not perform containment check because excluded array is null"),
+          simpleFact("could not perform containment check because excluded array was null"),
           actualContents());
       return;
     }
@@ -865,7 +865,7 @@ public class IterableSubject extends Subject {
   public final void isInStrictOrder(@Nullable Comparator<?> comparator) {
     if (comparator == null) {
       failWithoutActual(
-          simpleFact("could not perform ordering check because comparator is null"),
+          simpleFact("could not perform ordering check because comparator was null"),
           actualContents());
       return;
     } else if (actual == null) {
@@ -901,7 +901,7 @@ public class IterableSubject extends Subject {
   public final void isInOrder(@Nullable Comparator<?> comparator) {
     if (comparator == null) {
       failWithoutActual(
-          simpleFact("could not perform ordering check because comparator is null"),
+          simpleFact("could not perform ordering check because comparator was null"),
           actualContents());
       return;
     } else if (actual == null) {
@@ -1334,7 +1334,7 @@ public class IterableSubject extends Subject {
     public Ordered containsExactlyElementsIn(@Nullable Iterable<? extends E> expected) {
       if (expected == null) {
         failWithoutActual(
-            simpleFact("could not perform containment check because expected iterable is null"),
+            simpleFact("could not perform containment check because expected iterable was null"),
             actualContents());
         return ALREADY_FAILED;
       } else if (actual == null) {
@@ -1418,7 +1418,7 @@ public class IterableSubject extends Subject {
     public Ordered containsExactlyElementsIn(E @Nullable [] expected) {
       if (expected == null) {
         failWithoutActual(
-            simpleFact("could not perform containment check because expected array is null"),
+            simpleFact("could not perform containment check because expected array was null"),
             actualContents());
         return ALREADY_FAILED;
       }
@@ -1769,7 +1769,7 @@ public class IterableSubject extends Subject {
     public Ordered containsAtLeastElementsIn(E @Nullable [] expected) {
       if (expected == null) {
         failWithoutActual(
-            simpleFact("could not perform containment check because expected array is null"),
+            simpleFact("could not perform containment check because expected array was null"),
             actualContents());
         return ALREADY_FAILED;
       }
@@ -2033,7 +2033,7 @@ public class IterableSubject extends Subject {
     public void containsAnyIn(E @Nullable [] expected) {
       if (expected == null) {
         failWithoutActual(
-            simpleFact("could not perform containment check because expected array is null"),
+            simpleFact("could not perform containment check because expected array was null"),
             actualContents());
         return;
       }
@@ -2124,7 +2124,7 @@ public class IterableSubject extends Subject {
     public void containsNoneIn(E @Nullable [] excluded) {
       if (excluded == null) {
         failWithoutActual(
-            simpleFact("could not perform containment check because excluded array is null"),
+            simpleFact("could not perform containment check because excluded array was null"),
             actualContents());
         return;
       }

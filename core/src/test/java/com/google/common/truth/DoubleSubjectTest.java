@@ -100,7 +100,7 @@ public class DoubleSubjectTest {
     assertThat(e)
         .factKeys()
         .containsExactly(
-            "could not perform approximate-equality check because expected value is not finite",
+            "could not perform approximate-equality check because expected value was not finite",
             "expected",
             "was",
             "tolerance")
@@ -151,7 +151,7 @@ public class DoubleSubjectTest {
     assertThat(e)
         .factKeys()
         .containsExactly(
-            "could not perform approximate-equality check because expected value is not finite",
+            "could not perform approximate-equality check because expected value was not finite",
             "expected not to be",
             "was",
             "tolerance");
@@ -186,7 +186,7 @@ public class DoubleSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(5.0).isWithin(tolerance).of(5.0));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected",
         "was",
         "tolerance");
@@ -197,7 +197,7 @@ public class DoubleSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(5.0).isNotWithin(tolerance).of(5.0));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected not to be",
         "was",
         "tolerance");
@@ -209,7 +209,7 @@ public class DoubleSubjectTest {
       AssertionError e = expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(NaN).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -219,7 +219,7 @@ public class DoubleSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0).isNotWithin(NaN).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");
@@ -233,7 +233,7 @@ public class DoubleSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(POSITIVE_INFINITY).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -244,7 +244,7 @@ public class DoubleSubjectTest {
               whenTesting -> whenTesting.that(1.0).isNotWithin(POSITIVE_INFINITY).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");
@@ -259,7 +259,7 @@ public class DoubleSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0).isWithin(NEGATIVE_INFINITY).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -270,7 +270,7 @@ public class DoubleSubjectTest {
               whenTesting -> whenTesting.that(1.0).isNotWithin(NEGATIVE_INFINITY).of(1.0));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");

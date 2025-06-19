@@ -58,7 +58,7 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
     T actual = actualAsT();
     if (range == null) {
       failWithoutActual(
-          simpleFact("could not perform range check because range is null"),
+          simpleFact("could not perform range check because range was null"),
           fact("value to test for membership was", actual));
     } else if (actual == null || !range.contains(actual)) {
       failWithActual("expected to be in range", range);
@@ -70,7 +70,7 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
     T actual = actualAsT();
     if (range == null) {
       failWithoutActual(
-          simpleFact("could not perform range check because range is null"),
+          simpleFact("could not perform range check because range was null"),
           fact("value to test for membership was", actual));
     } else if (actual == null) {
       failWithActual("expected a non-null value outside range", range);

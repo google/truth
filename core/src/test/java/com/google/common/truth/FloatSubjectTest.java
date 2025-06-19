@@ -100,7 +100,7 @@ public class FloatSubjectTest {
     assertThat(e)
         .factKeys()
         .containsExactly(
-            "could not perform approximate-equality check because expected value is not finite",
+            "could not perform approximate-equality check because expected value was not finite",
             "expected",
             "was",
             "tolerance")
@@ -151,7 +151,7 @@ public class FloatSubjectTest {
     assertThat(e)
         .factKeys()
         .containsExactly(
-            "could not perform approximate-equality check because expected value is not finite",
+            "could not perform approximate-equality check because expected value was not finite",
             "expected not to be",
             "was",
             "tolerance");
@@ -186,7 +186,7 @@ public class FloatSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(5.0f).isWithin(tolerance).of(5.0f));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected",
         "was",
         "tolerance");
@@ -197,7 +197,7 @@ public class FloatSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(5.0f).isNotWithin(tolerance).of(5.0f));
     assertFailureKeys(
         e,
-        "could not perform approximate-equality check because tolerance is negative",
+        "could not perform approximate-equality check because tolerance was negative",
         "expected not to be",
         "was",
         "tolerance");
@@ -210,7 +210,7 @@ public class FloatSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0f).isWithin(NaN).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -220,7 +220,7 @@ public class FloatSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0f).isNotWithin(NaN).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");
@@ -234,7 +234,7 @@ public class FloatSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0f).isWithin(POSITIVE_INFINITY).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -245,7 +245,7 @@ public class FloatSubjectTest {
               whenTesting -> whenTesting.that(1.0f).isNotWithin(POSITIVE_INFINITY).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");
@@ -260,7 +260,7 @@ public class FloatSubjectTest {
           expectFailure(whenTesting -> whenTesting.that(1.0f).isWithin(NEGATIVE_INFINITY).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected",
           "was",
           "tolerance");
@@ -271,7 +271,7 @@ public class FloatSubjectTest {
               whenTesting -> whenTesting.that(1.0f).isNotWithin(NEGATIVE_INFINITY).of(1.0f));
       assertFailureKeys(
           e,
-          "could not perform approximate-equality check because tolerance is not finite",
+          "could not perform approximate-equality check because tolerance was not finite",
           "expected not to be",
           "was",
           "tolerance");
