@@ -36,6 +36,7 @@ import static com.google.common.truth.SubjectUtils.entryString;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.iterableToCollection;
 import static com.google.common.truth.SubjectUtils.iterableToList;
+import static com.google.common.truth.SubjectUtils.longName;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.lang.Integer.toHexString;
@@ -111,7 +112,7 @@ public class IterableSubject extends Subject {
       // so that we can avoid things like
       // "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
       String objectToString =
-          actual.getClass().getName() + '@' + toHexString(identityHashCode(actual));
+          longName(actual.getClass()) + '@' + toHexString(identityHashCode(actual));
       if (stringValueForFailure(actual).equals(objectToString)) {
         return Iterables.toString(actual);
       }

@@ -38,6 +38,7 @@ import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
+import static com.google.common.truth.SubjectUtils.longName;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Float.floatToIntBits;
@@ -295,7 +296,7 @@ public class Subject {
     }
     clazz = Primitives.wrap(clazz);
     if (actual == null) {
-      failWithActual("expected instance of", clazz.getName());
+      failWithActual("expected instance of", longName(clazz));
       return;
     }
     if (!isInstanceOfType(actual, clazz)) {
@@ -303,14 +304,14 @@ public class Subject {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
                 + ", an instance of "
-                + actual.getClass().getName()
+                + longName(actual.getClass())
                 + ", may or may not be an instance of "
-                + clazz.getName()
+                + longName(clazz)
                 + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
       }
       failWithoutActual(
-          fact("expected instance of", clazz.getName()),
-          fact("but was instance of", actual.getClass().getName()),
+          fact("expected instance of", longName(clazz)),
+          fact("but was instance of", longName(actual.getClass())),
           fact("with value", actualCustomStringRepresentation()));
     }
   }
@@ -332,7 +333,7 @@ public class Subject {
       return; // null is not an instance of clazz.
     }
     if (isInstanceOfType(actual, clazz)) {
-      failWithActual("expected not to be an instance of", clazz.getName());
+      failWithActual("expected not to be an instance of", longName(clazz));
       /*
        * TODO(cpovirk): Consider including actual.getClass() if it's not clazz itself but only a
        * subtype.
@@ -860,8 +861,8 @@ public class Subject {
       EqualityCheck equalityCheck, @Nullable Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);
-    String actualClass = actual == null ? "(null reference)" : actual.getClass().getName();
-    String expectedClass = expected == null ? "(null reference)" : expected.getClass().getName();
+    String actualClass = actual == null ? "(null reference)" : longName(actual.getClass());
+    String expectedClass = expected == null ? "(null reference)" : longName(expected.getClass());
 
     /*
      * It's a little odd for expectedString to be formatActualOrExpected(expected) but actualString

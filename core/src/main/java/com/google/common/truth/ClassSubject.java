@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.SubjectUtils.longName;
+
 import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
 
@@ -39,7 +41,7 @@ public final class ClassSubject extends Subject {
    */
   public void isAssignableTo(Class<?> clazz) {
     if (actual == null || !clazz.isAssignableFrom(actual)) {
-      failWithActual("expected to be assignable to", clazz.getName());
+      failWithActual("expected to be assignable to", longName(clazz));
     }
   }
 

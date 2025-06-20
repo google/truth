@@ -381,6 +381,10 @@ final class SubjectUtils {
     }
   }
 
+  static String longName(Class<?> clazz) {
+    return clazz.getName();
+  }
+
   @SafeVarargs
   static <E> ImmutableList<E> concat(Iterable<? extends E>... inputs) {
     return ImmutableList.copyOf(Iterables.concat(inputs));
