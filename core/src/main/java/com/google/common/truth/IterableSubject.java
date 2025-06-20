@@ -247,9 +247,7 @@ public class IterableSubject extends Subject {
       return;
     } else if (actual == null) {
       failWithActual(
-          fact(
-              "expected an iterable that contains any of",
-              countDuplicatesAndAddTypeInfo(expected)));
+          "expected an iterable that contains any of", countDuplicatesAndAddTypeInfo(expected));
       return;
     }
     Collection<?> actual = iterableToCollection(this.actual);
@@ -351,9 +349,7 @@ public class IterableSubject extends Subject {
     Iterable<?> actual = this.actual; // to make our nullness checker happy
     if (actual == null) {
       failWithActual(
-          fact(
-              "expected an iterable that contains at least",
-              countDuplicatesAndAddTypeInfo(expected)));
+          "expected an iterable that contains at least", countDuplicatesAndAddTypeInfo(expected));
       return ALREADY_FAILED;
     }
 
@@ -796,8 +792,7 @@ public class IterableSubject extends Subject {
       return;
     } else if (actual == null) {
       failWithActual(
-          fact(
-              "expected an iterable that does not contain any of", annotateEmptyStrings(excluded)));
+          "expected an iterable that does not contain any of", annotateEmptyStrings(excluded));
       return;
     }
     Collection<?> actual = iterableToCollection(this.actual);

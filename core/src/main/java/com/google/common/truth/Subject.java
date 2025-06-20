@@ -771,6 +771,7 @@ public class Subject {
    * or throw an exception. For cases in which a method needs to return another {@link Subject} to
    * the user, see {@link #ignoreCheck()}.
    */
+  @SuppressWarnings("FailWithActualOneFact") // suggests infinite recursion
   protected final void failWithActual(String key, @Nullable Object value) {
     failWithActual(fact(key, value));
   }
