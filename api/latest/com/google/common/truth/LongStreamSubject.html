@@ -157,8 +157,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#actualCustomStringRepresentation()" class="member-name-link">actualCustomStringRepresentation</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message.</div>
+<div class="block">Returns a string representation of the actual value for inclusion in failure messages.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#contains(long)" class="member-name-link">contains</a><wbr>(long&nbsp;element)</code></div>
@@ -222,7 +221,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual stream does not contain the given element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;expectedSize)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;size)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual stream has the given size.</div>
 </div>
@@ -290,14 +289,12 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">actualCustomStringRepresentation</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="Subject.html#actualCustomStringRepresentation()">Subject</a></code></span></div>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message. This should only be overridden to provide an
- improved string representation of the value under test, as it would appear in any given error
- message, and should not be used for additional prefixing.
+<div class="block">Returns a string representation of the actual value for inclusion in failure messages.
 
  <p>Subjects should override this with care.
 
- <p>By default, this returns <code>String.ValueOf(getActualValue())</code>.</div>
+ <p>By default, this method returns <code>String.valueOf(getActualValue())</code> for most types. It
+ does have some special logic for a few cases, like arrays.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="Subject.html#actualCustomStringRepresentation()">actualCustomStringRepresentation</a></code>&nbsp;in class&nbsp;<code><a href="Subject.html" title="class in com.google.common.truth">Subject</a></code></dd>
@@ -344,7 +341,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hasSize(int)">
 <h3>hasSize</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;expectedSize)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;size)</span></div>
 <div class="block">Checks that the actual stream has the given size.
 
  <p>If you'd like to check that your stream contains more than <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html#MAX_VALUE" title="class or interface in java.lang" class="external-link"><code>Integer.MAX_VALUE</code></a>

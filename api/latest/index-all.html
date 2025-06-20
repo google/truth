@@ -57,11 +57,12 @@ loadScripts(document, 'script');</script>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
 <dt><a href="com/google/common/truth/StandardSubjectBuilder.html#about(com.google.common.truth.CustomSubjectBuilder.Factory)" class="member-name-link">about(CustomSubjectBuilder.Factory&lt;CustomSubjectBuilderT&gt;)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A generic, advanced method of extension of Truth to new types, which is documented on <a href="com/google/common/truth/CustomSubjectBuilder.html" title="class in com.google.common.truth"><code>CustomSubjectBuilder</code></a>.</div>
+</dd>
 <dt><a href="com/google/common/truth/StandardSubjectBuilder.html#about(com.google.common.truth.Subject.Factory)" class="member-name-link">about(Subject.Factory&lt;S, A&gt;)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class.</div>
+<div class="block">Given a factory for some <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="com/google/common/truth/SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class.</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#actualCustomStringRepresentation()" class="member-name-link">actualCustomStringRepresentation()</a> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>&nbsp;</dd>
@@ -79,8 +80,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/Subject.html#actualCustomStringRepresentation()" class="member-name-link">actualCustomStringRepresentation()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message.</div>
+<div class="block">Returns a string representation of the actual value for inclusion in failure messages.</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/FieldScopes.html#all()" class="member-name-link">all()</a> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/FieldScopes.html" title="class in com.google.common.truth.extensions.proto">FieldScopes</a></dt>
 <dd>
@@ -157,8 +157,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/Truth.html#assertAbout(com.google.common.truth.Subject.Factory)" class="member-name-link">assertAbout(Subject.Factory&lt;S, T&gt;)</a> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class.</div>
+<div class="block">Given a factory for some <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="com/google/common/truth/SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class.</div>
 </dd>
 <dt><a href="com/google/common/truth/Truth.html#assertThat(boolean%5B%5D)" class="member-name-link">assertThat(boolean[])</a> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>
@@ -1196,6 +1195,30 @@ loadScripts(document, 'script');</script>
      you meant to compare doubles, use <a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#of(double)"><code>DoubleSubject.TolerantDoubleComparison.of(double)</code></a> instead.</div>
 </div>
 </dd>
+<dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>IterableOfProtosFluentAssertion</code>.</div>
+</div>
+</dd>
+<dt><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</div>
+</div>
+</dd>
+<dt><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>MultimapWithProtoValuesFluentAssertion</code>.</div>
+</div>
+</dd>
+<dt><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo(com.google.protobuf.Message)"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> instead.</div>
+</div>
+</dd>
 <dt><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
 <dd>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
@@ -1232,30 +1255,6 @@ loadScripts(document, 'script');</script>
      writing a test assertion (actual vs. expected), use <a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(Object)</code></a> instead.</div>
 </div>
 </dd>
-<dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
-<dd>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>IterableOfProtosFluentAssertion</code>.</div>
-</div>
-</dd>
-<dt><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
-<dd>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</div>
-</div>
-</dd>
-<dt><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
-<dd>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>MultimapWithProtoValuesFluentAssertion</code>.</div>
-</div>
-</dd>
-<dt><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
-<dd>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo(com.google.protobuf.Message)"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> instead.</div>
-</div>
-</dd>
 <dt><a href="com/google/common/truth/Correspondence.html#examples-of-exception-handling-heading" class="search-tag-link">Examples of exception handling</a> - Search tag in com.google.common.truth.Correspondence.compare(A, E)</dt>
 <dd>Section</dd>
 <dt><a href="com/google/common/truth/Correspondence.html#exception-handling-heading" class="search-tag-link">Exception handling</a> - Search tag in com.google.common.truth.Correspondence.compare(A, E)</dt>
@@ -1281,12 +1280,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/ExpectFailure.SimpleSubjectBuilderCallback.html" class="type-name-link" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback&lt;S,<wbr>A&gt;</a> - Interface in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A "functional interface" for <a href="com/google/common/truth/ExpectFailure.html#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)"><code>expectFailureAbout()</code></a> to invoke and
+<div class="block">A functional interface for <a href="com/google/common/truth/ExpectFailure.html#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)"><code>expectFailureAbout()</code></a> to invoke and
  capture failures.</div>
 </dd>
 <dt><a href="com/google/common/truth/ExpectFailure.StandardSubjectBuilderCallback.html" class="type-name-link" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a> - Interface in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A "functional interface" for <a href="com/google/common/truth/ExpectFailure.html#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure()</code></a> to invoke and capture
+<div class="block">A functional interface for <a href="com/google/common/truth/ExpectFailure.html#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure()</code></a> to invoke and capture
  failures.</div>
 </dd>
 <dt><a href="com/google/common/truth/ExpectFailure.html#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)" class="member-name-link">expectFailureAbout(Subject.Factory&lt;S, A&gt;, ExpectFailure.SimpleSubjectBuilderCallback&lt;S, A&gt;)</a> - Static method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
@@ -1376,7 +1375,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/StandardSubjectBuilder.html#forCustomFailureStrategy(com.google.common.truth.FailureStrategy)" class="member-name-link">forCustomFailureStrategy(FailureStrategy)</a> - Static method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>
-<div class="block">Returns a new instance that invokes the given <code>FailureStrategy</code> when a check fails.</div>
+<div class="block">Returns a new instance that invokes the given <a href="com/google/common/truth/FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> when a check fails.</div>
 </dd>
 <dt><a href="com/google/common/truth/Correspondence.DiffFormatter.html#formatDiff(A,E)" class="member-name-link">formatDiff(A, E)</a> - Method in interface com.google.common.truth.<a href="com/google/common/truth/Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a></dt>
 <dd>
@@ -1470,8 +1469,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/ThrowableSubject.html#hasCauseThat()" class="member-name-link">hasCauseThat()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></dt>
 <dd>
-<div class="block">Returns a new <code>ThrowableSubject</code> that supports assertions on this throwable's direct
- cause.</div>
+<div class="block">Returns a new <a href="com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth"><code>ThrowableSubject</code></a> to make assertions on the direct <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getCause()" title="class or interface in java.lang" class="external-link">cause</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>.</div>
 </dd>
 <dt><a href="com/google/common/truth/MultisetSubject.html#hasCount(java.lang.Object,int)" class="member-name-link">hasCount(Object, int)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultisetSubject.html" title="class in com.google.common.truth">MultisetSubject</a></dt>
 <dd>
@@ -1588,7 +1586,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/ThrowableSubject.html#hasMessageThat()" class="member-name-link">hasMessageThat()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></dt>
 <dd>
-<div class="block">Returns a <code>StringSubject</code> to make assertions about the throwable's message.</div>
+<div class="block">Returns a <a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a> to make assertions about the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getMessage()" title="class or interface in java.lang" class="external-link">message</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>.</div>
 </dd>
 <dt><a href="com/google/common/truth/IntStreamSubject.html#hasSize(int)" class="member-name-link">hasSize(int)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -2534,9 +2532,45 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Checks that the actual value is less than or equal to <code>other</code>.</div>
 </dd>
+<dt><a href="com/google/common/truth/IntStreamSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual stream is empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/IterableSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual iterable is empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/LongStreamSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual stream is empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/MapSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual map is empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/MultimapSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual multimap is empty.</div>
+</dd>
 <dt><a href="com/google/common/truth/ObjectArraySubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a></dt>
 <dd>
 <div class="block">Checks that the actual array is empty (i.e., that <code>array.length == 0</code>).</div>
+</dd>
+<dt><a href="com/google/common/truth/OptionalDoubleSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalDouble.html" title="class or interface in java.util" class="external-link"><code>OptionalDouble</code></a> does not contain a value.</div>
+</dd>
+<dt><a href="com/google/common/truth/OptionalIntSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalInt.html" title="class or interface in java.util" class="external-link"><code>OptionalInt</code></a> does not contain a value.</div>
+</dd>
+<dt><a href="com/google/common/truth/OptionalLongSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalLong.html" title="class or interface in java.util" class="external-link"><code>OptionalLong</code></a> does not contain a value.</div>
+</dd>
+<dt><a href="com/google/common/truth/OptionalSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link"><code>Optional</code></a> does not contain a value.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveBooleanArraySubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a></dt>
 <dd>
@@ -2570,42 +2604,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Checks that the actual array is empty (i.e., that <code>array.length == 0</code>).</div>
 </dd>
-<dt><a href="com/google/common/truth/IntStreamSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual stream is empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/IterableSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual iterable is empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/LongStreamSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual stream is empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/MapSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual map is empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/MultimapSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual multimap is empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/OptionalDoubleSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalDouble.html" title="class or interface in java.util" class="external-link"><code>OptionalDouble</code></a> does not contain a value.</div>
-</dd>
-<dt><a href="com/google/common/truth/OptionalIntSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalInt.html" title="class or interface in java.util" class="external-link"><code>OptionalInt</code></a> does not contain a value.</div>
-</dd>
-<dt><a href="com/google/common/truth/OptionalLongSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/OptionalLong.html" title="class or interface in java.util" class="external-link"><code>OptionalLong</code></a> does not contain a value.</div>
-</dd>
-<dt><a href="com/google/common/truth/OptionalSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link"><code>Optional</code></a> does not contain a value.</div>
-</dd>
 <dt><a href="com/google/common/truth/StreamSubject.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Checks that the actual stream is empty.</div>
@@ -2638,7 +2636,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/google/common/truth/DoubleSubject.html#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/DoubleSubject.html" title="class in com.google.common.truth">DoubleSubject</a></dt>
 <dd>
 <div class="block">Asserts that the actual value is exactly equal to the given value, with equality defined as by
- <code>Double#equals</code>.</div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Double.equals(java.lang.Object)</code></a>.</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo(Object)</a> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
 <dd>
@@ -2650,7 +2648,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/google/common/truth/FloatSubject.html#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.html" title="class in com.google.common.truth">FloatSubject</a></dt>
 <dd>
 <div class="block">Asserts that the actual value is exactly equal to the given value, with equality defined as by
- <code>Float#equals</code>.</div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>.</div>
 </dd>
 <dt><a href="com/google/common/truth/IterableSubject.html#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>&nbsp;</dd>
@@ -2918,6 +2916,26 @@ loadScripts(document, 'script');</script>
 <div class="block">Asserts that the actual value is a non-null value other than zero (i.e. it is not <code>0.0f</code>,
  <code>-0.0f</code> or <code>null</code>).</div>
 </dd>
+<dt><a href="com/google/common/truth/IntStreamSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual stream is not empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/IterableSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual iterable is not empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/LongStreamSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual stream is not empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/MapSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual map is not empty.</div>
+</dd>
+<dt><a href="com/google/common/truth/MultimapSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual multimap is not empty.</div>
+</dd>
 <dt><a href="com/google/common/truth/ObjectArraySubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a></dt>
 <dd>
 <div class="block">Checks that the actual array is not empty (i.e., that <code>array.length &gt; 0</code>).</div>
@@ -2954,26 +2972,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Checks that the actual array is not empty (i.e., that <code>array.length &gt; 0</code>).</div>
 </dd>
-<dt><a href="com/google/common/truth/IntStreamSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual stream is not empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/IterableSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual iterable is not empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/LongStreamSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual stream is not empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/MapSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual map is not empty.</div>
-</dd>
-<dt><a href="com/google/common/truth/MultimapSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual multimap is not empty.</div>
-</dd>
 <dt><a href="com/google/common/truth/StreamSubject.html#isNotEmpty()" class="member-name-link">isNotEmpty()</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Checks that the actual stream is not empty.</div>
@@ -3002,7 +3000,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/google/common/truth/DoubleSubject.html#isNotEqualTo(java.lang.Object)" class="member-name-link">isNotEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/DoubleSubject.html" title="class in com.google.common.truth">DoubleSubject</a></dt>
 <dd>
 <div class="block">Asserts that the actual value is not exactly equal to the given value, with equality defined as
- by <code>Double#equals</code>.</div>
+ by {link Double#equals}.</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo(java.lang.Object)" class="member-name-link">isNotEqualTo(Object)</a> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
 <dd>&nbsp;</dd>
@@ -3011,7 +3009,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/google/common/truth/FloatSubject.html#isNotEqualTo(java.lang.Object)" class="member-name-link">isNotEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.html" title="class in com.google.common.truth">FloatSubject</a></dt>
 <dd>
 <div class="block">Asserts that the actual value is not exactly equal to the given value, with equality defined as
- by <code>Float#equals</code>.</div>
+ by <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#isNotEqualTo(java.lang.Object)" class="member-name-link">isNotEqualTo(Object)</a> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a></dt>
 <dd>
@@ -3228,7 +3226,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/LongSubject.html" class="type-name-link" title="class in com.google.common.truth">LongSubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>long</code> values.</div>
+<div class="block">A subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/LongSubject.html#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.lang.Long)" class="member-name-link">LongSubject(FailureMetadata, Long)</a> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></dt>
 <dd>
@@ -3418,23 +3416,23 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/PathSubject.html" class="type-name-link" title="class in com.google.common.truth">PathSubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">Assertions for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a> instances.</div>
+<div class="block">A subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveBooleanArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>boolean[]</code>.</div>
+<div class="block">A subject for <code>boolean[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveByteArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveByteArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>byte[]</code>.</div>
+<div class="block">A subject for <code>byte[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveCharArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveCharArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>char[]</code>.</div>
+<div class="block">A subject for <code>char[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>double[]</code>.</div>
+<div class="block">A subject for <code>double[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveDoubleArraySubject.DoubleArrayAsIterable</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -3444,7 +3442,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveFloatArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveFloatArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>float[]</code>.</div>
+<div class="block">A subject for <code>float[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveFloatArraySubject.FloatArrayAsIterable</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -3454,15 +3452,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveIntArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveIntArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>int[]</code>.</div>
+<div class="block">A subject for <code>int[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveLongArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveLongArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>long[]</code>.</div>
+<div class="block">A subject for <code>long[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/PrimitiveShortArraySubject.html" class="type-name-link" title="class in com.google.common.truth">PrimitiveShortArraySubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A subject for <code>short[]</code>.</div>
+<div class="block">A subject for <code>short[]</code> values.</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" class="type-name-link" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a> - Interface in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
@@ -3760,7 +3758,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/google/common/truth/TruthFailureSubject.html" class="type-name-link" title="class in com.google.common.truth">TruthFailureSubject</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">Subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html" title="class or interface in java.lang" class="external-link"><code>AssertionError</code></a> objects thrown by Truth.</div>
+<div class="block">A subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html" title="class or interface in java.lang" class="external-link"><code>AssertionError</code></a> objects thrown by Truth.</div>
 </dd>
 <dt><a href="com/google/common/truth/TruthJUnit.html" class="type-name-link" title="class in com.google.common.truth">TruthJUnit</a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>

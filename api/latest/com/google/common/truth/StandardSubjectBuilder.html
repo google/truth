@@ -130,8 +130,8 @@ loadScripts(document, 'script');</script>
 
  <ul>
    <li>Set an optional message with <a href="#withMessage(java.lang.String)"><code>withMessage(java.lang.String)</code></a>.
-   <li>Specify the type of <code>Subject</code> to create with <a href="#about(com.google.common.truth.Subject.Factory)"><code>about(Subject.Factory)</code></a>.
-   <li>For the types of <code>Subject</code> built into Truth, directly specify the value under test
+   <li>Specify the type of <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> to create with <a href="#about(com.google.common.truth.Subject.Factory)"><code>about(Subject.Factory)</code></a>.
+   <li>For the types of <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> built into Truth, directly specify the value under test
        with <a href="#that(java.lang.Object)"><code>that(Object)</code></a>.
  </ul>
 
@@ -157,12 +157,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;CustomSubjectBuilderT extends <a href="CustomSubjectBuilder.html" title="class in com.google.common.truth">CustomSubjectBuilder</a>&gt;<br>CustomSubjectBuilderT</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#about(com.google.common.truth.CustomSubjectBuilder.Factory)" class="member-name-link">about</a><wbr>(<a href="CustomSubjectBuilder.Factory.html" title="interface in com.google.common.truth">CustomSubjectBuilder.Factory</a>&lt;CustomSubjectBuilderT&gt;&nbsp;factory)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">A generic, advanced method of extension of Truth to new types, which is documented on <a href="CustomSubjectBuilder.html" title="class in com.google.common.truth"><code>CustomSubjectBuilder</code></a>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>, A&gt;<br><a href="SimpleSubjectBuilder.html" title="class in com.google.common.truth">SimpleSubjectBuilder</a><wbr>&lt;S,<wbr>A&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#about(com.google.common.truth.Subject.Factory)" class="member-name-link">about</a><wbr>(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,<wbr>A&gt;&nbsp;factory)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class.</div>
+<div class="block">Given a factory for some <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fail()" class="member-name-link">fail</a>()</code></div>
@@ -170,9 +171,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Reports a failure.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#forCustomFailureStrategy(com.google.common.truth.FailureStrategy)" class="member-name-link">forCustomFailureStrategy</a><wbr>(<a href="FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;failureStrategy)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#forCustomFailureStrategy(com.google.common.truth.FailureStrategy)" class="member-name-link">forCustomFailureStrategy</a><wbr>(<a href="FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;strategy)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Returns a new instance that invokes the given <code>FailureStrategy</code> when a check fails.</div>
+<div class="block">Returns a new instance that invokes the given <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> when a check fails.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#that(boolean%5B%5D)" class="member-name-link">that</a><wbr>(boolean <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> []&nbsp;actual)</code></div>
@@ -277,7 +278,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#that(T%5B%5D)" class="member-name-link">that</a><wbr>(T <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> []&nbsp;actual)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withMessage(java.lang.String)" class="member-name-link">withMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withMessage(java.lang.String)" class="member-name-link">withMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a new instance that will output the given message before the main failure message.</div>
 </div>
@@ -308,8 +309,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="forCustomFailureStrategy(com.google.common.truth.FailureStrategy)">
 <h3>forCustomFailureStrategy</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">forCustomFailureStrategy</span><wbr><span class="parameters">(<a href="FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;failureStrategy)</span></div>
-<div class="block">Returns a new instance that invokes the given <code>FailureStrategy</code> when a check fails. Most
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">forCustomFailureStrategy</span><wbr><span class="parameters">(<a href="FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;strategy)</span></div>
+<div class="block">Returns a new instance that invokes the given <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> when a check fails. Most
  users should not need this. If you think you do, see the documentation on <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a>.</div>
 </div>
 </section>
@@ -635,7 +636,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="withMessage(java.lang.String)">
 <h3>withMessage</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">withMessage</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">withMessage</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
 <div class="block">Returns a new instance that will output the given message before the main failure message. If
  this method is called multiple times, the messages will appear in the order that they were
  specified.</div>
@@ -668,9 +669,8 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>, A&gt;</span>
 <span class="return-type"><a href="SimpleSubjectBuilder.html" title="class in com.google.common.truth">SimpleSubjectBuilder</a>&lt;S,<wbr>A&gt;</span>&nbsp;<span class="element-name">about</span><wbr><span class="parameters">(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,<wbr>A&gt;&nbsp;factory)</span></div>
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class. Created subjects use the previously set failure
- strategy and any previously set failure message.</div>
+<div class="block">Given a factory for some <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class. Created
+ subjects use the previously set failure strategy and any previously set failure message.</div>
 </div>
 </section>
 </li>
@@ -680,6 +680,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;CustomSubjectBuilderT extends <a href="CustomSubjectBuilder.html" title="class in com.google.common.truth">CustomSubjectBuilder</a>&gt;</span>
 <span class="return-type">CustomSubjectBuilderT</span>&nbsp;<span class="element-name">about</span><wbr><span class="parameters">(<a href="CustomSubjectBuilder.Factory.html" title="interface in com.google.common.truth">CustomSubjectBuilder.Factory</a>&lt;CustomSubjectBuilderT&gt;&nbsp;factory)</span></div>
+<div class="block">A generic, advanced method of extension of Truth to new types, which is documented on <a href="CustomSubjectBuilder.html" title="class in com.google.common.truth"><code>CustomSubjectBuilder</code></a>. Extension creators should prefer <a href="Subject.Factory.html" title="interface in com.google.common.truth"><code>Subject.Factory</code></a> if possible.</div>
 </div>
 </section>
 </li>

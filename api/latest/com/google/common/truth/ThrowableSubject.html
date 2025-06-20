@@ -159,13 +159,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasCauseThat()" class="member-name-link">hasCauseThat</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a new <code>ThrowableSubject</code> that supports assertions on this throwable's direct
- cause.</div>
+<div class="block">Returns a new <a href="ThrowableSubject.html" title="class in com.google.common.truth"><code>ThrowableSubject</code></a> to make assertions on the direct <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getCause()" title="class or interface in java.lang" class="external-link">cause</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasMessageThat()" class="member-name-link">hasMessageThat</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a <code>StringSubject</code> to make assertions about the throwable's message.</div>
+<div class="block">Returns a <a href="StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a> to make assertions about the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getMessage()" title="class or interface in java.lang" class="external-link">message</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>.</div>
 </div>
 </div>
 </div>
@@ -211,7 +210,7 @@ loadScripts(document, 'script');</script>
 <h3>hasMessageThat</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></span>&nbsp;<span class="element-name">hasMessageThat</span>()</div>
-<div class="block">Returns a <code>StringSubject</code> to make assertions about the throwable's message.</div>
+<div class="block">Returns a <a href="StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a> to make assertions about the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getMessage()" title="class or interface in java.lang" class="external-link">message</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>.</div>
 </div>
 </section>
 </li>
@@ -220,9 +219,9 @@ loadScripts(document, 'script');</script>
 <h3>hasCauseThat</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></span>&nbsp;<span class="element-name">hasCauseThat</span>()</div>
-<div class="block">Returns a new <code>ThrowableSubject</code> that supports assertions on this throwable's direct
- cause. This method can be invoked repeatedly (e.g. <code>
- assertThat(e).hasCauseThat().hasCauseThat()....</code> to assert on a particular indirect cause.</div>
+<div class="block">Returns a new <a href="ThrowableSubject.html" title="class in com.google.common.truth"><code>ThrowableSubject</code></a> to make assertions on the direct <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html#getCause()" title="class or interface in java.lang" class="external-link">cause</a> of the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a>. This method can be invoked repeatedly (e.g.
+ <code>assertThat(e).hasCauseThat().hasCauseThat()....</code> to assert on a particular indirect
+ cause.</div>
 </div>
 </section>
 </li>

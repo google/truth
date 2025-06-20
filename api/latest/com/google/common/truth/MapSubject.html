@@ -151,7 +151,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.util.Map)" class="member-name-link">MapSubject</a><wbr>(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
- <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;map)</code></div>
+ <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;actual)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor for use by subclasses.</div>
 </div>
@@ -180,7 +180,7 @@ loadScripts(document, 'script');</script>
  <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;rest)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsAtLeastEntriesIn(java.util.Map)" class="member-name-link">containsAtLeastEntriesIn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expectedMap)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsAtLeastEntriesIn(java.util.Map)" class="member-name-link">containsAtLeastEntriesIn</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expected)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual map contains at least the given set of entries in the given map.</div>
 </div>
@@ -203,7 +203,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual map contains exactly the given set of key/value pairs.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsExactlyEntriesIn(java.util.Map)" class="member-name-link">containsExactlyEntriesIn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expectedMap)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsExactlyEntriesIn(java.util.Map)" class="member-name-link">containsExactlyEntriesIn</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expected)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual map contains exactly the given set of entries in the given map.</div>
 </div>
@@ -229,7 +229,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual map (i.e. a value in the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a> under test) and the value it is expected to be equal to, but isn't.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;expectedSize)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;size)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual map has the given size.</div>
 </div>
@@ -239,7 +239,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual map is empty.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;expected)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the value under test is equal to the given object.</div>
 </div>
@@ -273,7 +273,7 @@ loadScripts(document, 'script');</script>
 <h3>MapSubject</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">MapSubject</span><wbr><span class="parameters">(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
- <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;map)</span></div>
+ <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;actual)</span></div>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="Subject.html#check(java.lang.String,java.lang.Object...)"><code>check(...)</code></a><code>.that(actual)</code>.</div>
 </div>
@@ -291,7 +291,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="isEqualTo(java.lang.Object)">
 <h3>isEqualTo</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEqualTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEqualTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;expected)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Checks that the value under test is equal to the given object. For the purposes of this
  comparison, two objects are equal if any of the following is true:
@@ -300,11 +300,10 @@ loadScripts(document, 'script');</script>
    <li>they are equal according to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects.equals(java.lang.Object, java.lang.Object)</code></a>
    <li>they are arrays and are considered equal by the appropriate <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html#equals(long%5B%5D,long%5B%5D)" title="class or interface in java.util" class="external-link"><code>Arrays.equals(long[], long[])</code></a>
        overload
-   <li>they are boxed integer types (<code>Byte</code>, <code>Short</code>, <code>Character</code>, <code>
-       Integer</code>, or <code>Long</code>) and they are numerically equal when converted to <code>Long</code>.
-   <li>the actual value is a boxed floating-point type (<code>Double</code> or <code>Float</code>), the
-       expected value is an <code>Integer</code>, and the two are numerically equal when converted to
-       <code>Double</code>. (This allows <code>assertThat(someDouble).isEqualTo(0)</code> to pass.)
+   <li>they are boxed integer types (<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Byte.html" title="class or interface in java.lang" class="external-link"><code>Byte</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Short.html" title="class or interface in java.lang" class="external-link"><code>Short</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link"><code>Character</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link"><code>Integer</code></a>, or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a>) and they are numerically equal when converted to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a>.
+   <li>the actual value is a boxed floating-point type (<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link"><code>Double</code></a> or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link"><code>Float</code></a>), the
+       expected value is an <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link"><code>Integer</code></a>, and the two are numerically equal when converted to
+       <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link"><code>Double</code></a>. (This allows <code>assertThat(someDouble).isEqualTo(0)</code> to pass.)
  </ul>
 
  <p><b>Note:</b> This method does not test the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Object.equals(java.lang.Object)</code></a> implementation itself; it
@@ -343,7 +342,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hasSize(int)">
 <h3>hasSize</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;expectedSize)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;size)</span></div>
 <div class="block">Checks that the actual map has the given size.</div>
 </div>
 </section>
@@ -429,7 +428,7 @@ loadScripts(document, 'script');</script>
 <h3>containsExactlyEntriesIn</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations"><a href="https://errorprone.info/api/latest/com/google/errorprone/annotations/CanIgnoreReturnValue.html" title="class or interface in com.google.errorprone.annotations" class="external-link">@CanIgnoreReturnValue</a>
-</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsExactlyEntriesIn</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expectedMap)</span></div>
+</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsExactlyEntriesIn</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expected)</span></div>
 <div class="block">Checks that the actual map contains exactly the given set of entries in the given map.</div>
 </div>
 </section>
@@ -439,7 +438,7 @@ loadScripts(document, 'script');</script>
 <h3>containsAtLeastEntriesIn</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations"><a href="https://errorprone.info/api/latest/com/google/errorprone/annotations/CanIgnoreReturnValue.html" title="class or interface in com.google.errorprone.annotations" class="external-link">@CanIgnoreReturnValue</a>
-</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsAtLeastEntriesIn</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expectedMap)</span></div>
+</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsAtLeastEntriesIn</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;expected)</span></div>
 <div class="block">Checks that the actual map contains at least the given set of entries in the given map.</div>
 </div>
 </section>
@@ -456,8 +455,8 @@ loadScripts(document, 'script');</script>
 
  <pre><code>
  assertThat(actualMap)
-   .comparingValuesUsing(correspondence)
-   .containsEntry(expectedKey, expectedValue);
+     .comparingValuesUsing(correspondence)
+     .containsEntry(expectedKey, expectedValue);
  </code></pre>
 
  where <code>actualMap</code> is a <code>Map&lt;?, A&gt;</code> (or, more generally, a <code>Map&lt;?, ? extends
@@ -484,8 +483,8 @@ loadScripts(document, 'script');</script>
 
  <pre><code>
  assertThat(actualMap)
-   .formattingDiffsUsing(FooTestHelper::formatDiff)
-   .containsExactly(key1, foo1, key2, foo2, key3, foo3);
+     .formattingDiffsUsing(FooTestHelper::formatDiff)
+     .containsExactly(key1, foo1, key2, foo2, key3, foo3);
  </code></pre>
 
  where <code>actualMap</code> is a <code>Map&lt;?, Foo&gt;</code> (or, more generally, a <code>Map&lt;?, ? extends

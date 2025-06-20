@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">PrimitiveLongArraySubject</span>
 <span class="extends-implements">extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a></span></div>
-<div class="block">A subject for <code>long[]</code>.</div>
+<div class="block">A subject for <code>long[]</code> values.</div>
 <dl class="notes">
 <dt>Author:</dt>
 <dd>Christian Gruber (cgruber@israfil.net)</dd>
@@ -121,17 +121,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asList()" class="member-name-link">asList</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasLength(int)" class="member-name-link">hasLength</a><wbr>(int&nbsp;length)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual array has the given length.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual array is empty (i.e., that <code>array.length == 0</code>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotEmpty()" class="member-name-link">isNotEmpty</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual array is not empty (i.e., that <code>array.length &gt; 0</code>).</div>
@@ -168,7 +168,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="isEmpty()">
 <h3>isEmpty</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEmpty</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEmpty</span>()</div>
 <div class="block">Checks that the actual array is empty (i.e., that <code>array.length == 0</code>).</div>
 </div>
 </section>
@@ -177,7 +177,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="isNotEmpty()">
 <h3>isNotEmpty</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isNotEmpty</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isNotEmpty</span>()</div>
 <div class="block">Checks that the actual array is not empty (i.e., that <code>array.length &gt; 0</code>).</div>
 </div>
 </section>
@@ -186,12 +186,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hasLength(int)">
 <h3>hasLength</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasLength</span><wbr><span class="parameters">(int&nbsp;length)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasLength</span><wbr><span class="parameters">(int&nbsp;length)</span></div>
 <div class="block">Checks that the actual array has the given length.</div>
-<dl class="notes">
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if <code>length &lt; 0</code></dd>
-</dl>
 </div>
 </section>
 </li>

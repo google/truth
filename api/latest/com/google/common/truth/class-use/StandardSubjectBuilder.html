@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Begins a call chain with the fluent Truth API.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Truth.</span><code><a href="../Truth.html#assertWithMessage(java.lang.String)" class="member-name-link">assertWithMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Truth.</span><code><a href="../Truth.html#assertWithMessage(java.lang.String)" class="member-name-link">assertWithMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Begins an assertion that, if it fails, will prepend the given message to the failure message.</div>
 </div>
@@ -118,9 +118,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a builder for creating a derived subject.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">StandardSubjectBuilder.</span><code><a href="../StandardSubjectBuilder.html#forCustomFailureStrategy(com.google.common.truth.FailureStrategy)" class="member-name-link">forCustomFailureStrategy</a><wbr>(<a href="../FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;failureStrategy)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">StandardSubjectBuilder.</span><code><a href="../StandardSubjectBuilder.html#forCustomFailureStrategy(com.google.common.truth.FailureStrategy)" class="member-name-link">forCustomFailureStrategy</a><wbr>(<a href="../FailureStrategy.html" title="interface in com.google.common.truth">FailureStrategy</a>&nbsp;strategy)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Returns a new instance that invokes the given <code>FailureStrategy</code> when a check fails.</div>
+<div class="block">Returns a new instance that invokes the given <a href="../FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> when a check fails.</div>
 </div>
 <div class="col-first even-row-color"><code>protected final <a href="../StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">Subject.</span><code><a href="../Subject.html#ignoreCheck()" class="member-name-link">ignoreCheck</a>()</code></div>
@@ -134,7 +134,7 @@ loadScripts(document, 'script');</script>
  makes the failure available via <a href="../ExpectFailure.html#getFailure()"><code>ExpectFailure.getFailure()</code></a>.</div>
 </div>
 <div class="col-first even-row-color"><code>final <a href="../StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">StandardSubjectBuilder.</span><code><a href="../StandardSubjectBuilder.html#withMessage(java.lang.String)" class="member-name-link">withMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">StandardSubjectBuilder.</span><code><a href="../StandardSubjectBuilder.html#withMessage(java.lang.String)" class="member-name-link">withMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Returns a new instance that will output the given message before the main failure message.</div>
 </div>

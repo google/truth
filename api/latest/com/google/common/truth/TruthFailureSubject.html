@@ -91,16 +91,16 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">TruthFailureSubject</span>
 <span class="extends-implements">extends <a href="ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></span></div>
-<div class="block">Subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html" title="class or interface in java.lang" class="external-link"><code>AssertionError</code></a> objects thrown by Truth. <code>TruthFailureSubject</code> contains
- methods for asserting about the individual "facts" of those failures. This allows tests to avoid
- asserting about the same fact more often than necessary, including avoiding asserting about facts
- that are set by other subjects that the main subject delegates to. This keeps tests shorter and
- less fragile.
+<div class="block">A subject for <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html" title="class or interface in java.lang" class="external-link"><code>AssertionError</code></a> objects thrown by Truth. <code>TruthFailureSubject</code>
+ contains methods for asserting about the individual "facts" of those failures. This allows tests
+ to avoid asserting about the same fact more often than necessary, including avoiding asserting
+ about facts that are set by other subjects that the main subject delegates to. This keeps tests
+ shorter and less fragile.
 
  <p>To create an instance, call <a href="ExpectFailure.html#assertThat(java.lang.AssertionError)"><code>ExpectFailure.assertThat(java.lang.AssertionError)</code></a>. Or, if you're using a custom
  message or failure strategy, pass <a href="#truthFailures()"><code>truthFailures()</code></a> to your <code>about(...)</code> call.
 
- <p>This class accepts any <code>AssertionError</code> value, but it will throw an exception if a
+ <p>This class accepts any <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html" title="class or interface in java.lang" class="external-link"><code>AssertionError</code></a> value, but it will throw an exception if a
  caller tries to access the facts of an error that wasn't produced by Truth.</div>
 </div>
 </section>
@@ -132,12 +132,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a subject for the list of fact keys.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#factValue(java.lang.String)" class="member-name-link">factValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#factValue(java.lang.String)" class="member-name-link">factValue</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a subject for the value with the given name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#factValue(java.lang.String,int)" class="member-name-link">factValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#factValue(java.lang.String,int)" class="member-name-link">factValue</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  int&nbsp;index)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a subject for the value of the <code>index</code>-th instance of the fact with the given
@@ -193,7 +193,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="factValue(java.lang.String)">
 <h3>factValue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></span>&nbsp;<span class="element-name">factValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></span>&nbsp;<span class="element-name">factValue</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
 <div class="block">Returns a subject for the value with the given name.
 
  <p>The value is always a string, the <code>String.valueOf</code> representation of the value passed
@@ -220,7 +220,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="factValue(java.lang.String,int)">
 <h3>factValue</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></span>&nbsp;<span class="element-name">factValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StringSubject.html" title="class in com.google.common.truth">StringSubject</a></span>&nbsp;<span class="element-name">factValue</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  int&nbsp;index)</span></div>
 <div class="block">Returns a subject for the value of the <code>index</code>-th instance of the fact with the given
  name. Most Truth failures do not contain multiple facts with the same key, so most tests should

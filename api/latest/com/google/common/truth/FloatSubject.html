@@ -155,13 +155,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual value is less than or equal to <code>other</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(java.lang.Object)" class="member-name-link">isEqualTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;expected)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Asserts that the actual value is exactly equal to the given value, with equality defined as by
- <code>Float#equals</code>.</div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#isEquivalentAccordingToCompareTo(java.lang.Float)" class="member-name-link">isEquivalentAccordingToCompareTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;other)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#isEquivalentAccordingToCompareTo(java.lang.Float)" class="member-name-link">isEquivalentAccordingToCompareTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;expected)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
 <div class="block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Use <a href="#isWithin(float)"><code>isWithin(float)</code></a> or <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> instead (see documentation for advice).</div>
@@ -202,7 +202,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotEqualTo(java.lang.Object)" class="member-name-link">isNotEqualTo</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Asserts that the actual value is not exactly equal to the given value, with equality defined as
- by <code>Float#equals</code>.</div>
+ by <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotNaN()" class="member-name-link">isNotNaN</a>()</code></div>
@@ -305,7 +305,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>tolerance</code> - an exclusive lower bound on the difference between the actual value and
      expected value allowed by the check, which must be a non-negative finite value, i.e. not
-     <code>Float.NaN</code>, <code>Float.POSITIVE_INFINITY</code>, or negative, including <code>-0.0f</code></dd>
+     <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#NaN" title="class or interface in java.lang" class="external-link"><code>Float.NaN</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#POSITIVE_INFINITY" title="class or interface in java.lang" class="external-link"><code>Float.POSITIVE_INFINITY</code></a>, or negative, including <code>-0.0f</code></dd>
 </dl>
 </div>
 </section>
@@ -314,9 +314,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="isEqualTo(java.lang.Object)">
 <h3>isEqualTo</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEqualTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEqualTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;expected)</span></div>
 <div class="block">Asserts that the actual value is exactly equal to the given value, with equality defined as by
- <code>Float#equals</code>. This method is <i>not</i> recommended when the code under test is doing
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>. This method is <i>not</i> recommended when the code under test is doing
  any kind of arithmetic: use <a href="#isWithin(float)"><code>isWithin(float)</code></a> with a suitable tolerance in that case. (Remember
  that the exact result of floating point arithmetic is sensitive to apparently trivial changes
  such as replacing <code>(a + b) + c</code> with <code>a + (b + c)</code>, and that unless <code>
@@ -340,7 +340,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isNotEqualTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</span></div>
 <div class="block">Asserts that the actual value is not exactly equal to the given value, with equality defined as
- by <code>Float#equals</code>. See <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> for advice on when exact equality is
+ by <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Float.equals(java.lang.Object)</code></a>. See <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> for advice on when exact equality is
  recommended. Use <a href="#isNotWithin(float)"><code>isNotWithin(float)</code></a> for an assertion with a tolerance.
 
  <p><b>Note:</b> The assertion <code>isNotEqualTo(0.0f)</code> passes for <code>-0.0f</code>, and vice
@@ -357,7 +357,7 @@ loadScripts(document, 'script');</script>
 <h3>isEquivalentAccordingToCompareTo</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEquivalentAccordingToCompareTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;other)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">isEquivalentAccordingToCompareTo</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;expected)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Use <a href="#isWithin(float)"><code>isWithin(float)</code></a> or <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> instead (see documentation for advice).</div>
 </div>

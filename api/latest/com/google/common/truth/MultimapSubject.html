@@ -182,7 +182,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual multimap contains at least the given key/value pairs.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsAtLeastEntriesIn(com.google.common.collect.Multimap)" class="member-name-link">containsAtLeastEntriesIn</a><wbr>(<a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expectedMultimap)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsAtLeastEntriesIn(com.google.common.collect.Multimap)" class="member-name-link">containsAtLeastEntriesIn</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expected)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual multimap contains at least the entries in the argument <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.</div>
 </div>
@@ -205,7 +205,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual multimap contains exactly the given set of key/value pairs.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsExactlyEntriesIn(com.google.common.collect.Multimap)" class="member-name-link">containsExactlyEntriesIn</a><wbr>(<a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expectedMultimap)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsExactlyEntriesIn(com.google.common.collect.Multimap)" class="member-name-link">containsExactlyEntriesIn</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expected)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual multimap contains precisely the same entries as the argument <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.</div>
 </div>
@@ -226,7 +226,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks that the actual multimap does not contain the given key.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;expectedSize)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasSize(int)" class="member-name-link">hasSize</a><wbr>(int&nbsp;size)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks that the actual multimap has the given size.</div>
 </div>
@@ -312,7 +312,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hasSize(int)">
 <h3>hasSize</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;expectedSize)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hasSize</span><wbr><span class="parameters">(int&nbsp;size)</span></div>
 <div class="block">Checks that the actual multimap has the given size.</div>
 </div>
 </section>
@@ -364,7 +364,9 @@ loadScripts(document, 'script');</script>
  <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.
 
  <p>This method performs no checks on its own and cannot cause test failures. Subsequent
- assertions must be chained onto this method call to test properties of the <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.</div>
+ assertions must be chained onto this method call to test properties of the <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.
+ (There is one small exception: This method does check whether the actual value is null, failing
+ if so.)</div>
 </div>
 </section>
 </li>
@@ -381,11 +383,10 @@ loadScripts(document, 'script');</script>
    <li>they are equal according to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects.equals(java.lang.Object, java.lang.Object)</code></a>
    <li>they are arrays and are considered equal by the appropriate <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html#equals(long%5B%5D,long%5B%5D)" title="class or interface in java.util" class="external-link"><code>Arrays.equals(long[], long[])</code></a>
        overload
-   <li>they are boxed integer types (<code>Byte</code>, <code>Short</code>, <code>Character</code>, <code>
-       Integer</code>, or <code>Long</code>) and they are numerically equal when converted to <code>Long</code>.
-   <li>the actual value is a boxed floating-point type (<code>Double</code> or <code>Float</code>), the
-       expected value is an <code>Integer</code>, and the two are numerically equal when converted to
-       <code>Double</code>. (This allows <code>assertThat(someDouble).isEqualTo(0)</code> to pass.)
+   <li>they are boxed integer types (<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Byte.html" title="class or interface in java.lang" class="external-link"><code>Byte</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Short.html" title="class or interface in java.lang" class="external-link"><code>Short</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link"><code>Character</code></a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link"><code>Integer</code></a>, or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a>) and they are numerically equal when converted to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a>.
+   <li>the actual value is a boxed floating-point type (<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link"><code>Double</code></a> or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link"><code>Float</code></a>), the
+       expected value is an <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link"><code>Integer</code></a>, and the two are numerically equal when converted to
+       <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link"><code>Double</code></a>. (This allows <code>assertThat(someDouble).isEqualTo(0)</code> to pass.)
  </ul>
 
  <p><b>Note:</b> This method does not test the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Object.equals(java.lang.Object)</code></a> implementation itself; it
@@ -407,7 +408,7 @@ loadScripts(document, 'script');</script>
 <h3>containsExactlyEntriesIn</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations"><a href="https://errorprone.info/api/latest/com/google/errorprone/annotations/CanIgnoreReturnValue.html" title="class or interface in com.google.errorprone.annotations" class="external-link">@CanIgnoreReturnValue</a>
-</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsExactlyEntriesIn</span><wbr><span class="parameters">(<a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expectedMultimap)</span></div>
+</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsExactlyEntriesIn</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expected)</span></div>
 <div class="block">Checks that the actual multimap contains precisely the same entries as the argument <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.
 
  <p>A subsequent call to <a href="Ordered.html#inOrder()"><code>Ordered.inOrder()</code></a> may be made if the caller wishes to verify that
@@ -421,7 +422,7 @@ loadScripts(document, 'script');</script>
 <h3>containsAtLeastEntriesIn</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations"><a href="https://errorprone.info/api/latest/com/google/errorprone/annotations/CanIgnoreReturnValue.html" title="class or interface in com.google.errorprone.annotations" class="external-link">@CanIgnoreReturnValue</a>
-</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsAtLeastEntriesIn</span><wbr><span class="parameters">(<a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expectedMultimap)</span></div>
+</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></span>&nbsp;<span class="element-name">containsAtLeastEntriesIn</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link">Multimap</a>&lt;?,<wbr>?&gt;&nbsp;expected)</span></div>
 <div class="block">Checks that the actual multimap contains at least the entries in the argument <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html" title="class or interface in com.google.common.collect" class="external-link"><code>Multimap</code></a>.
 
  <p>A subsequent call to <a href="Ordered.html#inOrder()"><code>Ordered.inOrder()</code></a> may be made if the caller wishes to verify that
@@ -483,8 +484,8 @@ loadScripts(document, 'script');</script>
 
  <pre><code>
  assertThat(actualMultimap)
-   .comparingValuesUsing(correspondence)
-   .containsEntry(expectedKey, expectedValue);
+     .comparingValuesUsing(correspondence)
+     .containsEntry(expectedKey, expectedValue);
  </code></pre>
 
  where <code>actualMultimap</code> is a <code>Multimap&lt;?, A&gt;</code> (or, more generally, a <code>

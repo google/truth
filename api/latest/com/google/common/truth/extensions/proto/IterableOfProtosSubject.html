@@ -193,8 +193,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#actualCustomStringRepresentation()" class="member-name-link">actualCustomStringRepresentation</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message.</div>
+<div class="block">Returns a string representation of the actual value for inclusion in failure messages.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a><wbr>&lt;<a href="#type-param-M" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#comparingExpectedFieldsOnly()" class="member-name-link">comparingExpectedFieldsOnly</a>()</code></div>
@@ -480,14 +479,12 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">actualCustomStringRepresentation</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="../../Subject.html#actualCustomStringRepresentation()">Subject</a></code></span></div>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message. This should only be overridden to provide an
- improved string representation of the value under test, as it would appear in any given error
- message, and should not be used for additional prefixing.
+<div class="block">Returns a string representation of the actual value for inclusion in failure messages.
 
  <p>Subjects should override this with care.
 
- <p>By default, this returns <code>String.ValueOf(getActualValue())</code>.</div>
+ <p>By default, this method returns <code>String.valueOf(getActualValue())</code> for most types. It
+ does have some special logic for a few cases, like arrays.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../IterableSubject.html#actualCustomStringRepresentation()">actualCustomStringRepresentation</a></code>&nbsp;in class&nbsp;<code><a href="../../IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></code></dd>

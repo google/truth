@@ -191,8 +191,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>, T&gt;<br><a href="SimpleSubjectBuilder.html" title="class in com.google.common.truth">SimpleSubjectBuilder</a><wbr>&lt;S,<wbr>T&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#assertAbout(com.google.common.truth.Subject.Factory)" class="member-name-link">assertAbout</a><wbr>(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,<wbr>T&gt;&nbsp;factory)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class.</div>
+<div class="block">Given a factory for some <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#assertThat(boolean%5B%5D)" class="member-name-link">assertThat</a><wbr>(boolean <a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> []&nbsp;actual)</code></div>
@@ -365,7 +364,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Begins an assertion about an <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a> array.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#assertWithMessage(java.lang.String)" class="member-name-link">assertWithMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#assertWithMessage(java.lang.String)" class="member-name-link">assertWithMessage</a><wbr>(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Begins an assertion that, if it fails, will prepend the given message to the failure message.</div>
 </div>
@@ -406,7 +405,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="assertWithMessage(java.lang.String)">
 <h3>assertWithMessage</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">assertWithMessage</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageToPrepend)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></span>&nbsp;<span class="element-name">assertWithMessage</span><wbr><span class="parameters">(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html" title="class or interface in org.jspecify.annotations" class="external-link">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
 <div class="block">Begins an assertion that, if it fails, will prepend the given message to the failure message.
 
  <p>This method is a shortcut for <code>assert_().withMessage(...)</code>.
@@ -443,8 +442,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;S extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>, T&gt;</span>
 <span class="return-type"><a href="SimpleSubjectBuilder.html" title="class in com.google.common.truth">SimpleSubjectBuilder</a>&lt;S,<wbr>T&gt;</span>&nbsp;<span class="element-name">assertAbout</span><wbr><span class="parameters">(<a href="Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,<wbr>T&gt;&nbsp;factory)</span></div>
-<div class="block">Given a factory for some <code>Subject</code> class, returns a builder whose <code>that(actual)</code>
- method creates instances of that class.</div>
+<div class="block">Given a factory for some <a href="Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> class, returns a builder whose <a href="SimpleSubjectBuilder.html#that(ActualT)"><code>that(actual)</code></a> method creates instances of that class.</div>
 </div>
 </section>
 </li>

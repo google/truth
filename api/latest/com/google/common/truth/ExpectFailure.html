@@ -105,9 +105,9 @@ loadScripts(document, 'script');</script>
  <p>Usage:
 
  <pre><code>
-   AssertionError failure =
+   AssertionError e =
        expectFailure(whenTesting -&gt; whenTesting.that(cancelButton).isVisible());
-   assertThat(failure).factKeys().containsExactly("expected to be visible");
+   assertThat(e).factKeys().containsExactly("expected to be visible");
 
  ...
 
@@ -126,7 +126,7 @@ loadScripts(document, 'script');</script>
  <code>...
 
      expectFailure.whenTesting().about(uiElements()).that(cancelButton).isVisible();
-     assertThat(failure).factKeys().containsExactly("expected to be visible");
+     assertThat(expectFailure.getFailure()).factKeys().containsExactly("expected to be visible");
  </code></pre>
 
  <p><code>ExpectFailure</code> is similar to JUnit's <code>assertThrows</code> (<a href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThrows%28java.lang.Class,%20org.junit.function.ThrowingRunnable%29">JUnit
@@ -150,13 +150,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static interface&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="ExpectFailure.SimpleSubjectBuilderCallback.html" class="type-name-link" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;<a href="ExpectFailure.SimpleSubjectBuilderCallback.html#type-param-S" title="type parameter in ExpectFailure.SimpleSubjectBuilderCallback">S</a> extends <a href="Subject.html" title="class in com.google.common.truth">Subject</a>, <a href="ExpectFailure.SimpleSubjectBuilderCallback.html#type-param-A" title="type parameter in ExpectFailure.SimpleSubjectBuilderCallback">A</a>&gt;</code></div>
 <div class="col-last even-row-color">
-<div class="block">A "functional interface" for <a href="#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)"><code>expectFailureAbout()</code></a> to invoke and
+<div class="block">A functional interface for <a href="#expectFailureAbout(com.google.common.truth.Subject.Factory,com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback)"><code>expectFailureAbout()</code></a> to invoke and
  capture failures.</div>
 </div>
 <div class="col-first odd-row-color"><code>static interface&nbsp;</code></div>
 <div class="col-second odd-row-color"><code><a href="ExpectFailure.StandardSubjectBuilderCallback.html" class="type-name-link" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A "functional interface" for <a href="#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure()</code></a> to invoke and capture
+<div class="block">A functional interface for <a href="#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure()</code></a> to invoke and capture
  failures.</div>
 </div>
 </div>
@@ -265,7 +265,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Legacy method that returns a subject builder that expects the chained assertion to fail, and
  makes the failure available via <a href="#getFailure()"><code>getFailure()</code></a>.
 
- <p>An instance of <code>ExpectFailure</code> supports only one <code>whenTesting</code> call per test
+ <p>An instance of <a href="ExpectFailure.html" title="class in com.google.common.truth"><code>ExpectFailure</code></a> supports only one <code>whenTesting</code> call per test
  method. The static <a href="#expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)"><code>expectFailure(com.google.common.truth.ExpectFailure.StandardSubjectBuilderCallback)</code></a> method, by contrast, does not have this limitation.</div>
 </div>
 </section>
@@ -288,7 +288,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
  <code>assertThrows()</code>:
 
- <p><code>AssertionError failure = expectFailure(whenTesting -&gt;
+ <p><code>AssertionError e = expectFailure(whenTesting -&gt;
  whenTesting.that(4).isNotEqualTo(4));</code></div>
 </div>
 </section>
@@ -303,7 +303,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Captures and returns the failure produced by the assertion in the provided callback, similar to
  <code>assertThrows()</code>:
 
- <p><code>AssertionError failure = expectFailureAbout(myTypes(), whenTesting -&gt;
+ <p><code>AssertionError e = expectFailureAbout(myTypes(), whenTesting -&gt;
  whenTesting.that(myType).hasProperty());</code></div>
 </div>
 </section>
