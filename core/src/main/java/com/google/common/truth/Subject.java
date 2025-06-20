@@ -98,7 +98,6 @@ public class Subject {
 
   private final FailureMetadata metadata;
   private final @Nullable Object actual;
-  private final @Nullable String typeDescriptionOverride;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
@@ -107,7 +106,6 @@ public class Subject {
   protected Subject(FailureMetadata metadata, @Nullable Object actual) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
-    this.typeDescriptionOverride = TYPE_DESCRIPTION_OVERRIDES.get(getClass());
   }
 
   /** Checks that the value under test is null. */
@@ -1159,14 +1157,6 @@ public class Subject {
     return fact(key, actualCustomStringRepresentation());
   }
 
-  /*
-   * Computed lazily so that we're not doing expensive string operations during every assertion,
-   * only during every failure.
-   */
-  final String typeDescription() {
-    return typeDescriptionOrGuess(getClass(), typeDescriptionOverride);
-  }
-
   final void arrayIsEmptyImpl() {
     if (actual == null) {
       failWithActual(simpleFact("expected an empty array"));
@@ -1200,18 +1190,22 @@ public class Subject {
     return ImmutableList.builder();
   }
 
-  private static String typeDescriptionOrGuess(
-      Class<? extends Subject> clazz, @Nullable String typeDescriptionOverride) {
+  /*
+   * Computed lazily so that we're not doing expensive string operations during every assertion,
+   * only during every failure.
+   */
+  final String typeDescription() {
+    String typeDescriptionOverride = TYPE_DESCRIPTION_OVERRIDES.get(getClass());
     if (typeDescriptionOverride != null) {
       return typeDescriptionOverride;
     }
     /*
-     * j2cl doesn't store enough metadata to know whether "Foo$BarSubject" is a nested class, so it
+     * J2CL doesn't store enough metadata to know whether "Foo$BarSubject" is a nested class, so it
      * can't tell whether the simple name is "Foo$BarSubject" or just "BarSubject": b/71808768. It
      * returns "Foo$BarSubject" to err on the side of preserving information. We want just
      * "BarSubject," so we strip any likely enclosing type ourselves.
      */
-    String subjectClass = clazz.getSimpleName().replaceFirst(".*[$]", "");
+    String subjectClass = getClass().getSimpleName().replaceFirst(".*[$]", "");
     String actualClass =
         (subjectClass.endsWith("Subject") && !subjectClass.equals("Subject"))
             ? subjectClass.substring(0, subjectClass.length() - "Subject".length())
@@ -1232,7 +1226,8 @@ public class Subject {
    * For example, {@link ThrowableSubject} has the description "throwable." Normally, Truth is able
    * to infer this description from the class name. However, if we lack runtime type information
    * (notably, under J2CL with class metadata off), we might not have access to the original class
-   * name.
+   * name. (As of this writing, we don't run Truth's own tests under J2CL with class metadata off,
+   * but our users may run their own tests that way.)
    *
    * <p>Since Truth can normally infer this on its own, this mechanism is not something that would
    * normally be useful outside of core Truth. But to support running Truth's own tests run with
@@ -1262,7 +1257,9 @@ public class Subject {
           // keep-sorted start
           .put(GuavaOptionalSubject.class, "optional")
           .put(IntStreamSubject.class, "stream")
+          .put(IterableSubject.class, "iterable")
           .put(LongStreamSubject.class, "stream")
+          .put(MapSubject.class, "map")
           .put(MultimapSubject.class, "multimap")
           .put(MultisetSubject.class, "multiset")
           .put(ObjectArraySubject.class, "array")
@@ -1279,6 +1276,8 @@ public class Subject {
           .put(PrimitiveLongArraySubject.class, "array")
           .put(PrimitiveShortArraySubject.class, "array")
           .put(StreamSubject.class, "stream")
+          .put(StringSubject.class, "string")
+          .put(TableSubject.class, "table")
           .put(ThrowableSubject.class, "throwable")
           .put(TruthFailureSubject.class, "failure")
           // keep-sorted end
