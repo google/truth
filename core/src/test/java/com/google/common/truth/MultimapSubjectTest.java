@@ -24,7 +24,6 @@ import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUAL
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
@@ -179,6 +178,13 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void isEmptyOnNullMultimap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Multimap<?, ?>) null).isEmpty());
+    assertFailureKeys(e, "expected an empty multimap", "but was");
+  }
+
+  @Test
   public void isNotEmpty() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     assertThat(multimap).isNotEmpty();
@@ -189,6 +195,13 @@ public class MultimapSubjectTest {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of();
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(multimap).isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");
+  }
+
+  @Test
+  public void isNotEmptyOnNullMultimap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Multimap<?, ?>) null).isNotEmpty());
+    assertFailureKeys(e, "expected a nonempty multimap", "but was");
   }
 
   @Test
@@ -203,8 +216,24 @@ public class MultimapSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    assertThrows(
-        IllegalArgumentException.class, () -> assertThat(ImmutableMultimap.of(1, 2)).hasSize(-1));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(ImmutableMultimap.of(1, 2)).hasSize(-1));
+    assertFailureKeys(
+        e,
+        "expected a multimap with a negative size, but that is impossible",
+        "expected size",
+        "actual size",
+        "actual contents");
+    assertFailureValue(e, "expected size", "-1");
+    assertFailureValue(e, "actual size", "1");
+    assertFailureValue(e, "actual contents", "{1=[2]}");
+  }
+
+  @Test
+  public void hasSizeOnNullMultimap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Multimap<?, ?>) null).hasSize(1));
+    assertFailureKeys(e, "expected a multimap with size", "but was");
   }
 
   @Test
@@ -222,6 +251,13 @@ public class MultimapSubjectTest {
     assertFailureValue(e, "value of", "multimap.keySet()");
     assertFailureValue(e, "expected to contain", "daniel");
     assertFailureValue(e, "but was", "[kurt]");
+  }
+
+  @Test
+  public void containsKeyOnNullMultimap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Multimap<?, ?>) null).containsKey("greg"));
+    assertFailureKeys(e, "expected a multimap that contains key", "but was");
   }
 
   @Test
@@ -283,6 +319,14 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void doesNotContainKeyOnNullMultimap() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Multimap<?, ?>) null).doesNotContainKey("greg"));
+    assertFailureKeys(e, "expected a multimap that does not contain key", "but was");
+  }
+
+  @Test
   public void doesNotContainNullKeyFailure() {
     Multimap<@Nullable String, String> multimap = HashMultimap.create();
     multimap.put(null, "null");
@@ -308,6 +352,14 @@ public class MultimapSubjectTest {
     assertFailureKeys(e, "expected to contain entry", "but was");
     assertFailureValue(e, "expected to contain entry", "daniel=ploch");
     assertFailureValue(e, "but was", "{kurt=[kluever]}");
+  }
+
+  @Test
+  public void containsEntryOnNullMultimap() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Multimap<?, ?>) null).containsEntry("greg", "kick"));
+    assertFailureKeys(e, "expected a multimap that contains entry", "but was");
   }
 
   @Test
@@ -434,6 +486,15 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void doesNotContainEntryOnNullMultimap() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Multimap<?, ?>) null).doesNotContainEntry("kurt", "kluever"));
+    assertFailureKeys(e, "expected a multimap that does not contain entry", "but was");
+  }
+
+  @Test
   public void valuesForKey() {
     ImmutableMultimap<Integer, String> multimap =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
@@ -485,12 +546,24 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void containsExactlyRejectsNull() {
+  public void containsExactlyRejectsNullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Multimap<?, ?>) null).containsExactly("key", "value"));
+    assertFailureKeys(e, "expected a multimap that contains exactly", "but was");
+  }
+
+  @Test
+  public void containsExactlyEntriesInRejectsNullExpected() {
     ImmutableMultimap<Integer, String> multimap =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThrows(
-        NullPointerException.class, () -> assertThat(multimap).containsExactlyEntriesIn(null));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(multimap).containsExactlyEntriesIn(null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because expected multimap was null",
+        "actual contents");
   }
 
   @Test
@@ -871,12 +944,24 @@ public class MultimapSubjectTest {
   }
 
   @Test
-  public void containsAtLeastRejectsNull() {
+  public void containsAtLeastRejectsNullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Multimap<?, ?>) null).containsAtLeast("key", "value"));
+    assertFailureKeys(e, "expected a multimap that contains at least", "but was");
+  }
+
+  @Test
+  public void containsAtLeastEntriesInRejectsNullExpected() {
     ImmutableMultimap<Integer, String> multimap =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThrows(
-        NullPointerException.class, () -> assertThat(multimap).containsAtLeastEntriesIn(null));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(multimap).containsAtLeastEntriesIn(null));
+    assertFailureKeys(
+        e,
+        "could not perform containment check because expected multimap was null",
+        "actual contents");
   }
 
   @Test

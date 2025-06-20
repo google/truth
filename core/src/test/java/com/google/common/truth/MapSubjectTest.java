@@ -74,6 +74,24 @@ public class MapSubjectTest {
   }
 
   @Test
+  public void containsExactlyRejectsNullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<?, ?>) null).containsExactly("key", "value"));
+    assertFailureKeys(e, "expected a map that contains exactly", "but was");
+  }
+
+  @Test
+  public void containsExactlyEntriesInRejectsNullExpected() {
+    ImmutableMap<String, String> map = ImmutableMap.of("key", "value");
+
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(map).containsExactlyEntriesIn(null));
+    assertFailureKeys(
+        e, "could not perform containment check because expected map was null", "actual contents");
+  }
+
+  @Test
   public void containsExactlyEmpty() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of();
 
@@ -475,6 +493,24 @@ public class MapSubjectTest {
     assertThat(actual).containsAtLeast("key", null).inOrder();
     assertThat(actual).containsAtLeastEntriesIn(expected);
     assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastRejectsNullActual() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<?, ?>) null).containsAtLeast("key", "value"));
+    assertFailureKeys(e, "expected a map that contains at least", "but was");
+  }
+
+  @Test
+  public void containsAtLeastEntriesInRejectsNullExpected() {
+    ImmutableMap<String, String> map = ImmutableMap.of("key", "value");
+
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(map).containsAtLeastEntriesIn(null));
+    assertFailureKeys(
+        e, "could not perform containment check because expected map was null", "actual contents");
   }
 
   @Test
@@ -926,6 +962,12 @@ public class MapSubjectTest {
   }
 
   @Test
+  public void isEmptyOnNullMap() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).isEmpty());
+    assertFailureKeys(e, "expected an empty map", "but was");
+  }
+
+  @Test
   public void isNotEmpty() {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of(1, 5);
     assertThat(actual).isNotEmpty();
@@ -936,6 +978,13 @@ public class MapSubjectTest {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of();
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(actual).isNotEmpty());
     assertFailureKeys(e, "expected not to be empty");
+  }
+
+  @Test
+  public void isNotEmptyOnNullMap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).isNotEmpty());
+    assertFailureKeys(e, "expected a nonempty map", "but was");
   }
 
   @Test
@@ -950,8 +999,23 @@ public class MapSubjectTest {
 
   @Test
   public void hasSizeNegative() {
-    assertThrows(
-        IllegalArgumentException.class, () -> assertThat(ImmutableMap.of(1, 2)).hasSize(-1));
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(ImmutableMap.of(1, 2)).hasSize(-1));
+    assertFailureKeys(
+        e,
+        "expected a map with a negative size, but that is impossible",
+        "expected size",
+        "actual size",
+        "actual contents");
+    assertFailureValue(e, "expected size", "-1");
+    assertFailureValue(e, "actual size", "1");
+    assertFailureValue(e, "actual contents", "{1=2}");
+  }
+
+  @Test
+  public void hasSizeOnNullMap() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).hasSize(1));
+    assertFailureKeys(e, "expected a map with size", "but was");
   }
 
   @Test
@@ -978,6 +1042,13 @@ public class MapSubjectTest {
     assertFailureValue(e, "value of", "map.keySet()");
     assertFailureValue(e, "expected to contain", "null");
     assertFailureValue(e, "but was", "[kurt]");
+  }
+
+  @Test
+  public void containsKeyOnNullMap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).containsKey("greg"));
+    assertFailureKeys(e, "expected a map that contains key", "but was");
   }
 
   @Test
@@ -1046,6 +1117,13 @@ public class MapSubjectTest {
   }
 
   @Test
+  public void doesNotContainKeyOnNullMap() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that((Map<?, ?>) null).doesNotContainKey("greg"));
+    assertFailureKeys(e, "expected a map that does not contain key", "but was");
+  }
+
+  @Test
   public void doesNotContainNullKey() {
     Map<@Nullable String, String> actual = new HashMap<>();
     actual.put(null, "null");
@@ -1087,6 +1165,14 @@ public class MapSubjectTest {
     assertFailureKeys(e, "expected to contain entry", "but was");
     assertFailureValue(e, "expected to contain entry", "greg=kick");
     assertFailureValue(e, "but was", "{kurt=kluever}");
+  }
+
+  @Test
+  public void containsEntryOnNullMap() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that((Map<?, ?>) null).containsEntry("greg", "kick"));
+    assertFailureKeys(e, "expected a map that contains entry", "but was");
   }
 
   @Test
@@ -1205,6 +1291,15 @@ public class MapSubjectTest {
     assertFailureValue(e, "value of", "map.entrySet()");
     assertFailureValue(e, "expected not to contain", "kurt=kluever");
     assertFailureValue(e, "but was", "[kurt=kluever]");
+  }
+
+  @Test
+  public void doesNotContainEntryOnNullMap() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that((Map<?, ?>) null).doesNotContainEntry("kurt", "kluever"));
+    assertFailureKeys(e, "expected a map that does not contain entry", "but was");
   }
 
   @Test

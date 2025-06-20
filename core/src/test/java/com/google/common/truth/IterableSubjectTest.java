@@ -91,7 +91,7 @@ public class IterableSubjectTest {
   @Test
   public void hasSizeOnNullIterable() {
     AssertionError e =
-        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).hasSize(-1));
+        expectFailure(whenTesting -> whenTesting.that((Iterable<?>) null).hasSize(1));
     assertFailureKeys(e, "expected an iterable with size", "but was");
   }
 
