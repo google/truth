@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,17 +50,12 @@ public class ExpectFailureWithStackTraceTest {
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {
-          String failureMessage = "";
-          try {
-            s.evaluate();
-          } catch (AssertionError e) {
-            failureMessage = e.getMessage();
-          }
+          AssertionError e = assertThrows(AssertionError.class, () -> s.evaluate());
           // Check that error message contains stack traces. Method name should appear twice,
           // once for each expect error.
-          int firstIndex = failureMessage.indexOf(METHOD_NAME);
+          int firstIndex = e.getMessage().indexOf(METHOD_NAME);
           assertThat(firstIndex).isGreaterThan(0);
-          int secondIndex = failureMessage.indexOf(METHOD_NAME, firstIndex + 1);
+          int secondIndex = e.getMessage().indexOf(METHOD_NAME, firstIndex + 1);
           assertThat(secondIndex).isGreaterThan(firstIndex);
         }
       };

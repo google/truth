@@ -18,6 +18,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Platform.EXPECT_FAILURE_WARNING_IF_GWT;
+import static com.google.common.truth.Platform.getStackTraceAsString;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
@@ -121,7 +123,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     if (failureExpected && failure == null) {
       throw new AssertionError(
           "ExpectFailure.whenTesting() invoked, but no failure was caught."
-              + Platform.EXPECT_FAILURE_WARNING_IF_GWT);
+              + EXPECT_FAILURE_WARNING_IF_GWT);
     }
   }
 
@@ -143,7 +145,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
       throw new AssertionError(
           lenientFormat(
               "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
-              Platform.getStackTraceAsString(failure), Platform.getStackTraceAsString(captured)));
+              getStackTraceAsString(failure), getStackTraceAsString(captured)));
     }
     failure = captured;
   }

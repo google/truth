@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -128,10 +129,11 @@ public class ExpectFailureNonRuleTest {
     @SuppressWarnings("TruthSelfEquals")
     public void expect_throwInSubject_shouldPropagate() {
       expectFailure.whenTesting().that(4).isEqualTo(4); // No failure being caught
-      long unused = throwingMethod();
+      throwingMethod();
     }
   }
 
+  @CanIgnoreReturnValue
   private static long throwingMethod() {
     throw new RuntimeException("Throw deliberately");
   }

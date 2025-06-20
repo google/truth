@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkState;
+import static java.lang.Math.abs;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -68,7 +69,7 @@ final class TestCorrespondences {
                 if (actual == null || expected == null) {
                   throw new NullPointerExceptionFromWithin10Of();
                 }
-                return Math.abs(actual - expected) <= 10;
+                return abs(actual - expected) <= 10;
               },
               "is within 10 of")
           .formattingDiffsUsing(INT_DIFF_FORMATTER);
@@ -179,7 +180,7 @@ final class TestCorrespondences {
       if (parts.size() != 2) {
         return null;
       }
-      Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
+      Integer id = parts.get(0).equals("none") ? Integer.valueOf(-1) : Ints.tryParse(parts.get(0));
       Integer score = Ints.tryParse(parts.get(1));
       if (id == null || score == null) {
         return null;
@@ -246,7 +247,7 @@ final class TestCorrespondences {
     if (expected == null) {
       return false;
     }
-    return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
+    return actual.hasSameId(expected) && abs(actual.getScore() - expected.getScore()) <= 10;
   }
 
   private static @Nullable String formatRecordDiff(MyRecord actual, MyRecord expected) {
@@ -261,14 +262,14 @@ final class TestCorrespondences {
    * A key function for {@link MyRecord} instances that keys records by their {@code id} values. The
    * key is null if the record has no {@code id}. Does not support null records.
    */
-  static final Function<MyRecord, Integer> RECORD_ID =
+  static final Function<MyRecord, @Nullable Integer> RECORD_ID =
       record -> record.hasId() ? record.getId() : null;
 
   /**
    * A key function for {@link MyRecord} instances that keys records by their {@code id} values. The
    * key is null if the record has no {@code id}. Does not support null records.
    */
-  static final Function<MyRecord, Integer> NULL_SAFE_RECORD_ID =
+  static final Function<@Nullable MyRecord, Integer> NULL_SAFE_RECORD_ID =
       record -> {
         if (record == null) {
           return 0;
@@ -281,7 +282,7 @@ final class TestCorrespondences {
    * instances and keys records by their {@code id} values. The key is null if the string does not
    * parse or the record has no {@code id}. Does not support null strings.
    */
-  static final Function<String, Integer> PARSED_RECORD_ID =
+  static final Function<String, @Nullable Integer> PARSED_RECORD_ID =
       str -> {
         MyRecord record = MyRecord.parse(str);
         return record != null ? RECORD_ID.apply(record) : null;

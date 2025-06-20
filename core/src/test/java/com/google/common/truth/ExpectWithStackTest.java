@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.assertThrows;
 
 import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
@@ -126,11 +127,10 @@ public class ExpectWithStackTest {
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {
-          try {
-            ruleToVerify.apply(base, description).evaluate();
-          } catch (AssertionError caught) {
-            errorVerifier.verify(caught);
-          }
+          AssertionError e =
+              assertThrows(
+                  AssertionError.class, () -> ruleToVerify.apply(base, description).evaluate());
+          errorVerifier.verify(e);
         }
       };
     }

@@ -39,7 +39,7 @@ public class NumericComparisonTest {
   public void primitivesVsBoxedPrimitivesVsObject_int() {
     int int42 = 42;
     Integer integer42 = 42;
-    Object object42 = (Object) 42;
+    Object object42 = 42;
 
     assertThat(int42).isEqualTo(int42);
     assertThat(integer42).isEqualTo(int42);
@@ -58,7 +58,7 @@ public class NumericComparisonTest {
   public void primitivesVsBoxedPrimitivesVsObject_long() {
     long longPrim42 = 42;
     Long long42 = (long) 42;
-    Object object42 = (Object) 42L;
+    Object object42 = 42L;
 
     assertThat(longPrim42).isEqualTo(longPrim42);
     assertThat(long42).isEqualTo(longPrim42);
@@ -127,17 +127,16 @@ public class NumericComparisonTest {
     short short42 = (short) 42;
     char char42 = (char) 42;
     int int42 = 42;
-    long long42 = (long) 42;
+    long long42 = 42;
 
-    ImmutableSet<Object> fortyTwos =
-        ImmutableSet.<Object>of(byte42, short42, char42, int42, long42);
+    ImmutableSet<Object> fortyTwos = ImmutableSet.of(byte42, short42, char42, int42, long42);
     for (Object actual : fortyTwos) {
       for (Object expected : fortyTwos) {
         assertThat(actual).isEqualTo(expected);
       }
     }
 
-    ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
+    ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.of(byte42, short42, int42, long42);
     for (Object actual : fortyTwosNoChar) {
       for (Object expected : fortyTwosNoChar) {
         expectFailure(whenTesting -> whenTesting.that(actual).isNotEqualTo(expected));
@@ -148,10 +147,9 @@ public class NumericComparisonTest {
     short short41 = (short) 41;
     char char41 = (char) 41;
     int int41 = 41;
-    long long41 = (long) 41;
+    long long41 = 41;
 
-    ImmutableSet<Object> fortyOnes =
-        ImmutableSet.<Object>of(byte41, short41, char41, int41, long41);
+    ImmutableSet<Object> fortyOnes = ImmutableSet.of(byte41, short41, char41, int41, long41);
 
     for (Object first : fortyTwos) {
       for (Object second : fortyOnes) {

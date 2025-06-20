@@ -1581,11 +1581,12 @@ public class IterableSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(actual).isNotIn(ImmutableList.of("a", "b")));
     assertThat(e)
         .hasMessageThat()
-        .isEqualTo(
+        .startsWith(
             "The actual value is an Iterable, and you've written a test that compares it to some "
                 + "objects that are not Iterables. Did you instead mean to check whether its "
                 + "*contents* match any of the *contents* of the given values? If so, call "
-                + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
+                + "containsNoneOf(...)/containsNoneIn(...) instead.");
+    assertThat(e).factValue("non-iterables").isEqualTo("[a, b]");
   }
 
   @Test
@@ -1617,11 +1618,12 @@ public class IterableSubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(actual).isNoneOf("a", "b"));
     assertThat(e)
         .hasMessageThat()
-        .isEqualTo(
+        .startsWith(
             "The actual value is an Iterable, and you've written a test that compares it to some "
                 + "objects that are not Iterables. Did you instead mean to check whether its "
                 + "*contents* match any of the *contents* of the given values? If so, call "
-                + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
+                + "containsNoneOf(...)/containsNoneIn(...) instead.");
+    assertThat(e).factValue("non-iterables").isEqualTo("[a, b]");
   }
 
   private static final class CountsToStringCalls {

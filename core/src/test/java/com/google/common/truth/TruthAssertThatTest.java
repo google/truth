@@ -15,16 +15,16 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.truth.Truth.assert_;
+import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Arrays.asList;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import com.google.common.reflect.TypeToken;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -37,7 +37,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class TruthAssertThatTest {
   private static TypeToken<?> methodToReturnTypeToken(Method input) {
-    return TypeToken.of(Iterables.getOnlyElement(asList(input.getParameterTypes())));
+    return TypeToken.of(getOnlyElement(asList(input.getParameterTypes())));
   }
 
   @Test
@@ -49,9 +49,7 @@ public class TruthAssertThatTest {
             .toSortedSet(Ordering.usingToString());
     ImmutableSortedSet<TypeToken<?>> truthTypes =
         FluentIterable.from(asList(Truth.class.getMethods()))
-            .filter(
-                input ->
-                    input.getName().equals("assertThat") && Modifier.isStatic(input.getModifiers()))
+            .filter(input -> input.getName().equals("assertThat") && isStatic(input.getModifiers()))
             .transform(TruthAssertThatTest::methodToReturnTypeToken)
             .toSortedSet(Ordering.usingToString());
 

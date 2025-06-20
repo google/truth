@@ -51,7 +51,7 @@ public class FactTest {
 
   @Test
   public void oneFacts() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fact("foo", "bar"))))
+    assertThat(makeMessage(ImmutableList.of(), ImmutableList.of(fact("foo", "bar"))))
         .isEqualTo("foo: bar");
   }
 
@@ -59,7 +59,7 @@ public class FactTest {
   public void twoFacts() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(fact("foo", "bar"), fact("longer name", "other value"))))
         .isEqualTo(
             TEXT.join(
@@ -71,7 +71,7 @@ public class FactTest {
   public void mixingFactsAndNumericFacts() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(
                     fact("value of", "optionalInt.getAsInt()"),
                     numericFact("expected", 2000),
@@ -89,7 +89,7 @@ public class FactTest {
   public void numericFacts_integers() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(
                     numericFact("expected", 802604),
                     numericFact("but was", 773804),
@@ -105,7 +105,7 @@ public class FactTest {
   public void numericFacts_doubles() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(
                     numericFact("expected", 802604.123),
                     numericFact("but was", 773804.123),
@@ -121,7 +121,7 @@ public class FactTest {
   public void numericFacts_bigDecimals() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(
                     numericFact("expected", new BigDecimal("802604.123")),
                     numericFact("but was", new BigDecimal("3804.123")))))
@@ -133,7 +133,7 @@ public class FactTest {
 
   @Test
   public void oneFactWithoutValue() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(simpleFact("foo"))))
+    assertThat(makeMessage(ImmutableList.of(), ImmutableList.of(simpleFact("foo"))))
         .isEqualTo("foo");
   }
 
@@ -141,14 +141,13 @@ public class FactTest {
   public void twoFactsOneWithoutValue() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
-                ImmutableList.of(fact("hello", "there"), simpleFact("foo"))))
+                ImmutableList.of(), ImmutableList.of(fact("hello", "there"), simpleFact("foo"))))
         .isEqualTo("hello: there\nfoo");
   }
 
   @Test
   public void newline() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fact("foo", "bar\nbaz"))))
+    assertThat(makeMessage(ImmutableList.of(), ImmutableList.of(fact("foo", "bar\nbaz"))))
         .isEqualTo("foo:\n    bar\n    baz");
   }
 
@@ -156,14 +155,14 @@ public class FactTest {
   public void newlineWithoutValue() {
     assertThat(
             makeMessage(
-                ImmutableList.<String>of(),
+                ImmutableList.of(),
                 ImmutableList.of(fact("hello", "there\neveryone"), simpleFact("xyz"))))
         .isEqualTo("hello:\n    there\n    everyone\nxyz");
   }
 
   @Test
   public void withMessage() {
-    assertThat(makeMessage(ImmutableList.<String>of("hello"), ImmutableList.of(fact("foo", "bar"))))
+    assertThat(makeMessage(ImmutableList.of("hello"), ImmutableList.of(fact("foo", "bar"))))
         .isEqualTo("hello\nfoo: bar");
   }
 

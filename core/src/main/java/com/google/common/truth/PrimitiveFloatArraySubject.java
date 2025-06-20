@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Fact.simpleFact;
 import static java.lang.Float.floatToIntBits;
+import static java.lang.Math.abs;
 
 import com.google.common.primitives.Floats;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -137,14 +138,14 @@ public final class PrimitiveFloatArraySubject extends Subject {
         expected.getClass());
     if (expected instanceof Integer) {
       checkArgument(
-          Math.abs((Integer) expected) <= 1 << 24,
+          abs((Integer) expected) <= 1 << 24,
           "Expected value %s in assertion using exact float equality was an int with an absolute "
               + "value greater than 2^24 which has no exact float representation",
           expected);
     }
     if (expected instanceof Long) {
       checkArgument(
-          Math.abs((Long) expected) <= 1L << 24,
+          abs((Long) expected) <= 1L << 24,
           "Expected value %s in assertion using exact float equality was a long with an absolute "
               + "value greater than 2^24 which has no exact float representation",
           expected);

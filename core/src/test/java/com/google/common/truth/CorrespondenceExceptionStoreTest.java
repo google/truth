@@ -79,11 +79,10 @@ public final class CorrespondenceExceptionStoreTest {
 
   /** Adds a somewhat realistic exception from {@link Correspondence#compare} to the given store. */
   private static void addCompareException(Correspondence.ExceptionStore exceptions) {
-    try {
-      boolean unused = TestCorrespondences.WITHIN_10_OF.compare(null, 123);
-    } catch (RuntimeException e) {
-      exceptions.addCompareException(CorrespondenceExceptionStoreTest.class, e, null, 123);
-    }
+    RuntimeException e =
+        assertThrows(
+            RuntimeException.class, () -> TestCorrespondences.WITHIN_10_OF.compare(null, 123));
+    exceptions.addCompareException(CorrespondenceExceptionStoreTest.class, e, null, 123);
   }
 
   /**

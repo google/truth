@@ -38,6 +38,8 @@ import static com.google.common.truth.SubjectUtils.iterableToCollection;
 import static com.google.common.truth.SubjectUtils.iterableToList;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
+import static java.lang.Integer.toHexString;
+import static java.lang.System.identityHashCode;
 
 import com.google.common.base.Function;
 import com.google.common.collect.BiMap;
@@ -109,7 +111,7 @@ public class IterableSubject extends Subject {
       // so that we can avoid things like
       // "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
       String objectToString =
-          actual.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(actual));
+          actual.getClass().getName() + '@' + toHexString(identityHashCode(actual));
       if (stringValueForFailure(actual).equals(objectToString)) {
         return Iterables.toString(actual);
       }
@@ -969,13 +971,11 @@ public class IterableSubject extends Subject {
     if (!nonIterables.isEmpty()) {
       failWithoutActual(
           simpleFact(
-              lenientFormat(
-                  "The actual value is an Iterable, and you've written a test that compares it to "
-                      + "some objects that are not Iterables. Did you instead mean to check "
-                      + "whether its *contents* match any of the *contents* of the given values? "
-                      + "If so, call containsNoneOf(...)/containsNoneIn(...) instead. "
-                      + "Non-iterables: %s",
-                  nonIterables)));
+              "The actual value is an Iterable, and you've written a test that compares it to "
+                  + "some objects that are not Iterables. Did you instead mean to check "
+                  + "whether its *contents* match any of the *contents* of the given values? "
+                  + "If so, call containsNoneOf(...)/containsNoneIn(...) instead."),
+          fact("non-iterables", nonIterables));
     }
   }
 

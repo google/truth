@@ -789,7 +789,7 @@ public class SubjectTest {
     assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
 
-  private static <T> Iterable<T> oneShotIterable(T... values) {
+  private static <T extends @Nullable Object> Iterable<T> oneShotIterable(T... values) {
     Iterator<T> iterator = Iterators.forArray(values);
     return new Iterable<T>() {
       @Override

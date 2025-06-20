@@ -37,7 +37,7 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.TestCorrespondences.MyRecord;
@@ -64,35 +64,31 @@ public class IterableSubjectCorrespondenceTest {
   // test of a mistaken call
   @SuppressWarnings({"EqualsIncompatibleType", "DoNotCall", "deprecation"})
   public void equalsThrowsUSOE() {
-    try {
-      boolean unused =
-          assertThat(ImmutableList.of(42.0))
-              .comparingElementsUsing(tolerance(10e-5))
-              .equals(ImmutableList.of(0.0));
-    } catch (UnsupportedOperationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "UsingCorrespondence.equals() is not supported. Did you mean to call"
-                  + " containsExactlyElementsIn(expected) instead of equals(expected)?");
-      return;
-    }
-    fail("Should have thrown.");
+    UnsupportedOperationException e =
+        assertThrows(
+            UnsupportedOperationException.class,
+            () ->
+                assertThat(ImmutableList.of(42.0))
+                    .comparingElementsUsing(tolerance(10e-5))
+                    .equals(ImmutableList.of(0.0)));
+    assertThat(e)
+        .hasMessageThat()
+        .isEqualTo(
+            "UsingCorrespondence.equals() is not supported. Did you mean to call"
+                + " containsExactlyElementsIn(expected) instead of equals(expected)?");
   }
 
   @Test
   @SuppressWarnings({"DoNotCall", "deprecation"}) // test of a mistaken call
   public void hashCodeThrowsUSOE() {
-    try {
-      int unused =
-          assertThat(ImmutableList.of(42.0)).comparingElementsUsing(tolerance(10e-5)).hashCode();
-    } catch (UnsupportedOperationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("UsingCorrespondence.hashCode() is not supported.");
-      return;
-    }
-    fail("Should have thrown.");
+    UnsupportedOperationException e =
+        assertThrows(
+            UnsupportedOperationException.class,
+            () ->
+                assertThat(ImmutableList.of(42.0))
+                    .comparingElementsUsing(tolerance(10e-5))
+                    .hashCode());
+    assertThat(e).hasMessageThat().isEqualTo("UsingCorrespondence.hashCode() is not supported.");
   }
 
   @Test

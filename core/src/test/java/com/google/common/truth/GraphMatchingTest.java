@@ -15,12 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.GraphMatching.maximumCardinalityBipartiteMatching;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -150,7 +150,7 @@ public final class GraphMatchingTest {
 
     /** Generates a test instance with an empty bipartite graph. */
     static TestInstance empty() {
-      return new TestInstance(ImmutableListMultimap.<String, String>of());
+      return new TestInstance(ImmutableListMultimap.of());
     }
 
     /**
@@ -291,7 +291,7 @@ public final class GraphMatchingTest {
        * empty. Fails if this cursor is invalid.
        */
       ImmutableBiMap<String, String> asBiMap() {
-        Preconditions.checkState(valid());
+        checkState(valid());
         return ImmutableBiMap.copyOf(selectedEdges);
       }
 
@@ -300,7 +300,7 @@ public final class GraphMatchingTest {
        * be positive (not zer). Fails if this cursor is invalid.
        */
       int size() {
-        Preconditions.checkState(valid());
+        checkState(valid());
         return selectedEdges.size();
       }
 
@@ -309,7 +309,7 @@ public final class GraphMatchingTest {
        * last. Fails if this cursor is invalid.
        */
       void advance() {
-        Preconditions.checkState(valid());
+        checkState(valid());
         // We essentially do a depth-first traversal through the possible matchings.
         // First we try to add an edge.
         Edge lastEdge = edgeStack.getLast();
@@ -373,9 +373,9 @@ public final class GraphMatchingTest {
          * already in the matching. Fails if this cursor is invalid.
          */
         void addToSelected() {
-          Preconditions.checkState(valid());
-          Preconditions.checkState(!selectedEdges.containsKey(lhsVertex()));
-          Preconditions.checkState(!selectedEdges.containsValue(rhsVertex()));
+          checkState(valid());
+          checkState(!selectedEdges.containsKey(lhsVertex()));
+          checkState(!selectedEdges.containsValue(rhsVertex()));
           selectedEdges.put(lhsVertex(), rhsVertex());
         }
 
@@ -384,9 +384,9 @@ public final class GraphMatchingTest {
          * Fails if this cursor is invalid.
          */
         void removeFromSelected() {
-          Preconditions.checkState(valid());
-          Preconditions.checkState(selectedEdges.containsKey(lhsVertex()));
-          Preconditions.checkState(selectedEdges.get(lhsVertex()).equals(rhsVertex()));
+          checkState(valid());
+          checkState(selectedEdges.containsKey(lhsVertex()));
+          checkState(selectedEdges.get(lhsVertex()).equals(rhsVertex()));
           selectedEdges.remove(lhsVertex());
         }
 
@@ -396,7 +396,7 @@ public final class GraphMatchingTest {
          * already in it. Fails if this cursor is invalid.
          */
         void advance() {
-          Preconditions.checkState(valid());
+          checkState(valid());
           // We iterate over the possible edges in a lexicographical order with the LHS index as the
           // most significant part and the RHS index as the least significant. So we first try
           // advancing to the next RHS index for the current LHS index, and if we can't we advance

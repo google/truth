@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Fact.simpleFact;
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.Math.abs;
 
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -138,7 +139,7 @@ public final class PrimitiveDoubleArraySubject extends Subject {
         expected.getClass());
     if (expected instanceof Long) {
       checkArgument(
-          Math.abs((Long) expected) <= 1L << 53,
+          abs((Long) expected) <= 1L << 53,
           "Expected value %s in assertion using exact double equality was a long with an absolute "
               + "value greater than 2^52 which has no exact double representation",
           expected);

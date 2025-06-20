@@ -18,8 +18,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
+import static org.junit.Assert.assertThrows;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -141,14 +142,10 @@ public final class ChainingTest {
     assertNoCause(e, "message\nvalue of    : myObject.child\nmyObject was: root");
   }
 
+  @SuppressWarnings("LenientFormatStringValidation") // Intentional for testing.
   @Test
   public void badFormat() {
-    try {
-      @SuppressWarnings("LenientFormatStringValidation") // Intentional for testing.
-      Object unused = assertThat("root").check("%s %s", 1, 2, 3);
-      assert_().fail();
-    } catch (IllegalArgumentException expected) {
-    }
+    assertThrows(IllegalArgumentException.class, () -> assertThat("root").check("%s %s", 1, 2, 3));
   }
 
   /*
@@ -158,7 +155,7 @@ public final class ChainingTest {
    */
 
   private static final class MyObjectSubject extends Subject {
-    private MyObjectSubject(FailureMetadata metadata, Object actual) {
+    private MyObjectSubject(FailureMetadata metadata, @Nullable Object actual) {
       super(metadata, actual);
     }
 

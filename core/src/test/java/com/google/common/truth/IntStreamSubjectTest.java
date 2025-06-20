@@ -51,14 +51,12 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void nullStream_fails() {
-    IntStream nullStream = null;
-    expectFailure(whenTesting -> whenTesting.that(nullStream).isEmpty());
+    expectFailure(whenTesting -> whenTesting.that((IntStream) null).isEmpty());
   }
 
   @Test
   public void nullStreamIsNull() {
-    IntStream nullStream = null;
-    assertThat(nullStream).isNull();
+    assertThat((IntStream) null).isNull();
   }
 
   @Test

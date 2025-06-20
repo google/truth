@@ -19,6 +19,12 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.primitives.Booleans.asList;
+import static com.google.common.primitives.Bytes.asList;
+import static com.google.common.primitives.Chars.asList;
+import static com.google.common.primitives.Ints.asList;
+import static com.google.common.primitives.Longs.asList;
+import static com.google.common.primitives.Shorts.asList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.classMetadataUnsupported;
@@ -33,6 +39,8 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Float.floatToIntBits;
 import static java.lang.reflect.Array.getLength;
 import static java.util.Arrays.asList;
 
@@ -40,13 +48,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Booleans;
-import com.google.common.primitives.Bytes;
-import com.google.common.primitives.Chars;
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Longs;
 import com.google.common.primitives.Primitives;
-import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
 import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.ForOverride;
@@ -458,21 +460,21 @@ public class Subject {
       return Lists.<@Nullable Object, @Nullable Object>transform(
           asList((@Nullable Object[]) input), Subject::arrayAsListRecursively);
     } else if (input instanceof boolean[]) {
-      return Booleans.asList((boolean[]) input);
+      return asList((boolean[]) input);
     } else if (input instanceof int[]) {
-      return Ints.asList((int[]) input);
+      return asList((int[]) input);
     } else if (input instanceof long[]) {
-      return Longs.asList((long[]) input);
+      return asList((long[]) input);
     } else if (input instanceof short[]) {
-      return Shorts.asList((short[]) input);
+      return asList((short[]) input);
     } else if (input instanceof byte[]) {
-      return Bytes.asList((byte[]) input);
+      return asList((byte[]) input);
     } else if (input instanceof double[]) {
       return doubleArrayAsString((double[]) input);
     } else if (input instanceof float[]) {
       return floatArrayAsString((float[]) input);
     } else if (input instanceof char[]) {
-      return Chars.asList((char[]) input);
+      return asList((char[]) input);
     } else {
       return input;
     }
@@ -619,9 +621,9 @@ public class Subject {
 
   private static boolean gwtSafeObjectEquals(@Nullable Object actual, @Nullable Object expected) {
     if (actual instanceof Double && expected instanceof Double) {
-      return Double.doubleToLongBits((Double) actual) == Double.doubleToLongBits((Double) expected);
+      return doubleToLongBits((Double) actual) == doubleToLongBits((Double) expected);
     } else if (actual instanceof Float && expected instanceof Float) {
-      return Float.floatToIntBits((Float) actual) == Float.floatToIntBits((Float) expected);
+      return floatToIntBits((Float) actual) == floatToIntBits((Float) expected);
     } else {
       return Objects.equals(actual, expected);
     }

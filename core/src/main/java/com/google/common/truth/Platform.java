@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
@@ -23,7 +24,6 @@ import static com.google.common.truth.SneakyThrows.sneakyThrow;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
@@ -344,6 +344,6 @@ final class Platform {
   @SuppressWarnings("GoogleInternalApi")
   static String lenientFormatForFailure(
       @Nullable String template, @Nullable Object @Nullable ... args) {
-    return Strings.lenientFormat(template, args);
+    return lenientFormat(template, args);
   }
 }

@@ -18,15 +18,16 @@ package com.google.common.truth;
 import static com.google.common.base.Functions.identity;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.checkTolerance;
+import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static com.google.common.truth.SubjectUtils.asList;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
@@ -320,7 +321,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
     public boolean compare(Number actual, Number expected) {
       double actualDouble = checkNotNull(actual).doubleValue();
       double expectedDouble = checkNotNull(expected).doubleValue();
-      return MathUtil.equalWithinTolerance(actualDouble, expectedDouble, tolerance);
+      return equalWithinTolerance(actualDouble, expectedDouble, tolerance);
     }
 
     @Override
@@ -568,7 +569,7 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
      * exception is distinguishable from the stack trace of the {@link AssertionError}.
      */
     private String describe() {
-      return Strings.lenientFormat(
+      return lenientFormat(
           "%s(%s) threw %s\n---",
           methodName, ARGUMENT_JOINER.join(methodArguments), getStackTraceAsString(exception));
     }
