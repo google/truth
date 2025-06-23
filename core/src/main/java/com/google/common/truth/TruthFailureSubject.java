@@ -176,7 +176,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   }
 
   private static ImmutableList<Fact> factsWithName(ErrorWithFacts error, String key) {
-    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList.Builder<Fact> facts = factsBuilder();
     for (Fact fact : error.facts()) {
       if (fact.key.equals(key)) {
         facts.add(fact);

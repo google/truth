@@ -383,7 +383,7 @@ public class IterableSubject extends Subject {
     return ordered
         ? IN_ORDER
         : () -> {
-          ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+          ImmutableList.Builder<Fact> facts = factsBuilder();
           facts.add(simpleFact("required elements were all found, but order was wrong"));
           facts.add(fact("expected order for required elements", expected));
           List<Object> actualOrder = newArrayList(actual);
@@ -402,7 +402,7 @@ public class IterableSubject extends Subject {
     List<?> nearMissRawObjects =
         retainMatchingToString(actual, /* itemsToCheck= */ missingRawObjects);
 
-    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList.Builder<Fact> facts = factsBuilder();
     facts.addAll(
         makeElementFactsForBoth(
             "missing", missingRawObjects, "though it did contain", nearMissRawObjects));
@@ -614,7 +614,7 @@ public class IterableSubject extends Subject {
       boolean addElementsInWarning,
       Collection<?> missingRawObjects,
       Collection<?> extraRawObjects) {
-    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList.Builder<Fact> facts = factsBuilder();
     facts.addAll(
         makeElementFactsForBoth("missing", missingRawObjects, "unexpected", extraRawObjects));
     facts.add(fact("expected", expected));
@@ -645,7 +645,7 @@ public class IterableSubject extends Subject {
         countDuplicatesAndMaybeAddTypeInfoReturnObject(secondCollection, addTypeInfo);
     ElementFactGrouping grouping = pickGrouping(first.entrySet(), second.entrySet());
 
-    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList.Builder<Fact> facts = factsBuilder();
     ImmutableList<Fact> firstFacts = makeElementFacts(firstKey, first, grouping);
     ImmutableList<Fact> secondFacts = makeElementFacts(secondKey, second, grouping);
     facts.addAll(firstFacts);
@@ -671,7 +671,7 @@ public class IterableSubject extends Subject {
       return ImmutableList.of(fact(keyToGoWithElementsString(label, elements), elements));
     }
 
-    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList.Builder<Fact> facts = factsBuilder();
     facts.add(simpleFact(keyToServeAsHeader(label, elements)));
     int n = 1;
     for (Multiset.Entry<?> entry : elements.entrySet()) {
@@ -1533,7 +1533,7 @@ public class IterableSubject extends Subject {
 
     private ImmutableList<Fact> describeMissingOrExtraWithPairing(
         Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
-      ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+      ImmutableList.Builder<Fact> facts = factsBuilder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
@@ -1567,7 +1567,7 @@ public class IterableSubject extends Subject {
         }
       }
       if (hasDiffs) {
-        ImmutableList.Builder<Fact> extraFacts = ImmutableList.builder();
+        ImmutableList.Builder<Fact> extraFacts = factsBuilder();
         extraFacts.add(simpleFact(lenientFormat("%s (%s)", label, extras.size())));
         for (int i = 0; i < extras.size(); i++) {
           A extra = extras.get(i);
@@ -1878,7 +1878,7 @@ public class IterableSubject extends Subject {
 
     private ImmutableList<Fact> describeMissingWithPairing(
         Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
-      ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+      ImmutableList.Builder<Fact> facts = factsBuilder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
@@ -2038,7 +2038,7 @@ public class IterableSubject extends Subject {
 
     private ImmutableList<Fact> describeAnyMatchesByKey(
         Pairing<A, E> pairing, Correspondence.ExceptionStore exceptions) {
-      ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+      ImmutableList.Builder<Fact> facts = factsBuilder();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E expected = pairing.pairedKeysToExpectedValues.get(key);
         List<A> got = pairing.pairedKeysToActualValues.get(key);
@@ -2085,7 +2085,7 @@ public class IterableSubject extends Subject {
       }
       // Fail if we found any matches.
       if (!present.isEmpty()) {
-        ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+        ImmutableList.Builder<Fact> facts = factsBuilder();
         facts.add(fact("expected not to contain any of", annotateEmptyStrings(excluded)));
         facts.addAll(correspondence.describeForIterable());
         for (E excludedItem : present.keySet()) {

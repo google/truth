@@ -404,7 +404,7 @@ public class MapSubject extends Subject {
 
     ImmutableList<Fact> describe(@Nullable Differ<? super A, ? super E> differ) {
       boolean includeKeyTypes = includeKeyTypes();
-      ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+      ImmutableList.Builder<Fact> facts = factsBuilder();
       if (!wrongValues.isEmpty()) {
         facts.add(simpleFact("keys with wrong values"));
       }
