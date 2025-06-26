@@ -45,7 +45,7 @@ public class ClassSubjectTest {
   public void isAssignableTo_reversed() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(Object.class).isAssignableTo(String.class));
-    assertFailureValue(e, "expected to be assignable to", "java.lang.String");
+    assertFailureValue(e, "expected to be assignable to", "String");
   }
 
   @Test
@@ -53,7 +53,7 @@ public class ClassSubjectTest {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that(String.class).isAssignableTo(Exception.class));
-    assertFailureValue(e, "expected to be assignable to", "java.lang.Exception");
+    assertFailureValue(e, "expected to be assignable to", "Exception");
   }
 
   @Test
@@ -61,6 +61,6 @@ public class ClassSubjectTest {
     AssertionError e =
         expectFailure(
             whenTesting -> whenTesting.that((Class<?>) null).isAssignableTo(Exception.class));
-    assertFailureValue(e, "expected to be assignable to", "java.lang.Exception");
+    assertFailureValue(e, "expected to be assignable to", "Exception");
   }
 }

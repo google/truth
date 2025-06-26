@@ -407,11 +407,11 @@ public class MapSubjectTest {
         "expected",
         "but was");
     assertFailureValueIndexed(e, "for key", 0, "jan");
-    assertFailureValueIndexed(e, "expected value", 0, "1 (java.lang.Integer)");
-    assertFailureValueIndexed(e, "but got value", 0, "1 (java.lang.Long)");
+    assertFailureValueIndexed(e, "expected value", 0, "1 (Integer)");
+    assertFailureValueIndexed(e, "but got value", 0, "1 (Long)");
     assertFailureValueIndexed(e, "for key", 1, "feb");
-    assertFailureValueIndexed(e, "expected value", 1, "2 (java.lang.Integer)");
-    assertFailureValueIndexed(e, "but got value", 1, "2 (java.lang.Long)");
+    assertFailureValueIndexed(e, "expected value", 1, "2 (Integer)");
+    assertFailureValueIndexed(e, "but got value", 1, "2 (Long)");
   }
 
   @Test
@@ -434,10 +434,10 @@ public class MapSubjectTest {
         "---",
         "expected",
         "but was");
-    assertFailureValueIndexed(e, "for key", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed(e, "for key", 0, "1 (Integer)");
     assertFailureValueIndexed(e, "expected value", 0, "jan");
     assertFailureValueIndexed(e, "but got value", 0, "feb");
-    assertFailureValueIndexed(e, "for key", 1, "1 (java.lang.Long)");
+    assertFailureValueIndexed(e, "for key", 1, "1 (Long)");
     assertFailureValueIndexed(e, "expected value", 1, "feb");
     assertFailureValueIndexed(e, "but got value", 1, "jan");
   }
@@ -461,9 +461,9 @@ public class MapSubjectTest {
         "---",
         "expected",
         "but was");
-    assertFailureValueIndexed(e, "for key", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed(e, "for key", 0, "1 (Integer)");
     assertFailureValue(e, "expected value", "jan");
-    assertFailureValueIndexed(e, "for key", 1, "1 (java.lang.Long)");
+    assertFailureValueIndexed(e, "for key", 1, "1 (Long)");
     assertFailureValue(e, "unexpected value", "jan");
   }
 
@@ -711,11 +711,11 @@ public class MapSubjectTest {
         "expected to contain at least",
         "but was");
     assertFailureValueIndexed(e, "for key", 0, "jan");
-    assertFailureValueIndexed(e, "expected value", 0, "1 (java.lang.Integer)");
-    assertFailureValueIndexed(e, "but got value", 0, "1 (java.lang.Long)");
+    assertFailureValueIndexed(e, "expected value", 0, "1 (Integer)");
+    assertFailureValueIndexed(e, "but got value", 0, "1 (Long)");
     assertFailureValueIndexed(e, "for key", 1, "feb");
-    assertFailureValueIndexed(e, "expected value", 1, "2 (java.lang.Integer)");
-    assertFailureValueIndexed(e, "but got value", 1, "2 (java.lang.Long)");
+    assertFailureValueIndexed(e, "expected value", 1, "2 (Integer)");
+    assertFailureValueIndexed(e, "but got value", 1, "2 (Long)");
   }
 
   @Test
@@ -738,10 +738,10 @@ public class MapSubjectTest {
         "---",
         "expected to contain at least",
         "but was");
-    assertFailureValueIndexed(e, "for key", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed(e, "for key", 0, "1 (Integer)");
     assertFailureValueIndexed(e, "expected value", 0, "jan");
     assertFailureValueIndexed(e, "but got value", 0, "feb");
-    assertFailureValueIndexed(e, "for key", 1, "1 (java.lang.Long)");
+    assertFailureValueIndexed(e, "for key", 1, "1 (Long)");
     assertFailureValueIndexed(e, "expected value", 1, "feb");
     assertFailureValueIndexed(e, "but got value", 1, "jan");
   }
@@ -762,7 +762,7 @@ public class MapSubjectTest {
         "---",
         "expected to contain at least",
         "but was");
-    assertFailureValue(e, "for key", "1 (java.lang.Integer)");
+    assertFailureValue(e, "for key", "1 (Integer)");
     assertFailureValue(e, "expected value", "jan");
   }
 
@@ -894,8 +894,8 @@ public class MapSubjectTest {
         "expected",
         "but was");
     assertFailureValueIndexed(e, "for key", 0, "march");
-    assertFailureValue(e, "expected value", "3 (java.lang.Integer)");
-    assertFailureValue(e, "but got value", "3 (java.lang.Long)");
+    assertFailureValue(e, "expected value", "3 (Integer)");
+    assertFailureValue(e, "but got value", "3 (Long)");
   }
 
   @Test
@@ -1190,8 +1190,8 @@ public class MapSubjectTest {
         "but did not",
         "though it did contain keys",
         "full contents");
-    assertFailureValue(e, "an instance of", "Map.Entry<java.lang.Integer, java.lang.String>");
-    assertFailureValue(e, "though it did contain keys", "[1] (java.lang.Long)");
+    assertFailureValue(e, "an instance of", "Map.Entry<Integer, String>");
+    assertFailureValue(e, "though it did contain keys", "[1] (Long)");
   }
 
   @Test
@@ -1207,8 +1207,8 @@ public class MapSubjectTest {
         "but did not",
         "though it did contain values",
         "full contents");
-    assertFailureValue(e, "an instance of", "Map.Entry<java.lang.Integer, null type>");
-    assertFailureValue(e, "though it did contain values", "[null] (java.lang.String)");
+    assertFailureValue(e, "an instance of", "Map.Entry<Integer, null type>");
+    assertFailureValue(e, "though it did contain values", "[null] (String)");
   }
 
   @Test

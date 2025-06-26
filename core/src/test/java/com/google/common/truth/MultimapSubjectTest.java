@@ -156,10 +156,8 @@ public class MultimapSubjectTest {
                     .that(ImmutableListMultimap.of(1, "a", 1, "b", 2, "c"))
                     .isEqualTo(ImmutableListMultimap.of(1L, "a", 1L, "b", 2L, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
-    assertFailureValue(
-        e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)");
-    assertFailureValue(
-        e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)");
+    assertFailureValue(e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<Long, String>)");
+    assertFailureValue(e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<Integer, String>)");
     assertFailureValue(e, "expected", "{1=[a, b], 2=[c]}");
     assertFailureValue(e, "but was", "{1=[a, b], 2=[c]}");
   }
@@ -458,13 +456,13 @@ public class MultimapSubjectTest {
         "though it did contain",
         "full contents");
     assertFailureValue(e, "expected to contain entry", "1=1");
-    assertFailureValue(e, "an instance of", "Map.Entry<java.lang.Integer, java.lang.Integer>");
+    assertFailureValue(e, "an instance of", "Map.Entry<Integer, Integer>");
     assertFailureValue(
         e,
         "though it did contain",
-        "[1=1 (Map.Entry<java.lang.Integer, java.lang.String>), "
-            + "1=1 (Map.Entry<java.lang.Integer, java.lang.Long>), "
-            + "1=1 (Map.Entry<java.lang.Long, java.lang.Integer>)]");
+        "[1=1 (Map.Entry<Integer, String>), "
+            + "1=1 (Map.Entry<Integer, Long>), "
+            + "1=1 (Map.Entry<Long, Integer>)]");
   }
 
   @Test
@@ -895,10 +893,8 @@ public class MultimapSubjectTest {
                     .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
                     .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
-    assertFailureValue(
-        e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)");
-    assertFailureValue(
-        e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)");
+    assertFailureValue(e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<Long, String>)");
+    assertFailureValue(e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<Integer, String>)");
   }
 
   @Test
@@ -913,15 +909,15 @@ public class MultimapSubjectTest {
     assertFailureValue(
         e,
         "missing",
-        "[1=a (Map.Entry<java.lang.Long, java.lang.String>), "
-            + "1=b (Map.Entry<java.lang.Long, java.lang.String>), "
-            + "2=c (Map.Entry<java.lang.Integer, java.lang.String>)]");
+        "[1=a (Map.Entry<Long, String>), "
+            + "1=b (Map.Entry<Long, String>), "
+            + "2=c (Map.Entry<Integer, String>)]");
     assertFailureValue(
         e,
         "unexpected",
-        "[1=a (Map.Entry<java.lang.Integer, java.lang.String>), "
-            + "1=b (Map.Entry<java.lang.Integer, java.lang.String>), "
-            + "2=c (Map.Entry<java.lang.Long, java.lang.String>)]");
+        "[1=a (Map.Entry<Integer, String>), "
+            + "1=b (Map.Entry<Integer, String>), "
+            + "2=c (Map.Entry<Long, String>)]");
   }
 
   @Test

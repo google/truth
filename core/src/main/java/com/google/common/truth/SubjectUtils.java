@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Iterables.transform;
@@ -25,18 +26,33 @@ import static com.google.common.truth.Platform.stringValueForFailure;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Equivalence.Wrapper;
+import com.google.common.base.VerifyException;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multiset;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.RandomAccess;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -302,7 +318,7 @@ final class SubjectUtils {
 
       return lenientFormat("Map.Entry<%s, %s>", objectToTypeName(entry.getKey()), valueTypeName);
     } else {
-      return item.getClass().getName();
+      return longName(item.getClass());
     }
   }
 
@@ -381,8 +397,90 @@ final class SubjectUtils {
     }
   }
 
+  private static final ImmutableMap<Class<?>, String> CLASS_TO_NAME = makeClassToNameMap();
+
+  /*
+   * The LinkedHash* classes are typealiases for the Hash* classes under
+   * Kotlin/Native, so they're equal at runtime there.
+   */
+  @SuppressWarnings("EqualsIncompatibleType")
+  private static ImmutableMap<Class<?>, String> makeClassToNameMap() {
+    ImmutableMap.Builder<Class<?>, String> b = ImmutableMap.builder();
+    // Part 1:
+    // entries from https://kotlinlang.org/docs/java-interop.html#mapped-types
+    b.put(Byte.class, "Byte");
+    b.put(Short.class, "Short");
+    b.put(Integer.class, "Integer");
+    b.put(Long.class, "Long");
+    b.put(Character.class, "Character");
+    b.put(Float.class, "Float");
+    b.put(Double.class, "Double");
+    b.put(Boolean.class, "Boolean");
+    b.put(Object.class, "Object");
+    b.put(Cloneable.class, "Cloneable");
+    b.put(Comparable.class, "Comparable");
+    b.put(Enum.class, "Enum");
+    b.put(Annotation.class, "Annotation");
+    b.put(CharSequence.class, "CharSequence");
+    b.put(String.class, "String");
+    b.put(Number.class, "Number");
+    b.put(Throwable.class, "Throwable");
+    b.put(Exception.class, "Exception");
+    // TODO(cpovirk): What do we do about collections, with their Foo-MutableFoo split?
+
+    // Part 2:
+    // results for "public actual typealias", minus J2CL-incompatible CharacterCodingException
+    b.put(Error.class, "Error");
+    b.put(RuntimeException.class, "RuntimeException");
+    b.put(IllegalArgumentException.class, "IllegalArgumentException");
+    b.put(IllegalStateException.class, "IllegalStateException");
+    b.put(IndexOutOfBoundsException.class, "IndexOutOfBoundsException");
+    b.put(UnsupportedOperationException.class, "UnsupportedOperationException");
+    b.put(ArithmeticException.class, "ArithmeticException");
+    b.put(NumberFormatException.class, "NumberFormatException");
+    b.put(NullPointerException.class, "NullPointerException");
+    b.put(ClassCastException.class, "ClassCastException");
+    b.put(AssertionError.class, "AssertionError");
+    b.put(NoSuchElementException.class, "NoSuchElementException");
+    b.put(ConcurrentModificationException.class, "ConcurrentModificationException");
+    b.put(Comparator.class, "Comparator");
+    b.put(AutoCloseable.class, "AutoCloseable");
+    b.put(RandomAccess.class, "RandomAccess");
+    b.put(ArrayList.class, "ArrayList");
+    b.put(HashMap.class, "HashMap");
+    //noinspection ConstantConditions
+    if (!LinkedHashMap.class.equals(HashMap.class)) {
+      b.put(LinkedHashMap.class, "LinkedHashMap");
+    }
+    b.put(HashSet.class, "HashSet");
+    //noinspection ConstantConditions
+    if (!LinkedHashSet.class.equals(HashSet.class)) {
+      b.put(LinkedHashSet.class, "LinkedHashSet");
+    }
+    b.put(CancellationException.class, "CancellationException");
+    b.put(Appendable.class, "Appendable");
+    b.put(StringBuilder.class, "StringBuilder");
+
+    // Part 3:
+    // other types that commonly appear in instanceOf assertions
+    b.put(TimeoutException.class, "TimeoutException");
+    b.put(ExecutionException.class, "ExecutionException");
+    b.put(InterruptedException.class, "InterruptedException");
+    b.put(IOException.class, "IOException");
+    b.put(VerifyException.class, "VerifyException");
+    return b.buildOrThrow();
+  }
+
   static String longName(Class<?> clazz) {
-    return clazz.getName();
+    String name = CLASS_TO_NAME.get(clazz);
+    if (name != null) {
+      return name;
+    }
+    Class<?> arrayComponentType = clazz.getComponentType();
+    if (arrayComponentType != null) {
+      return longName(arrayComponentType) + "[]";
+    }
+    return firstNonNull(clazz.getCanonicalName(), clazz.getName());
   }
 
   @SafeVarargs

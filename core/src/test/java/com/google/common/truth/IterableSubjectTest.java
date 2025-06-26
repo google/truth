@@ -117,8 +117,8 @@ public class IterableSubjectTest {
         "though it did contain",
         "full contents");
     assertFailureValue(e, "expected to contain", "2");
-    assertFailureValue(e, "an instance of", "java.lang.Integer");
-    assertFailureValue(e, "though it did contain", "[2 [2 copies]] (java.lang.Long)");
+    assertFailureValue(e, "an instance of", "Integer");
+    assertFailureValue(e, "though it did contain", "[2 [2 copies]] (Long)");
     assertFailureValue(e, "full contents", "[1, 2, 3, 2]");
   }
 
@@ -162,7 +162,7 @@ public class IterableSubjectTest {
      * "com.google.common.truth.IterableSubjectTest$1IntWrapper." We just want to make sure that we
      * don't throw an exception from the lack of a canonical class name.
      */
-    assertFailureValue(e, "though it did contain", "[2] (java.lang.Integer)");
+    assertFailureValue(e, "though it did contain", "[2] (Integer)");
     assertFailureValue(e, "full contents", "[1, 2]");
   }
 
@@ -267,8 +267,8 @@ public class IterableSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L, 3L)).containsAnyOf(2, 3));
     assertFailureKeys(
         e, "expected to contain any of", "but did not", "though it did contain", "full contents");
-    assertFailureValue(e, "expected to contain any of", "[2, 3] (java.lang.Integer)");
-    assertFailureValue(e, "though it did contain", "[2, 3] (java.lang.Long)");
+    assertFailureValue(e, "expected to contain any of", "[2, 3] (Integer)");
+    assertFailureValue(e, "though it did contain", "[2, 3] (Long)");
     assertFailureValue(e, "full contents", "[1, 2, 3]");
   }
 
@@ -278,8 +278,8 @@ public class IterableSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(asList(3L, 3L)).containsAnyOf(2, 3, 3));
     assertFailureKeys(
         e, "expected to contain any of", "but did not", "though it did contain", "full contents");
-    assertFailureValue(e, "expected to contain any of", "[2, 3 [2 copies]] (java.lang.Integer)");
-    assertFailureValue(e, "though it did contain", "[3 [2 copies]] (java.lang.Long)");
+    assertFailureValue(e, "expected to contain any of", "[2, 3 [2 copies]] (Integer)");
+    assertFailureValue(e, "though it did contain", "[3 [2 copies]] (Long)");
     assertFailureValue(e, "full contents", "[3, 3]");
   }
 
@@ -290,7 +290,7 @@ public class IterableSubjectTest {
             whenTesting -> whenTesting.that(asList(null, "abc")).containsAnyOf("def", "null"));
     assertFailureKeys(
         e, "expected to contain any of", "but did not", "though it did contain", "full contents");
-    assertFailureValue(e, "expected to contain any of", "[def, null] (java.lang.String)");
+    assertFailureValue(e, "expected to contain any of", "[def, null] (String)");
     assertFailureValue(e, "though it did contain", "[null (null type)]");
     assertFailureValue(e, "full contents", "[null, abc]");
   }
@@ -302,9 +302,8 @@ public class IterableSubjectTest {
             whenTesting -> whenTesting.that(asList("null", "abc")).containsAnyOf("def", null));
     assertFailureKeys(
         e, "expected to contain any of", "but did not", "though it did contain", "full contents");
-    assertFailureValue(
-        e, "expected to contain any of", "[def (java.lang.String), null (null type)]");
-    assertFailureValue(e, "though it did contain", "[null] (java.lang.String)");
+    assertFailureValue(e, "expected to contain any of", "[def (String), null (null type)]");
+    assertFailureValue(e, "though it did contain", "[null] (String)");
     assertFailureValue(e, "full contents", "[null, abc]");
   }
 
@@ -472,16 +471,16 @@ public class IterableSubjectTest {
   public void containsAtLeastFailsWithSameToStringAndHomogeneousList() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L)).containsAtLeast(1, 2));
-    assertFailureValue(e, "missing (2)", "1, 2 (java.lang.Integer)");
-    assertFailureValue(e, "though it did contain (2)", "1, 2 (java.lang.Long)");
+    assertFailureValue(e, "missing (2)", "1, 2 (Integer)");
+    assertFailureValue(e, "though it did contain (2)", "1, 2 (Long)");
   }
 
   @Test
   public void containsAtLeastFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L, 2L)).containsAtLeast(1, 1, 2));
-    assertFailureValue(e, "missing (3)", "1 [2 copies], 2 (java.lang.Integer)");
-    assertFailureValue(e, "though it did contain (3)", "1, 2 [2 copies] (java.lang.Long)");
+    assertFailureValue(e, "missing (3)", "1 [2 copies], 2 (Integer)");
+    assertFailureValue(e, "though it did contain (3)", "1, 2 [2 copies] (Long)");
   }
 
   @Test
@@ -490,7 +489,7 @@ public class IterableSubjectTest {
         expectFailure(
             whenTesting -> whenTesting.that(asList("null", "abc")).containsAtLeast("abc", null));
     assertFailureValue(e, "missing (1)", "null (null type)");
-    assertFailureValue(e, "though it did contain (1)", "null (java.lang.String)");
+    assertFailureValue(e, "though it did contain (1)", "null (String)");
   }
 
   @Test
@@ -499,9 +498,8 @@ public class IterableSubjectTest {
         expectFailure(
             whenTesting ->
                 whenTesting.that(asList(1, 2, 2L, 3L, 3L)).containsAtLeast(2L, 2L, 3, 3));
-    assertFailureValue(e, "missing (3)", "2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]");
-    assertFailureValue(
-        e, "though it did contain (3)", "2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]");
+    assertFailureValue(e, "missing (3)", "2 (Long), 3 (Integer) [2 copies]");
+    assertFailureValue(e, "though it did contain (3)", "2 (Integer), 3 (Long) [2 copies]");
   }
 
   @Test
@@ -914,7 +912,7 @@ public class IterableSubjectTest {
   public void containsExactlySingleElementNoEqualsMagic() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1)).containsExactly(1L));
-    assertFailureValueIndexed(e, "an instance of", 0, "java.lang.Long");
+    assertFailureValueIndexed(e, "an instance of", 0, "Long");
   }
 
   @Test
@@ -1119,34 +1117,32 @@ public class IterableSubjectTest {
   public void containsExactlyFailsWithSameToStringAndHomogeneousList() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L)).containsExactly(1, 2));
-    assertFailureValue(e, "missing (2)", "1, 2 (java.lang.Integer)");
-    assertFailureValue(e, "unexpected (2)", "1, 2 (java.lang.Long)");
+    assertFailureValue(e, "missing (2)", "1, 2 (Integer)");
+    assertFailureValue(e, "unexpected (2)", "1, 2 (Long)");
   }
 
   @Test
   public void containsExactlyFailsWithSameToStringAndListWithNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L)).containsExactly(null, 1, 2));
-    assertFailureValue(
-        e, "missing (3)", "null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)");
-    assertFailureValue(e, "unexpected (2)", "1, 2 (java.lang.Long)");
+    assertFailureValue(e, "missing (3)", "null (null type), 1 (Integer), 2 (Integer)");
+    assertFailureValue(e, "unexpected (2)", "1, 2 (Long)");
   }
 
   @Test
   public void containsExactlyFailsWithSameToStringAndHeterogeneousList() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2)).containsExactly(1, null, 2L));
-    assertFailureValue(
-        e, "missing (3)", "1 (java.lang.Integer), null (null type), 2 (java.lang.Long)");
-    assertFailureValue(e, "unexpected (2)", "1 (java.lang.Long), 2 (java.lang.Integer)");
+    assertFailureValue(e, "missing (3)", "1 (Integer), null (null type), 2 (Long)");
+    assertFailureValue(e, "unexpected (2)", "1 (Long), 2 (Integer)");
   }
 
   @Test
   public void containsExactlyFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(asList(1L, 2L)).containsExactly(1, 2, 2));
-    assertFailureValue(e, "missing (3)", "1, 2 [2 copies] (java.lang.Integer)");
-    assertFailureValue(e, "unexpected (2)", "1, 2 (java.lang.Long)");
+    assertFailureValue(e, "missing (3)", "1, 2 [2 copies] (Integer)");
+    assertFailureValue(e, "unexpected (2)", "1, 2 (Long)");
   }
 
   @Test
@@ -1155,10 +1151,8 @@ public class IterableSubjectTest {
         expectFailure(
             whenTesting -> whenTesting.that(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L));
     assertFailureValue(
-        e,
-        "missing (5)",
-        "1 (java.lang.Integer), null (null type) [2 copies], 2 (java.lang.Long) [2 copies]");
-    assertFailureValue(e, "unexpected (2)", "1 (java.lang.Long), 2 (java.lang.Integer)");
+        e, "missing (5)", "1 (Integer), null (null type) [2 copies], 2 (Long) [2 copies]");
+    assertFailureValue(e, "unexpected (2)", "1 (Long), 2 (Integer)");
   }
 
   @Test

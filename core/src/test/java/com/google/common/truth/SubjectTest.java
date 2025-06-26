@@ -166,9 +166,14 @@ public class SubjectTest {
     assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected", "5");
     assertFailureValueIndexed(
-        e, "an instance of", 0, "com.google.common.truth.SubjectTest$IntWrapper");
+        e,
+        "an instance of",
+        0,
+        isGwt()
+            ? "com.google.common.truth.SubjectTest$IntWrapper"
+            : "com.google.common.truth.SubjectTest.IntWrapper");
     assertFailureValue(e, "but was", "(non-equal value with same string representation)");
-    assertFailureValueIndexed(e, "an instance of", 1, "java.lang.Integer");
+    assertFailureValueIndexed(e, "an instance of", 1, "Integer");
   }
 
   private static class IntWrapper {
@@ -239,9 +244,9 @@ public class SubjectTest {
     assertFailureKeys(
         e, "expected specific instance", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected specific instance", "true");
-    assertFailureValueIndexed(e, "an instance of", 0, "java.lang.Boolean");
+    assertFailureValueIndexed(e, "an instance of", 0, "Boolean");
     assertFailureValue(e, "but was", "(non-equal value with same string representation)");
-    assertFailureValueIndexed(e, "an instance of", 1, "java.lang.String");
+    assertFailureValueIndexed(e, "an instance of", 1, "String");
   }
 
   @Test
@@ -376,7 +381,7 @@ public class SubjectTest {
     assertFailureValue(e, "expected", "null");
     assertFailureValueIndexed(e, "an instance of", 0, "(null reference)");
     assertFailureValue(e, "but was", "(non-equal value with same string representation)");
-    assertFailureValueIndexed(e, "an instance of", 1, "java.lang.String");
+    assertFailureValueIndexed(e, "an instance of", 1, "String");
   }
 
   @SuppressWarnings("SelfAssertion")
@@ -400,9 +405,9 @@ public class SubjectTest {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("true").isEqualTo(true));
     assertFailureKeys(e, "expected", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected", "true");
-    assertFailureValueIndexed(e, "an instance of", 0, "java.lang.Boolean");
+    assertFailureValueIndexed(e, "an instance of", 0, "Boolean");
     assertFailureValue(e, "but was", "(non-equal value with same string representation)");
-    assertFailureValueIndexed(e, "an instance of", 1, "java.lang.String");
+    assertFailureValueIndexed(e, "an instance of", 1, "String");
   }
 
   @Test
@@ -520,8 +525,8 @@ public class SubjectTest {
   public void isInstanceOfUnrelatedClass() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(4.5).isInstanceOf(Long.class));
     assertFailureKeys(e, "expected instance of", "but was instance of", "with value");
-    assertFailureValue(e, "expected instance of", "java.lang.Long");
-    assertFailureValue(e, "but was instance of", "java.lang.Double");
+    assertFailureValue(e, "expected instance of", "Long");
+    assertFailureValue(e, "but was instance of", "Double");
     assertFailureValue(e, "with value", "4.5");
   }
 
@@ -542,7 +547,7 @@ public class SubjectTest {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((Object) null).isInstanceOf(Long.class));
     assertFailureKeys(e, "expected instance of", "but was");
-    assertFailureValue(e, "expected instance of", "java.lang.Long");
+    assertFailureValue(e, "expected instance of", "Long");
   }
 
   @Test
@@ -587,7 +592,7 @@ public class SubjectTest {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(5).isNotInstanceOf(Integer.class));
     assertFailureKeys(e, "expected not to be an instance of", "but was");
-    assertFailureValue(e, "expected not to be an instance of", "java.lang.Integer");
+    assertFailureValue(e, "expected not to be an instance of", "Integer");
   }
 
   @Test
