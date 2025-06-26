@@ -24,6 +24,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
+import com.google.common.truth.Correspondence.DiffFormatter;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
@@ -65,8 +66,8 @@ final class TestCorrespondences {
   }
 
   /** A formatter for the diffs between integers. */
-  static final Correspondence.DiffFormatter<Integer, Integer> INT_DIFF_FORMATTER =
-      (a, e) -> Integer.toString(a - e);
+  static final DiffFormatter<@Nullable Integer, @Nullable Integer> INT_DIFF_FORMATTER =
+      (a, e) -> Integer.toString(requireNonNull(a) - requireNonNull(e));
 
   /**
    * A correspondence between integers which tests whether they are within 10 of each other. Smart
@@ -217,7 +218,7 @@ final class TestCorrespondences {
    * A formatter for diffs between records. If the records have the same key, it gives a string of
    * the form {@code "score:<score_diff>"}. If they have different keys, it gives null.
    */
-  static final Correspondence.DiffFormatter<MyRecord, MyRecord> RECORD_DIFF_FORMATTER =
+  static final DiffFormatter<MyRecord, MyRecord> RECORD_DIFF_FORMATTER =
       TestCorrespondences::formatRecordDiff;
 
   /**
