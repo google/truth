@@ -33,8 +33,8 @@ public class LongSubject extends ComparableSubject<Long> {
   private final @Nullable Long actual;
 
   /**
-   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
+   * The constructor is for use by subclasses only. If you want to create an instance of this class
+   * itself, call {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected LongSubject(FailureMetadata metadata, @Nullable Long actual) {
     super(metadata, actual);

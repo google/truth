@@ -32,8 +32,8 @@ public class IntegerSubject extends ComparableSubject<Integer> {
   private final @Nullable Integer actual;
 
   /**
-   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
+   * The constructor is for use by subclasses only. If you want to create an instance of this class
+   * itself, call {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected IntegerSubject(FailureMetadata metadata, @Nullable Integer actual) {
     super(metadata, actual);

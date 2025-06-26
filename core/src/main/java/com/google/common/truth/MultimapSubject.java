@@ -59,8 +59,8 @@ public class MultimapSubject extends Subject {
   private final @Nullable Multimap<?, ?> actual;
 
   /**
-   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
+   * The constructor is for use by subclasses only. If you want to create an instance of this class
+   * itself, call {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected MultimapSubject(FailureMetadata metadata, @Nullable Multimap<?, ?> actual) {
     super(metadata, actual);
