@@ -85,7 +85,7 @@ public class LongSubject extends ComparableSubject<Long> {
       throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
     }
 
-    static TolerantLongComparison create(LongComparer comparer) {
+    static TolerantLongComparison comparing(LongComparer comparer) {
       return new TolerantLongComparison(comparer);
     }
   }
@@ -103,7 +103,7 @@ public class LongSubject extends ComparableSubject<Long> {
    * @since 1.2
    */
   public TolerantLongComparison isWithin(long tolerance) {
-    return TolerantLongComparison.create(
+    return TolerantLongComparison.comparing(
         other -> {
           if (tolerance < 0) {
             failWithoutActual(
@@ -135,7 +135,7 @@ public class LongSubject extends ComparableSubject<Long> {
    * @since 1.2
    */
   public TolerantLongComparison isNotWithin(long tolerance) {
-    return TolerantLongComparison.create(
+    return TolerantLongComparison.comparing(
         other -> {
           if (tolerance < 0) {
             failWithoutActual(

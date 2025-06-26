@@ -83,7 +83,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
       throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
     }
 
-    static TolerantFloatComparison create(FloatComparer comparer) {
+    static TolerantFloatComparison comparing(FloatComparer comparer) {
       return new TolerantFloatComparison(comparer);
     }
   }
@@ -115,7 +115,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isWithin(float tolerance) {
-    return TolerantFloatComparison.create(
+    return TolerantFloatComparison.comparing(
         other -> {
           if (!Float.isFinite(tolerance)) {
             failWithoutActual(
@@ -175,7 +175,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(float tolerance) {
-    return TolerantFloatComparison.create(
+    return TolerantFloatComparison.comparing(
         other -> {
           if (!Float.isFinite(tolerance)) {
             failWithoutActual(

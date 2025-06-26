@@ -84,7 +84,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
       throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
     }
 
-    static TolerantIntegerComparison create(IntegerComparer comparer) {
+    static TolerantIntegerComparison comparing(IntegerComparer comparer) {
       return new TolerantIntegerComparison(comparer);
     }
   }
@@ -102,7 +102,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isWithin(int tolerance) {
-    return TolerantIntegerComparison.create(
+    return TolerantIntegerComparison.comparing(
         other -> {
           if (tolerance < 0) {
             failWithoutActual(
@@ -134,7 +134,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
    * @since 1.2
    */
   public TolerantIntegerComparison isNotWithin(int tolerance) {
-    return TolerantIntegerComparison.create(
+    return TolerantIntegerComparison.comparing(
         other -> {
           if (tolerance < 0) {
             failWithoutActual(

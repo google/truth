@@ -63,7 +63,7 @@ import org.junit.runners.model.Statement;
  * <p>{@code ExpectFailure} is similar to JUnit's {@code assertThrows} (<a
  * href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThrows%28java.lang.Class,%20org.junit.function.ThrowingRunnable%29">JUnit
  * 4</a>, <a
- * href="https://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html#assertThrows%28java.lang.Class,org.junit.jupiter.api.function.Executable%29">JUnit
+ * href="https://docs.junit.org/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html#assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)">JUnit
  * 5</a>). We recommend it over {@code assertThrows} when you're testing a Truth subject because it
  * also checks that the assertion you're testing uses the supplied {@link FailureStrategy} and calls
  * {@link FailureStrategy#fail} only once.
