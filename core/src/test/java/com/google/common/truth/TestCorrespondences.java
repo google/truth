@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Math.abs;
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -41,6 +42,15 @@ final class TestCorrespondences {
     if (actual == null) {
       return expected == null;
     }
+    // These checks can fail under Kotlin/Native, which doesn't catch the problem earlier: KT-68165.
+    //noinspection ConstantConditions
+    if (actual.getClass() != String.class) {
+      throw new ClassCastException("not a String: " + actual.getClass());
+    }
+    //noinspection ConstantConditions
+    if (expected != null && expected.getClass() != Integer.class) {
+      throw new ClassCastException("not an Integer: " + expected.getClass());
+    }
     try {
       // Older versions of Android reject leading plus signs, per the pre-Java-7 contract:
       // https://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#decode(java.lang.String)
@@ -63,9 +73,9 @@ final class TestCorrespondences {
    * diffing is enabled, with a formatted diff showing the actual value less the expected value.
    * Does not support null values.
    */
-  static final Correspondence<Integer, Integer> WITHIN_10_OF =
+  static final Correspondence<@Nullable Integer, @Nullable Integer> WITHIN_10_OF =
       Correspondence.from(
-              (Integer actual, Integer expected) -> {
+              (@Nullable Integer actual, @Nullable Integer expected) -> {
                 if (actual == null || expected == null) {
                   throw new NullPointerExceptionFromWithin10Of();
                 }
@@ -81,7 +91,8 @@ final class TestCorrespondences {
    * expected elements, but throws {@link NullPointerException} on null actual elements.
    */
   static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY =
-      Correspondence.from(String::equalsIgnoreCase, "equals (ignoring case)");
+      Correspondence.from(
+          (a, e) -> requireNonNull(a).equalsIgnoreCase(e), "equals (ignoring case)");
 
   /**
    * A correspondence between strings which tests for case-insensitive equality, with a broken
@@ -104,7 +115,7 @@ final class TestCorrespondences {
       return true;
     }
     // Oops! We don't handle the case where actual == null but expected != null.
-    return actual.equalsIgnoreCase(expected);
+    return requireNonNull(actual).equalsIgnoreCase(expected);
   }
 
   /**
