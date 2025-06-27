@@ -129,7 +129,7 @@ public class IterableSubjectTest {
       }
 
       @Override
-      public boolean equals(Object obj) {
+      public boolean equals(@Nullable Object obj) {
         return obj instanceof IntWrapper && value == ((IntWrapper) obj).value;
       }
 
@@ -814,6 +814,7 @@ public class IterableSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
   public void containsExactlyWithOnlyNullPassedAsNullArray() {
     // Truth is tolerant of this erroneous varargs call.
     Iterable<Object> actual = asList((Object) null);
@@ -1243,6 +1244,7 @@ public class IterableSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // TODO: b/420703524 - Detect the Kotlin/Native default toString() output
   public void withNoToStringOverride() {
     Iterable<Integer> iterable = () -> Iterators.forArray(1, 2, 3);
 
@@ -1403,6 +1405,7 @@ public class IterableSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // KT-68165
   public void isInStrictOrderWithNonComparableElementsFailure() {
     assertThrows(
         ClassCastException.class,
@@ -1433,6 +1436,7 @@ public class IterableSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // KT-68165
   public void isInOrderWithNonComparableElementsFailure() {
     assertThrows(
         ClassCastException.class, () -> assertThat(asList((Object) 1, "2", 2, "3")).isInOrder());

@@ -33,13 +33,12 @@ import java.util.BitSet;
 import java.util.Deque;
 import java.util.Map;
 import java.util.Random;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link GraphMatching}.
- */
+/** Tests for {@link GraphMatching}. */
 @RunWith(JUnit4.class)
 public final class GraphMatchingTest {
 
@@ -131,14 +130,14 @@ public final class GraphMatchingTest {
 
   @Test
   public void maximumCardinalityBipartiteMatching_failsWithNullLhs() {
-    ListMultimap<String, String> edges = LinkedListMultimap.create();
+    ListMultimap<@Nullable String, String> edges = LinkedListMultimap.create();
     edges.put(null, "R1");
     assertThrows(NullPointerException.class, () -> maximumCardinalityBipartiteMatching(edges));
   }
 
   @Test
   public void maximumCardinalityBipartiteMatching_failsWithNullRhs() {
-    ListMultimap<String, String> edges = LinkedListMultimap.create();
+    ListMultimap<String, @Nullable String> edges = LinkedListMultimap.create();
     edges.put("L1", null);
     assertThrows(NullPointerException.class, () -> maximumCardinalityBipartiteMatching(edges));
   }

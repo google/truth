@@ -34,9 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link PrimitiveDoubleArraySubject}.
- */
+/** Tests for {@link PrimitiveDoubleArraySubject}. */
 @RunWith(JUnit4.class)
 public class PrimitiveDoubleArraySubjectTest {
   private static final double DEFAULT_TOLERANCE = 0.000005d;
@@ -263,6 +261,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // nullness type error
   public void usingTolerance_contains_nullExpected() {
     AssertionError e =
         expectFailure(
@@ -590,6 +589,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // nullness type error
   public void usingExactEquality_contains_nullExpected() {
     AssertionError e =
         expectFailure(

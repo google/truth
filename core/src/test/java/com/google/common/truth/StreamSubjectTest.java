@@ -27,9 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link Stream} Subjects.
- */
+/** Tests for {@link Stream} Subjects. */
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
@@ -312,8 +310,13 @@ public final class StreamSubjectTest {
   }
 
   @Test
-  public void containsExactly_null() {
+  public void containsExactly_nullObject() {
     assertThat(Stream.of((Object) null)).containsExactly((Object) null);
+  }
+
+  @Test
+  @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
+  public void containsExactly_nullObjectArray() {
     assertThat(Stream.of((Object) null)).containsExactly((Object[]) null);
   }
 

@@ -35,8 +35,9 @@ final class TestCorrespondences {
    * integer. Parsing is as specified by {@link Integer#decode(String)}. It considers null to
    * correspond to null only.
    */
-  static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
-      Correspondence.from(TestCorrespondences::stringParsesToInteger, "parses to");
+  static final Correspondence<@Nullable String, @Nullable Integer>
+      STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
+          Correspondence.from(TestCorrespondences::stringParsesToInteger, "parses to");
 
   private static boolean stringParsesToInteger(
       @Nullable String actual, @Nullable Integer expected) {
@@ -230,7 +231,7 @@ final class TestCorrespondences {
    * <p>The {@link Correspondence#compare} implementation support nulls, such that null corresponds
    * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
-  static final Correspondence<MyRecord, MyRecord> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
+  static final Correspondence<MyRecord, @Nullable MyRecord> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
       RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(RECORD_DIFF_FORMATTER);
 
   /**

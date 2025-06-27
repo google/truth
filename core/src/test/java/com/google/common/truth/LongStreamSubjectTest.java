@@ -27,9 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link LongStream} Subjects.
- */
+/** Tests for {@link LongStream} Subjects. */
 @RunWith(JUnit4.class)
 public final class LongStreamSubjectTest {
 
@@ -262,6 +260,7 @@ public final class LongStreamSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
   public void testContainsExactly_nullExpected() {
     AssertionError expected =
         expectFailure(

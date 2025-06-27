@@ -51,14 +51,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for generic Subject behavior.
- */
+/** Tests for generic Subject behavior. */
 @RunWith(JUnit4.class)
 public class SubjectTest {
 
   @Test
   @GwtIncompatible("NullPointerTester")
+  @J2ktIncompatible
   @SuppressWarnings("GoogleInternalApi")
   /*
    * TODO(cpovirk): Reenable these tests publicly. Currently, we depend on guava-android, whose
@@ -99,6 +98,7 @@ public class SubjectTest {
 
   @Test
   @GwtIncompatible("NullPointerTester")
+  @J2ktIncompatible
   @org.junit.Ignore // TODO(cpovirk): Reenable publicly. (See nullPointerTester().)
   public void allAssertThatOverloadsAcceptNull() throws Exception {
     assume().that(isAndroid()).isFalse(); // type-annotation @Nullable is not available

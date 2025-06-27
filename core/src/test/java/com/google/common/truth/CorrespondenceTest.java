@@ -24,16 +24,16 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link Correspondence}.
- */
+/** Tests for {@link Correspondence}. */
 @RunWith(JUnit4.class)
 public final class CorrespondenceTest {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
@@ -127,12 +127,13 @@ public final class CorrespondenceTest {
 
   // Tests of the 'transform' factory methods.
 
-  private static final Correspondence<String, Integer> LENGTHS =
-      Correspondence.transforming(String::length, "has a length of");
+  private static final Correspondence<@Nullable String, Integer> LENGTHS =
+      Correspondence.transforming(s -> requireNonNull(s).length(), "has a length of");
 
-  private static final Correspondence<String, Integer> HYPHEN_INDEXES =
+  private static final Correspondence<@Nullable String, @Nullable Integer> HYPHEN_INDEXES =
       Correspondence.transforming(
           str -> {
+            requireNonNull(str);
             int index = str.indexOf('-');
             return (index >= 0) ? index : null;
           },
@@ -228,14 +229,14 @@ public final class CorrespondenceTest {
         .inOrder();
   }
 
-  private static final Correspondence<String, String> HYPHENS_MATCH_COLONS =
+  private static final Correspondence<@Nullable String, @Nullable String> HYPHENS_MATCH_COLONS =
       Correspondence.transforming(
           str -> {
-            int index = str.indexOf('-');
+            int index = requireNonNull(str).indexOf('-');
             return (index >= 0) ? index : null;
           },
           str -> {
-            int index = str.indexOf(':');
+            int index = requireNonNull(str).indexOf(':');
             return (index >= 0) ? index : null;
           },
           "has a hyphen at the same index as the colon in");
@@ -411,6 +412,11 @@ public final class CorrespondenceTest {
   }
 
   @Test
+  /*
+   * TODO: b/136037484 - Make tolerance() return false instead of throwing? Declare it with
+   * @Nullable types even though it throws?
+   */
+  @J2ktIncompatible
   public void tolerance_compare_null() {
     assertThrows(NullPointerException.class, () -> tolerance(0.05).compare(1.0, null));
     assertThrows(NullPointerException.class, () -> tolerance(0.05).compare(null, 2.0));
@@ -461,12 +467,13 @@ public final class CorrespondenceTest {
 
   @Test
   public void equality_compare() {
-    assertThat(equality().compare("foo", "foo")).isTrue();
-    assertThat(equality().compare("foo", "bar")).isFalse();
-    assertThat(equality().compare(123, 123)).isTrue();
-    assertThat(equality().compare(123, 123L)).isFalse();
-    assertThat(equality().compare(null, null)).isTrue();
-    assertThat(equality().compare(null, "bar")).isFalse();
+    Correspondence<@Nullable Object, @Nullable Object> equality = equality();
+    assertThat(equality.compare("foo", "foo")).isTrue();
+    assertThat(equality.compare("foo", "bar")).isFalse();
+    assertThat(equality.compare(123, 123)).isTrue();
+    assertThat(equality.compare(123, 123L)).isFalse();
+    assertThat(equality.compare(null, null)).isTrue();
+    assertThat(equality.compare(null, "bar")).isFalse();
   }
 
   @Test

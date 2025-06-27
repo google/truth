@@ -39,9 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link Map} subjects.
- */
+/** Tests for {@link Map} subjects. */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
@@ -1481,6 +1479,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // slightly different class-name format for nested exception class
   public void comparingValuesUsing_containsEntry_handlesFormatDiffExceptions() {
     Map<String, @Nullable Integer> actual = new LinkedHashMap<>();
     actual.put("abc", 35);
@@ -1832,6 +1831,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // Int/Long mismatch doesn't produce exception?
   public void comparingValuesUsing_containsExactly_wrongValueTypeInExpected() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
     AssertionError e =
@@ -2015,6 +2015,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // slightly different class-name format for nested exception class
   public void comparingValuesUsing_containsExactlyEntriesIn_handlesFormatDiffExceptions() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
     Map<String, @Nullable Integer> actual = new LinkedHashMap<>();
@@ -2295,6 +2296,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // Int/Long mismatch doesn't produce exception?
   public void comparingValuesUsing_containsAtLeast_wrongValueTypeInExpected() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
     AssertionError e =
@@ -2448,6 +2450,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // slightly different class-name format for nested exception class
   public void comparingValuesUsing_containsAtLeastEntriesIn_handlesFormatDiffExceptions() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
     Map<String, @Nullable Integer> actual = new LinkedHashMap<>();

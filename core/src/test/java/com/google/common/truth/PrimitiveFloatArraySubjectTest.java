@@ -36,9 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link PrimitiveFloatArraySubject}.
- */
+/** Tests for {@link PrimitiveFloatArraySubject}. */
 @RunWith(JUnit4.class)
 public class PrimitiveFloatArraySubjectTest {
   private static final float DEFAULT_TOLERANCE = 0.000005f;
@@ -258,6 +256,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // nullness type error
   public void usingTolerance_contains_nullExpected() {
     float[] actual = array(1.0f, 2.0f, 3.0f);
     AssertionError e =
@@ -658,6 +657,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @J2ktIncompatible // nullness type error
   public void usingExactEquality_contains_nullExpected() {
     float[] actual = array(1.0f, 2.0f, 3.0f);
     AssertionError e =
