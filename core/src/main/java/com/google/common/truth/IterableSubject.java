@@ -36,6 +36,7 @@ import static com.google.common.truth.SubjectUtils.entryString;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.iterableToCollection;
 import static com.google.common.truth.SubjectUtils.iterableToList;
+import static com.google.common.truth.SubjectUtils.listifyNullableVarargs;
 import static com.google.common.truth.SubjectUtils.longName;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
@@ -448,11 +449,11 @@ public class IterableSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object @Nullable ... expected) {
-    List<@Nullable Object> expectedAsList =
-        expected == null ? asList((@Nullable Object) null) : asList(expected);
     return containsExactlyElementsIn(
-        expectedAsList,
-        expected != null && expected.length == 1 && expected[0] instanceof Iterable);
+        listifyNullableVarargs(expected),
+        /* addElementsInWarning= */ expected != null
+            && expected.length == 1
+            && expected[0] instanceof Iterable);
   }
 
   /**
@@ -1315,7 +1316,7 @@ public class IterableSubject extends Subject {
     @SafeVarargs
     @CanIgnoreReturnValue
     public final Ordered containsExactly(@Nullable E @Nullable ... expected) {
-      return containsExactlyElementsIn(expected == null ? asList((E) null) : asList(expected));
+      return containsExactlyElementsIn(SubjectUtils.<E>listifyNullableVarargs(expected));
     }
 
     /**

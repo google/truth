@@ -504,6 +504,15 @@ final class SubjectUtils {
         .build();
   }
 
+  /**
+   * Performs an unchecked conversion from a varargs array to a {@link List}, treating a null array
+   * from {@code caller(null)} as a single null element.
+   */
+  static <E extends @Nullable Object> List<E> listifyNullableVarargs(
+      @Nullable E @Nullable [] expected) {
+    return expected == null ? asList((E) null) : asList(expected);
+  }
+
   // TODO: b/316358623 - Inline this helper method after fixing our nullness checker to not need it.
   @SuppressWarnings("nullness") // the aforementioned checker bug
   static <E extends @Nullable Object> List<E> asList(E... a) {

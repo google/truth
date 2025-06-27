@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Suppliers.memoize;
+import static com.google.common.truth.SubjectUtils.listifyNullableVarargs;
 import static java.util.stream.Collectors.toCollection;
 
 import com.google.common.base.Supplier;
@@ -202,13 +203,8 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  /*
-   * We need to call containsExactly, not containsExactlyElementsIn, to get the handling we want for
-   * containsExactly(null).
-   */
-  @SuppressWarnings("ContainsExactlyVariadic")
   public Ordered containsExactly(@Nullable Object @Nullable ... expected) {
-    return checkThatContentsList().containsExactly(expected);
+    return checkThatContentsList().containsExactlyElementsIn(listifyNullableVarargs(expected));
   }
 
   /**
