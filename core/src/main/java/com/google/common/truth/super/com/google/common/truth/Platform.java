@@ -31,8 +31,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
  * GWT and non-GWT version.
- *
- * @author Christian Gruber (cgruber@google.com)
  */
 @NullMarked
 final class Platform {

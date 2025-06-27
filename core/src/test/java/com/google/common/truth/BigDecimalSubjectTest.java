@@ -28,8 +28,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for BigDecimal Subjects.
- *
- * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 public class BigDecimalSubjectTest {

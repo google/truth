@@ -31,8 +31,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * Helper routines related to <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">graph
  * matchings</a>.
- *
- * @author Pete Gillin
  */
 final class GraphMatching {
 

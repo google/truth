@@ -33,8 +33,6 @@ import org.jspecify.annotations.Nullable;
  *     assertThrows(InvocationTargetException.class, () -> method.invoke(null));
  * assertThat(expected).hasCauseThat().isInstanceOf(IOException.class);
  * </pre>
- *
- * @author Kurt Alfred Kluever
  */
 public class ThrowableSubject extends Subject {
   private final @Nullable Throwable actual;

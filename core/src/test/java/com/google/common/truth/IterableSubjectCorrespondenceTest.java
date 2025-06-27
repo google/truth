@@ -54,8 +54,6 @@ import org.junit.runners.JUnit4;
  * IterableSubject}, and then call {@code comparingElementsUsing(someCorrespondence)} on that to get
  * an {@link IterableSubject.UsingCorrespondence}. The test method names omit the {@code
  * comparingElementsUsing_} prefix for brevity.
- *
- * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
 public class IterableSubjectCorrespondenceTest {

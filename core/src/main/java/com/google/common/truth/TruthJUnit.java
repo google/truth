@@ -35,9 +35,6 @@ import org.junit.AssumptionViolatedException;
  *   assertThat(foo.times(bar)).isEqualTo(blah);
  * }
  * }</pre>
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
  */
 @com.google.common.annotations.GwtIncompatible("JUnit4")
 public final class TruthJUnit {

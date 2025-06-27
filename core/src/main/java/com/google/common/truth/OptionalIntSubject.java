@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * A subject for {@link OptionalInt} values.
  *
- * @author Ben Douglass
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
 @IgnoreJRERequirement

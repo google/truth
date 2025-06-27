@@ -29,8 +29,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link com.google.common.truth.ObjectArraySubject}.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class ObjectArraySubjectTest {

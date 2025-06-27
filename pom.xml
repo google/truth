@@ -150,39 +150,38 @@
       <id>cgruber</id>
       <name>Christian Gruber</name>
       <email>christianedwardgruber@gmail.com</email>
-      <url>http://www.geekinasuit.com/</url>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-8</timezone>
     </developer>
     <developer>
       <id>kak</id>
       <name>Kurt Alfred Kluever</name>
-      <roles>
-        <role>evolver</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-5</timezone>
     </developer>
     <developer>
       <id>dsaff</id>
       <name>David Saff</name>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-5</timezone>
     </developer>
     <developer>
       <id>hagbard</id>
       <name>David B</name>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>+2</timezone>
+    </developer>
+    <developer>
+      <id>bendoug</id>
+      <name>Ben Douglass</name>
+    </developer>
+    <developer>
+      <id>dploch</id>
+      <name>Daniel Ploch</name>
+    </developer>
+    <developer>
+      <id>jnyman</id>
+      <name>Jens Nyman</name>
+    </developer>
+    <developer>
+      <id>peteg</id>
+      <name>Pete Gillin</name>
+    </developer>
+    <developer>
+      <id>pcloudy</id>
+      <name>Yun Peng</name>
     </developer>
   </developers>
   <url>http://github.com/google/truth</url>

@@ -28,8 +28,6 @@ import org.junit.runners.JUnit4;
  *
  * <p>These should not be run under j2cl, because the descriptions don't include the expected stack
  * traces there.
- *
- * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
 public final class CorrespondenceExceptionStoreTest {

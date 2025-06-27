@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code byte[]} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class PrimitiveByteArraySubject extends Subject {
   private final byte @Nullable [] actual;

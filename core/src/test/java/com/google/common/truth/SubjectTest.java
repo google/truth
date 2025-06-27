@@ -53,9 +53,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for generic Subject behavior.
- *
- * @author David Saff
- * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {

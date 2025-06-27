@@ -39,9 +39,6 @@ import org.junit.runners.JUnit4;
 /**
  * Tests for {@link IterableSubject} APIs, excluding those that use {@link Correspondence} (which
  * are tested in {@link IterableSubjectCorrespondenceTest}.
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 @SuppressWarnings({

@@ -25,8 +25,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Table} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class TableSubject extends Subject {
   private final @Nullable Table<?, ?, ?> actual;

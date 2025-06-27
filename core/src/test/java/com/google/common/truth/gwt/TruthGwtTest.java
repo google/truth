@@ -27,8 +27,6 @@ import java.util.Set;
 /**
  * Test of Truth under GWT - should be enough tests here to force compilation of all Subject
  * implementations.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 
 public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {

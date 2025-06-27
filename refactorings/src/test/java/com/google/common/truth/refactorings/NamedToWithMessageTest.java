@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** @author cpovirk@google.com (Chris Povirk) */
 @RunWith(JUnit4.class)
 public class NamedToWithMessageTest {
   private CompilationTestHelper compilationHelper;

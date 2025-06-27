@@ -26,8 +26,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link OptionalDouble} Subjects.
- *
- * @author Ben Douglass
  */
 @RunWith(JUnit4.class)
 public class OptionalDoubleSubjectTest {

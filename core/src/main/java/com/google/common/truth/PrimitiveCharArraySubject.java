@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code char[]} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveCharArraySubject extends Subject {
   private final char @Nullable [] actual;

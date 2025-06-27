@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Multiset} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class MultisetSubject extends IterableSubject {
 

@@ -38,8 +38,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link PrimitiveFloatArraySubject}.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class PrimitiveFloatArraySubjectTest {

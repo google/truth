@@ -25,8 +25,6 @@ import org.jspecify.annotations.Nullable;
  * A subject for Guava {@link Optional} values.
  *
  * <p>If you are looking for a {@code java.util.Optional} subject, see {@link OptionalSubject}.
- *
- * @author Christian Gruber
  */
 public final class GuavaOptionalSubject extends Subject {
   @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type

@@ -23,10 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Long} values.
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
- * @author Kurt Alfred Kluever
  */
 public class LongSubject extends ComparableSubject<Long> {
 

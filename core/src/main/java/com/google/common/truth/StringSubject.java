@@ -27,9 +27,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link String} values.
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public class StringSubject extends ComparableSubject<String> {
   private final @Nullable String actual;

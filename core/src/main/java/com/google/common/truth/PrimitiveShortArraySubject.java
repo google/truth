@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code short[]} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveShortArraySubject extends Subject {
   private final short @Nullable [] actual;

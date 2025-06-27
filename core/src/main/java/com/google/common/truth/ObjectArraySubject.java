@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code Object[]} and more generically {@code T[]}.
- *
- * @author Christian Gruber
  */
 public final class ObjectArraySubject<T extends @Nullable Object> extends Subject {
   private final T @Nullable [] actual;

@@ -21,8 +21,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Boolean} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class BooleanSubject extends Subject {
   private final @Nullable Boolean actual;

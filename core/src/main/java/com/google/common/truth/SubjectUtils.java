@@ -57,9 +57,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Utility methods used in {@link Subject} implementors.
- *
- * @author Christian Gruber
- * @author Jens Nyman
  */
 final class SubjectUtils {
   private SubjectUtils() {}

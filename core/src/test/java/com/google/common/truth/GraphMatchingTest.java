@@ -39,8 +39,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link GraphMatching}.
- *
- * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
 public final class GraphMatchingTest {

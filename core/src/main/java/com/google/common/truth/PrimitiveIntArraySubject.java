@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code int[]} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveIntArraySubject extends Subject {
   private final int @Nullable [] actual;

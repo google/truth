@@ -28,8 +28,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link Throwable} subjects.
- *
- * @author Kurt Alfred Kluever
  */
 // We don't want to use ThrowableSubject when testing ThrowableSubject.
 @SuppressWarnings({"GetMessageTruth", "AssertThatThrowableGetMessage"})

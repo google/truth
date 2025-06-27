@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link BigDecimal} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final @Nullable BigDecimal actual;

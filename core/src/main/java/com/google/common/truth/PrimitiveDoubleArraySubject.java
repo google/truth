@@ -30,8 +30,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code double[]} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveDoubleArraySubject extends Subject {
   private final double @Nullable [] actual;

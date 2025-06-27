@@ -86,9 +86,6 @@ import org.jspecify.annotations.Nullable;
  *   <li>Assertions may also require that the elements in the given {@link Iterable} implement
  *       {@link Object#hashCode} correctly.
  * </ul>
- *
- * @author Kurt Alfred Kluever
- * @author Pete Gillin
  */
 // Some builder calls need to be separate, so let's keep them all separate.
 @SuppressWarnings("BuilderCollapser")

@@ -23,10 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Integer} values.
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
- * @author Kurt Alfred Kluever
  */
 public class IntegerSubject extends ComparableSubject<Integer> {
   private final @Nullable Integer actual;

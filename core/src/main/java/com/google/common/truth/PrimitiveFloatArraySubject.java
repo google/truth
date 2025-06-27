@@ -30,8 +30,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@code float[]} values.
- *
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveFloatArraySubject extends Subject {
   private final float @Nullable [] actual;

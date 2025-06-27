@@ -40,9 +40,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for Multimap Subjects.
- *
- * @author Daniel Ploch
- * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.

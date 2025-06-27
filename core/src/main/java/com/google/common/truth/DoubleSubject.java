@@ -28,8 +28,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Double} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class DoubleSubject extends ComparableSubject<Double> {
   private final @Nullable Double actual;

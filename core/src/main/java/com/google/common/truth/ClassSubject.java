@@ -22,8 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Class} values.
- *
- * @author Kurt Alfred Kluever
  */
 @GwtIncompatible("reflection")
 @J2ktIncompatible

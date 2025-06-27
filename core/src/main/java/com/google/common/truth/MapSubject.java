@@ -48,9 +48,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Map} values.
- *
- * @author Christian Gruber
- * @author Kurt Alfred Kluever
  */
 public class MapSubject extends Subject {
   private final @Nullable Map<?, ?> actual;

@@ -72,9 +72,6 @@ import org.jspecify.annotations.Nullable;
  * <p>The most common way to extend Truth is to write a custom {@link Subject}. (The other, much
  * less common way is to write a custom {@link FailureStrategy}.) For more information, visit those
  * types' docs.
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class Truth {
   private Truth() {}

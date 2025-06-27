@@ -28,8 +28,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link com.google.common.truth.PrimitiveByteArraySubject}.
- *
- * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.

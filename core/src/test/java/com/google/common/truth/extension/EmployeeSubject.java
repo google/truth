@@ -26,11 +26,7 @@ import com.google.common.truth.Subject;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}.
- *
- * @author Kurt Alfred Kluever (kak@google.com)
- */
+/** A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}. */
 @NullMarked
 public final class EmployeeSubject extends Subject {
 

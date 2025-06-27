@@ -41,9 +41,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link Map} subjects.
- *
- * @author Christian Gruber
- * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.

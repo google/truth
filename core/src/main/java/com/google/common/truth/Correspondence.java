@@ -63,8 +63,6 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>Instances of this are typically used via {@link IterableSubject#comparingElementsUsing},
  * {@link MapSubject#comparingValuesUsing}, or {@link MultimapSubject#comparingValuesUsing}.
- *
- * @author Pete Gillin
  */
 public abstract class Correspondence<A extends @Nullable Object, E extends @Nullable Object> {
 

@@ -27,8 +27,6 @@ import java.util.Map;
 /**
  * A custom implementation of the diff algorithm based on the solution described at
  * https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
- *
- * @author Yun Peng (pcloudy@google.com)
  */
 final class DiffUtils {
   // A list of unique strings appeared in compared texts.

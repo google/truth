@@ -32,8 +32,6 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for Double Subjects.
- *
- * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 public class DoubleSubjectTest {

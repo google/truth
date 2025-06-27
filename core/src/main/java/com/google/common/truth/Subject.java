@@ -73,9 +73,6 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>For information about writing a custom {@link Subject}, see <a
  * href="https://truth.dev/extension">our doc on extensions</a>.
- *
- * @author David Saff
- * @author Christian Gruber
  */
 public class Subject {
   /**

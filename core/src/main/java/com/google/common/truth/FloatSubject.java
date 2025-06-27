@@ -28,8 +28,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Float} values.
- *
- * @author Kurt Alfred Kluever
  */
 public final class FloatSubject extends ComparableSubject<Float> {
   private final @Nullable Float actual;

@@ -38,9 +38,6 @@ import org.junit.runners.model.Statement;
 
 /**
  * Tests (and effectively sample code) for the Expect verb (implemented as a rule)
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 // We use ExpectedException so that we can test our code that runs after the test method completes.

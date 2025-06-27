@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Comparable} values.
- *
- * @author Kurt Alfred Kluever
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
 // TODO(b/136040841): Consider further tightening this to the proper `extends Comparable<? super T>`

@@ -49,7 +49,6 @@ import org.jspecify.annotations.Nullable;
  * <p>For very large or infinite streams, you may want to first {@linkplain Stream#limit limit} the
  * stream before asserting on it.
  *
- * @author Kurt Alfred Kluever
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
 @IgnoreJRERequirement
