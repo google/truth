@@ -78,21 +78,6 @@ final class Platform {
     return null;
   }
 
-  abstract static class PlatformComparisonFailure extends AssertionError {
-    PlatformComparisonFailure(
-        String message,
-        String unusedUnderGwtExpected,
-        String unusedUnderGwtActual,
-        @Nullable Throwable cause) {
-      super(message, cause);
-    }
-
-    @Override
-    public final String toString() {
-      return "" + getLocalizedMessage();
-    }
-  }
-
   static String doubleToString(double value) {
     // This probably doesn't match Java perfectly, but we do our best.
     if (value == Double.POSITIVE_INFINITY) {
@@ -240,24 +225,10 @@ final class Platform {
   static AssertionError makeComparisonFailure(
       ImmutableList<String> messages,
       ImmutableList<Fact> facts,
-      String expected,
-      String actual,
+      String unusedExpected,
+      String unusedActual,
       @Nullable Throwable cause) {
-    /*
-     * Despite the name, the class we're creating extends AssertionError but not ComparisonFailure
-     * under GWT: See its supertype, PlatformComparisonFailure, above.
-     *
-     * We're actually creating the same class as the non-GWT version of this method does. So why do
-     * we have supersource for this method? It's because we can't run (and, fortunately, don't need
-     * to run) the reflective code we have for non-GWT users, who might or might not choose to
-     * exclude JUnit 4 from their classpath.
-     *
-     * TODO(cpovirk): Remove ComparisonFailureWithFacts and PlatformComparisonFailure entirely under
-     * GWT? That would let us merge them into a single class on the server. And as noted in the
-     * non-GWT copy of Platform, we could consider another custom type that exposes getExpected()
-     * and getActual(), even in the absence of ComparisonFailure. That type would work under GWT.
-     */
-    return ComparisonFailureWithFacts.create(messages, facts, expected, actual, cause);
+    return AssertionErrorWithFacts.create(messages, facts, cause);
   }
 
   static boolean isKotlinRange(Iterable<?> iterable) {

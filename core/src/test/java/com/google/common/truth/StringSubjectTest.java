@@ -19,6 +19,8 @@ import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.TestPlatform.assertIsComparisonFailureIfAvailable;
+import static com.google.common.truth.TestPlatform.assertIsNotComparisonFailureIfAvailable;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -28,9 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for String Subjects.
- */
+/** Tests for {@link StringSubject}. */
 @RunWith(JUnit4.class)
 public class StringSubjectTest {
 
@@ -138,7 +138,7 @@ public class StringSubjectTest {
   @Test
   public void equalityToNull() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEqualTo(null));
-    assertThat(e).isNotInstanceOf(ComparisonFailureWithFacts.class);
+    assertIsNotComparisonFailureIfAvailable(e);
   }
 
   @Test
@@ -156,7 +156,7 @@ public class StringSubjectTest {
   @Test
   public void equalityFail() {
     AssertionError e = expectFailure(whenTesting -> whenTesting.that("abc").isEqualTo("ABC"));
-    assertThat(e).isInstanceOf(ComparisonFailureWithFacts.class);
+    assertIsComparisonFailureIfAvailable(e);
   }
 
   @Test

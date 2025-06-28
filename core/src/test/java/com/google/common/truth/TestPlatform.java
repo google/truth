@@ -16,9 +16,21 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import org.junit.ComparisonFailure;
+
 final class TestPlatform {
   static boolean isGwt() {
     return false;
+  }
+
+  static void assertIsComparisonFailureIfAvailable(Throwable t) {
+    assertThat(t).isInstanceOf(ComparisonFailure.class);
+  }
+
+  static void assertIsNotComparisonFailureIfAvailable(Throwable t) {
+    assertThat(t).isNotInstanceOf(ComparisonFailure.class);
   }
 
   private TestPlatform() {}

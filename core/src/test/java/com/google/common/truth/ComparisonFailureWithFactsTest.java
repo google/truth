@@ -21,16 +21,18 @@ import static com.google.common.testing.SerializableTester.reserialize;
 import static com.google.common.truth.ComparisonFailures.formatExpectedAndActual;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Platform.makeComparisonFailure;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Test for {@link ComparisonFailureWithFacts}. */
+/** Test for {@code ComparisonFailureWithFacts} in {@link Platform}. */
 @RunWith(JUnit4.class)
 public class ComparisonFailureWithFactsTest {
   @Test
@@ -273,17 +275,18 @@ public class ComparisonFailureWithFactsTest {
     String expected = "expected";
     String actual = "actual";
     Throwable cause = new Throwable("cause");
-    ComparisonFailureWithFacts original =
-        ComparisonFailureWithFacts.create(messages, facts, expected, actual, cause);
+    ComparisonFailure original =
+        (ComparisonFailure) makeComparisonFailure(messages, facts, expected, actual, cause);
 
-    ComparisonFailureWithFacts reserialized = reserialize(original);
-    assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
-    assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
+    ComparisonFailure reserializedFailure = reserialize(original);
+    ErrorWithFacts reserialized = (ErrorWithFacts) reserializedFailure;
+    assertThat(reserializedFailure).hasMessageThat().isEqualTo(original.getMessage());
+    assertThat(reserializedFailure).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
     assertThat(reserialized.facts().get(0).key).isEqualTo("first");
     assertThat(reserialized.facts().get(0).value).isEqualTo("value");
     assertThat(reserialized.facts().get(1).key).isEqualTo("second");
-    assertThat(reserialized.getExpected()).isEqualTo("expected");
-    assertThat(reserialized.getActual()).isEqualTo("actual");
+    assertThat(reserializedFailure.getExpected()).isEqualTo("expected");
+    assertThat(reserializedFailure.getActual()).isEqualTo("actual");
   }
 
   @GwtIncompatible

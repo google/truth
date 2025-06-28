@@ -15,20 +15,18 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
+import static com.google.common.truth.TestPlatform.assertIsComparisonFailureIfAvailable;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link com.google.common.truth.PrimitiveByteArraySubject}.
- */
+/** Tests for {@link PrimitiveByteArraySubject}. */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
@@ -66,7 +64,7 @@ public class PrimitiveByteArraySubjectTest {
     assertFailureValueIndexed(e, "but was", 0, "007B");
     assertFailureValueIndexed(e, "expected", 1, "[123, 0]");
     assertFailureValueIndexed(e, "but was", 1, "[0, 123]");
-    assertThat(e).isInstanceOf(ComparisonFailureWithFacts.class);
+    assertIsComparisonFailureIfAvailable(e);
   }
 
   @Test

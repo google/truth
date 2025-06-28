@@ -20,6 +20,7 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.makeMessage;
 import static com.google.common.truth.SneakyThrows.sneakyThrow;
 
 import com.google.common.base.Joiner;
@@ -28,6 +29,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import com.google.errorprone.annotations.Keep;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -139,27 +141,56 @@ final class Platform {
 
   private static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n");
 
-  abstract static class PlatformComparisonFailure extends ComparisonFailure {
+  /**
+   * A {@code ComparisonFailure} composed of structured {@link Fact} instances and other string
+   * messages.
+   */
+  @SuppressWarnings("OverrideThrowableToString") // We intentionally hide the class name.
+  @Keep
+  private static final class ComparisonFailureWithFacts extends ComparisonFailure
+      implements ErrorWithFacts {
     private final String message;
+    private final ImmutableList<Fact> facts;
 
-    PlatformComparisonFailure(
-        String message, String expected, String actual, @Nullable Throwable cause) {
-      super(message, expected, actual);
-      this.message = message;
-
+    private ComparisonFailureWithFacts(
+        String message,
+        ImmutableList<Fact> facts,
+        String expected,
+        String actual,
+        @Nullable Throwable cause) {
+      super(message, checkNotNull(expected), checkNotNull(actual));
+      this.message = checkNotNull(message);
+      this.facts = checkNotNull(facts);
       initCause(cause);
     }
 
     @Override
-    public final String getMessage() {
+    public ImmutableList<Fact> facts() {
+      return facts;
+    }
+
+    @Override
+    public String getMessage() {
       return message;
     }
 
     // To avoid printing the class name before the message.
     // TODO(cpovirk): Write a test that fails without this. Ditto for SimpleAssertionError.
     @Override
-    public final String toString() {
+    public String toString() {
       return checkNotNull(getLocalizedMessage());
+    }
+
+    @Keep
+    @UsedByReflection
+    static ComparisonFailureWithFacts create(
+        ImmutableList<String> messages,
+        ImmutableList<Fact> facts,
+        String expected,
+        String actual,
+        @Nullable Throwable cause) {
+      return new ComparisonFailureWithFacts(
+          makeMessage(messages, facts), facts, expected, actual, cause);
     }
   }
 
@@ -222,7 +253,8 @@ final class Platform {
       @Nullable Throwable cause) {
     Class<?> comparisonFailureClass;
     try {
-      comparisonFailureClass = Class.forName("com.google.common.truth.ComparisonFailureWithFacts");
+      comparisonFailureClass =
+          Class.forName("com.google.common.truth.Platform$ComparisonFailureWithFacts");
     } catch (LinkageError | ClassNotFoundException probablyJunitNotOnClasspath) {
       /*
        * We're using reflection because ComparisonFailureWithFacts depends on JUnit 4, a dependency
@@ -238,10 +270,6 @@ final class Platform {
        * out (perhaps along with Platform.PlatformComparisonFailure, to satisfy a tool that is
        * unhappy because it can't find the latter's superclass because JUnit 4 is also missing?),
        * presumably we should still fall back to a plain AssertionError.
-       *
-       * TODO(cpovirk): Consider creating and using yet another class like AssertionErrorWithFacts,
-       * not actually extending ComparisonFailure but still exposing getExpected() and getActual()
-       * methods.
        */
       return AssertionErrorWithFacts.create(messages, facts, cause);
     }
@@ -256,6 +284,11 @@ final class Platform {
               String.class,
               String.class,
               Throwable.class);
+    } catch (Error e) {
+      if (e.getClass().getName().equals("com.google.j2objc.ReflectionStrippedError")) {
+        return AssertionErrorWithFacts.create(messages, facts, cause);
+      }
+      throw e;
     } catch (NoSuchMethodException e) {
       // Should not happen: the factory method exists.
       throw newLinkageError(e);
@@ -341,7 +374,8 @@ final class Platform {
 
   @SuppressWarnings("GoogleInternalApi")
   static String lenientFormatForFailure(
-      @Nullable String template, @Nullable Object @Nullable ... args) {
+          @Nullable String template,
+      @Nullable Object @Nullable ... args) {
     return lenientFormat(template, args);
   }
 }

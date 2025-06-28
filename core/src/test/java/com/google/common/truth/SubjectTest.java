@@ -23,6 +23,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.SubjectTest.ForbidsEqualityChecksSubject.objectsForbiddingEqualityCheck;
+import static com.google.common.truth.TestPlatform.assertIsNotComparisonFailureIfAvailable;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
@@ -207,7 +208,7 @@ public class SubjectTest {
   public void isSameInstanceAsFailureWithObjects() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(OBJECT_1).isSameInstanceAs(OBJECT_2));
-    assertThat(e).isNotInstanceOf(ComparisonFailureWithFacts.class);
+    assertIsNotComparisonFailureIfAvailable(e);
   }
 
   @Test
