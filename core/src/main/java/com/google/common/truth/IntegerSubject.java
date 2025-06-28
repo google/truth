@@ -18,6 +18,8 @@ package com.google.common.truth;
 import static com.google.common.truth.Fact.numericFact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
+import static java.lang.Math.abs;
+import static java.lang.Math.subtractExact;
 
 import org.jspecify.annotations.Nullable;
 
@@ -151,6 +153,20 @@ public class IntegerSubject extends ComparableSubject<Integer> {
                 numericFact("within tolerance", tolerance));
           }
         });
+  }
+
+  /**
+   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
+   * other.
+   */
+  private static boolean equalWithinTolerance(int left, int right, int tolerance) {
+    try {
+      int absDiff = abs(subtractExact(left, right));
+      return 0 <= absDiff && absDiff <= abs(tolerance);
+    } catch (ArithmeticException e) {
+      // The numbers are so far apart their difference isn't even a int.
+      return false;
+    }
   }
 
   /**

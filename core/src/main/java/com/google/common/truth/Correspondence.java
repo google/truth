@@ -16,12 +16,12 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Functions.identity;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.MathUtil.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static com.google.common.truth.SubjectUtils.asList;
@@ -329,6 +329,17 @@ public abstract class Correspondence<A extends @Nullable Object, E extends @Null
 
     static TolerantNumericEquality create(double tolerance) {
       return new TolerantNumericEquality(tolerance);
+    }
+
+    /**
+     * Ensures that the given tolerance is a non-negative finite value, i.e., not {@link
+     * Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}.
+     */
+    private static void checkTolerance(double tolerance) {
+      checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
+      checkArgument(
+          Double.compare(tolerance, 0.0) >= 0, "tolerance (%s) cannot be negative", tolerance);
+      checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
     }
   }
 

@@ -16,10 +16,8 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.Double.isFinite;
 import static java.lang.Math.abs;
-import static java.lang.Math.subtractExact;
 
 
 /** Math utilities to be shared by numeric subjects. */
@@ -27,36 +25,8 @@ final class MathUtil {
   private MathUtil() {}
 
   /**
-   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
-   * other.
-   */
-  /* package */ static boolean equalWithinTolerance(long left, long right, long tolerance) {
-    try {
-      long absDiff = abs(subtractExact(left, right));
-      return 0 <= absDiff && absDiff <= abs(tolerance);
-    } catch (ArithmeticException e) {
-      // The numbers are so far apart their difference isn't even a long.
-      return false;
-    }
-  }
-
-  /**
-   * Returns true iff {@code left} and {@code right} are values within {@code tolerance} of each
-   * other.
-   */
-  /* package */ static boolean equalWithinTolerance(int left, int right, int tolerance) {
-    try {
-      int absDiff = abs(subtractExact(left, right));
-      return 0 <= absDiff && absDiff <= abs(tolerance);
-    } catch (ArithmeticException e) {
-      // The numbers are so far apart their difference isn't even a int.
-      return false;
-    }
-  }
-
-  /**
    * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of
-   * each other. Note that both this method and {@link #notEqualWithinTolerance} returns false if
+   * each other. Note that both this method and {@link #notEqualWithinTolerance} return false if
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean equalWithinTolerance(double left, double right, double tolerance) {
@@ -65,7 +35,7 @@ final class MathUtil {
 
   /**
    * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of
-   * each other. Note that both this method and {@link #notEqualWithinTolerance} returns false if
+   * each other. Note that both this method and {@link #notEqualWithinTolerance} return false if
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean equalWithinTolerance(float left, float right, float tolerance) {
@@ -74,7 +44,7 @@ final class MathUtil {
 
   /**
    * Returns true iff {@code left} and {@code right} are finite values not within {@code tolerance}
-   * of each other. Note that both this method and {@link #equalWithinTolerance} returns false if
+   * of each other. Note that both this method and {@link #equalWithinTolerance} return false if
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean notEqualWithinTolerance(double left, double right, double tolerance) {
@@ -83,21 +53,10 @@ final class MathUtil {
 
   /**
    * Returns true iff {@code left} and {@code right} are finite values not within {@code tolerance}
-   * of each other. Note that both this method and {@link #equalWithinTolerance} returns false if
+   * of each other. Note that both this method and {@link #equalWithinTolerance} return false if
    * either {@code left} or {@code right} is infinite or NaN.
    */
   public static boolean notEqualWithinTolerance(float left, float right, float tolerance) {
     return notEqualWithinTolerance(left, right, (double) tolerance);
-  }
-
-  /**
-   * Ensures that the given tolerance is a non-negative finite value, i.e., not {@link Double#NaN},
-   * {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}.
-   */
-  static void checkTolerance(double tolerance) {
-    checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
-    checkArgument(
-        Double.compare(tolerance, 0.0) >= 0, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 }
