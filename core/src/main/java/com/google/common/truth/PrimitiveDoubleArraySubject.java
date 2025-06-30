@@ -125,14 +125,17 @@ public final class PrimitiveDoubleArraySubject extends Subject {
 
   private static double checkedToDouble(Number expected) {
     checkNotNull(expected);
-    checkArgument(
+    boolean okType =
         expected instanceof Double
             || expected instanceof Float
             || expected instanceof Integer
-            || expected instanceof Long,
-        "Expected value in assertion using exact double equality was of unsupported type %s "
-            + "(it may not have an exact double representation)",
-        expected.getClass());
+            || expected instanceof Long;
+    if (!okType) {
+      throw new IllegalArgumentException(
+          "Expected value in assertion using exact double equality was of unsupported type "
+              + SubjectUtils.longName(expected.getClass())
+              + " (it may not have an exact double representation)");
+    }
     if (expected instanceof Long) {
       checkArgument(
           abs((Long) expected) <= 1L << 53,

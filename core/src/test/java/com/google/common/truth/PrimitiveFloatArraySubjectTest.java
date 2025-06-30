@@ -58,7 +58,7 @@ public class PrimitiveFloatArraySubjectTest {
     assertThat(nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_3POINT3);
     assertThat(nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY))
         .isEqualTo(INTOLERABLE_3POINT3);
-    assertThat(nextAfter(Long.MIN_VALUE, NEGATIVE_INFINITY)).isEqualTo(UNDER_LONG_MIN);
+    assertThat(nextAfter((float) Long.MIN_VALUE, NEGATIVE_INFINITY)).isEqualTo(UNDER_LONG_MIN);
     assertThat(nextAfter(2.2f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_2POINT2);
     assertThat(nextAfter(2.2f + DEFAULT_TOLERANCE, POSITIVE_INFINITY))
         .isEqualTo(INTOLERABLE_2POINT2);
@@ -598,7 +598,7 @@ public class PrimitiveFloatArraySubjectTest {
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact float equality was of unsupported type "
-                + BigInteger.class
+                + BigInteger.class.getCanonicalName()
                 + " (it may not have an exact float representation)");
   }
 
@@ -630,7 +630,7 @@ public class PrimitiveFloatArraySubjectTest {
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact float equality was of unsupported type "
-                + BigDecimal.class
+                + BigDecimal.class.getCanonicalName()
                 + " (it may not have an exact float representation)");
   }
 

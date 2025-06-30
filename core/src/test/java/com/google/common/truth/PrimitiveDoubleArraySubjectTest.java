@@ -531,7 +531,7 @@ public class PrimitiveDoubleArraySubjectTest {
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact double equality was of unsupported type "
-                + BigInteger.class
+                + BigInteger.class.getCanonicalName()
                 + " (it may not have an exact double representation)");
   }
 
@@ -558,7 +558,7 @@ public class PrimitiveDoubleArraySubjectTest {
         .factValue("first exception")
         .contains(
             "Expected value in assertion using exact double equality was of unsupported type "
-                + BigDecimal.class
+                + BigDecimal.class.getCanonicalName()
                 + " (it may not have an exact double representation)");
   }
 
