@@ -49,11 +49,9 @@ public final class PrimitiveFloatArraySubject extends Subject {
    * #usingTolerance} with a suitable tolerance in that case, e.g. {@code
    * assertThat(actualArray).usingTolerance(1.0e-5).containsExactly(expectedArray).inOrder()}.
    * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
-   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
-   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
-   * of precision for the intermediate result.) This method is recommended when the code under test
-   * is specified as either copying values without modification from its input or returning
-   * well-defined literal or constant values.
+   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}.) This method is
+   * recommended when the code under test is specified as either copying values without modification
+   * from its input or returning well-defined literal or constant values.
    *
    * <ul>
    *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
@@ -158,11 +156,10 @@ public final class PrimitiveFloatArraySubject extends Subject {
    * This method is <i>not</i> recommended when the code under test is doing any kind of arithmetic:
    * use {@link #usingTolerance} with a suitable tolerance in that case. (Remember that the exact
    * result of floating point arithmetic is sensitive to apparently trivial changes such as
-   * replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code strictfp} is in
-   * force even the result of {@code (a + b) + c} is sensitive to the JVM's choice of precision for
-   * the intermediate result.) This method is recommended when the code under test is specified as
-   * either copying a value without modification from its input or returning a well-defined literal
-   * or constant value. The check is actually executed by continuing the method chain. For example:
+   * replacing {@code (a + b) + c} with {@code a + (b + c)}.) This method is recommended when the
+   * code under test is specified as either copying a value without modification from its input or
+   * returning a well-defined literal or constant value. The check is actually executed by
+   * continuing the method chain. For example:
    *
    * <pre>{@code
    * assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);

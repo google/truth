@@ -217,11 +217,9 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * {@link Float#equals}. This method is <i>not</i> recommended when the code under test is doing
    * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
-   * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
-   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
-   * of precision for the intermediate result.) This method is recommended when the code under test
-   * is specified as either copying a value without modification from its input or returning a
-   * well-defined literal or constant value.
+   * such as replacing {@code (a + b) + c} with {@code a + (b + c)}.) This method is recommended
+   * when the code under test is specified as either copying a value without modification from its
+   * input or returning a well-defined literal or constant value.
    *
    * <p><b>Note:</b> The assertion {@code isEqualTo(0.0f)} fails for an input of {@code -0.0f}, and
    * vice versa. For an assertion that passes for either {@code 0.0f} or {@code -0.0f}, use {@link
