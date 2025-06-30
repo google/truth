@@ -38,9 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for Multimap Subjects.
- */
+/** Tests for {@link MultimapSubject}. */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.

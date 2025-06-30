@@ -36,9 +36,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
 
-/**
- * Tests (and effectively sample code) for the Expect verb (implemented as a rule)
- */
+/** Tests for {@link Expect}. */
 @RunWith(JUnit4.class)
 // We use ExpectedException so that we can test our code that runs after the test method completes.
 @SuppressWarnings({"ExpectedExceptionChecker", "deprecation"})

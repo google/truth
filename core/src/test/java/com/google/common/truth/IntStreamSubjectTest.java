@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link IntStream} Subjects. */
+/** Tests for {@link IntStreamSubject}. */
 @RunWith(JUnit4.class)
 public final class IntStreamSubjectTest {
 

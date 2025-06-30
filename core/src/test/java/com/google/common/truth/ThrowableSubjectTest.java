@@ -26,9 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link Throwable} subjects.
- */
+/** Tests for {@link ThrowableSubject}. */
 // We don't want to use ThrowableSubject when testing ThrowableSubject.
 @SuppressWarnings({"GetMessageTruth", "AssertThatThrowableGetMessage"})
 @RunWith(JUnit4.class)

@@ -27,9 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link com.google.common.truth.ObjectArraySubject}.
- */
+/** Tests for {@link ObjectArraySubject}. */
 @RunWith(JUnit4.class)
 public class ObjectArraySubjectTest {
   private static final Object[] EMPTY = new Object[0];

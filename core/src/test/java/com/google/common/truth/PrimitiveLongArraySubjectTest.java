@@ -25,9 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link com.google.common.truth.PrimitiveLongArraySubject}.
- */
+/** Tests for {@link PrimitiveLongArraySubject}. */
 @RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.

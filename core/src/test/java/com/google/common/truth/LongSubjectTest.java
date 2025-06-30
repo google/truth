@@ -25,9 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for Long Subjects.
- */
+/** Tests for {@link LongSubject}. */
 @RunWith(JUnit4.class)
 public class LongSubjectTest {
 

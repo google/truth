@@ -27,9 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for Multiset Subjects.
- */
+/** Tests for {@link MultisetSubject}. */
 @RunWith(JUnit4.class)
 public class MultisetSubjectTest {
 

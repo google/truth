@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for the FEST-alike assertThat() entry point.
+ * Tests that {@code Truth.assertThat} methods match {@code StandardSubjectBuilder.that} methods.
  */
 @RunWith(JUnit4.class)
 public class TruthAssertThatTest {

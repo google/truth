@@ -24,9 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link com.google.common.truth.PrimitiveIntArraySubject}.
- */
+/** Tests for {@link PrimitiveIntArraySubject}. */
 @RunWith(JUnit4.class)
 public class PrimitiveIntArraySubjectTest {
   private static final int[] EMPTY = new int[0];

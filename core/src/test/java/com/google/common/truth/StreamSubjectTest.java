@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link Stream} Subjects. */
+/** Tests for {@link StreamSubject}. */
 @RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 

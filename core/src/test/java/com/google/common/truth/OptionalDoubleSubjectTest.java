@@ -24,9 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link OptionalDouble} Subjects.
- */
+/** Tests for {@link OptionalDoubleSubject}. */
 @RunWith(JUnit4.class)
 public class OptionalDoubleSubjectTest {
 
