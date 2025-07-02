@@ -963,4 +963,12 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
             descriptor, message.toByteString(), ExtensionRegistry.getEmptyRegistry());
     expectThat(message).isEqualTo(dynamicMessage);
   }
+
+  @Test
+  public void testDifferentDescriptorsError_isTextFormat() {
+    TestMessage2 testMessage = TestMessage2.newBuilder().setOInt(1).build();
+    SubTestMessage2 otherMessage = SubTestMessage2.newBuilder().setOInt(1).build();
+    expectFailureWhenTesting().that(testMessage).isEqualTo(otherMessage);
+    expectThatFailure().hasMessageThat().contains("o_int: 1");
+  }
 }

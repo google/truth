@@ -1192,4 +1192,13 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .ignoringFieldDescriptorsForValues(listOf(getFieldDescriptor("o_int")))
         .containsExactlyEntriesIn(eqExceptInt);
   }
+
+  @Test
+  public void testFieldScopeToString_isTextFormat() {
+    Message message = parse("o_int: 3 r_string: \"foo\"");
+    FieldScope fieldScope = FieldScopes.fromSetFields(message);
+    expect.that(fieldScope.toString()).contains("FieldScopes.fromSetFields(o_int: 3");
+    FieldScope fieldScopeFromList = FieldScopes.fromSetFields(ImmutableList.of(message));
+    expect.that(fieldScopeFromList.toString()).contains("FieldScopes.fromSetFields(o_int: 3");
+  }
 }

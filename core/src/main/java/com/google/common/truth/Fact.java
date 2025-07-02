@@ -25,6 +25,7 @@ import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.Platform.stringValueForFailure;
 import static java.lang.Math.max;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -66,6 +67,20 @@ public final class Fact implements Serializable {
    */
   public static Fact simpleFact(String key) {
     return new Fact(key, null, /* padStart= */ false);
+  }
+
+  /** Creates a fact with the given key and the value returned by the given {@link Supplier}. */
+  static Fact factFromSupplier(String key, Supplier<?> valueSupplier) {
+    // We delay evaluation of Supplier.get() until we are inside stringValueForFailure.
+    return fact(
+        key,
+        stringValueForFailure(
+            new Object() {
+              @Override
+              public String toString() {
+                return String.valueOf(valueSupplier.get());
+              }
+            }));
   }
 
   /**

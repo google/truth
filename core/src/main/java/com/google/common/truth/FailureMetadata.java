@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.ComparisonFailures.makeComparisonFailureFacts;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factFromSupplier;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
@@ -316,19 +317,20 @@ public final class FailureMetadata {
         rootSubject = step;
       }
     }
+    if (!seenDerivation) {
+      return ImmutableList.of();
+    }
     /*
      * TODO(cpovirk): Maybe say "root foo was: ..." instead of just "foo was: ..." if there's more
      * than one foo in the chain, if the description string doesn't start with "foo," and/or if the
      * name we have is just "object?"
      */
-    return seenDerivation
-        ? ImmutableList.of(
-            fact(
-                // TODO(cpovirk): Use inferDescription() here when appropriate? But it can be long.
-                checkNotNull(checkNotNull(rootSubject).subject).typeDescription() + " was",
-                checkNotNull(checkNotNull(rootSubject).subject)
-                    .actualCustomStringRepresentationForPackageMembersToCall()))
-        : ImmutableList.of();
+    Subject root = checkNotNull(checkNotNull(rootSubject).subject);
+    return ImmutableList.of(
+        factFromSupplier(
+            // TODO(cpovirk): Use inferDescription() here when appropriate? But it can be long.
+            root.typeDescription() + " was",
+            root::actualCustomStringRepresentationForPackageMembersToCall));
   }
 
   /**
