@@ -57,25 +57,13 @@ public final class StreamSubject extends Subject {
 
   private StreamSubject(
       FailureMetadata metadata,
-      @Nullable Stream<?> actual,
-      Supplier<@Nullable List<?>> listSupplier) {
+      @Nullable Stream<?> actual) {
     super(metadata, actual);
     this.actual = actual;
-    this.listSupplier = listSupplier;
-  }
-
-  private StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
-    /*
-     * As discussed in the Javadoc, we're a *little* accommodating of streams that have already been
-     * collected (or are outright broken, like some mocks), and we avoid collecting the contents
-     * until we want them. So, if you want to perform an assertion like
-     * `assertThat(previousStream).isSameInstanceAs(firstStream)`, we'll let you do that, even if
-     * you've already collected the stream. This way, `assertThat(Stream)` works as well as
-     * `assertThat(Object)` for streams, following the usual rules of overloading. (This would also
-     * help if we someday make `assertThat(Object)` automatically delegate to `assertThat(Stream)`
-     * when passed a `Stream`.)
-     */
-    this(metadata, actual, memoize(listCollector(actual)));
+    this.listSupplier =
+        memoize(
+            (Supplier<@Nullable List<?>>)
+                () -> actual == null ? null : actual.collect(toCollection(ArrayList::new)));
   }
 
   @Override
@@ -102,16 +90,6 @@ public final class StreamSubject extends Subject {
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
   public static Factory<StreamSubject, Stream<?>> streams() {
     return StreamSubject::new;
-  }
-
-  /**
-   * Factory instance for creating an instance for which we already have a {@code listSupplier} from
-   * an existing instance. Naturally, the resulting factory should be used to create an instance
-   * only for the stream corresponding to {@code listSupplier}.
-   */
-  private static Factory<StreamSubject, Stream<?>> streams(
-      Supplier<@Nullable List<?>> listSupplier) {
-    return (metadata, actual) -> new StreamSubject(metadata, actual, listSupplier);
   }
 
   /** Checks that the actual stream is empty. */
@@ -299,7 +277,7 @@ public final class StreamSubject extends Subject {
         .withMessage(
             "Warning: Stream equality is based on object identity. To compare Stream"
                 + " contents, use methods like containsExactly.")
-        .about(streams(listSupplier))
+        .about(streams())
         .that(actual)
         .superIsEqualTo(expected);
   }
@@ -347,9 +325,5 @@ public final class StreamSubject extends Subject {
   /** Be careful with using this, as documented on {@link Subject#substituteCheck}. */
   private IterableSubject checkThatContentsList() {
     return substituteCheck().that(listSupplier.get());
-  }
-
-  private static Supplier<@Nullable List<?>> listCollector(@Nullable Stream<?> actual) {
-    return () -> actual == null ? null : actual.collect(toCollection(ArrayList::new));
   }
 }
