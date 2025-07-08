@@ -123,7 +123,6 @@ public final class LongStreamSubject extends Subject {
   }
 
   /** Checks that the actual stream contains at least one of the given elements. */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsAnyOf(long first, long second, long... rest) {
     checkThatContentsList().containsAnyOf(first, second, box(rest));
   }
@@ -142,7 +141,6 @@ public final class LongStreamSubject extends Subject {
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
    */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
   public Ordered containsAtLeast(long first, long second, long... rest) {
     return checkThatContentsList().containsAtLeast(first, second, box(rest));
@@ -199,7 +197,6 @@ public final class LongStreamSubject extends Subject {
   }
 
   /** Checks that the actual stream does not contain any of the given elements. */
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsNoneOf(long first, long second, long... rest) {
     checkThatContentsList().containsNoneOf(first, second, box(rest));
   }
