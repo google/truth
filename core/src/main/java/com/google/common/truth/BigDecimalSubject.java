@@ -34,7 +34,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
 
   /**
    * Checks that the actual value is equal to the value of the given {@link BigDecimal}. (i.e.,
-   * checks that {@code actual.comparesTo(expected) == 0}).
+   * checks that {@code actual.compareTo(expected) == 0}).
    *
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
    * the scales, use {@link #isEqualTo(Object)}.
@@ -45,7 +45,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
 
   /**
    * Checks that the actual value is equal to the value of the {@link BigDecimal} created from the
-   * expected string (i.e., checks that {@code actual.comparesTo(new BigDecimal(expected)) == 0}).
+   * expected string (i.e., checks that {@code actual.compareTo(new BigDecimal(expected)) == 0}).
    *
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
    * the scales, use {@link #isEqualTo(Object)}.
@@ -56,7 +56,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
 
   /**
    * Checks that the actual value is equal to the value of the {@link BigDecimal} created from the
-   * expected {@code long} (i.e., checks that {@code actual.comparesTo(new BigDecimal(expected)) ==
+   * expected {@code long} (i.e., checks that {@code actual.compareTo(new BigDecimal(expected)) ==
    * 0}).
    *
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
@@ -79,7 +79,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
 
   /**
    * Checks that the actual value is equivalent to the given value according to {@link
-   * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) == 0}). This method behaves
+   * Comparable#compareTo}, (i.e., checks that {@code a.compareTo(b) == 0}). This method behaves
    * identically to (the more clearly named) {@link #isEqualToIgnoringScale(BigDecimal)}.
    *
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
