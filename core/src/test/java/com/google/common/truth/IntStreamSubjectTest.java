@@ -21,6 +21,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.Test;
@@ -241,7 +242,17 @@ public final class IntStreamSubjectTest {
 
   @Test
   @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
+  @GwtIncompatible // j2cl doesn't throw NPE for a null originally-Kotlin varargs parameter below
   public void testContainsExactly_nullExpected() {
+    // Do nothing if the implementation throws an exception for a null varargs parameter.
+    // The try/catch here doesn't work with j2cl, hence the @GwtIncompatible annotation.
+    try {
+      assertThat(IntStream.of(42, 43)).containsExactly((int[]) null);
+    } catch (NullPointerException e) {
+      return;
+    } catch (AssertionError e) {
+      // expected
+    }
     AssertionError expected =
         expectFailure(
             whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsExactly((int[]) null));
