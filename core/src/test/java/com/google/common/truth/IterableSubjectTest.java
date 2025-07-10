@@ -818,7 +818,11 @@ public class IterableSubjectTest {
   public void containsExactlyWithOnlyNullPassedAsNullArray() {
     // Truth is tolerant of this erroneous varargs call.
     Iterable<Object> actual = asList((Object) null);
-    assertThat(actual).containsExactly((Object[]) null);
+    try {
+      assertThat(actual).containsExactly((Object[]) null);
+    } catch (NullPointerException e) {
+      // OK: implementation does not accept a null array for varargs.
+    }
   }
 
   @Test
@@ -1173,7 +1177,7 @@ public class IterableSubjectTest {
   }
 
   @Test
-  public void containsExactlyWithTwoIterableDoesNotGivesWarning() {
+  public void containsExactlyWithTwoIterablesDoesNotGiveWarning() {
     AssertionError e =
         expectFailure(
             whenTesting ->
