@@ -23,6 +23,11 @@ import org.jspecify.annotations.Nullable;
 /**
  * A subject for {@link Path} values.
  *
+ * <p>This subject does not currently add any assertions to the ones inherited from {@link Subject}.
+ * A future version may. Meanwhile, we do at least need to have {@link Truth#assertThat(Path)}
+ * because otherwise {@code assertThat(path)} would not compile: it would be ambiguous because
+ * {@link Path} extends both {@link Comparable} and {@link Iterable}.
+ *
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
 @GwtIncompatible
@@ -43,7 +48,8 @@ public final class PathSubject extends Subject {
    */
   @Deprecated
   @SuppressWarnings("InlineMeSuggester") // We want users to remove the surrounding call entirely.
-  public static Factory<PathSubject, Path> paths() {
+  public
+  static Factory<PathSubject, Path> paths() {
     return PathSubject::new;
   }
 }
