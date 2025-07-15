@@ -302,7 +302,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
 
     private final boolean isRecursive;
 
-    protected FieldMatcherLogicBase(boolean isRecursive) {
+    FieldMatcherLogicBase(boolean isRecursive) {
       this.isRecursive = isRecursive;
     }
 
