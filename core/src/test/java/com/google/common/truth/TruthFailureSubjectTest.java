@@ -109,7 +109,7 @@ public class TruthFailureSubjectTest {
         "expected to have a value",
         "for key",
         "but the key was present with no value",
-        HOW_TO_TEST_KEYS_WITHOUT_VALUES.key);
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES.getKey());
     assertFailureValue(e, "for key", "foo");
   }
 
@@ -194,7 +194,7 @@ public class TruthFailureSubjectTest {
         "for key",
         "and index",
         "but the key was present with no value",
-        HOW_TO_TEST_KEYS_WITHOUT_VALUES.key);
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES.getKey());
     assertFailureValue(e, "for key", "foo");
     assertFailureValue(e, "and index", "0");
   }

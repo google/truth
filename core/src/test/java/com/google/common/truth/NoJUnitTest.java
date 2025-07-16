@@ -28,10 +28,10 @@ public final class NoJUnitTest {
       throw new Error("assertion should have failed");
     } catch (AssertionError expected) {
       ImmutableList<Fact> facts = ((AssertionErrorWithFacts) expected).facts();
-      assertThat(facts.get(0).key).isEqualTo("expected");
-      assertThat(facts.get(0).value).isEqualTo("b");
-      assertThat(facts.get(1).key).isEqualTo("but was");
-      assertThat(facts.get(1).value).isEqualTo("a");
+      assertThat(facts.get(0).getKey()).isEqualTo("expected");
+      assertThat(facts.get(0).getValue()).isEqualTo("b");
+      assertThat(facts.get(1).getKey()).isEqualTo("but was");
+      assertThat(facts.get(1).getValue()).isEqualTo("a");
     }
   }
 

@@ -70,7 +70,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private static ImmutableList<String> getFactKeys(ErrorWithFacts error) {
     ImmutableList.Builder<String> facts = ImmutableList.builder();
     for (Fact fact : error.facts()) {
-      facts.add(fact.key);
+      facts.add(fact.getKey());
     }
     return facts.build();
   }
@@ -152,7 +152,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
           fact("fact count was", factsWithName.size()));
       return ignoreCheck().that("");
     }
-    String value = factsWithName.get(firstNonNull(index, 0)).value;
+    String value = factsWithName.get(firstNonNull(index, 0)).getValue();
     if (value == null) {
       if (index == null) {
         failWithoutActual(
@@ -178,7 +178,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private static ImmutableList<Fact> factsWithName(ErrorWithFacts error, String key) {
     ImmutableList.Builder<Fact> facts = factsBuilder();
     for (Fact fact : error.facts()) {
-      if (fact.key.equals(key)) {
+      if (fact.getKey().equals(key)) {
         facts.add(fact);
       }
     }

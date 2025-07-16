@@ -282,9 +282,9 @@ public class ComparisonFailureWithFactsTest {
     ErrorWithFacts reserialized = (ErrorWithFacts) reserializedFailure;
     assertThat(reserializedFailure).hasMessageThat().isEqualTo(original.getMessage());
     assertThat(reserializedFailure).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
-    assertThat(reserialized.facts().get(0).key).isEqualTo("first");
-    assertThat(reserialized.facts().get(0).value).isEqualTo("value");
-    assertThat(reserialized.facts().get(1).key).isEqualTo("second");
+    assertThat(reserialized.facts().get(0).getKey()).isEqualTo("first");
+    assertThat(reserialized.facts().get(0).getValue()).isEqualTo("value");
+    assertThat(reserialized.facts().get(1).getKey()).isEqualTo("second");
     assertThat(reserializedFailure.getExpected()).isEqualTo("expected");
     assertThat(reserializedFailure.getActual()).isEqualTo("actual");
   }
@@ -300,9 +300,9 @@ public class ComparisonFailureWithFactsTest {
     AssertionErrorWithFacts reserialized = reserialize(original);
     assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
     assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
-    assertThat(reserialized.facts().get(0).key).isEqualTo("first");
-    assertThat(reserialized.facts().get(0).value).isEqualTo("value");
-    assertThat(reserialized.facts().get(1).key).isEqualTo("second");
+    assertThat(reserialized.facts().get(0).getKey()).isEqualTo("first");
+    assertThat(reserialized.facts().get(0).getValue()).isEqualTo("value");
+    assertThat(reserialized.facts().get(1).getKey()).isEqualTo("second");
   }
 
   @GwtIncompatible
@@ -310,30 +310,30 @@ public class ComparisonFailureWithFactsTest {
   public void serialization_fact() {
     Fact original = fact("first", "value");
     Fact reserialized = reserialize(original);
-    assertThat(reserialized.key).isEqualTo(original.key);
-    assertThat(reserialized.value).isEqualTo(original.value);
+    assertThat(reserialized.getKey()).isEqualTo(original.getKey());
+    assertThat(reserialized.getValue()).isEqualTo(original.getValue());
 
     original = simpleFact("second");
     reserialized = reserialize(original);
-    assertThat(reserialized.key).isEqualTo(original.key);
-    assertThat(reserialized.value).isEqualTo(original.value);
+    assertThat(reserialized.getKey()).isEqualTo(original.getKey());
+    assertThat(reserialized.getValue()).isEqualTo(original.getValue());
   }
 
   private static void runFormatTest(
       String expected, String actual, String expectedExpected, String expectedActual) {
     ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
     assertThat(facts).hasSize(2);
-    assertThat(facts.get(0).key).isEqualTo("expected");
-    assertThat(facts.get(1).key).isEqualTo("but was");
-    assertThat(facts.get(0).value).isEqualTo(expectedExpected);
-    assertThat(facts.get(1).value).isEqualTo(expectedActual);
+    assertThat(facts.get(0).getKey()).isEqualTo("expected");
+    assertThat(facts.get(1).getKey()).isEqualTo("but was");
+    assertThat(facts.get(0).getValue()).isEqualTo(expectedExpected);
+    assertThat(facts.get(1).getValue()).isEqualTo(expectedActual);
   }
 
   @GwtIncompatible
   private static void runFormatTest(String expected, String actual, String expectedDiff) {
     ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
     assertThat(facts).hasSize(1);
-    assertThat(facts.get(0).key).isEqualTo("diff (-expected +actual)");
-    assertThat(facts.get(0).value).isEqualTo(expectedDiff);
+    assertThat(facts.get(0).getKey()).isEqualTo("diff (-expected +actual)");
+    assertThat(facts.get(0).getValue()).isEqualTo(expectedDiff);
   }
 }

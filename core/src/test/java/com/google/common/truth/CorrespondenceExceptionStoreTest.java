@@ -92,10 +92,10 @@ public final class CorrespondenceExceptionStoreTest {
     assertThat(facts).hasSize(2);
     Fact first = Iterables.get(facts, 0);
     Fact second = Iterables.get(facts, 1);
-    assertThat(first.key).isEqualTo(expectedFirstKey);
-    assertThat(first.value).isNull();
-    assertThat(second.key).isEqualTo("first exception");
-    assertThat(second.value)
+    assertThat(first.getKey()).isEqualTo(expectedFirstKey);
+    assertThat(first.getValue()).isNull();
+    assertThat(second.getKey()).isEqualTo("first exception");
+    assertThat(second.getValue())
         .matches( // an initial statement of the method that threw and the exception type:
             "compare\\(null, 123\\) threw "
                 + "com.google.common.truth.TestCorrespondences\\$NullPointerExceptionFromWithin10Of"

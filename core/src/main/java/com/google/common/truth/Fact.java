@@ -154,14 +154,23 @@ public final class Fact implements Serializable {
     return isNegative ? "-" + builder : builder.toString();
   }
 
-  final String key;
-  final @Nullable String value;
-  final boolean padStart;
+  private final String key;
+  private final @Nullable String value;
+  private final boolean padStart;
 
   private Fact(String key, @Nullable String value, boolean padStart) {
     this.key = checkNotNull(key);
     this.value = value;
     this.padStart = padStart;
+  }
+
+  String getKey() {
+    return key;
+  }
+
+  @Nullable
+  String getValue() {
+    return value;
   }
 
   /**
