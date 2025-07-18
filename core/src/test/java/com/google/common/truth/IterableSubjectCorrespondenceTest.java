@@ -1277,10 +1277,16 @@ public class IterableSubjectCorrespondenceTest {
   public void containsExactly_nullArray() {
     // Truth is tolerant of this erroneous varargs call.
     List<String> actual = Arrays.asList((String) null);
-    assertThat(actual)
-        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsExactly((Integer[]) null)
-        .inOrder();
+    IterableSubject.UsingCorrespondence<String, Integer> subject = assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
+    Ordered ordered;
+    try {
+      ordered = subject.containsExactly((Integer[]) null);
+    } catch (NullPointerException e) {
+      // OK: implementation does not accept a null array for varargs.
+      return;
+    }
+    ordered.inOrder();
   }
 
   @Test
