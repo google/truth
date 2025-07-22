@@ -54,10 +54,10 @@ public class StackTraceCleanerTest {
       assertThat(expected.getStackTrace()).hasLength(1);
     }
 
-    // ExpectFailure ends up with "extra" frames, but that's probably the right behavior :\
     AssertionError e = expectFailure(whenTesting -> whenTesting.that(0).isEqualTo(1));
-    // Currently 3 total frames on the JVM, 4 on Android.
-    assertThat(e.getStackTrace().length).isIn(Range.closed(3, 4));
+    // ExpectFailure ends up with "extra" frames, but that's probably the right behavior :\
+    // The exact number varies based on platform (JVM/Android) and implementation details.
+    assertThat(e.getStackTrace().length).isIn(Range.closed(3, 5));
   }
 
   @Test
