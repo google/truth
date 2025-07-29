@@ -1533,7 +1533,7 @@ public class MultimapSubjectTest {
     assertFailureValue(
         e,
         "testing whether",
-        "actual element has a key that is equal to and a value that parses to the key and value of"
+        "actual element has a key that is equal to and a value that parses to the value of"
             + " expected element");
     assertFailureValue(e, "but was", "{def=[+64, 0x40, +128]}");
   }

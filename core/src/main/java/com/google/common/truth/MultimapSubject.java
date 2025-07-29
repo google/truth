@@ -433,8 +433,8 @@ public class MultimapSubject extends Subject {
 
       LinkedHashSet<@Nullable Object> keysWithValuesOutOfOrder = new LinkedHashSet<>();
       for (Object key : expectedMultimap.keySet()) {
-        List<?> actualVals = new ArrayList<@Nullable Object>(get(actual, key));
-        List<?> expectedVals = new ArrayList<>(get(expectedMultimap, key));
+        Collection<?> actualVals = get(actual, key);
+        Collection<?> expectedVals = get(expectedMultimap, key);
         Iterator<?> actualIterator = actualVals.iterator();
         for (Object value : expectedVals) {
           if (!advanceToFind(actualIterator, value)) {
@@ -514,14 +514,13 @@ public class MultimapSubject extends Subject {
   private static ListMultimap<?, ?> difference(Multimap<?, ?> minuend, Multimap<?, ?> subtrahend) {
     ListMultimap<@Nullable Object, @Nullable Object> difference = LinkedListMultimap.create();
     for (Object key : minuend.keySet()) {
-      List<?> valDifference =
-          difference(new ArrayList<>(get(minuend, key)), new ArrayList<>(get(subtrahend, key)));
+      List<?> valDifference = difference(get(minuend, key), get(subtrahend, key));
       difference.putAll(key, valDifference);
     }
     return difference;
   }
 
-  private static List<?> difference(List<?> minuend, List<?> subtrahend) {
+  private static List<?> difference(Collection<?> minuend, Collection<?> subtrahend) {
     LinkedHashMultiset<@Nullable Object> remaining =
         LinkedHashMultiset.<@Nullable Object>create(subtrahend);
     List<@Nullable Object> difference = new ArrayList<>();
@@ -928,8 +927,7 @@ public class MultimapSubject extends Subject {
             Objects.equals(actual.getKey(), expected.getKey())
                 && valueCorrespondence.compare(actual.getValue(), expected.getValue()),
         lenientFormat(
-            "has a key that is equal to and a value that %s the key and value of",
-            valueCorrespondence));
+            "has a key that is equal to and a value that %s the value of", valueCorrespondence));
   }
 
   private Fact fullContents() {
