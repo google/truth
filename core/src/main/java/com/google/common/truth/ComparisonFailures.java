@@ -26,6 +26,7 @@ import static java.lang.Math.max;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -44,10 +45,7 @@ import org.jspecify.annotations.Nullable;
  */
 final class ComparisonFailures {
   static ImmutableList<Fact> makeComparisonFailureFacts(
-      ImmutableList<Fact> headFacts,
-      ImmutableList<Fact> tailFacts,
-      String expected,
-      String actual) {
+      List<Fact> headFacts, List<Fact> tailFacts, String expected, String actual) {
     return concat(headFacts, formatExpectedAndActual(expected, actual), tailFacts);
   }
 

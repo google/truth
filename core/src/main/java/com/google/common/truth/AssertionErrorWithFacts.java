@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.makeMessage;
 
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -27,16 +28,16 @@ import org.jspecify.annotations.Nullable;
  */
 @SuppressWarnings("OverrideThrowableToString") // We intentionally hide the class name.
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
-  private final ImmutableList<Fact> facts;
+  private final List<Fact> facts;
 
   private AssertionErrorWithFacts(
-      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
+      List<String> messages, List<Fact> facts, @Nullable Throwable cause) {
     super(makeMessage(messages, facts), cause);
     this.facts = checkNotNull(facts);
   }
 
   static AssertionErrorWithFacts create(
-      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
+      List<String> messages, List<Fact> facts, @Nullable Throwable cause) {
     return new AssertionErrorWithFacts(messages, facts, cause);
   }
 
@@ -60,7 +61,7 @@ final class AssertionErrorWithFacts extends AssertionError implements ErrorWithF
   }
 
   @Override
-  public ImmutableList<Fact> facts() {
+  public List<Fact> facts() {
     return facts;
   }
 }

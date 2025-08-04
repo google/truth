@@ -20,6 +20,7 @@ import static com.google.common.truth.Platform.lenientFormatForFailure;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 final class LazyMessage {
@@ -58,7 +59,7 @@ final class LazyMessage {
     return count;
   }
 
-  static ImmutableList<String> evaluateAll(ImmutableList<LazyMessage> messages) {
+  static ImmutableList<String> evaluateAll(List<LazyMessage> messages) {
     ImmutableList.Builder<String> result = ImmutableList.builder();
     for (LazyMessage message : messages) {
       result.add(message.toString());

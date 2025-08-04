@@ -150,11 +150,11 @@ final class Platform {
   private static final class ComparisonFailureWithFacts extends ComparisonFailure
       implements ErrorWithFacts {
     private final String message;
-    private final ImmutableList<Fact> facts;
+    private final List<Fact> facts;
 
     private ComparisonFailureWithFacts(
         String message,
-        ImmutableList<Fact> facts,
+        List<Fact> facts,
         String expected,
         String actual,
         @Nullable Throwable cause) {
@@ -165,7 +165,7 @@ final class Platform {
     }
 
     @Override
-    public ImmutableList<Fact> facts() {
+    public List<Fact> facts() {
       return facts;
     }
 

@@ -16,12 +16,12 @@
 
 package com.google.common.truth;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * Supertype of Truth's {@link AssertionError} subclasses that are created from a list of {@link
  * Fact} instances.
  */
 interface ErrorWithFacts {
-  ImmutableList<Fact> facts();
+  List<Fact> facts();
 }

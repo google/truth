@@ -26,9 +26,9 @@ import static com.google.common.truth.Platform.stringValueForFailure;
 import static java.lang.Math.max;
 
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -187,7 +187,7 @@ public final class Fact implements Serializable {
    * Formats the given messages and facts into a string for use as the message of a test failure. In
    * particular, this method horizontally aligns the beginning of fact values.
    */
-  static String makeMessage(ImmutableList<String> messages, ImmutableList<Fact> facts) {
+  static String makeMessage(List<String> messages, List<Fact> facts) {
     int longestKeyLength = 0;
     int longestIntPartValueLength = 0;
     boolean seenNewlineInValue = false;
