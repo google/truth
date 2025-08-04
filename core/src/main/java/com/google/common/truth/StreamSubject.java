@@ -72,7 +72,8 @@ public final class StreamSubject extends Subject {
     try {
       asList = listSupplier.get();
     } catch (IllegalStateException e) {
-      return "Stream that has already been operated upon or closed: " + actual();
+      return "Stream that has already been operated upon or closed: "
+          + actualForPackageMembersToCall();
     }
     return String.valueOf(asList);
   }
@@ -297,7 +298,7 @@ public final class StreamSubject extends Subject {
   @Override
   @Deprecated
   public void isNotEqualTo(@Nullable Object other) {
-    if (actual() == other) {
+    if (actualForPackageMembersToCall() == other) {
       /*
        * We override the supermethod's message: That method would ask for both
        * `String.valueOf(stream)` (for `unexpected`) and `actualCustomStringRepresentation()` (for

@@ -386,7 +386,7 @@ public class Subject {
   }
 
   /** Returns the actual value under test. */
-  final @Nullable Object actual() {
+  final @Nullable Object actualForPackageMembersToCall() {
     return actual;
   }
 

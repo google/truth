@@ -79,8 +79,9 @@ public final class FailureMetadata {
      * We store Subject, rather than the actual value itself, so that we can call
      * actualCustomStringRepresentation(). Why not call actualCustomStringRepresentation()
      * immediately? First, it might be expensive, and second, the Subject isn't initialized at the
-     * time we receive it. We *might* be able to make it safe to call if it looks only at actual(),
-     * but it might try to look at facts initialized by a subclass, which aren't ready yet.
+     * time we receive it. We *might* be able to make it safe to call if it looks only at
+     * actualForPackageMembersToCall(), but it might try to look at facts initialized by a subclass,
+     * which aren't ready yet.
      */
     final @Nullable Subject subject;
 
@@ -307,7 +308,7 @@ public final class FailureMetadata {
       }
 
       if (rootSubject == null) {
-        if (checkNotNull(step.subject).actual() instanceof Throwable) {
+        if (checkNotNull(step.subject).actualForPackageMembersToCall() instanceof Throwable) {
           /*
            * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
            * so we don't need to include it again in the message.
@@ -339,8 +340,9 @@ public final class FailureMetadata {
    */
   private @Nullable Throwable rootCause() {
     for (Step step : steps) {
-      if (!step.isCheckCall() && checkNotNull(step.subject).actual() instanceof Throwable) {
-        return (Throwable) step.subject.actual();
+      if (!step.isCheckCall()
+          && checkNotNull(step.subject).actualForPackageMembersToCall() instanceof Throwable) {
+        return (Throwable) step.subject.actualForPackageMembersToCall();
       }
     }
     return null;

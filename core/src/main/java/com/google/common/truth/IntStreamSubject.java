@@ -67,7 +67,8 @@ public final class IntStreamSubject extends Subject {
     try {
       asList = listSupplier.get();
     } catch (IllegalStateException e) {
-      return "Stream that has already been operated upon or closed: " + actual();
+      return "Stream that has already been operated upon or closed: "
+          + actualForPackageMembersToCall();
     }
     return String.valueOf(asList);
   }
