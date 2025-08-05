@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Iterables;
 import org.objectweb.asm.Opcodes;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.j2objc.annotations.J2ObjCIncompatible;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ import org.objectweb.asm.Type;
  */
 @GwtIncompatible
 @J2ktIncompatible
+@J2ObjCIncompatible
 final class ActualValueInference {
   /** <b>Call {@link Platform#inferDescription} rather than calling this directly.</b> */
   static @Nullable String describeActualValue(String className, String methodName, int lineNumber) {
