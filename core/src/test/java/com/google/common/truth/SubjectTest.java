@@ -815,8 +815,8 @@ public class SubjectTest {
   public void disambiguationWithSameToString() {
     /*
      * We use `Object` instead of `StringBuilder` to force the compiler to choose that(Object) over
-     * that(Comparable): StringBuilder does not implement Comparable under Android Lollipop, so the
-     * test would fail there at runtime.
+     * that(Comparable): StringBuilder does not implement Comparable under Android Marshmallow, so
+     * the test would fail there at runtime.
      */
     Object stringBuilderAsObject = new StringBuilder("foo");
     AssertionError e =
