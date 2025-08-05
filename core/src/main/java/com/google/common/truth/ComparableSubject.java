@@ -23,10 +23,11 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * A subject for {@link Comparable} values.
+ *
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
 // TODO(b/136040841): Consider further tightening this to the proper `extends Comparable<? super T>`
-public abstract class ComparableSubject<T extends Comparable<?>> extends Subject {
+public class ComparableSubject<T extends Comparable<?>> extends Subject {
   /**
    * The actual value, which has type {@code T} except in unusual circumstances. The unusual
    * circumstances can happen under J2CL, where {@code JsEnum} types implement {@link Comparable} at
@@ -178,7 +179,7 @@ public abstract class ComparableSubject<T extends Comparable<?>> extends Subject
    * around the J2CL strangeness documented on {@link #actual}.
    */
   static <T extends Comparable<?>> Factory<ComparableSubject<T>, Object> comparables() {
-    return (metadata, actual) -> new ComparableSubject<T>(metadata, actual) {};
+    return ComparableSubject::new;
   }
 
   @SuppressWarnings("unchecked")
