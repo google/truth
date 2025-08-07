@@ -14,15 +14,16 @@
 
 package com.google.common.truth;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+
 import java.lang.annotation.Target;
 
 /**
  * The presence of this annotation on an API indicates that the method may <em>not</em> be used with
- * J2kt. This can be removed once we can safely depend on a Guava release that contains it.
+ * J2KT. This can be removed once we can safely depend on a Guava release that contains it.
  */
-@Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@Target({TYPE, METHOD, CONSTRUCTOR, FIELD})
 @interface J2ktIncompatible {}
