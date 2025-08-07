@@ -29,7 +29,7 @@ import org.junit.AssumptionViolatedException;
  * import static com.google.common.truth.Truth.assertThat;
  * import static com.google.common.truth.TruthJUnit.assume;
  *
- * public void @Test testFoosAgainstBars {
+ * @Test public void testFoosAgainstBars() {
  *   assume().that(foo).isNotNull();
  *   assume().that(bar).isNotNull();
  *   assertThat(foo.times(bar)).isEqualTo(blah);
