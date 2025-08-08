@@ -153,11 +153,6 @@ final class Platform {
     return throwable.toString();
   }
 
-  /** Tests if current platform is Android which is always false. */
-  static boolean isAndroid() {
-    return false;
-  }
-
   /**
    * A GWT-swapped version of test rule interface that does nothing. All methods extended from
    * {@link org.junit.rules.TestRule} needs to be stripped.

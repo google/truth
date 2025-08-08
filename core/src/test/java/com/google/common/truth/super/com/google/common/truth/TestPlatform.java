@@ -21,6 +21,10 @@ final class TestPlatform {
     return true;
   }
 
+  static boolean isAndroid() {
+    return false;
+  }
+
   static void assertIsComparisonFailureIfAvailable(Throwable t) {}
 
   static void assertIsNotComparisonFailureIfAvailable(Throwable t) {}

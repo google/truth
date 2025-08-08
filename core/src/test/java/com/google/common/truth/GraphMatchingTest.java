@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.GraphMatching.maximumCardinalityBipartiteMatching;
+import static com.google.common.truth.TestPlatform.isAndroid;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertThrows;
 
@@ -57,7 +58,7 @@ public final class GraphMatchingTest {
   @Test
   @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive4x4() {
-    if (Platform.isAndroid()) {
+    if (isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (4 * 4)); edgeCombination++) {
@@ -68,7 +69,7 @@ public final class GraphMatchingTest {
   @Test
   @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive3x5() {
-    if (Platform.isAndroid()) {
+    if (isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (3 * 5)); edgeCombination++) {
@@ -79,7 +80,7 @@ public final class GraphMatchingTest {
   @Test
   @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive5x3() {
-    if (Platform.isAndroid()) {
+    if (isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (5 * 3)); edgeCombination++) {
@@ -116,7 +117,7 @@ public final class GraphMatchingTest {
   @Test
   @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_randomDense8x8() {
-    if (Platform.isAndroid()) {
+    if (isAndroid()) {
       return; // slow
     }
     Random rng = new Random(0x5add1e5);

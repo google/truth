@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
-import static com.google.common.truth.Platform.isAndroid;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+import static com.google.common.truth.TestPlatform.isAndroid;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.Range;
