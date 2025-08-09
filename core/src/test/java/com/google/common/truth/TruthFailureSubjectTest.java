@@ -21,7 +21,6 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
-import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.collect.ImmutableList;
@@ -109,7 +108,7 @@ public class TruthFailureSubjectTest {
         "expected to have a value",
         "for key",
         "but the key was present with no value",
-        HOW_TO_TEST_KEYS_WITHOUT_VALUES.getKey());
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES);
     assertFailureValue(e, "for key", "foo");
   }
 
@@ -194,7 +193,7 @@ public class TruthFailureSubjectTest {
         "for key",
         "and index",
         "but the key was present with no value",
-        HOW_TO_TEST_KEYS_WITHOUT_VALUES.getKey());
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES);
     assertFailureValue(e, "for key", "foo");
     assertFailureValue(e, "and index", "0");
   }
@@ -228,4 +227,8 @@ public class TruthFailureSubjectTest {
     return AssertionErrorWithFacts.create(
         /* messages= */ ImmutableList.of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }
+
+  private static final String HOW_TO_TEST_KEYS_WITHOUT_VALUES =
+      "To test that a key is present without a value, "
+          + "use factKeys().contains(...) or a similar method.";
 }
