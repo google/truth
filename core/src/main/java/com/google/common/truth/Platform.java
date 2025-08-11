@@ -45,7 +45,7 @@ import org.junit.rules.TestRule;
 final class Platform {
   private Platform() {}
 
-  /** Returns true if the instance is assignable to the type Clazz. */
+  /** Returns true if the instance is assignable to the type {@code clazz}. */
   static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     return clazz.isInstance(instance);
   }
@@ -100,12 +100,7 @@ final class Platform {
           Class.forName(clazz)
               .getDeclaredMethod("describeActualValue", String.class, String.class, int.class)
               .invoke(null, top.getClassName(), top.getMethodName(), top.getLineNumber());
-    } catch (IllegalAccessException
-        | InvocationTargetException
-        | NoSuchMethodException
-        | ClassNotFoundException
-        | LinkageError
-        | RuntimeException e) {
+    } catch (ReflectiveOperationException | LinkageError | RuntimeException e) {
       // Some possible reasons:
       // - Someone has omitted ASM from the classpath.
       // - An optimizer has stripped ActualValueInference (though it's unusual to optimize tests).
@@ -118,7 +113,7 @@ final class Platform {
 
   private static final String DIFF_KEY = "diff (-expected +actual)";
 
-  static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
+  static @Nullable List<Fact> makeDiff(String expected, String actual) {
     List<String> expectedLines = splitLines(expected);
     List<String> actualLines = splitLines(actual);
     List<String> unifiedDiff =
@@ -184,8 +179,8 @@ final class Platform {
     @Keep
     @UsedByReflection
     static ComparisonFailureWithFacts create(
-        ImmutableList<String> messages,
-        ImmutableList<Fact> facts,
+        List<String> messages,
+        List<Fact> facts,
         String expected,
         String actual,
         @Nullable Throwable cause) {
@@ -226,7 +221,9 @@ final class Platform {
    */
   interface JUnitTestRule extends TestRule {}
 
-  static final String EXPECT_FAILURE_WARNING_IF_GWT = "";
+  static String expectFailureWarningIfWeb() {
+    return "";
+  }
 
   // TODO(cpovirk): Share code with StackTraceCleaner?
   private static boolean isInferDescriptionDisabled() {
@@ -241,8 +238,8 @@ final class Platform {
   }
 
   static AssertionError makeComparisonFailure(
-      ImmutableList<String> messages,
-      ImmutableList<Fact> facts,
+      List<String> messages,
+      List<Fact> facts,
       String expected,
       String actual,
       @Nullable Throwable cause) {
@@ -273,12 +270,7 @@ final class Platform {
     try {
       createMethod =
           comparisonFailureClass.getDeclaredMethod(
-              "create",
-              ImmutableList.class,
-              ImmutableList.class,
-              String.class,
-              String.class,
-              Throwable.class);
+              "create", List.class, List.class, String.class, String.class, Throwable.class);
     } catch (Error e) {
       if (e.getClass().getName().equals("com.google.j2objc.ReflectionStrippedError")) {
         return AssertionErrorWithFacts.create(messages, facts, cause);

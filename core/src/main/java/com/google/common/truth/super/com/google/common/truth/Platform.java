@@ -20,7 +20,7 @@ import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
@@ -67,7 +67,7 @@ final class Platform {
     return null;
   }
 
-  static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
+  static @Nullable List<Fact> makeDiff(String expected, String actual) {
     /*
      * IIUC, GWT messages lose their newlines by the time users see them. Given that, users are
      * likely better served by showing the expected and actual values with mangled newlines than by
@@ -159,15 +159,16 @@ final class Platform {
    */
   interface JUnitTestRule {}
 
-  static final String EXPECT_FAILURE_WARNING_IF_GWT =
-      " Note: One possible reason for a failure not to be caught is for the test to throw some "
-          + "other exception before the failure would have happened. Under GWT, such an exception "
-          + "is hidden by this message. The non-GWT tests do not have this problem, so you may "
-          + "wish to debug them first. If you're still having this problem, consider temporarily "
-          + "modifying the GWT copy of PlatformBaseSubjectTestCase to remove the call to "
-          + "ensureFailureCaught(). Removing that call will let any other exception fall through. "
-          + "(But of course it will also prevent the test from verifying that the expected failure "
-          + "occurred.)";
+  static String expectFailureWarningIfWeb() {
+    return " Note: One possible reason for a failure not to be caught is for the test to throw some"
+        + " other exception before the failure would have happened. Under GWT, such an"
+        + " exception is hidden by this message. The non-GWT tests do not have this problem,"
+        + " so you may wish to debug them first. If you're still having this problem,"
+        + " consider temporarily modifying the GWT copy of PlatformBaseSubjectTestCase to"
+        + " remove the call to ensureFailureCaught(). Removing that call will let any other"
+        + " exception fall through. (But of course it will also prevent the test from"
+        + " verifying that the expected failure occurred.)";
+  }
 
   // TODO(user): Move this logic to a common location.
   private static NativeRegExp compile(String pattern) {
@@ -218,8 +219,8 @@ final class Platform {
   }
 
   static AssertionError makeComparisonFailure(
-      ImmutableList<String> messages,
-      ImmutableList<Fact> facts,
+      List<String> messages,
+      List<Fact> facts,
       String unusedExpected,
       String unusedActual,
       @Nullable Throwable cause) {

@@ -27,6 +27,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -321,7 +322,7 @@ public class ComparisonFailureWithFactsTest {
 
   private static void runFormatTest(
       String expected, String actual, String expectedExpected, String expectedActual) {
-    ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
+    List<Fact> facts = formatExpectedAndActual(expected, actual);
     assertThat(facts).hasSize(2);
     assertThat(facts.get(0).getKey()).isEqualTo("expected");
     assertThat(facts.get(1).getKey()).isEqualTo("but was");
@@ -331,7 +332,7 @@ public class ComparisonFailureWithFactsTest {
 
   @GwtIncompatible
   private static void runFormatTest(String expected, String actual, String expectedDiff) {
-    ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
+    List<Fact> facts = formatExpectedAndActual(expected, actual);
     assertThat(facts).hasSize(1);
     assertThat(facts.get(0).getKey()).isEqualTo("diff (-expected +actual)");
     assertThat(facts.get(0).getValue()).isEqualTo(expectedDiff);
