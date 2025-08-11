@@ -304,7 +304,9 @@ public class StandardSubjectBuilder {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public final StandardSubjectBuilder withMessage(String format, @Nullable Object... args) {
+  public final StandardSubjectBuilder withMessage(
+          String format,
+      @Nullable Object... args) {
     return new StandardSubjectBuilder(metadata().withMessage(format, args));
   }
 

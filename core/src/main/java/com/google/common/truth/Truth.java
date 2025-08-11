@@ -101,7 +101,8 @@ public final class Truth {
    * StandardSubjectBuilder#about about(...)}, as discussed in <a
    * href="https://truth.dev/faq#java8">this FAQ entry</a>.
    */
-  public static StandardSubjectBuilder assertWithMessage(@Nullable String message) {
+  public static StandardSubjectBuilder assertWithMessage(
+          @Nullable String message) {
     return assert_().withMessage(message);
   }
 
@@ -121,7 +122,9 @@ public final class Truth {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public static StandardSubjectBuilder assertWithMessage(String format, @Nullable Object... args) {
+  public static StandardSubjectBuilder assertWithMessage(
+          String format,
+      @Nullable Object... args) {
     return assert_().withMessage(format, args);
   }
 
