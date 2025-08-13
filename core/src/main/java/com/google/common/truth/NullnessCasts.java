@@ -34,16 +34,18 @@ final class NullnessCasts {
    * nullness analysis might not understand that the field has been populated. To avoid that problem
    * without having to add {@code @SuppressWarnings}, the code can call this method.
    *
-   * <p>Why <i>not</i> just add {@link SuppressWarnings}? The problem is that this method is
+   * <p>Why <i>not</i> just add {@code SuppressWarnings}? The problem is that this method is
    * typically useful for {@code return} statements. That leaves the code with two options: Either
    * add the suppression to the whole method (which turns off checking for a large section of code),
    * or extract a variable, and put the suppression on that. However, a local variable typically
    * doesn't work: Because nullness analyses typically infer the nullness of local variables,
    * there's no way to assign a {@code @Nullable T} to a field {@code T foo;} and instruct the
    * analysis that that means "plain {@code T}" rather than the inferred type {@code @Nullable T}.
-   * (Even if supported added {@code @NonNull}, that would not help, since the problem case
-   * addressed by this method is the case in which {@code T} has parametric nullness -- and thus its
-   * value may be legitimately {@code null}.)
+   * (And even if annotations on local variables were permitted as an optional hint, no annotation
+   * would be the right tool for the job here: {@code @Nullable} is the annotation that we're trying
+   * to get rid of, and {@code @NonNull} would be wrong for our use case for the same reason as
+   * {@code requireNonNull}: Our use case is the one in which {@code T} has parametric nullness—and
+   * thus its value may be legitimately {@code null}.)
    */
   @SuppressWarnings("nullness")
   static <T extends @Nullable Object> T uncheckedCastNullableTToT(@Nullable T t) {
