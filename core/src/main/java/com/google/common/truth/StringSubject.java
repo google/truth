@@ -122,7 +122,7 @@ public class StringSubject extends ComparableSubject<String> {
     checkNotNull(regex);
     if (actual == null) {
       failWithActual("expected a string that matches", regex);
-    } else if (!actual.matches(regex)) {
+    } else if (!Platform.matches(actual, regex)) {
       if (regex.equals(actual)) {
         failWithoutActual(
             fact("expected to match", regex),
@@ -169,7 +169,7 @@ public class StringSubject extends ComparableSubject<String> {
     checkNotNull(regex);
     if (actual == null) {
       failWithActual("expected a string that does not match", regex);
-    } else if (actual.matches(regex)) {
+    } else if (Platform.matches(actual, regex)) {
       failWithActual("expected not to match", regex);
     }
   }

@@ -55,6 +55,11 @@ final class Platform {
     return Pattern.compile(regex).matcher(actual).find();
   }
 
+  /** Determines if the given actual value is fully matched by the given regex. */
+  static boolean matches(String actual, String regex) {
+    return actual.matches(regex);
+  }
+
   static void cleanStackTrace(Throwable throwable) {
     StackTraceCleaner.cleanStackTrace(throwable);
   }

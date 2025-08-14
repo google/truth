@@ -59,6 +59,11 @@ final class Platform {
     return compile(regex).test(actual);
   }
 
+  /** Determines if the given actual value is fully matched by the given regex. */
+  static boolean matches(String actual, String regex) {
+    return actual.matches(regex);
+  }
+
   static void cleanStackTrace(Throwable throwable) {
     // Do nothing. See notes in StackTraceCleanerTest.
   }
@@ -113,7 +118,7 @@ final class Platform {
   }
 
   private static String toLocaleString(double value) {
-    // Recieve a double as a parameter so that "(Object) value" does not box it.
+    // Receive a double as a parameter so that "(Object) value" does not box it.
     return ((NativeNumber) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
   }
 
