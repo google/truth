@@ -80,10 +80,9 @@ final class StackTraceCleaner {
      */
 
     // Prevent infinite recursion if there is a reference cycle between Throwables.
-    if (seenThrowables.contains(throwable)) {
+    if (!seenThrowables.add(throwable)) {
       return;
     }
-    seenThrowables.add(throwable);
 
     StackTraceElement[] stackFrames = throwable.getStackTrace();
 
@@ -95,7 +94,7 @@ final class StackTraceCleaner {
 
     int endIndex = 0;
     for (;
-        endIndex < stackFrames.length && !isJUnitIntrastructure(stackFrames[endIndex]);
+        endIndex < stackFrames.length && !isJUnitInfrastructure(stackFrames[endIndex]);
         endIndex++) {
       // Find last frame of setup frames, and remove from there down.
     }
@@ -217,7 +216,7 @@ final class StackTraceCleaner {
   private static final ImmutableSet<String> JUNIT_INFRASTRUCTURE_CLASSES =
       ImmutableSet.of("org.junit.runner.Runner", "org.junit.runners.model.Statement");
 
-  private static boolean isJUnitIntrastructure(StackTraceElement stackTraceElement) {
+  private static boolean isJUnitInfrastructure(StackTraceElement stackTraceElement) {
     // It's not clear whether looking at nested classes here is useful, harmful, or neutral.
     return isFromClassOrClassNestedInside(stackTraceElement, JUNIT_INFRASTRUCTURE_CLASSES);
   }
