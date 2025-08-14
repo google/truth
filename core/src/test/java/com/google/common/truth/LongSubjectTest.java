@@ -76,6 +76,7 @@ public class LongSubjectTest {
   public void inequalityOfNulls() {
     assertThat(4L).isNotEqualTo(null);
     assertThat((Integer) null).isNotEqualTo(4L);
+    assertThat((Long) null).isNotEqualTo(4L);
   }
 
   @Test
