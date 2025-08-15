@@ -219,10 +219,10 @@ final class Platform {
   }
 
   /**
-   * Wrapping interface of {@link TestRule} to be used within truth.
+   * A platform-configurable "typedef" for {@link TestRule} to be used within Truth.
    *
-   * <p>Note that the sole purpose of this interface is to allow it to be swapped in GWT
-   * implementation.
+   * <p>Note that the sole purpose of this interface is to allow it to be swapped out for platforms
+   * that don't include JUnit {@link TestRule} support.
    */
   interface JUnitTestRule extends TestRule {}
 

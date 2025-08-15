@@ -166,8 +166,8 @@ final class Platform {
   }
 
   /**
-   * A GWT-swapped version of test rule interface that does nothing. All methods extended from
-   * {@link org.junit.rules.TestRule} needs to be stripped.
+   * A substitute for {@link org.junit.rules.TestRule} that contains no methods, since we can't
+   * implement that type under GWT/J2CL.
    */
   interface JUnitTestRule {}
 
