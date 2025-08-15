@@ -61,6 +61,13 @@ final class Platform {
 
   /** Determines if the given actual value is fully matched by the given regex. */
   static boolean matches(String actual, String regex) {
+    /*
+     * When String.matches checks for a match, it will use a NativeRegExp to search for (roughly)
+     * /^regex$/. But before that, we create a NativeRegExp inputs for just /regex/. That performs a
+     * syntax check on the user's input, so the message from any syntax error will show the user's
+     * input.
+     */
+    NativeRegExp unused = new NativeRegExp(regex);
     return actual.matches(regex);
   }
 

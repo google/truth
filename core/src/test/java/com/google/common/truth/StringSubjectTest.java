@@ -204,6 +204,12 @@ public class StringSubjectTest {
   }
 
   @Test
+  public void matchesStringFailsBecauseAlternativesAreParenthesized() {
+    AssertionError e = expectFailure(whenTesting -> whenTesting.that("foobar").matches("foo|bar"));
+    assertFailureValue(e, "expected to match", "foo|bar");
+  }
+
+  @Test
   public void matchesStringFailNull() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that((String) null).matches(".*aaa.*"));
@@ -226,6 +232,17 @@ public class StringSubjectTest {
     assertFailureValue(e, "expected to match", "[b]");
     assertFailureValue(e, "but was", "aba");
     assertThat(e).factKeys().contains("Did you mean to call containsMatch() instead of match()?");
+  }
+
+  @Test
+  public void matchesStringBadRegexDoesNotShowModifiedRegex() {
+    /*
+     * Ideally, Truth would catch the appropriate kind of Throwable for each platform and then
+     * report it as a failure as usual.
+     */
+    Throwable e = assertThrows(Throwable.class, () -> assertThat("aba").matches("["));
+    // Either the error shouldn't show the message at all, or it should show /[/, not /^(?:[)$/.
+    assertThat(e).hasMessageThat().doesNotContain("[)");
   }
 
   @Test
