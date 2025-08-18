@@ -54,12 +54,6 @@ final class TestCorrespondences {
       throw new ClassCastException("not an Integer: " + expected.getClass());
     }
     try {
-      // Older versions of Android reject leading plus signs, per the pre-Java-7 contract:
-      // https://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#decode(java.lang.String)
-      // https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#decode(java.lang.String)
-      if (actual.startsWith("+")) {
-        actual = actual.substring(1);
-      }
       return Integer.decode(actual).equals(expected);
     } catch (NumberFormatException e) {
       return false;
