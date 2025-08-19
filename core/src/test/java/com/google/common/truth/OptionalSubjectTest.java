@@ -81,9 +81,7 @@ public class OptionalSubjectTest {
   @Test
   public void hasValue_failingWithNullParameter() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(com.google.common.base.Optional.of("foo")).hasValue(null));
+        expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue(null));
     assertFailureKeys(e, "expected an optional with a null value, but that is impossible", "was");
   }
 
