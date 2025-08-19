@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
-import static com.google.common.truth.TestPlatform.isAndroid;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.Range;
@@ -355,9 +354,6 @@ public class StackTraceCleanerTest {
 
   @Test
   public void suppressedThrowablesAreAlsoCleaned() {
-    if (isAndroid()) {
-      return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
-    }
     Throwable throwable = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
     Throwable suppressed1 = createThrowableWithStackTrace("com.example.Bar", "org.junit.FilterMe");
     Throwable suppressed2 = createThrowableWithStackTrace("com.example.Car", "org.junit.FilterMe");
@@ -373,9 +369,6 @@ public class StackTraceCleanerTest {
 
   @Test
   public void mixedCausingAndSuppressThrowablesAreCleaned() {
-    if (isAndroid()) {
-      return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
-    }
     Throwable suppressed1 = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
     Throwable cause2 = createThrowableWithStackTrace("com.example.Bar", "org.junit.FilterMe");
     Throwable cause1 =
