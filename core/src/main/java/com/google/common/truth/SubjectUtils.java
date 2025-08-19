@@ -100,8 +100,8 @@ final class SubjectUtils {
 
   private static <T extends @Nullable Object> NonHashingMultiset<T> countDuplicatesToMultiset(
       Iterable<T> items) {
-    // We use avoid hashing in case the elements don't have a proper
-    // .hashCode() method (e.g., MessageSet from old versions of protobuf).
+    // We avoid hashing the elements in case they don't have a proper hashCode() implementation.
+    // (The prototypical example is MessageSet from old versions of protobuf.)
     NonHashingMultiset<T> multiset = NonHashingMultiset.create();
     for (T item : items) {
       multiset.add(item);
