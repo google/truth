@@ -107,7 +107,7 @@ public final class PrimitiveFloatArraySubject extends Subject {
    *
    * @param tolerance an inclusive upper bound on the difference between the float values of the
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
-   *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public FloatArrayAsIterable usingTolerance(double tolerance) {
     if (actual == null) {
