@@ -15,16 +15,16 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.truth.Truth.assert_;
+import static com.google.common.truth.Truth.assertThat;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Ordering;
-import com.google.common.reflect.TypeToken;
+import com.google.common.collect.ImmutableSet;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -34,25 +34,34 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class TruthAssertThatTest {
-  private static TypeToken<?> methodToReturnTypeToken(Method input) {
-    return TypeToken.of(getOnlyElement(asList(input.getParameterTypes())));
+  // Type.getTypeName() would obsolete this, but isn't available on the Android version we test on.
+  private static String typeString(Type type) {
+    return type instanceof Class<?> ? ((Class<?>) type).getName() : type.toString();
+  }
+
+  private static String methodSignature(Method input) {
+    return "("
+        + typeString(getOnlyElement(asList(input.getGenericParameterTypes())))
+        + ")"
+        + typeString(input.getGenericReturnType());
   }
 
   @Test
   public void staticAssertThatMethodsMatchStandardSubjectBuilderInstanceMethods() {
-    ImmutableSortedSet<TypeToken<?>> verbTypes =
-        FluentIterable.from(asList(StandardSubjectBuilder.class.getMethods()))
-            .filter(input -> input.getName().equals("that"))
-            .transform(TruthAssertThatTest::methodToReturnTypeToken)
-            .toSortedSet(Ordering.usingToString());
-    ImmutableSortedSet<TypeToken<?>> truthTypes =
-        FluentIterable.from(asList(Truth.class.getMethods()))
-            .filter(input -> input.getName().equals("assertThat") && isStatic(input.getModifiers()))
-            .transform(TruthAssertThatTest::methodToReturnTypeToken)
-            .toSortedSet(Ordering.usingToString());
+    ImmutableSet<String> builderSignatures =
+        stream(StandardSubjectBuilder.class.getMethods())
+            .filter(method -> method.getName().equals("that"))
+            .map(TruthAssertThatTest::methodSignature)
+            .collect(toImmutableSet());
+    ImmutableSet<String> truthSignatures =
+        stream(Truth.class.getMethods())
+            .filter(
+                method -> method.getName().equals("assertThat") && isStatic(method.getModifiers()))
+            .map(TruthAssertThatTest::methodSignature)
+            .collect(toImmutableSet());
 
-    assert_().that(verbTypes).isNotEmpty();
-    assert_().that(truthTypes).isNotEmpty();
-    assert_().that(truthTypes).containsExactlyElementsIn(verbTypes);
+    assertThat(builderSignatures).isNotEmpty();
+    assertThat(truthSignatures).isNotEmpty();
+    assertThat(truthSignatures).containsExactlyElementsIn(builderSignatures);
   }
 }
