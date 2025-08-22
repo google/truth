@@ -234,4 +234,9 @@ public class ComparableSubjectTest {
       return Integer.toString(wrapped);
     }
   }
+
+  /*
+   * The external jsinterop artifact requires a newer version of Java than the old javac we
+   * sometimes build with.
+   */
 }
