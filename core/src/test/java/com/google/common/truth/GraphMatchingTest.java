@@ -33,6 +33,7 @@ import java.util.ArrayDeque;
 import java.util.BitSet;
 import java.util.Deque;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public final class GraphMatchingTest {
 
   @Test
   public void maximumCardinalityBipartiteMatching_exhaustive3x4() {
-    for (int edgeCombination = 1; edgeCombination < (1L << (3 * 4)); edgeCombination++) {
+    for (int edgeCombination = 1; edgeCombination < (1 << (3 * 4)); edgeCombination++) {
       TestInstance.fromBits(3, 4, intBits(edgeCombination)).testAgainstBruteForce();
     }
   }
@@ -61,7 +62,7 @@ public final class GraphMatchingTest {
     if (isAndroid()) {
       return; // slow
     }
-    for (int edgeCombination = 1; edgeCombination < (1L << (4 * 4)); edgeCombination++) {
+    for (int edgeCombination = 1; edgeCombination < (1 << (4 * 4)); edgeCombination++) {
       TestInstance.fromBits(4, 4, intBits(edgeCombination)).testAgainstBruteForce();
     }
   }
@@ -72,7 +73,7 @@ public final class GraphMatchingTest {
     if (isAndroid()) {
       return; // slow
     }
-    for (int edgeCombination = 1; edgeCombination < (1L << (3 * 5)); edgeCombination++) {
+    for (int edgeCombination = 1; edgeCombination < (1 << (3 * 5)); edgeCombination++) {
       TestInstance.fromBits(3, 5, intBits(edgeCombination)).testAgainstBruteForce();
     }
   }
@@ -83,7 +84,7 @@ public final class GraphMatchingTest {
     if (isAndroid()) {
       return; // slow
     }
-    for (int edgeCombination = 1; edgeCombination < (1L << (5 * 3)); edgeCombination++) {
+    for (int edgeCombination = 1; edgeCombination < (1 << (5 * 3)); edgeCombination++) {
       TestInstance.fromBits(5, 3, intBits(edgeCombination)).testAgainstBruteForce();
     }
   }
@@ -383,9 +384,7 @@ public final class GraphMatchingTest {
          */
         void removeFromSelected() {
           checkState(valid());
-          checkState(selectedEdges.containsKey(lhsVertex()));
-          checkState(selectedEdges.get(lhsVertex()).equals(rhsVertex()));
-          selectedEdges.remove(lhsVertex());
+          checkState(Objects.equals(selectedEdges.remove(lhsVertex()), rhsVertex()));
         }
 
         /**
