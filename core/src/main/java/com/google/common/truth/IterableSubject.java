@@ -221,6 +221,7 @@ public class IterableSubject extends Subject {
     if (!duplicates.isEmpty()) {
       failWithoutActual(
           simpleFact("expected not to contain duplicates"),
+          // TODO(cpovirk): Consider a format like SubjectUtils.entryString instead.
           fact("but contained", duplicates),
           fullContents());
     }
