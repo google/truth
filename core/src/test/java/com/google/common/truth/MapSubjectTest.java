@@ -161,6 +161,19 @@ public class MapSubjectTest {
   }
 
   @Test
+  public void containsExactlyBothDuplicateAndNonDuplicateKeys() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
+
+    IllegalArgumentException expected =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> assertThat(actual).containsExactly("jan", 1, "jan", 1, "feb", 2));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Duplicate keys ([jan x 2]) cannot be passed to containsExactly().");
+  }
+
+  @Test
   public void containsExactlyExtraKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     AssertionError e =

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
@@ -28,6 +29,7 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.util.Collections.singletonList;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Maps;
@@ -260,11 +262,14 @@ public class MapSubject extends Subject {
       expectedMap.put(key, rest[i + 1]);
       keys.add(key);
     }
-    checkArgument(
-        keys.size() == expectedMap.size(),
-        "Duplicate keys (%s) cannot be passed to %s().",
-        keys,
-        functionName);
+    if (expectedMap.size() != keys.size()) {
+      List<Multiset.Entry<@Nullable Object>> duplicateKeys =
+          FluentIterable.from(keys.entrySet()).filter(e -> e.getCount() > 1).toList();
+      throw new IllegalArgumentException(
+          lenientFormat(
+              // TODO(cpovirk): Consider a format like SubjectUtils.entryString instead.
+              "Duplicate keys (%s) cannot be passed to %s().", duplicateKeys, functionName));
+    }
     return expectedMap;
   }
 
