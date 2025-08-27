@@ -194,22 +194,22 @@ public class MultimapSubject extends Subject {
   }
 
   @Override
-  public final void isEqualTo(@Nullable Object other) {
+  public final void isEqualTo(@Nullable Object expected) {
     @SuppressWarnings("UndefinedEquals") // the contract of this method is to follow Multimap.equals
-    boolean isEqual = Objects.equals(actual, other);
+    boolean isEqual = Objects.equals(actual, expected);
     if (isEqual) {
       return;
     }
 
     // Fail but with a more descriptive message:
-    if (actual == null || other == null) {
-      super.isEqualTo(other);
-    } else if ((actual instanceof ListMultimap && other instanceof SetMultimap)
-        || (actual instanceof SetMultimap && other instanceof ListMultimap)) {
+    if (actual == null || expected == null) {
+      super.isEqualTo(expected);
+    } else if ((actual instanceof ListMultimap && expected instanceof SetMultimap)
+        || (actual instanceof SetMultimap && expected instanceof ListMultimap)) {
       String actualType = (actual instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-      String otherType = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+      String otherType = (expected instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
       failWithoutActual(
-          fact("expected", other),
+          fact("expected", expected),
           fact("an instance of", otherType),
           butWas(),
           fact("an instance of", actualType),
@@ -217,11 +217,11 @@ public class MultimapSubject extends Subject {
               lenientFormat(
                   "a %s cannot equal a %s if either is non-empty", actualType, otherType)));
     } else if (actual instanceof ListMultimap) {
-      containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
+      containsExactlyEntriesIn((Multimap<?, ?>) expected).inOrder();
     } else if (actual instanceof SetMultimap) {
-      containsExactlyEntriesIn((Multimap<?, ?>) other);
+      containsExactlyEntriesIn((Multimap<?, ?>) expected);
     } else {
-      super.isEqualTo(other);
+      super.isEqualTo(expected);
     }
   }
 
