@@ -63,6 +63,8 @@ jobs:
         run: mvn -B clean source:jar javadoc:jar deploy -DskipTests=true
 
   generate_docs:
+    permissions:
+      contents: write
     name: 'Generate latest docs'
     needs: test
     if: github.event_name == 'push' && github.repository == 'google/truth'
