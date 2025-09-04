@@ -170,9 +170,20 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 
  <p><code>ExpectFailure</code> is similar to JUnit's <code>assertThrows</code> (<a href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThrows%28java.lang.Class,%20org.junit.function.ThrowingRunnable%29">JUnit
  4</a>, <a href="https://docs.junit.org/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html#assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)">JUnit
- 5</a>). We recommend it over <code>assertThrows</code> when you're testing a Truth subject because it
- also checks that the assertion you're testing uses the supplied <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> and calls
- <a href="FailureStrategy.html#fail(java.lang.AssertionError)"><code>FailureStrategy.fail(java.lang.AssertionError)</code></a> only once.</div>
+ 5</a>). We recommend it over <code>assertThrows</code> when you're testing a Truth subject because:
+
+ <ul>
+   <li>It performs additional checks:
+       <ul>
+         <li>It checks that the assertion you're testing uses the supplied <a href="FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a>.
+         <li>It checks that the assertion you're testing calls <a href="FailureStrategy.html#fail(java.lang.AssertionError)"><code>FailureStrategy.fail(java.lang.AssertionError)</code></a> only
+             once.
+       </ul>
+   <li>It instructs Truth to generate failure messages <i>without</i> adding lines like "value of:
+       foo()" for <code>assertThat(foo())....</code> calls that it detects in the test bytecode. Truth
+       doesn't provide guarantees for when such lines will be generated, so tests become more
+       resilient without them.
+ </ul></div>
 </li>
 </ul>
 </div>
