@@ -149,6 +149,8 @@ final class ActualValueInference {
     @Nullable String description() {
       return null;
     }
+
+    abstract StackEntry withType(InferredType newType);
   }
 
   /** An entry that we know nothing about except for its type. */
@@ -157,6 +159,11 @@ final class ActualValueInference {
   @GwtIncompatible
   @J2ktIncompatible
   abstract static class OpaqueEntry extends StackEntry {
+    @Override
+    StackEntry withType(InferredType newType) {
+      return opaque(newType);
+    }
+
     @Override
     public final String toString() {
       return "unknown";
@@ -177,6 +184,11 @@ final class ActualValueInference {
   @GwtIncompatible
   @J2ktIncompatible
   abstract static class DescribedEntry extends StackEntry {
+    @Override
+    StackEntry withType(InferredType newType) {
+      return described(newType, description());
+    }
+
     @Override
     abstract String description();
 
@@ -203,6 +215,11 @@ final class ActualValueInference {
   @GwtIncompatible
   @J2ktIncompatible
   abstract static class SubjectEntry extends StackEntry {
+    @Override
+    StackEntry withType(InferredType newType) {
+      return subjectFor(newType, actualValue());
+    }
+
     @Override
     abstract StackEntry actualValue();
 
@@ -698,8 +715,7 @@ final class ActualValueInference {
           pushDescriptor('[' + descriptor);
           break;
         case Opcodes.CHECKCAST:
-          pop();
-          pushDescriptor(descriptor);
+          push(pop().withType(InferredType.create(convertToDescriptor(type))));
           break;
         case Opcodes.INSTANCEOF:
           pop();
@@ -1445,6 +1461,8 @@ final class ActualValueInference {
    */
   private static final ImmutableSet<String> BORING_NAMES =
       ImmutableSet.of(
+          // keep-sorted start
+          "_build",
           "asList",
           "build",
           "collect",
@@ -1453,10 +1471,17 @@ final class ActualValueInference {
           "from",
           "get",
           "iterator",
+          "listOf",
+          "mapOf",
           "of",
+          "setOf",
+          "sortedMapOf",
+          "sortedSetOf",
           "toArray",
           "toString",
-          "valueOf");
+          "valueOf"
+          // keep-sorted end
+          );
 
   private static boolean isThatOrAssertThat(String owner, String name) {
     /*

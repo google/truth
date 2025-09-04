@@ -62,6 +62,14 @@ public final class ActualValueInferenceTest {
   }
 
   @Test
+  public void cast() {
+    AssertionError e;
+
+    e = expectFailure(whenTesting -> whenTesting.that((String) secretlyString()).isEqualTo("b"));
+    assertThat(e).factValue("value of").isEqualTo("secretlyString()");
+  }
+
+  @Test
   public void autoBox() {
     AssertionError e;
 
@@ -263,5 +271,9 @@ public final class ActualValueInferenceTest {
 
   String someNumberString() {
     return "0";
+  }
+
+  Object secretlyString() {
+    return "a";
   }
 }
