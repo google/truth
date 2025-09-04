@@ -64,9 +64,21 @@ import org.junit.runners.model.Statement;
  * href="https://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThrows%28java.lang.Class,%20org.junit.function.ThrowingRunnable%29">JUnit
  * 4</a>, <a
  * href="https://docs.junit.org/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html#assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)">JUnit
- * 5</a>). We recommend it over {@code assertThrows} when you're testing a Truth subject because it
- * also checks that the assertion you're testing uses the supplied {@link FailureStrategy} and calls
- * {@link FailureStrategy#fail} only once.
+ * 5</a>). We recommend it over {@code assertThrows} when you're testing a Truth subject because:
+ *
+ * <ul>
+ *   <li>It performs additional checks:
+ *       <ul>
+ *         <li>It checks that the assertion you're testing uses the supplied {@link
+ *             FailureStrategy}.
+ *         <li>It checks that the assertion you're testing calls {@link FailureStrategy#fail} only
+ *             once.
+ *       </ul>
+ *   <li>It instructs Truth to generate failure messages <i>without</i> adding lines like "value of:
+ *       foo()" for {@code assertThat(foo())....} calls that it detects in the test bytecode. Truth
+ *       doesn't provide guarantees for when such lines will be generated, so tests become more
+ *       resilient without them.
+ * </ul>
  */
 public final class ExpectFailure implements Platform.JUnitTestRule {
   private boolean inRuleContext = false;
@@ -97,8 +109,15 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
           "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
     }
     failureExpected = true;
-    return StandardSubjectBuilder.forCustomFailureStrategy(this::captureFailure);
+    return StandardSubjectBuilder.forCustomFailureStrategy(
+        (ExpectFailureFailureStrategy) this::captureFailure);
   }
+
+  /**
+   * Marker interface that we check for so that we can automatically disable "value of" lines during
+   * {@link ExpectFailure} assertions.
+   */
+  interface ExpectFailureFailureStrategy extends FailureStrategy {}
 
   /**
    * Enters rule context to be ready to capture failures.

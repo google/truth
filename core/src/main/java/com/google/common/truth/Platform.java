@@ -242,6 +242,16 @@ final class Platform {
     }
   }
 
+  static boolean isInferDescriptionEnabledForExpectFailure() {
+    try {
+      return Boolean.parseBoolean(
+          System.getProperty(
+              "com.google.common.truth.enable_infer_description_for_expect_failure"));
+    } catch (SecurityException e) {
+      return false;
+    }
+  }
+
   static AssertionError makeComparisonFailure(
       List<String> messages,
       List<Fact> facts,

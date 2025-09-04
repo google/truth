@@ -24,7 +24,6 @@ import java.util.List;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 
@@ -32,7 +31,6 @@ import org.jspecify.annotations.Nullable;
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
  * GWT and non-GWT version.
  */
-@NullMarked
 final class Platform {
   private Platform() {}
 
@@ -180,6 +178,10 @@ final class Platform {
         + " remove the call to ensureFailureCaught(). Removing that call will let any other"
         + " exception fall through. (But of course it will also prevent the test from"
         + " verifying that the expected failure occurred.)";
+  }
+
+  static boolean isInferDescriptionEnabledForExpectFailure() {
+    return false; // irrelevant because we can infer descriptions only under the JVM
   }
 
   // TODO(user): Move this logic to a common location.

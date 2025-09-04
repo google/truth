@@ -25,12 +25,14 @@ import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
 import static com.google.common.truth.Platform.inferDescription;
+import static com.google.common.truth.Platform.isInferDescriptionEnabledForExpectFailure;
 import static com.google.common.truth.Platform.makeComparisonFailure;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.ExpectFailure.ExpectFailureFailureStrategy;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -243,7 +245,11 @@ public final class FailureMetadata {
 
   /** Overload of {@link #description()} that allows passing a custom key for the fact. */
   private ImmutableList<Fact> description(String factKey) {
-    String description = inferDescription();
+    String description =
+        strategy instanceof ExpectFailureFailureStrategy
+                && !isInferDescriptionEnabledForExpectFailure()
+            ? null
+            : inferDescription();
     boolean descriptionIsInteresting = description != null;
     for (Step step : steps) {
       if (step.isCheckCall()) {
