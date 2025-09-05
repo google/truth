@@ -160,7 +160,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    */
   private void captureFailure(AssertionError captured) {
     if (failure != null) {
-      // TODO(diamondm) is it worthwhile to add the failures as suppressed exceptions?
+      // TODO(diamondm): Is it worthwhile to add the failures as suppressed exceptions?
       throw new AssertionError(
           lenientFormat(
               "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
