@@ -11,7 +11,11 @@ title: Releasing Truth
 To do so, run our Javadoc script:
 
 ```sh
-RELEASE_VERSION=${NEW_VERSION} ./util/generate-latest-docs.sh
+git pull --tags
+
+git checkout v${NEW_VERSION?}
+
+RELEASE_VERSION=${NEW_VERSION?} ./util/generate-latest-docs.sh
 ```
 
 This will check out the gh-pages branch into a new subfolder, run the aggregated
