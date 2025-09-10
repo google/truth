@@ -3,7 +3,7 @@ url: "https://truth.dev"
 baseurl: '/'
 markdown: kramdown
 repository: google/truth
-version: "1.4.4"
+version: "1.4.5"
 
 title: Truth
 tagline: Fluent assertions for Java and Android
