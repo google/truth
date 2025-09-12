@@ -384,14 +384,5 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>javadocs-jdk9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <properties>
-        <conditionalJavadocOptions>--frames</conditionalJavadocOptions>
-      </properties>
-    </profile>
   </profiles>
 </project>
