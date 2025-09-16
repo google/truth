@@ -110,7 +110,14 @@ public class Subject {
     standardIsEqualTo(null);
   }
 
-  /** Checks that the value under test is not null. */
+  /**
+   * Checks that the value under test is not null.
+   *
+   * <p>Kotlin users: A call to {@code assertThat(foo).isNotNull()} does not perform a smart cast on
+   * {@code foo}. If you require a smart cast, consider using {@code foo!!} or {@code
+   * assertNotNull(foo)} instead. The tradeoffs are that those will look different than any
+   * surrounding Truth assertions and that they will produce somewhat worse failure messages.
+   */
   public void isNotNull() {
     standardIsNotEqualTo(null);
   }
