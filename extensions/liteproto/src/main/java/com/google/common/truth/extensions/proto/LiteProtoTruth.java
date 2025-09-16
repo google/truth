@@ -22,6 +22,7 @@ import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
 import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol
@@ -36,6 +37,7 @@ import org.jspecify.annotations.Nullable;
  * about(liteProtos())} to begin a chain with those alternative behaviors.
  */
 @CheckReturnValue
+@NullMarked
 public final class LiteProtoTruth {
   public static LiteProtoSubject assertThat(@Nullable MessageLite messageLite) {
     return assertAbout(liteProtos()).that(messageLite);

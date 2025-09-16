@@ -20,13 +20,16 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
+import com.google.j2objc.annotations.J2ObjCIncompatible;
 import com.google.protobuf.MessageLite;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -37,6 +40,7 @@ import org.jspecify.annotations.Nullable;
  * detailed comparisons between messages.
  */
 @CheckReturnValue
+@NullMarked
 public class LiteProtoSubject extends Subject {
 
   /**
@@ -203,6 +207,8 @@ public class LiteProtoSubject extends Subject {
   }
 
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
+  @J2ObjCIncompatible
+  @J2ktIncompatible
   public void isEqualToDefaultInstance() {
     if (actual == null) {
       failWithoutActual(
@@ -220,6 +226,8 @@ public class LiteProtoSubject extends Subject {
   }
 
   /** Checks whether the subject is not equivalent to a {@link MessageLite} with no fields set. */
+  @J2ObjCIncompatible
+  @J2ktIncompatible
   public void isNotEqualToDefaultInstance() {
     if (actual != null && actual.equals(actual.getDefaultInstanceForType())) {
       failWithoutActual(
@@ -235,6 +243,8 @@ public class LiteProtoSubject extends Subject {
    * Checks whether the subject has all required fields set. Cannot fail for a proto built with
    * {@code build()}, which itself fails if required fields aren't set.
    */
+  @J2ObjCIncompatible
+  @J2ktIncompatible
   public void hasAllRequiredFields() {
     if (!actual.isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
