@@ -53,7 +53,7 @@ jobs:
           java-version: 11
           distribution: 'zulu'
           cache: 'maven'
-          server-id: sonatype-nexus-snapshots
+          server-id: central
           server-username: CI_DEPLOY_USERNAME
           server-password: CI_DEPLOY_PASSWORD
       - name: 'Publish'
