@@ -477,7 +477,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 
  <p><b>Note:</b> This method does not test the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(java.lang.Object)</code></a> implementation itself; it
  <i>assumes</i> that method is functioning correctly according to its contract. Testing an
- <code>equals</code> implementation requires a utility such as <a href="https://mvnrepository.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s <a href="https://static.javadoc.io/com.google.guava/guava-testlib/23.0/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
+ <code>equals</code> implementation requires a utility such as <a href="https://central.sonatype.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s
+ <a href="https://www.javadoc.io/doc/com.google.guava/guava-testlib/latest/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
 
  <p>In some cases, this method might not even call <code>equals</code>. It may instead perform other
  tests that will return the same result as long as <code>equals</code> is implemented according to
