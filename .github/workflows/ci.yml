@@ -60,7 +60,7 @@ jobs:
         env:
           CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
-        run: mvn -B clean source:jar javadoc:jar deploy -DskipTests=true
+        run: mvn -B clean deploy -DskipTests=true
 
   generate_docs:
     permissions:
