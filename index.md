@@ -79,7 +79,7 @@ multimap was: {corelibs=[guava, auto, dagger, caliper]}
 
 Truth and [AssertJ] are very similar. This raises the question: Why did we
 create Truth? The reason is historical: AssertJ didn’t
-[exist](https://github.com/joel-costigliola/assertj-core/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
+[exist](https://github.com/assertj/assertj/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
 when we
 [started](https://github.com/google/truth/commit/813afacc95b5f7ae2d38f10a10ca095b8c69b2b3)
 Truth. By the time it was created, we’d begun migrating Google code to Truth,
@@ -191,18 +191,18 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 
 [source]: https://github.com/google/truth/tree/master/core/src/main/java/com/google/common/truth
 [Github issues]: https://github.com/google/truth/issues
-[Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
-[Guava]: http://github.com/google/guava
+[Stack Overflow]: https://stackoverflow.com/questions/tagged/google-truth
+[Guava]: https://github.com/google/guava
 [API docs]: https://truth.dev/api/
 [`MapSubject`]: https://truth.dev/api/latest/com/google/common/truth/MapSubject
 [truth.dev/MapSubject]: https://truth.dev/MapSubject
 [Java Core Libraries Team]: https://www.reddit.com/r/java/comments/1y9e6t/ama_were_the_google_team_behind_guava_dagger/
-[AssertJ]: http://joel-costigliola.github.io/assertj/
+[AssertJ]: https://assertj.github.io/doc/
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
 [truth-api]: https://truth.dev/api/latest/index.html
 [assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
-[`AbstractIterableAssert`]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/AbstractIterableAssert.html
-[Hamcrest]: http://hamcrest.org/JavaHamcrest/
+[`AbstractIterableAssert`]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org.assertj.core/org/assertj/core/api/AbstractIterableAssert.html
+[Hamcrest]: https://hamcrest.org/JavaHamcrest/
 [Error Prone]: https://errorprone.info
 [configuring your build to use Error Prone]: https://errorprone.info/docs/installation

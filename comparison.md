@@ -21,8 +21,8 @@ assertThat(notificationText, containsString("testuser@google.com"));
 
 ## Why create Truth when AssertJ already exists?
 
-The reason is historical: AssertJ didn’t 
-[exist](https://github.com/joel-costigliola/assertj-core/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
+The reason is historical: AssertJ didn’t
+[exist](https://github.com/assertj/assertj/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
 when we
 [started](https://github.com/google/truth/commit/813afacc95b5f7ae2d38f10a10ca095b8c69b2b3)
 Truth. By the time it was created, we’d begun migrating Google code to Truth,
@@ -230,7 +230,7 @@ of the two as with AssertJ.
 ### Platform support (Android, GWT) {#platforms}
 
 Both libraries support Android. However, to use AssertJ on Android, you must
-[fall back to AssertJ 2.x](https://github.com/joel-costigliola/assertj-core/issues/1474#issuecomment-477762965),
+[fall back to AssertJ 2.x](https://github.com/assertj/assertj/issues/1474#issuecomment-477762965),
 and you [can't use "soft assertions."][soft-assertions-android]
 
 Truth supports Android in its main `Truth` class, and its equivalent to soft
@@ -281,7 +281,7 @@ reference) and an `actual` field, it is usually less. Also, Truth supplies
 [convenience methods to format failure messages][`failWithActual`].
 
 (To be fair, AssertJ reduces the up-front cost of verbosity by offering
-[an assertions generator].)
+[an assertions generator][AssertJ-generator].)
 
 ### Puzzler answers {#puzzler-answers}
 
@@ -453,45 +453,44 @@ artifact and main `Truth` class; AssertJ is more modularized, offering
 <!-- References -->
 
 [fluent]: https://en.wikipedia.org/wiki/Fluent_interface
-[AssertJ]: https://joel-costigliola.github.io/assertj/
+[AssertJ]: https://assertj.github.io/doc/
 [FEST]: https://github.com/alexruiz/fest-assert-2.x
-[Hamcrest]: http://hamcrest.org/JavaHamcrest/
+[Hamcrest]: https://hamcrest.org/JavaHamcrest/
 [Polish prefix notation]: https://en.wikipedia.org/wiki/Polish_notation
 [`Expect`]: https://truth.dev/api/latest/com/google/common/truth/Expect.html
-["soft assertions"]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
+["soft assertions"]: https://assertj.github.io/doc/#assertj-core-soft-assertions
 [truth-assume]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
-[assertj-assume]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/Assumptions.html
+[assertj-assume]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org.assertj.core/org/assertj/core/api/Assumptions.html
 [`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
 [`ExpectFailure`]: https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
 [Guava]: https://github.com/google/guava
 [Protocol Buffers]: https://developers.google.com/protocol-buffers/
-[GWT]: http://www.gwtproject.org/
+[GWT]: https://www.gwtproject.org/
 [AssertJ-Android]: https://square.github.io/assertj-android/
 [AssertJ-Android-deprecated]: https://github.com/square/assertj-android#deprecated
 [Truth-Android]: https://developer.android.com/training/testing/fundamentals#assertions
-[AssertJ-migrator]: https://joel-costigliola.github.io/assertj/assertj-core-converting-junit-assertions-to-assertj.html
+[AssertJ-migrator]: https://assertj.github.io/doc/#assertj-migration
 [AssertJ-generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
-[conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
+[conditions]: https://assertj.github.io/doc/#assertj-core-conditions
 [reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
 [recursive field comparison]: https://assertj.github.io/doc/#assertj-core-recursive-comparison
 [bug]: https://github.com/google/truth/issues/new
 [`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
 [truth-api]: https://truth.dev/api/latest/com/google/common/truth/package-summary.html
-[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/package-summary.html
+[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org.assertj.core/org/assertj/core/api/package-summary.html
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: https://www.javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/api/AbstractIterableAssert.html#method.summary
 [`apply`]: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html
 [`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-
-[`AbstractOptionalAssert`]: https://github.com/joel-costigliola/assertj-core/blob/ced2937f8e1647ab7893adb9fc766e64b1ab20a9/src/main/java/org/assertj/core/api/AbstractOptionalAssert.java#L45
+[`AbstractOptionalAssert`]: https://github.com/assertj/assertj/blob/ced2937f8e1647ab7893adb9fc766e64b1ab20a9/src/main/java/org/assertj/core/api/AbstractOptionalAssert.java#L45
 [`OptionalSubject`]: https://github.com/google/truth/blob/3740ee650867927a6d685dbf8d792e7cc0fcb328/extensions/java8/src/main/java/com/google/common/truth/OptionalSubject.java#L29
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
 [intellij-diff]: https://stackoverflow.com/q/48565168/28465
 [Error Prone]: https://errorprone.info
 [pull-575-thread]: https://github.com/google/truth/pull/575#discussion_r293444380
 [`CollectionIncompatibleType`]: https://errorprone.info/bugpattern/CollectionIncompatibleType
-[soft-assertions-android]: https://github.com/joel-costigliola/assertj-core/issues/1493
-[assertj-1353]: https://github.com/joel-costigliola/assertj-core/issues/1353
-[assertj-guava]: http://joel-costigliola.github.io/assertj/assertj-guava.html
+[soft-assertions-android]: https://github.com/assertj/assertj/issues/1493
+[assertj-1353]: https://github.com/assertj/assertj/issues/1353
+[assertj-guava]: https://assertj.github.io/doc/#assertj-guava
 [Wire]: https://github.com/square/wire
 [ProtoTruth]: https://truth.dev/protobufs
-[an assertions generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
