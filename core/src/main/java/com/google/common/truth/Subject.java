@@ -133,8 +133,9 @@ public class Subject {
    * <p><b>Note:</b> This method does not test the {@link Object#equals} implementation itself; it
    * <i>assumes</i> that method is functioning correctly according to its contract. Testing an
    * {@code equals} implementation requires a utility such as <a
-   * href="https://mvnrepository.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s <a
-   * href="https://static.javadoc.io/com.google.guava/guava-testlib/23.0/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
+   * href="https://central.sonatype.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s
+   * <a
+   * href="https://www.javadoc.io/doc/com.google.guava/guava-testlib/latest/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
    *
    * <p>In some cases, this method might not even call {@code equals}. It may instead perform other
    * tests that will return the same result as long as {@code equals} is implemented according to
