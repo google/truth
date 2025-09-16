@@ -29,8 +29,12 @@ example:
 assertThat(googleColors).contains(PINK);
 ```
 
-If this assertion fails, you'll get the following message: `<[BLUE, RED, YELLOW,
-BLUE, GREEN, RED]> should have contained <PINK>`
+If this assertion fails, you'll get the following message:
+
+```
+expected to contain: PINK
+but was            : [BLUE, RED, YELLOW, BLUE, GREEN, RED]
+```
 
 With JUnit, most people would write:
 
@@ -43,7 +47,7 @@ without *any* failure message! If you want a useful failure message with JUnit,
 you're forced to duplicate the data under test in a custom failure message:
 
 ```java
-assertTrue(googleColors + " should have contained PINK", googleColors.contains(PINK));
+assertTrue("expected to contain PINK but was " + googleColors, googleColors.contains(PINK));
 ```
 
 ## Readable complex assertions {#complex-assertions}
