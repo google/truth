@@ -289,7 +289,15 @@ public class Subject {
     }
   }
 
-  /** Checks that the value under test is an instance of the given class. */
+  /**
+   * Checks that the value under test is an instance of the given class.
+   *
+   * <p>Kotlin users: A call to {@code assertThat(foo).isInstanceOf(Bar::class.java)} does not
+   * perform a smart cast on {@code foo}. If you require a smart cast, consider using {@code foo as
+   * Bar} or {@code assertIs<Bar>(foo)} instead. The tradeoffs are that those will look different
+   * than any surrounding Truth assertions and that they will produce worse failure messages (for
+   * example, by not including the actual value, only its type).
+   */
   public void isInstanceOf(@Nullable Class<?> clazz) {
     if (clazz == null) {
       failWithoutActual(
