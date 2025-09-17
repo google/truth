@@ -534,7 +534,13 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li class="blockList">
 <h4>isInstanceOf</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;isInstanceOf&#8203;(<a href="https://jspecify.dev/docs/api/org/jspecify/annotations/Nullable.html?is-external=true" title="class or interface in org.jspecify.annotations" class="externalLink">@Nullable</a> <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;clazz)</pre>
-<div class="block">Checks that the value under test is an instance of the given class.</div>
+<div class="block">Checks that the value under test is an instance of the given class.
+
+ <p>Kotlin users: A call to <code>assertThat(foo).isInstanceOf(Bar::class.java)</code> does not
+ perform a smart cast on <code>foo</code>. If you require a smart cast, consider using <code>foo as
+ Bar</code> or <code>assertIs&lt;Bar&gt;(foo)</code> instead. The tradeoffs are that those will look different
+ than any surrounding Truth assertions and that they will produce worse failure messages (for
+ example, by not including the actual value, only its type).</div>
 </li>
 </ul>
 <a id="isNotInstanceOf(java.lang.Class)">
