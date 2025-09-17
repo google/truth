@@ -19,7 +19,9 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.extensions.proto.Platform.getTrimmedToString;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
@@ -28,7 +30,6 @@ import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import com.google.protobuf.MessageLite;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -72,28 +73,6 @@ public class LiteProtoSubject extends Subject {
     super(failureMetadata, messageLite);
     this.metadata = failureMetadata;
     this.actual = messageLite;
-  }
-
-  // It is wrong to compare protos using their string representations. The MessageLite runtime
-  // deliberately prefixes debug strings with their Object.toString() to discourage string
-  // comparison. However, this reads poorly in tests, and makes it harder to identify differences
-  // from the strings alone. So, we manually strip this prefix.
-  // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
-  // TODO(user): Maybe get a way to do this upstream.
-  static String getTrimmedToString(@Nullable MessageLite messageLite) {
-    String subjectString = String.valueOf(messageLite);
-    String trimmedSubjectString = subjectString.trim();
-    if (trimmedSubjectString.startsWith("# ")) {
-      String objectToString =
-          String.format(
-              "# %s@%s",
-              messageLite.getClass().getName(), Integer.toHexString(messageLite.hashCode()));
-      if (trimmedSubjectString.startsWith(objectToString)) {
-        subjectString = trimmedSubjectString.replaceFirst(Pattern.quote(objectToString), "").trim();
-      }
-    }
-
-    return subjectString.isEmpty() ? "[empty proto]" : subjectString;
   }
 
   @Override
@@ -245,6 +224,7 @@ public class LiteProtoSubject extends Subject {
    */
   @J2ObjCIncompatible
   @J2ktIncompatible
+  @GwtIncompatible
   public void hasAllRequiredFields() {
     if (!actual.isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
@@ -261,6 +241,7 @@ public class LiteProtoSubject extends Subject {
    * <p>Assertions can then be changed on the serialized size, to support checks such as {@code
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
+  @GwtIncompatible
   public IntegerSubject serializedSize() {
     return check("getSerializedSize()").that(actual.getSerializedSize());
   }
