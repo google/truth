@@ -322,9 +322,15 @@
               </configuration>
             </execution>
             <execution>
-              <id>default-testCompile</id>
+              <id>base-compile</id>
+              <goals>
+                <goal>compile</goal>
+              </goals>
               <configuration>
-                <release>9</release>
+                <excludes>
+                  <exclude>module-info.java</exclude>
+                  <exclude>**/super/**/*.java</exclude>
+                </excludes>
               </configuration>
             </execution>
           </executions>
