@@ -16,7 +16,9 @@
 
 module com.google.truth.extensions.re2j {
     requires com.google.truth;
-    requires com.google.re2j;
+    requires re2j;
+
+    requires static org.jspecify;
 
     exports com.google.common.truth.extensions.re2j;
 }

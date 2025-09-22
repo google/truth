@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.truth</groupId>
     <artifactId>truth-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>999.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>truth</artifactId>
   <name>Truth Core</name>
@@ -98,23 +98,6 @@
             </path>
           </annotationProcessorPaths>
         </configuration>
-        <executions>
-          <execution>
-            <id>compile-java9</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <release>9</release>
-              <compileSourceRoots>
-                <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
-              </compileSourceRoots>
-              <multiReleaseOutput>true</multiReleaseOutput>
-              <useIncrementalCompilation>false</useIncrementalCompilation>
-              <moduleVersion>1.0</moduleVersion>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>

@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-module com.google.truth {
+module com.google.truth.extensions.liteproto {
+    requires com.google.truth;
     requires com.google.common;
-    requires junit;
+    requires java.compiler;
 
     requires static org.jspecify;
     requires static com.google.errorprone.annotations;
-    requires static org.objectweb.asm;
+    requires static protobuf.lite;
     requires static auto.value.annotations;
+    requires static com.google.j2objc.annotations;
 
-    exports com.google.common.truth;
+    exports com.google.common.truth.extensions.liteproto;
+    exports com.google.common.truth.extensions.liteproto.internal to com.google.truth.extensions.proto;
 }

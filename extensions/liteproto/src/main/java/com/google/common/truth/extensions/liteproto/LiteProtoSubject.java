@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.common.truth.extensions.proto;
+package com.google.common.truth.extensions.liteproto;
 
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.extensions.proto.Platform.getTrimmedToString;
+import static com.google.common.truth.extensions.liteproto.Platform.getTrimmedToString;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
+import com.google.common.truth.extensions.liteproto.internal.LiteProtoSubjectAccess;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 import com.google.protobuf.MessageLite;
@@ -43,6 +44,16 @@ import org.jspecify.annotations.Nullable;
 @CheckReturnValue
 @NullMarked
 public class LiteProtoSubject extends Subject {
+
+  // Static initializer to register SharedSecrets accessor
+  static {
+    LiteProtoSubjectAccess.setAccessor(new LiteProtoSubjectAccess.Accessor() {
+      @Override
+      public String getCustomStringRepresentation(LiteProtoSubject subject) {
+        return subject.actualCustomStringRepresentationForProtoPackageMembersToCall();
+      }
+    });
+  }
 
   /**
    * Returns a {@code Subject.Factory} for {@link MessageLite} subjects which you can use to assert

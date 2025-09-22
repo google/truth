@@ -24,6 +24,7 @@ import com.google.common.truth.IterableSubject;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.MultimapSubject;
 import com.google.common.truth.StandardSubjectBuilder;
+import com.google.common.truth.extensions.liteproto.LiteProtoSubject;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
