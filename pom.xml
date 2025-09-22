@@ -108,7 +108,7 @@
       <dependency>
         <groupId>com.google.errorprone</groupId>
         <artifactId>error_prone_annotations</artifactId>
-        <version>2.41.0</version>
+        <version>2.42.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
@@ -244,7 +244,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.11.3</version>
+          <version>3.12.0</version>
           <configuration>
             <additionalOptions>
               <additionalOption>-Xdoclint:-html ${conditionalJavadoc9PlusOptions}</additionalOption>
@@ -307,7 +307,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.0</version>
+          <version>3.14.1</version>
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
