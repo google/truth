@@ -37,6 +37,12 @@ the right one for each call.
 
 If not, you can use one of the methods without static import.
 
+NOTE: for this reason, you should generally avoid defining a static
+`assertThat()` method which accepts one of the built-in
+[supported types](https://truth.dev/known_types). If you need to add additional
+assertions about a built-in type, we recommend choosing a different name for
+your entrypoint (e.g., `assertThatJson(String)`).
+
 Also, note that if you define a method inside your test class named
 `assertThat`, you will *NOT* be able to static import `Truth.assertThat`.
 Similarly, if you extend `org.junit.Assert` (to avoid needing to static import
