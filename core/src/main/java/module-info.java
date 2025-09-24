@@ -16,7 +16,7 @@
 
 module com.google.truth {
     requires com.google.common;
-    requires junit;
+    requires static junit;
     requires java.compiler;
 
     requires static org.jspecify;
