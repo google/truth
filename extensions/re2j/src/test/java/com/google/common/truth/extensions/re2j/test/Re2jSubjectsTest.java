@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.common.truth.extensions.re2j;
+package com.google.common.truth.extensions.re2j.test;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.extensions.re2j.Re2jSubjects.re2jString;

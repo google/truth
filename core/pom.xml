@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.truth</groupId>
     <artifactId>truth-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>999.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>truth</artifactId>
   <name>Truth Core</name>
@@ -110,6 +110,13 @@
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Multi-Release>true</Multi-Release>
+            </manifestEntries>
+          </archive>
+        </configuration>
         <executions>
           <execution>
             <id>attach-gwt-sources</id>

@@ -19,6 +19,8 @@ package com.google.common.truth.extensions.proto;
 import com.google.common.collect.Multimap;
 import com.google.common.truth.CustomSubjectBuilder;
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.extensions.liteproto.LiteProtoSubject;
+import com.google.common.truth.extensions.liteproto.LiteProtoTruth;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
@@ -51,7 +53,7 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
   }
 
   public LiteProtoSubject that(@Nullable MessageLite messageLite) {
-    return new LiteProtoSubject(metadata(), messageLite);
+    return LiteProtoTruth.liteProtos().createSubject(metadata(), messageLite);
   }
 
   public ProtoSubject that(@Nullable Message message) {

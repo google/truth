@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.common.truth.extensions.proto;
+package com.google.common.truth.extensions.proto.test;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.Truth.assertThat;
@@ -32,6 +32,12 @@ import com.google.common.truth.Expect;
 import com.google.common.truth.ExpectFailure;
 import com.google.common.truth.Subject;
 import com.google.common.truth.TruthFailureSubject;
+import com.google.common.truth.extensions.proto.IterableOfProtosSubject;
+import com.google.common.truth.extensions.proto.MapWithProtoValuesSubject;
+import com.google.common.truth.extensions.proto.MultimapWithProtoValuesSubject;
+import com.google.common.truth.extensions.proto.ProtoSubject;
+import com.google.common.truth.extensions.proto.ProtoSubjectBuilder;
+import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;

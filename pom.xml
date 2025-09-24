@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.truth</groupId>
   <artifactId>truth-parent</artifactId>
-  <version>HEAD-SNAPSHOT</version>
+  <version>999.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Truth (Parent)</name>
   <properties>
@@ -249,6 +249,7 @@
             <additionalOptions>
               <additionalOption>-Xdoclint:-html ${conditionalJavadoc9PlusOptions}</additionalOption>
             </additionalOptions>
+            <legacyMode>true</legacyMode>
             <doctitle>Truth ${project.version}</doctitle>
             <windowtitle>Truth ${project.version}</windowtitle>
             <quiet>true</quiet>
@@ -313,6 +314,26 @@
             <target>1.8</target>
             <parameters>true</parameters>
           </configuration>
+          <executions>
+            <execution>
+              <id>default-compile</id>
+              <configuration>
+                <release>9</release>
+              </configuration>
+            </execution>
+            <execution>
+              <id>base-compile</id>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+              <configuration>
+                <excludes>
+                  <exclude>module-info.java</exclude>
+                  <exclude>**/super/**/*.java</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>

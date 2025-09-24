@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.common.truth.extensions.proto;
+package com.google.common.truth.extensions.proto.test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.truth.MapSubject;
+import com.google.common.truth.extensions.proto.MapWithProtoValuesFluentAssertion;
+import com.google.common.truth.extensions.proto.MapWithProtoValuesSubject;
 import com.google.protobuf.Message;
 import java.util.Collection;
 import org.junit.Test;

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.common.truth.extensions.proto;
+package com.google.common.truth.extensions.proto.test;
 
 import static java.util.Comparator.comparing;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.extensions.proto.FieldScopes;
+import com.google.common.truth.extensions.proto.IterableOfProtosSubject;
 import com.google.protobuf.Message;
 import java.util.Collection;
 import java.util.Comparator;
