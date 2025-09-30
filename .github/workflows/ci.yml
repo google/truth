@@ -9,11 +9,8 @@ on:
       - master
 
 jobs:
-  test:
-    name: "JDK ${{ matrix.java }}"
-    strategy:
-      matrix:
-        java: [ 8, 11 ]
+  build:
+    name: 'Build with JDK 11'
     runs-on: ubuntu-latest
     steps:
       # Cancel any previous runs for the same branch that are still running.
@@ -23,25 +20,54 @@ jobs:
           access_token: ${{ github.token }}
       - name: 'Check out repository'
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-      - name: 'Set up JDK ${{ matrix.java }}'
+      - name: 'Set up JDK 11 for compilation'
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 11
           distribution: 'zulu'
           cache: 'maven'
       - name: 'Install'
         shell: bash
         run: mvn -B -P!standard-with-extra-repos install -U -DskipTests=true
-      - name: 'Test'
-        shell: bash
-        run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true
       - name: 'Javadoc Test Run'
         shell: bash
         run: mvn -B -P!standard-with-extra-repos javadoc:aggregate -U
+      - name: 'Upload build artifacts'
+        uses: actions/upload-artifact@v3
+        with:
+          name: truth-jars
+          path: |
+            **/target/*.jar
+            !**/target/*-sources.jar
+            !**/target/*-javadoc.jar
+
+  test:
+    name: "Test with JDK ${{ matrix.java }}"
+    needs: build
+    strategy:
+      matrix:
+        java: [ 8, 11, 17 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repository'
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      - name: 'Set up JDK ${{ matrix.java }} for testing'
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: 'Download build artifacts'
+        uses: actions/download-artifact@v3
+        with:
+          name: truth-jars
+      - name: 'Test'
+        shell: bash
+        run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true
 
   publish_snapshot:
     name: 'Publish snapshot'
-    needs: test
+    needs: [build, test]
     if: github.event_name == 'push' && github.repository == 'google/truth'
     runs-on: ubuntu-latest
     steps:
@@ -66,7 +92,7 @@ jobs:
     permissions:
       contents: write
     name: 'Generate latest docs'
-    needs: test
+    needs: [build, test]
     if: github.event_name == 'push' && github.repository == 'google/truth'
     runs-on: ubuntu-latest
     steps:

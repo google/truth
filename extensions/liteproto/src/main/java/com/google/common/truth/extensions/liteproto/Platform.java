@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.common.truth.extensions.proto;
+package com.google.common.truth.extensions.liteproto;
 
 import static com.google.common.base.Strings.lenientFormat;
 
