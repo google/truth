@@ -128,7 +128,7 @@
       <dependency>
         <groupId>org.ow2.asm</groupId>
         <artifactId>asm</artifactId>
-        <version>9.8</version>
+        <version>9.9</version>
       </dependency>
       <dependency>
         <groupId>com.google.jsinterop</groupId>
@@ -328,7 +328,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.2</version>
           <executions>
             <execution>
               <id>enforce</id>
