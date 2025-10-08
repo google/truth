@@ -132,6 +132,8 @@ public class SubjectTest {
         e = assertThrows(AssertionError.class, () -> subject.isIn(ImmutableList.of()));
         assertThat(e).factKeys().contains("expected any of");
 
+        npTester.testAllPublicInstanceMethods(subject);
+
         subject.isNotEqualTo(new Object());
         subject.isEqualTo(null);
         e = assertThrows(AssertionError.class, () -> subject.isEqualTo(new Object()));
