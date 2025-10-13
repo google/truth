@@ -21,6 +21,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 
 import java.util.stream.Stream;
 import org.junit.Test;
@@ -316,8 +317,11 @@ public final class StreamSubjectTest {
 
   @Test
   @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
+  // We intentionally test the behavior of the method under a call that will soon fail.
+  @SuppressWarnings("NullNeedsCastForVarargs")
   public void containsExactly_nullObjectArray() {
-    StreamSubject subject = assertThat(Stream.of((Object) null));
+    StreamSubject subject = assertThat(singleton(null).stream());
+    // We are changing Truth from tolerating this erroneous varargs call to not tolerating it.
     try {
       subject.containsExactly((Object[]) null);
     } catch (NullPointerException e) {
