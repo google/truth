@@ -161,6 +161,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
+  @SuppressWarnings("DoNotCall")
   public void isEqualTo_success() {
     expectThat(null).isEqualTo(null);
     expectThat(null).isNull();
