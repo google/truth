@@ -106,10 +106,9 @@ boolean categoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILT
 assertThat(categoryFilter).isFalse();
 ```
 
-A tell-tale sign that you might be violating this anti-pattern is if you're
-importing a built-in Truth subject (e.g., `import
-com.google.common.truth.BooleanSubject`). Instead of passing a Truth subject
-around, you should be passing your *object-under-test*.
+A tell-tale sign of this anti-pattern is if a Truth subject type is directly
+imported (e.g., `import com.google.common.truth.BooleanSubject`). Instead of
+passing a Truth subject around, you should be passing your *object-under-test*.
 
 Note that this is just a guideline, not a hard and fast rule. If you're
 including a failure message or configuring parameters on a subject (e.g.
