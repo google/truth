@@ -20,9 +20,7 @@ import static com.google.common.truth.SubjectUtils.longName;
 import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Class} values.
- */
+/** A subject for {@link Class} values. */
 @GwtIncompatible("reflection")
 @J2ktIncompatible
 public final class ClassSubject extends Subject {

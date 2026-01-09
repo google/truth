@@ -168,8 +168,7 @@ public final class Fact implements Serializable {
     return key;
   }
 
-  @Nullable
-  String getValue() {
+  @Nullable String getValue() {
     return value;
   }
 

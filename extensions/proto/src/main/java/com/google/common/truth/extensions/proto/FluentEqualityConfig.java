@@ -90,7 +90,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   abstract FieldScopeLogicMap<Correspondence<Number, Number>> floatCorrespondenceMap();
 
-
   abstract boolean compareExpectedFieldsOnly();
 
   // Whether 'withExpectedMessages()' has been invoked. This is a book-keeping boolean to ensure
@@ -410,7 +409,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
     abstract Builder setFloatCorrespondenceMap(
         FieldScopeLogicMap<Correspondence<Number, Number>> floatCorrespondenceMap);
-
 
     abstract Builder setCompareExpectedFieldsOnly(boolean compare);
 

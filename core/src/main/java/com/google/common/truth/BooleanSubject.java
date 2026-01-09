@@ -19,9 +19,7 @@ import static com.google.common.truth.Fact.simpleFact;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Boolean} values.
- */
+/** A subject for {@link Boolean} values. */
 public final class BooleanSubject extends Subject {
   private final @Nullable Boolean actual;
 

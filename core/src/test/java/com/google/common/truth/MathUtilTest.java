@@ -24,9 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests for {@link MathUtil} used by numeric subjects.
- */
+/** Tests for {@link MathUtil} used by numeric subjects. */
 @RunWith(JUnit4.class)
 public class MathUtilTest {
   @Test

@@ -23,9 +23,7 @@ import static java.lang.Math.subtractExact;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Integer} values.
- */
+/** A subject for {@link Integer} values. */
 public class IntegerSubject extends ComparableSubject<Integer> {
   private final @Nullable Integer actual;
 

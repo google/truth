@@ -21,9 +21,7 @@ import static java.util.Collections.emptyList;
 import com.google.common.primitives.Ints;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code int[]} values.
- */
+/** A subject for {@code int[]} values. */
 public final class PrimitiveIntArraySubject extends Subject {
   private final int @Nullable [] actual;
 

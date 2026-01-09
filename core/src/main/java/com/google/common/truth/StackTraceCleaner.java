@@ -204,8 +204,9 @@ final class StackTraceCleaner {
     return isFromClassOrClassNestedInside(stackTraceElement, SUBJECT_CLASS)
         /*
          * Don't match classes _nested inside_ StandardSubjectBuilder because that would match
-         * Expect's Statement implementation. While we want to strip everything from there _down_, we
-         * don't want to strip everything from there _up_ (which would strip the test class itself!).
+         * Expect's Statement implementation. While we want to strip everything from there _down_,
+         * we don't want to strip everything from there _up_ (which would strip the test class
+         * itself!).
          *
          * (StandardSubjectBuilder is listed here only for its fail() methods, anyway, so we don't
          * have to worry about nested classes like we do with Subject.)

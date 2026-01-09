@@ -21,9 +21,7 @@ import static java.util.Collections.emptyList;
 import com.google.common.primitives.Bytes;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code byte[]} values.
- */
+/** A subject for {@code byte[]} values. */
 public final class PrimitiveByteArraySubject extends Subject {
   private final byte @Nullable [] actual;
 

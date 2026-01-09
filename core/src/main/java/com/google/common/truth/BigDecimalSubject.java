@@ -21,9 +21,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import java.math.BigDecimal;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link BigDecimal} values.
- */
+/** A subject for {@link BigDecimal} values. */
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final @Nullable BigDecimal actual;
 

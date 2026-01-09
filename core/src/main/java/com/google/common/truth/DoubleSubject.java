@@ -26,9 +26,7 @@ import static java.lang.Double.POSITIVE_INFINITY;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Double} values.
- */
+/** A subject for {@link Double} values. */
 public final class DoubleSubject extends ComparableSubject<Double> {
   private final @Nullable Double actual;
 

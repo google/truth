@@ -28,9 +28,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code double[]} values.
- */
+/** A subject for {@code double[]} values. */
 public final class PrimitiveDoubleArraySubject extends Subject {
   private final double @Nullable [] actual;
 

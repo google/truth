@@ -25,9 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * Tests (and effectively sample code) for custom error message for checks.
- */
+/** Tests (and effectively sample code) for custom error message for checks. */
 @SuppressWarnings("LenientFormatStringValidation") // Intentional for testing
 @RunWith(JUnit4.class)
 public class CustomFailureMessageTest {

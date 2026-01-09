@@ -260,7 +260,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       @Override
       final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
         printContentsForRepeatedField(
-            /* includeSelfAlways = */ false, includeMatches, fieldPrefix, sb);
+            /* includeSelfAlways= */ false, includeMatches, fieldPrefix, sb);
       }
 
       // When printing results for a repeated field, we want to print matches even if
@@ -432,7 +432,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       fieldPrefix = newFieldPrefix(fieldPrefix, fieldDescriptor().getName());
       for (PairResult pairResult : pairResults()) {
         pairResult.printContentsForRepeatedField(
-            /* includeSelfAlways = */ !isMatched(), includeMatches, fieldPrefix, sb);
+            /* includeSelfAlways= */ !isMatched(), includeMatches, fieldPrefix, sb);
       }
     }
 
@@ -627,11 +627,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
 
     if (!isMatched()) {
       sb.append("Differences were found:\n");
-      printContents(/* includeMatches = */ false, /* fieldPrefix = */ "", sb);
+      printContents(/* includeMatches= */ false, /* fieldPrefix= */ "", sb);
 
       if (!reportMismatchesOnly && isAnyChildMatched()) {
         sb.append("\nFull diff report:\n");
-        printContents(/* includeMatches = */ true, /* fieldPrefix = */ "", sb);
+        printContents(/* includeMatches= */ true, /* fieldPrefix= */ "", sb);
       }
     } else {
       sb.append("No differences were found.");
@@ -641,7 +641,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         } else {
           sb.append("\nFull diff report:\n");
         }
-        printContents(/* includeMatches = */ true, /* fieldPrefix = */ "", sb);
+        printContents(/* includeMatches= */ true, /* fieldPrefix= */ "", sb);
       }
     }
 

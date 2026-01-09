@@ -21,9 +21,7 @@ import static java.util.Collections.emptyList;
 import com.google.common.primitives.Chars;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code char[]} values.
- */
+/** A subject for {@code char[]} values. */
 public final class PrimitiveCharArraySubject extends Subject {
   private final char @Nullable [] actual;
 

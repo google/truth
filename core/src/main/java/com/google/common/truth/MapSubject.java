@@ -48,9 +48,7 @@ import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Map} values.
- */
+/** A subject for {@link Map} values. */
 public class MapSubject extends Subject {
   private final @Nullable Map<?, ?> actual;
 

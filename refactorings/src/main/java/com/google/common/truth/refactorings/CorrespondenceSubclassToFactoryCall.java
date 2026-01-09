@@ -285,7 +285,10 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
         .orElse("");
   }
 
-  /** Returns all calls to the constructor for the given {@code classSymbol}, organized by {@linkplain ParentType whether they happen inside a call to {@code comparingElementsUsing}. */
+  /**
+   * Returns all calls to the constructor for the given {@code classSymbol}, organized by {@link
+   * ParentType} (i.e., whether they happen inside a call to {@code comparingElementsUsing}).
+   */
   private static SetMultimap<ParentType, NewClassTree> findCalls(
       Symbol classSymbol, VisitorState state) {
     SetMultimap<ParentType, NewClassTree> calls = HashMultimap.create();
@@ -410,7 +413,11 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
         .collect(toImmutableList());
   }
 
-  /** Returns one or more possible replacements for the given correspondence's {@code compare} method's definition and for code to pass to {@code Correspondence.from) to construct a correspondence that uses the replacement. */
+  /**
+   * Returns one or more possible replacements for the given correspondence's {@code compare}
+   * method's definition and for code to pass to {@code Correspondence.from} to construct a
+   * correspondence that uses the replacement.
+   */
   private static ImmutableList<BinaryPredicateCode> makeBinaryPredicates(
       ClassTree classTree, MethodTree compareMethod, VisitorState state) {
     Tree comparison = maybeMakeLambdaBody(compareMethod, state);

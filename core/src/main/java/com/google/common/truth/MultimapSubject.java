@@ -49,9 +49,7 @@ import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Multimap} values.
- */
+/** A subject for {@link Multimap} values. */
 public class MultimapSubject extends Subject {
   private final @Nullable Multimap<?, ?> actual;
 

@@ -55,9 +55,7 @@ public final class StreamSubject extends Subject {
   private final @Nullable Stream<?> actual;
   private final Supplier<@Nullable List<?>> listSupplier;
 
-  private StreamSubject(
-      FailureMetadata metadata,
-      @Nullable Stream<?> actual) {
+  private StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
     super(metadata, actual);
     this.actual = actual;
     this.listSupplier =

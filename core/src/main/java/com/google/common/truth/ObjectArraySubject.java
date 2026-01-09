@@ -21,9 +21,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code Object[]} and more generically {@code T[]}.
- */
+/** A subject for {@code Object[]} and more generically {@code T[]}. */
 public final class ObjectArraySubject<T extends @Nullable Object> extends Subject {
   private final T @Nullable [] actual;
 
