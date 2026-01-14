@@ -290,6 +290,7 @@ public class SubjectTest {
   }
 
   @Test
+  @SuppressWarnings("AssertSameIncompatible") // Intentional for testing.
   public void isNotSameInstanceAsWithDifferentTypesAndSameToString() {
     assertThat("true").isNotSameInstanceAs(true);
   }
