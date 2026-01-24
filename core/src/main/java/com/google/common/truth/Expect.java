@@ -234,7 +234,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   }
 
   private Expect(ExpectationGatherer gatherer) {
-    super(FailureMetadata.forFailureStrategy(gatherer));
+    super(FailureMetadata.forFailureStrategy(gatherer, /* suppressInferDescription= */ false));
     this.gatherer = checkNotNull(gatherer);
   }
 

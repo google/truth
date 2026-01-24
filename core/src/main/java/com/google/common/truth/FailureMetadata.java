@@ -24,15 +24,14 @@ import static com.google.common.truth.Fact.factFromSupplier;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
+import static com.google.common.truth.Platform.forceInferDescription;
 import static com.google.common.truth.Platform.inferDescription;
-import static com.google.common.truth.Platform.isInferDescriptionEnabledForExpectFailure;
 import static com.google.common.truth.Platform.makeComparisonFailure;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.truth.ExpectFailure.ExpectFailureFailureStrategy;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -56,55 +55,18 @@ import org.jspecify.annotations.Nullable;
  * constructor.)
  */
 public final class FailureMetadata {
-  static FailureMetadata forFailureStrategy(FailureStrategy strategy) {
+  static FailureMetadata forFailureStrategy(
+      FailureStrategy strategy, boolean suppressInferDescription) {
     return new FailureMetadata(
-        strategy, /* messages= */ ImmutableList.of(), /* steps= */ ImmutableList.of());
+        strategy,
+        suppressInferDescription,
+        /* messages= */ ImmutableList.of(),
+        /* steps= */ ImmutableList.of());
   }
 
   private final FailureStrategy strategy;
 
-  /**
-   * The data from a call to either (a) a {@link Subject} constructor or (b) {@link Subject#check}.
-   */
-  private static final class Step {
-    static Step subjectCreation(Subject subject) {
-      return new Step(checkNotNull(subject), null, null);
-    }
-
-    static Step checkCall(
-        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar,
-        @Nullable Function<String, String> descriptionUpdate) {
-      return new Step(null, descriptionUpdate, valuesAreSimilar);
-    }
-
-    /*
-     * We store Subject, rather than the actual value itself, so that we can call
-     * actualCustomStringRepresentation(). Why not call actualCustomStringRepresentation()
-     * immediately? First, it might be expensive, and second, the Subject isn't initialized at the
-     * time we receive it. We *might* be able to make it safe to call if it looks only at
-     * actualForPackageMembersToCall(), but it might try to look at facts initialized by a subclass,
-     * which aren't ready yet.
-     */
-    final @Nullable Subject subject;
-
-    final @Nullable Function<String, String> descriptionUpdate;
-
-    // Present only when descriptionUpdate is.
-    final @Nullable OldAndNewValuesAreSimilar valuesAreSimilar;
-
-    private Step(
-        @Nullable Subject subject,
-        @Nullable Function<String, String> descriptionUpdate,
-        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar) {
-      this.subject = subject;
-      this.descriptionUpdate = descriptionUpdate;
-      this.valuesAreSimilar = valuesAreSimilar;
-    }
-
-    boolean isCheckCall() {
-      return subject == null;
-    }
-  }
+  private final boolean suppressInferDescription;
 
   /*
    * TODO(cpovirk): This implementation is wasteful, especially because `steps` is used even by
@@ -119,8 +81,12 @@ public final class FailureMetadata {
   private final ImmutableList<Step> steps;
 
   private FailureMetadata(
-      FailureStrategy strategy, ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
+      FailureStrategy strategy,
+      boolean suppressInferDescription,
+      ImmutableList<LazyMessage> messages,
+      ImmutableList<Step> steps) {
     this.strategy = checkNotNull(strategy);
+    this.suppressInferDescription = suppressInferDescription;
     this.messages = checkNotNull(messages);
     this.steps = checkNotNull(steps);
   }
@@ -212,7 +178,7 @@ public final class FailureMetadata {
   }
 
   private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
-    return new FailureMetadata(strategy, messages, steps);
+    return new FailureMetadata(strategy, suppressInferDescription, messages, steps);
   }
 
   /**
@@ -246,10 +212,7 @@ public final class FailureMetadata {
   /** Overload of {@link #description()} that allows passing a custom key for the fact. */
   private ImmutableList<Fact> description(String factKey) {
     String description =
-        strategy instanceof ExpectFailureFailureStrategy
-                && !isInferDescriptionEnabledForExpectFailure()
-            ? null
-            : inferDescription();
+        suppressInferDescription && !forceInferDescription() ? null : inferDescription();
     boolean descriptionIsInteresting = description != null;
     for (Step step : steps) {
       if (step.isCheckCall()) {
@@ -352,5 +315,48 @@ public final class FailureMetadata {
       }
     }
     return null;
+  }
+
+  /**
+   * The data from a call to either (a) a {@link Subject} constructor or (b) {@link Subject#check}.
+   */
+  private static final class Step {
+    static Step subjectCreation(Subject subject) {
+      return new Step(checkNotNull(subject), null, null);
+    }
+
+    static Step checkCall(
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar,
+        @Nullable Function<String, String> descriptionUpdate) {
+      return new Step(null, descriptionUpdate, valuesAreSimilar);
+    }
+
+    /*
+     * We store Subject, rather than the actual value itself, so that we can call
+     * actualCustomStringRepresentation(). Why not call actualCustomStringRepresentation()
+     * immediately? First, it might be expensive, and second, the Subject isn't initialized at the
+     * time we receive it. We *might* be able to make it safe to call if it looks only at
+     * actualForPackageMembersToCall(), but it might try to look at facts initialized by a subclass,
+     * which aren't ready yet.
+     */
+    final @Nullable Subject subject;
+
+    final @Nullable Function<String, String> descriptionUpdate;
+
+    // Present only when descriptionUpdate is.
+    final @Nullable OldAndNewValuesAreSimilar valuesAreSimilar;
+
+    private Step(
+        @Nullable Subject subject,
+        @Nullable Function<String, String> descriptionUpdate,
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar) {
+      this.subject = subject;
+      this.descriptionUpdate = descriptionUpdate;
+      this.valuesAreSimilar = valuesAreSimilar;
+    }
+
+    boolean isCheckCall() {
+      return subject == null;
+    }
   }
 }

@@ -46,7 +46,8 @@ public final class TruthJUnit {
                 new AssumptionViolatedException(failure.getMessage(), failure.getCause());
             assumptionViolated.setStackTrace(failure.getStackTrace());
             throw assumptionViolated;
-          });
+          },
+          /* suppressInferDescription= */ true);
 
   /**
    * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will
