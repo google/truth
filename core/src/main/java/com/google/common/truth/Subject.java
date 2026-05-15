@@ -375,8 +375,7 @@ public class Subject {
   }
 
   /** Checks that the value under test is equal to any of the given elements. */
-  public void isAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+  public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     isIn(accumulate(first, second, rest));
   }
 
@@ -396,8 +395,7 @@ public class Subject {
   }
 
   /** Checks that the value under test is not equal to any of the given elements. */
-  public void isNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 

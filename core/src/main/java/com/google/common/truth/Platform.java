@@ -242,11 +242,10 @@ final class Platform {
     }
   }
 
-  static boolean isInferDescriptionEnabledForExpectFailure() {
+  static boolean forceInferDescription() {
     try {
       return Boolean.parseBoolean(
-          System.getProperty(
-              "com.google.common.truth.enable_infer_description_for_expect_failure"));
+          System.getProperty("com.google.common.truth.force_infer_description"));
     } catch (SecurityException e) {
       return false;
     }

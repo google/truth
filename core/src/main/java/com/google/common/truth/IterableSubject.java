@@ -229,7 +229,7 @@ public class IterableSubject extends Subject {
 
   /** Checks that the actual iterable contains at least one of the provided objects. */
   public final void containsAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsAnyIn(accumulate(first, second, rest));
   }
 
@@ -295,7 +295,7 @@ public class IterableSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeast(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     return containsAtLeastElementsIn(accumulate(first, second, rest));
   }
 
@@ -446,7 +446,7 @@ public class IterableSubject extends Subject {
    * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsExactly(@Nullable Object @Nullable ... expected) {
+  public final Ordered containsExactly(@Nullable Object... expected) {
     return containsExactlyElementsIn(
         listifyNullableVarargs(expected),
         /* addElementsInWarning= */ expected != null
@@ -775,7 +775,7 @@ public class IterableSubject extends Subject {
 
   /** Checks that the actual iterable contains none of the excluded objects. */
   public final void containsNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsNoneIn(accumulate(first, second, rest));
   }
 
@@ -939,8 +939,7 @@ public class IterableSubject extends Subject {
    */
   @Override
   @Deprecated
-  public void isNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     super.isNoneOf(first, second, rest);
   }
 
@@ -1313,7 +1312,7 @@ public class IterableSubject extends Subject {
      */
     @SafeVarargs
     @CanIgnoreReturnValue
-    public final Ordered containsExactly(@Nullable E @Nullable ... expected) {
+    public final Ordered containsExactly(@Nullable E... expected) {
       return containsExactlyElementsIn(SubjectUtils.<E>listifyNullableVarargs(expected));
     }
 
@@ -1676,7 +1675,7 @@ public class IterableSubject extends Subject {
      */
     @SafeVarargs
     @CanIgnoreReturnValue
-    public final Ordered containsAtLeast(E first, E second, E @Nullable ... rest) {
+    public final Ordered containsAtLeast(E first, E second, E... rest) {
       return containsAtLeastElementsIn(accumulate(first, second, rest));
     }
 
@@ -1935,7 +1934,7 @@ public class IterableSubject extends Subject {
      * one of the expected elements.
      */
     @SafeVarargs
-    public final void containsAnyOf(E first, E second, E @Nullable ... rest) {
+    public final void containsAnyOf(E first, E second, E... rest) {
       containsAnyIn(accumulate(first, second, rest));
     }
 
@@ -2054,7 +2053,7 @@ public class IterableSubject extends Subject {
      * elements.
      */
     @SafeVarargs
-    public final void containsNoneOf(E first, E second, E @Nullable ... rest) {
+    public final void containsNoneOf(E first, E second, E... rest) {
       containsNoneIn(accumulate(first, second, rest));
     }
 

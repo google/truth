@@ -37,6 +37,7 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
@@ -1273,12 +1274,14 @@ public class IterableSubjectCorrespondenceTest {
         .containsExactly(128, null);
   }
 
+  // We intentionally test the behavior of the method under a call that will soon fail.
+  @SuppressWarnings("NullNeedsCastForVarargs")
   @Test
   public void containsExactly_nullArray() {
     // Truth is tolerant of this erroneous varargs call.
-    List<String> actual = Arrays.asList((String) null);
-    IterableSubject.UsingCorrespondence<String, Integer> subject = assertThat(actual)
-        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
+    List<String> actual = singletonList(null);
+    IterableSubject.UsingCorrespondence<String, Integer> subject =
+        assertThat(actual).comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     Ordered ordered;
     try {
       ordered = subject.containsExactly((Integer[]) null);

@@ -110,14 +110,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
     }
     failureExpected = true;
     return StandardSubjectBuilder.forCustomFailureStrategy(
-        (ExpectFailureFailureStrategy) this::captureFailure);
+        this::captureFailure, /* suppressInferDescription= */ true);
   }
-
-  /**
-   * Marker interface that we check for so that we can automatically disable "value of" lines during
-   * {@link ExpectFailure} assertions.
-   */
-  interface ExpectFailureFailureStrategy extends FailureStrategy {}
 
   /**
    * Enters rule context to be ready to capture failures.

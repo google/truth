@@ -21,9 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Booleans;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code boolean[]} values.
- */
+/** A subject for {@code boolean[]} values. */
 public final class PrimitiveBooleanArraySubject extends Subject {
   private final boolean @Nullable [] actual;
 

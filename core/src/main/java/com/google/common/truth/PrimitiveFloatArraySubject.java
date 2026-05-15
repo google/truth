@@ -28,9 +28,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code float[]} values.
- */
+/** A subject for {@code float[]} values. */
 public final class PrimitiveFloatArraySubject extends Subject {
   private final float @Nullable [] actual;
 
@@ -131,9 +129,9 @@ public final class PrimitiveFloatArraySubject extends Subject {
         expected instanceof Float || expected instanceof Integer || expected instanceof Long;
     if (!okType) {
       throw new IllegalArgumentException(
-        "Expected value in assertion using exact float equality was of unsupported type "
-            + SubjectUtils.longName(expected.getClass())
-            + " (it may not have an exact float representation)");
+          "Expected value in assertion using exact float equality was of unsupported type "
+              + SubjectUtils.longName(expected.getClass())
+              + " (it may not have an exact float representation)");
     }
     if (expected instanceof Integer) {
       checkArgument(

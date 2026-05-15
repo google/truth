@@ -25,9 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link String} values.
- */
+/** A subject for {@link String} values. */
 public class StringSubject extends ComparableSubject<String> {
   private final @Nullable String actual;
 

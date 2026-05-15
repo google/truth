@@ -234,6 +234,7 @@ public class StringSubjectTest {
     assertThat(e).factKeys().contains("Did you mean to call containsMatch() instead of match()?");
   }
 
+  @SuppressWarnings("InvalidPatternSyntax") // testing Truth's behavior for an invalid pattern
   @Test
   public void matchesStringBadRegexDoesNotShowModifiedRegex() {
     /*

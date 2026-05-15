@@ -1518,8 +1518,8 @@ public class MapSubjectTest {
     assertThat(e)
         .factValue("first exception", 0)
         .startsWith(
-            "compare(null, 60) threw"
-                + " com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
+            "compare(null, 60) threw "
+                + "com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
     assertThat(e)
         .factValue("first exception", 1)
         .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");
@@ -2059,8 +2059,8 @@ public class MapSubjectTest {
     assertThat(e)
         .factValue("first exception", 0)
         .startsWith(
-            "compare(null, 60) threw"
-                + " com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
+            "compare(null, 60) threw "
+                + "com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
     assertThat(e)
         .factValue("first exception", 1)
         .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");
@@ -2494,8 +2494,8 @@ public class MapSubjectTest {
     assertThat(e)
         .factValue("first exception", 0)
         .startsWith(
-            "compare(null, 60) threw"
-                + " com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
+            "compare(null, 60) threw "
+                + "com.google.common.truth.TestCorrespondences$NullPointerExceptionFromWithin10Of");
     assertThat(e)
         .factValue("first exception", 1)
         .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");

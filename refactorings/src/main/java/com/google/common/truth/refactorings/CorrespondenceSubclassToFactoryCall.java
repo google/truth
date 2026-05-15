@@ -82,6 +82,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import org.jspecify.annotations.Nullable;
 
@@ -91,7 +92,6 @@ import org.jspecify.annotations.Nullable;
  * and used.
  */
 @BugPattern(
-    name = "CorrespondenceSubclassToFactoryCall",
     summary = "Use the factory methods on Correspondence instead of defining a subclass.",
     severity = SUGGESTION)
 public final class CorrespondenceSubclassToFactoryCall extends BugChecker
@@ -274,7 +274,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
         tree.getMembers().stream()
             .filter(t -> t instanceof MethodTree)
             .map(t -> (MethodTree) t)
-            .filter(t -> t.getName().contentEquals("<init>"))
+            .filter(t -> getSymbol(t).getKind() == ElementKind.CONSTRUCTOR)
             .findAny()
             .get();
     // We don't include the ModifiersTree directly in case it contains any annotations.
@@ -285,7 +285,10 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
         .orElse("");
   }
 
-  /** Returns all calls to the constructor for the given {@code classSymbol}, organized by {@linkplain ParentType whether they happen inside a call to {@code comparingElementsUsing}. */
+  /**
+   * Returns all calls to the constructor for the given {@code classSymbol}, organized by {@link
+   * ParentType} (i.e., whether they happen inside a call to {@code comparingElementsUsing}).
+   */
   private static SetMultimap<ParentType, NewClassTree> findCalls(
       Symbol classSymbol, VisitorState state) {
     SetMultimap<ParentType, NewClassTree> calls = HashMultimap.create();
@@ -410,7 +413,11 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
         .collect(toImmutableList());
   }
 
-  /** Returns one or more possible replacements for the given correspondence's {@code compare} method's definition and for code to pass to {@code Correspondence.from) to construct a correspondence that uses the replacement. */
+  /**
+   * Returns one or more possible replacements for the given correspondence's {@code compare}
+   * method's definition and for code to pass to {@code Correspondence.from} to construct a
+   * correspondence that uses the replacement.
+   */
   private static ImmutableList<BinaryPredicateCode> makeBinaryPredicates(
       ClassTree classTree, MethodTree compareMethod, VisitorState state) {
     Tree comparison = maybeMakeLambdaBody(compareMethod, state);
@@ -631,7 +638,7 @@ public final class CorrespondenceSubclassToFactoryCall extends BugChecker
       }
       MethodSymbol methodSymbol = (MethodSymbol) symbol;
 
-      if (methodSymbol.getSimpleName().contentEquals("<init>")) {
+      if (methodSymbol.getKind() == ElementKind.CONSTRUCTOR) {
         return CONSTRUCTOR;
       } else if (overrides(methodSymbol, CORRESPONDENCE_CLASS, "compare", state)) {
         return COMPARE_METHOD;

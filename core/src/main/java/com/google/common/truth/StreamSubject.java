@@ -55,9 +55,7 @@ public final class StreamSubject extends Subject {
   private final @Nullable Stream<?> actual;
   private final Supplier<@Nullable List<?>> listSupplier;
 
-  private StreamSubject(
-      FailureMetadata metadata,
-      @Nullable Stream<?> actual) {
+  private StreamSubject(FailureMetadata metadata, @Nullable Stream<?> actual) {
     super(metadata, actual);
     this.actual = actual;
     this.listSupplier =
@@ -130,7 +128,7 @@ public final class StreamSubject extends Subject {
 
   /** Checks that the actual stream contains at least one of the given elements. */
   public void containsAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     checkThatContentsList().containsAnyOf(first, second, rest);
   }
 
@@ -150,7 +148,7 @@ public final class StreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsAtLeast(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     return checkThatContentsList().containsAtLeast(first, second, rest);
   }
 
@@ -181,7 +179,7 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object @Nullable ... expected) {
+  public Ordered containsExactly(@Nullable Object... expected) {
     return checkThatContentsList().containsExactlyElementsIn(listifyNullableVarargs(expected));
   }
 
@@ -202,7 +200,7 @@ public final class StreamSubject extends Subject {
 
   /** Checks that the actual stream does not contain any of the given elements. */
   public void containsNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     checkThatContentsList().containsNoneOf(first, second, rest);
   }
 

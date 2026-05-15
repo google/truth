@@ -26,9 +26,7 @@ import static java.lang.Float.POSITIVE_INFINITY;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Float} values.
- */
+/** A subject for {@link Float} values. */
 public final class FloatSubject extends ComparableSubject<Float> {
   private final @Nullable Float actual;
   private final DoubleSubject asDouble;

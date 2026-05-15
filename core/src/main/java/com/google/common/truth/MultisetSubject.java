@@ -21,9 +21,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import com.google.common.collect.Multiset;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Multiset} values.
- */
+/** A subject for {@link Multiset} values. */
 public final class MultisetSubject extends IterableSubject {
 
   private final @Nullable Multiset<?> actual;

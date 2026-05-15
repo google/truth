@@ -145,7 +145,7 @@
                 <include>**/ActualValueInferenceTest.java</include>
               </includes>
               <systemPropertyVariables>
-                <com.google.common.truth.enable_infer_description_for_expect_failure>true</com.google.common.truth.enable_infer_description_for_expect_failure>
+                <com.google.common.truth.force_infer_description>true</com.google.common.truth.force_infer_description>
               </systemPropertyVariables>
             </configuration>
             <goals>
@@ -208,7 +208,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <id>copy-gwt-files</id>

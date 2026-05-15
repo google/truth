@@ -21,9 +21,7 @@ import static java.util.Collections.emptyList;
 import com.google.common.primitives.Longs;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code long[]} values.
- */
+/** A subject for {@code long[]} values. */
 public final class PrimitiveLongArraySubject extends Subject {
   private final long @Nullable [] actual;
 

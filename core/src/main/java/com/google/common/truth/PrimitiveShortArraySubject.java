@@ -21,9 +21,7 @@ import static java.util.Collections.emptyList;
 import com.google.common.primitives.Shorts;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@code short[]} values.
- */
+/** A subject for {@code short[]} values. */
 public final class PrimitiveShortArraySubject extends Subject {
   private final short @Nullable [] actual;
 

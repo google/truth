@@ -92,7 +92,13 @@ public class StandardSubjectBuilder {
    * FailureStrategy}.
    */
   public static StandardSubjectBuilder forCustomFailureStrategy(FailureStrategy strategy) {
-    return new StandardSubjectBuilder(FailureMetadata.forFailureStrategy(strategy));
+    return forCustomFailureStrategy(strategy, /* suppressInferDescription= */ false);
+  }
+
+  static StandardSubjectBuilder forCustomFailureStrategy(
+      FailureStrategy strategy, boolean suppressInferDescription) {
+    return new StandardSubjectBuilder(
+        FailureMetadata.forFailureStrategy(strategy, suppressInferDescription));
   }
 
   private final FailureMetadata metadataDoNotReferenceDirectly;

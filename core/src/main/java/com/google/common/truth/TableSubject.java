@@ -23,9 +23,7 @@ import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Table} values.
- */
+/** A subject for {@link Table} values. */
 public final class TableSubject extends Subject {
   private final @Nullable Table<?, ?, ?> actual;
 

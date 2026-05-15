@@ -23,6 +23,7 @@ import static com.google.common.truth.FailureAssertions.assertFailureValueIndexe
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.ImmutableList;
@@ -814,10 +815,12 @@ public class IterableSubjectTest {
   }
 
   @Test
+  // We intentionally test the behavior of the method under a call that will soon fail.
+  @SuppressWarnings("NullNeedsCastForVarargs")
   @J2ktIncompatible // Kotlin can't pass a null array for a varargs parameter
   public void containsExactlyWithOnlyNullPassedAsNullArray() {
-    // Truth is tolerant of this erroneous varargs call.
-    Iterable<Object> actual = asList((Object) null);
+    Iterable<Object> actual = singleton(null);
+    // We are changing Truth from tolerating this erroneous varargs call to not tolerating it.
     try {
       assertThat(actual).containsExactly((Object[]) null);
     } catch (NullPointerException e) {

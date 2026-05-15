@@ -22,9 +22,7 @@ import static java.lang.Math.subtractExact;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * A subject for {@link Long} values.
- */
+/** A subject for {@link Long} values. */
 public class LongSubject extends ComparableSubject<Long> {
 
   private final @Nullable Long actual;

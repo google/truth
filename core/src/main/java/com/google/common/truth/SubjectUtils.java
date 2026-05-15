@@ -55,9 +55,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import org.jspecify.annotations.Nullable;
 
-/**
- * Utility methods used in {@link Subject} implementors.
- */
+/** Utility methods used in {@link Subject} implementors. */
 final class SubjectUtils {
   private SubjectUtils() {}
 

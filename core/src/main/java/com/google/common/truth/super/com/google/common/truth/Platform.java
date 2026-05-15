@@ -180,7 +180,7 @@ final class Platform {
         + " verifying that the expected failure occurred.)";
   }
 
-  static boolean isInferDescriptionEnabledForExpectFailure() {
+  static boolean forceInferDescription() {
     return false; // irrelevant because we can infer descriptions only under the JVM
   }
 
