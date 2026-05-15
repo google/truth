@@ -15,7 +15,7 @@
  */
 
 module com.google.truth {
-  requires com.google.common;
+  requires transitive com.google.common;
 
   /*
    * AutoValue's annotations aren't ready for the module system:
