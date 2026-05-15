@@ -23,8 +23,6 @@ import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.extensions.liteproto.LiteProtoSubject;
-import com.google.common.truth.extensions.liteproto.internal.LiteProtoSubjectAccess;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
@@ -679,7 +677,7 @@ public class ProtoSubject extends LiteProtoSubject {
       failWithoutActual(
           simpleFact("expected to have all required fields set"),
           fact("but was missing", actual.findInitializationErrors()),
-          fact("proto was", LiteProtoSubjectAccess.getCustomStringRepresentation(this)));
+          fact("proto was", actualCustomStringRepresentationForProtoPackageMembersToCall()));
     }
   }
 

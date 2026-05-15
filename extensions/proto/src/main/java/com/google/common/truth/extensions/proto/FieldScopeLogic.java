@@ -120,7 +120,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
     return and(
         this,
-        new NegationFieldScopeLogic(new FieldNumbersLogic(fieldNumbers, /* isRecursive = */ true)));
+        new NegationFieldScopeLogic(new FieldNumbersLogic(fieldNumbers, /* isRecursive= */ true)));
   }
 
   FieldScopeLogic ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
@@ -130,35 +130,35 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     return and(
         this,
         new NegationFieldScopeLogic(
-            new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive = */ true)));
+            new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive= */ true)));
   }
 
   FieldScopeLogic allowingFields(Iterable<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
-    return or(this, new FieldNumbersLogic(fieldNumbers, /* isRecursive = */ true));
+    return or(this, new FieldNumbersLogic(fieldNumbers, /* isRecursive= */ true));
   }
 
   FieldScopeLogic allowingFieldsNonRecursive(Iterable<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
-    return or(this, new FieldNumbersLogic(fieldNumbers, /* isRecursive = */ false));
+    return or(this, new FieldNumbersLogic(fieldNumbers, /* isRecursive= */ false));
   }
 
   FieldScopeLogic allowingFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
-    return or(this, new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive = */ true));
+    return or(this, new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive= */ true));
   }
 
   FieldScopeLogic allowingFieldDescriptorsNonRecursive(Iterable<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
-    return or(this, new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive = */ false));
+    return or(this, new FieldDescriptorsLogic(fieldDescriptors, /* isRecursive= */ false));
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -331,7 +331,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
       }
 
       if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
-        return FieldScopeResult.of(/* included = */ true, isRecursive);
+        return FieldScopeResult.of(/* included= */ true, isRecursive);
       }
 
       // We return 'EXCLUDED_NONRECURSIVELY' for both field descriptor scopes and field number

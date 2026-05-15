@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.common.truth.extensions.liteproto.test;
+package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
-import static com.google.common.truth.extensions.liteproto.LiteProtoTruth.assertThat;
-import static com.google.common.truth.extensions.liteproto.LiteProtoTruth.liteProtos;
+import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
+import static com.google.common.truth.extensions.proto.LiteProtoTruth.liteProtos;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.truth.extensions.liteproto.test.proto.OtherTestMessageLite2;
-import com.google.common.truth.extensions.liteproto.test.proto.OtherTestMessageLite3;
-import com.google.common.truth.extensions.liteproto.test.proto.TestMessageLite2;
-import com.google.common.truth.extensions.liteproto.test.proto.TestMessageLite2WithRequiredFields;
-import com.google.common.truth.extensions.liteproto.test.proto.TestMessageLite3;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Expect;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.common.truth.Subject;
-import com.google.common.truth.extensions.liteproto.LiteProtoSubject;
 import com.google.protobuf.MessageLite;
 import java.util.Arrays;
 import java.util.Collection;
@@ -140,7 +134,7 @@ public class LiteProtoSubjectTest {
   }
 
   private LiteProtoSubject expectThat(@Nullable MessageLite m) {
-    return expect.about(liteProtos()).that(m);
+    return expect.about(LiteProtoTruth.liteProtos()).that(m);
   }
 
   private Subject expectThat(@Nullable Object o) {
@@ -167,6 +161,7 @@ public class LiteProtoSubjectTest {
   }
 
   @Test
+  @SuppressWarnings("DoNotCall")
   public void isEqualTo_success() {
     expectThat(null).isEqualTo(null);
     expectThat(null).isNull();

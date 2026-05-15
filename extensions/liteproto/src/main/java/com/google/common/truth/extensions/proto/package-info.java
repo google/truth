@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Google, Inc.
+ * Copyright (c) 2016 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-module com.google.truth.extensions.proto {
-    requires com.google.truth;
-    requires com.google.truth.extensions.liteproto;
-    requires com.google.common;
-    requires com.google.protobuf;
-    requires java.compiler;
+/**
+ * Custom subjects for testing <a href="https://developers.google.com/protocol-buffers/">Protocol
+ * Buffer</a> instances.
+ *
+ * <p>This package is a part of the open-source <a href="https://github.com/google/truth">Truth</a>
+ * project.
+ */
+@CheckReturnValue
+package com.google.common.truth.extensions.proto;
 
-    requires static org.jspecify;
-    requires static com.google.errorprone.annotations;
-    requires static auto.value.annotations;
-
-    exports com.google.common.truth.extensions.proto;
-}
+import com.google.errorprone.annotations.CheckReturnValue;

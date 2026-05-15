@@ -318,19 +318,21 @@
             <execution>
               <id>default-compile</id>
               <configuration>
-                <release>9</release>
+                <excludes>
+                  <exclude>**/super/**/*.java</exclude>
+                </excludes>
               </configuration>
             </execution>
             <execution>
-              <id>base-compile</id>
+              <id>compile-java9</id>
               <goals>
                 <goal>compile</goal>
               </goals>
               <configuration>
-                <excludes>
-                  <exclude>module-info.java</exclude>
-                  <exclude>**/super/**/*.java</exclude>
-                </excludes>
+                <release>9</release>
+                <compileSourceRoots>
+                  <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
+                </compileSourceRoots>
               </configuration>
             </execution>
           </executions>
