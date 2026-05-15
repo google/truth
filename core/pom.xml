@@ -291,6 +291,10 @@
         <jdk>[9,)</jdk>
       </activation>
       <properties>
+        <!--
+          For tests of the sample Employee extension, which would otherwise fail:
+          java.lang.reflect.InaccessibleObjectException: Unable to make public void com.google.common.truth.extension.EmployeeSubjectTest.username() accessible: module com.google.truth does not "exports com.google.common.truth.extension" to module junit
+        -->
         <test.add.exports>--add-exports com.google.truth/com.google.common.truth.extension=junit,ALL-UNNAMED</test.add.exports>
       </properties>
     </profile>
