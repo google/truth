@@ -61,6 +61,14 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: truth-jars
+      - name: 'Unpack artifacts'
+        shell: bash
+        run: |
+          for f in $(find . -name "*.jar" ! -name "*-gwt.jar"); do
+            dest="${f%/target/*}/target/classes"
+            mkdir -p "$dest"
+            unzip -o "$f" -d "$dest"
+          done
       - name: 'Test'
         shell: bash
         run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -Dmaven.main.skip=true
