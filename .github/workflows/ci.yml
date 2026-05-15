@@ -46,7 +46,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        java: [ 8, 11, 17 ]
+        java: [ 8, 17, 25 ]
     runs-on: ubuntu-latest
     steps:
       - name: 'Check out repository'

@@ -15,14 +15,14 @@
  */
 
 module com.google.truth {
-    requires com.google.common;
-    requires static junit;
+  requires com.google.common;
 
-    requires static org.jspecify;
-    requires static com.google.errorprone.annotations;
-    requires static org.objectweb.asm;
-    requires static auto.value.annotations;
-    requires static com.google.j2objc.annotations;
+  requires static auto.value.annotations;
+  requires static com.google.errorprone.annotations;
+  requires static com.google.j2objc.annotations;
+  requires static junit;
+  requires static org.jspecify;
+  requires static org.objectweb.asm;
 
-    exports com.google.common.truth;
+  exports com.google.common.truth;
 }
