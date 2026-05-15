@@ -17,7 +17,12 @@
 module com.google.truth {
   requires com.google.common;
 
-  requires static auto.value.annotations;
+  /*
+   * AutoValue's annotations aren't ready for the module system:
+   * https://github.com/google/auto/issues/597. Let's hope that our usages are internal enough that
+   * we don't need to worry about listing them here.
+   */
+
   requires static com.google.errorprone.annotations;
   requires static com.google.j2objc.annotations;
   requires static junit;
