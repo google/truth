@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: mvn -B -P!standard-with-extra-repos javadoc:aggregate -U
       - name: 'Upload build artifacts'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: truth-jars
           path: |
@@ -58,7 +58,7 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: 'Download build artifacts'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: truth-jars
       - name: 'Test'
