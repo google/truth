@@ -23,11 +23,11 @@ module com.google.truth {
    * we don't need to worry about listing them here.
    */
 
-  requires static com.google.errorprone.annotations;
-  requires static com.google.j2objc.annotations;
-  requires static junit;
-  requires static org.jspecify;
-  requires static org.objectweb.asm;
+  requires static transitive com.google.errorprone.annotations;
+  requires static transitive com.google.j2objc.annotations;
+  requires static transitive junit;
+  requires static transitive org.jspecify;
+  requires static transitive org.objectweb.asm;
 
   exports com.google.common.truth;
 }
