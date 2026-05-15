@@ -63,7 +63,7 @@ jobs:
           name: truth-jars
       - name: 'Test'
         shell: bash
-        run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true
+        run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -Dmaven.main.skip=true
 
   publish_snapshot:
     name: 'Publish snapshot'
