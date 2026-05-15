@@ -40,6 +40,7 @@
 
     <!-- Default to no additional options (for Java 8). Overridden by a profile. -->
     <conditionalJavadoc9PlusOptions></conditionalJavadoc9PlusOptions>
+    <test.add.exports></test.add.exports>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -390,6 +391,15 @@
     </pluginManagement>
   </build>
   <profiles>
+    <profile>
+      <id>java9-plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <test.add.exports>--add-exports com.google.truth/com.google.common.truth.extension=junit,ALL-UNNAMED</test.add.exports>
+      </properties>
+    </profile>
     <profile>
       <id>sonatype-oss-release</id>
       <build>
