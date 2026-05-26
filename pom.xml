@@ -30,7 +30,7 @@
     -->
     <guava.jre.version>33.4.3-jre</guava.jre.version>
     <gwt.version>2.11.0</gwt.version>
-    <protobuf.version>4.34.1</protobuf.version>
+    <protobuf.version>4.35.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <!-- TODO(cpovirk): Use protobuf.version instead. But that requires finding the new way to request the Lite runtime. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
@@ -128,7 +128,7 @@
       <dependency>
         <groupId>org.ow2.asm</groupId>
         <artifactId>asm</artifactId>
-        <version>9.10</version>
+        <version>9.10.1</version>
       </dependency>
       <dependency>
         <groupId>com.google.jsinterop</groupId>
@@ -236,7 +236,7 @@
         <!-- https://stackoverflow.com/a/51093732/28465 -->
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.21.0</version>
+          <version>3.22.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
