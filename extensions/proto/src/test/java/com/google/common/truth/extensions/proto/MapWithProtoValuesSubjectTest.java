@@ -61,13 +61,14 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(mapOf(1, message1, 2, message2)).isEqualTo(mapOf(2, eqMessage2, 1, eqMessage1));
     expectThat(mapOf(1, message2)).isNotEqualTo(mapOf(1, message1));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message2, 2, message1))
-        .isEqualTo(mapOf(1, eqMessage1, 2, eqMessage2));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message2, 2, message1))
+                .isEqualTo(mapOf(1, eqMessage1, 2, eqMessage2)));
 
-    expectFailureWhenTesting().that(mapOf(1, message1)).isNotEqualTo(mapOf(1, eqMessage1));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting -> whenTesting.that(mapOf(1, message1)).isNotEqualTo(mapOf(1, eqMessage1)));
   }
 
   @Test
@@ -75,19 +76,16 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(ImmutableMap.<Object, Message>of()).isEmpty();
     expectThat(mapOf(1, message1)).isNotEmpty();
 
-    expectFailureWhenTesting().that(mapOf(1, message1)).isEmpty();
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(mapOf(1, message1)).isEmpty());
 
-    expectFailureWhenTesting().that(ImmutableMap.<Object, Message>of()).isNotEmpty();
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(ImmutableMap.<Object, Message>of()).isNotEmpty());
   }
 
   @Test
   public void plain_hasSize() {
     expectThat(mapOf(1, message1, 2, message2)).hasSize(2);
 
-    expectFailureWhenTesting().that(mapOf(1, message1)).hasSize(3);
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(mapOf(1, message1)).hasSize(3));
   }
 
   @Test
@@ -95,11 +93,10 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(mapOf(1, message1, 2, message2)).containsKey(1);
     expectThat(mapOf(1, message1, 2, message2)).doesNotContainKey(3);
 
-    expectFailureWhenTesting().that(mapOf(1, message1, 2, message2)).containsKey(3);
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(mapOf(1, message1, 2, message2)).containsKey(3));
 
-    expectFailureWhenTesting().that(mapOf(1, message1, 2, message2)).doesNotContainKey(2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting -> whenTesting.that(mapOf(1, message1, 2, message2)).doesNotContainKey(2));
   }
 
   @Test
@@ -107,13 +104,13 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(mapOf(1, message1, 2, message2)).containsEntry(2, eqMessage2);
     expectThat(mapOf(1, message1, 2, message2)).doesNotContainEntry(1, eqMessage2);
 
-    expectFailureWhenTesting().that(mapOf(1, message1, 2, message2)).containsEntry(2, eqMessage1);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(mapOf(1, message1, 2, message2)).containsEntry(2, eqMessage1));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .doesNotContainEntry(2, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(mapOf(1, message1, 2, message2)).doesNotContainEntry(2, eqMessage2));
   }
 
   @Test
@@ -128,27 +125,29 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyEntriesIn(mapOf(1, eqMessage1, 2, eqMessage2))
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1))
-        .containsExactly(1, eqMessage1, 2, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(mapOf(1, message1)).containsExactly(1, eqMessage1, 2, eqMessage2));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .containsExactly(2, eqMessage2, 1, eqMessage1)
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1, 2, message2))
+                .containsExactly(2, eqMessage2, 1, eqMessage1)
+                .inOrder());
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1))
-        .containsExactlyEntriesIn(mapOf(2, eqMessage2, 1, eqMessage1));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1))
+                .containsExactlyEntriesIn(mapOf(2, eqMessage2, 1, eqMessage1)));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .containsExactlyEntriesIn(mapOf(2, eqMessage2, 1, eqMessage1))
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1, 2, message2))
+                .containsExactlyEntriesIn(mapOf(2, eqMessage2, 1, eqMessage1))
+                .inOrder());
   }
 
   @Test
@@ -160,11 +159,14 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrderForValues()
         .doesNotContainEntry(1, eqIgnoredMessage1);
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsEntry(1, eqRepeatedMessage1);
-    expectThatFailure()
+    AssertionError failure =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(mapOf(1, message1, 2, message2))
+                    .ignoringFieldsForValues(ignoreFieldNumber)
+                    .containsEntry(1, eqRepeatedMessage1));
+    expectThatFailure(failure)
         .hasMessageThat()
         .contains(
             "is equivalent according to "
@@ -174,11 +176,14 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
                 + ".o_int)"
                 + ".isEqualTo(target)");
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .ignoringRepeatedFieldOrderForValues()
-        .doesNotContainEntry(1, eqRepeatedMessage1);
-    expectThatFailure()
+    failure =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(mapOf(1, message1, 2, message2))
+                    .ignoringRepeatedFieldOrderForValues()
+                    .doesNotContainEntry(1, eqRepeatedMessage1));
+    expectThatFailure(failure)
         .hasMessageThat()
         .contains(
             "is equivalent according to "
@@ -202,31 +207,35 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyEntriesIn(mapOf(1, eqRepeatedMessage1, 2, eqRepeatedMessage2))
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .containsExactly(1, eqRepeatedMessage1, 2, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1))
+                .ignoringRepeatedFieldOrderForValues()
+                .containsExactly(1, eqRepeatedMessage1, 2, eqMessage2));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1)
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1, 2, message2))
+                .ignoringFieldsForValues(ignoreFieldNumber)
+                .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1)
+                .inOrder());
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .containsExactlyEntriesIn(mapOf(2, eqRepeatedMessage2, 1, eqRepeatedMessage1));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1))
+                .ignoringRepeatedFieldOrderForValues()
+                .containsExactlyEntriesIn(mapOf(2, eqRepeatedMessage2, 1, eqRepeatedMessage1)));
 
-    expectFailureWhenTesting()
-        .that(mapOf(1, message1, 2, message2))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsExactlyEntriesIn(mapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(mapOf(1, message1, 2, message2))
+                .ignoringFieldsForValues(ignoreFieldNumber)
+                .containsExactlyEntriesIn(mapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
+                .inOrder());
   }
 
   @Test

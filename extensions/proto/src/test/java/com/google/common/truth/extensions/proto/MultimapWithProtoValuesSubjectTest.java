@@ -62,19 +62,16 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(ImmutableMultimap.<Object, Message>of()).isEmpty();
     expectThat(multimapOf(1, message1)).isNotEmpty();
 
-    expectFailureWhenTesting().that(multimapOf(1, message1)).isEmpty();
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(multimapOf(1, message1)).isEmpty());
 
-    expectFailureWhenTesting().that(ImmutableMap.<Object, Message>of()).isNotEmpty();
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(ImmutableMap.<Object, Message>of()).isNotEmpty());
   }
 
   @Test
   public void plain_hasSize() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).hasSize(3);
 
-    expectFailureWhenTesting().that(multimapOf(1, message1)).hasSize(3);
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(multimapOf(1, message1)).hasSize(3));
   }
 
   @Test
@@ -82,15 +79,15 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).containsKey(1);
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).doesNotContainKey(3);
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .containsKey(3);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting.that(multimapOf(1, message1, 1, message2, 2, message1)).containsKey(3));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .doesNotContainKey(2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 1, message2, 2, message1))
+                .doesNotContainKey(2));
   }
 
   @Test
@@ -99,15 +96,17 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .doesNotContainEntry(2, eqMessage2);
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .containsEntry(2, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 1, message2, 2, message1))
+                .containsEntry(2, eqMessage2));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .doesNotContainEntry(1, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 1, message2, 2, message1))
+                .doesNotContainEntry(1, eqMessage2));
   }
 
   @Test
@@ -118,16 +117,18 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyEntriesIn(multimapOf(1, eqMessage1, 1, eqMessage2, 2, eqMessage1))
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1))
-        .containsExactlyEntriesIn(multimapOf(1, eqMessage1, 2, eqMessage2));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1))
+                .containsExactlyEntriesIn(multimapOf(1, eqMessage1, 2, eqMessage2)));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 2, message2))
-        .containsExactlyEntriesIn(multimapOf(2, eqMessage2, 1, eqMessage1))
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 2, message2))
+                .containsExactlyEntriesIn(multimapOf(2, eqMessage2, 1, eqMessage1))
+                .inOrder());
   }
 
   @Test
@@ -135,8 +136,7 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
     expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly();
     expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly().inOrder();
 
-    expectFailureWhenTesting().that(multimapOf(1, message1)).containsExactly();
-    expectThatFailure().isNotNull();
+    expectFailure(whenTesting -> whenTesting.that(multimapOf(1, message1)).containsExactly());
   }
 
   @Test
@@ -147,16 +147,18 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactly(1, eqMessage1, 1, eqMessage2, 2, eqMessage1)
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1))
-        .containsExactly(1, eqMessage1, 2, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1))
+                .containsExactly(1, eqMessage1, 2, eqMessage2));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 2, message2))
-        .containsExactly(2, eqMessage2, 1, eqMessage1)
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 2, message2))
+                .containsExactly(2, eqMessage2, 1, eqMessage1)
+                .inOrder());
   }
 
   @Test
@@ -166,12 +168,13 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactly(eqMessage2, eqMessage1);
     expectThat(multimapOf(1, message1, 1, message2, 2, message1)).valuesForKey(2).hasSize(1);
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .valuesForKey(1)
-        .containsExactly(eqMessage2, eqMessage1)
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 1, message2, 2, message1))
+                .valuesForKey(1)
+                .containsExactly(eqMessage2, eqMessage1)
+                .inOrder());
   }
 
   @Test
@@ -183,11 +186,14 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrderForValues()
         .doesNotContainEntry(1, eqIgnoredMessage2);
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsEntry(1, eqRepeatedMessage2);
-    expectThatFailure()
+    AssertionError failure =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(multimapOf(1, message1, 1, message2, 2, message1))
+                    .ignoringFieldsForValues(ignoreFieldNumber)
+                    .containsEntry(1, eqRepeatedMessage2));
+    expectThatFailure(failure)
         .hasMessageThat()
         .contains(
             "is equivalent according to "
@@ -197,11 +203,14 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
                 + ".o_int)"
                 + ".isEqualTo(target)");
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .doesNotContainEntry(1, eqRepeatedMessage2);
-    expectThatFailure()
+    failure =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(multimapOf(1, message1, 1, message2, 2, message1))
+                    .ignoringRepeatedFieldOrderForValues()
+                    .doesNotContainEntry(1, eqRepeatedMessage2));
+    expectThatFailure(failure)
         .hasMessageThat()
         .contains(
             "is equivalent according to "
@@ -220,18 +229,21 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
             multimapOf(1, eqRepeatedMessage1, 1, eqRepeatedMessage2, 2, eqRepeatedMessage1))
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .containsExactlyEntriesIn(multimapOf(2, eqRepeatedMessage2, 1, eqRepeatedMessage1));
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1))
+                .ignoringRepeatedFieldOrderForValues()
+                .containsExactlyEntriesIn(
+                    multimapOf(2, eqRepeatedMessage2, 1, eqRepeatedMessage1)));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 2, message2))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsExactlyEntriesIn(multimapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 2, message2))
+                .ignoringFieldsForValues(ignoreFieldNumber)
+                .containsExactlyEntriesIn(multimapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
+                .inOrder());
   }
 
   @Test
@@ -244,11 +256,12 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactly()
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .containsExactly();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1))
+                .ignoringRepeatedFieldOrderForValues()
+                .containsExactly());
   }
 
   @Test
@@ -261,18 +274,20 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactly(1, eqRepeatedMessage1, 1, eqRepeatedMessage2, 2, eqRepeatedMessage1)
         .inOrder();
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1))
-        .ignoringRepeatedFieldOrderForValues()
-        .containsExactly(2, eqRepeatedMessage2, 1, eqRepeatedMessage1);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1))
+                .ignoringRepeatedFieldOrderForValues()
+                .containsExactly(2, eqRepeatedMessage2, 1, eqRepeatedMessage1));
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 2, message2))
-        .ignoringFieldsForValues(ignoreFieldNumber)
-        .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1)
-        .inOrder();
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 2, message2))
+                .ignoringFieldsForValues(ignoreFieldNumber)
+                .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1)
+                .inOrder());
   }
 
   @Test
@@ -286,12 +301,13 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsExactly(eqRepeatedMessage1);
 
-    expectFailureWhenTesting()
-        .that(multimapOf(1, message1, 1, message2, 2, message1))
-        .valuesForKey(1)
-        .ignoringFields(ignoreFieldNumber)
-        .containsExactly(eqRepeatedMessage1, eqRepeatedMessage2);
-    expectThatFailure().isNotNull();
+    expectFailure(
+        whenTesting ->
+            whenTesting
+                .that(multimapOf(1, message1, 1, message2, 2, message1))
+                .valuesForKey(1)
+                .ignoringFields(ignoreFieldNumber)
+                .containsExactly(eqRepeatedMessage1, eqRepeatedMessage2));
   }
 
   @Test

@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
+import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 import static com.google.protobuf.ExtensionRegistry.getEmptyRegistry;
 
 import com.google.common.base.Preconditions;
@@ -32,6 +33,7 @@ import com.google.common.truth.Expect;
 import com.google.common.truth.ExpectFailure;
 import com.google.common.truth.Subject;
 import com.google.common.truth.TruthFailureSubject;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -97,13 +99,26 @@ public class ProtoSubjectTestBase {
 
   @Rule public final Expect expect = Expect.create();
 
-  // Hackhackhack: 'ExpectFailure' does not support more than one call per test, but we have many
-  // tests which require it.  So, we create an arbitrary number of these rules, and dole them out
-  // in order on demand.
-  // TODO(user): See if 'expectFailure.enterRuleContext()' could be made public, or a '.reset()'
-  // function could be added to mitigate the need for this.  Alternatively, if & when Truth moves
-  // to Java 8, we can use the static API with lambdas instead.
-  @Rule public final MultiExpectFailure multiExpectFailure = new MultiExpectFailure(/* size= */ 20);
+  /**
+   * A functional interface for {@link #expectFailure} to invoke and capture failures.
+   *
+   * <p>TODO(cpovirk): Replace this with {@code CustomSubjectBuilderCallback} once we introduce such
+   * a type.
+   */
+  interface ProtoSubjectBuilderCallback {
+    void invokeAssertion(ProtoSubjectBuilder whenTesting);
+  }
+
+  @CanIgnoreReturnValue
+  protected static final AssertionError expectFailure(
+      ProtoSubjectBuilderCallback assertionCallback) {
+    return ExpectFailure.expectFailure(
+        whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(protos())));
+  }
+
+  protected final TruthFailureSubject expectThatFailure(AssertionError failure) {
+    return expect.about(truthFailures()).that(failure);
+  }
 
   private final Message defaultInstance;
   private final boolean isProto3;
@@ -179,62 +194,48 @@ public class ProtoSubjectTestBase {
     return isProto3;
   }
 
-  protected final ProtoSubjectBuilder expectFailureWhenTesting() {
-    return multiExpectFailure.whenTesting().about(ProtoTruth.protos());
-  }
-
-  protected final TruthFailureSubject expectThatFailure() {
-    return expect.about(truthFailures()).that(multiExpectFailure.getFailure());
-  }
-
   protected final ProtoSubject expectThat(@Nullable Message message) {
-    return expect.about(ProtoTruth.protos()).that(message);
+    return expect.about(protos()).that(message);
   }
 
   protected final <M extends Message> IterableOfProtosSubject<M> expectThat(Iterable<M> messages) {
-    return expect.about(ProtoTruth.protos()).that(messages);
+    return expect.about(protos()).that(messages);
   }
 
   protected final <M extends Message> MapWithProtoValuesSubject<M> expectThat(Map<?, M> map) {
-    return expect.about(ProtoTruth.protos()).that(map);
+    return expect.about(protos()).that(map);
   }
 
   protected final <M extends Message> MultimapWithProtoValuesSubject<M> expectThat(
       Multimap<?, M> multimap) {
-    return expect.about(ProtoTruth.protos()).that(multimap);
+    return expect.about(protos()).that(multimap);
   }
 
   protected final ProtoSubject expectThatWithMessage(String msg, @Nullable Message message) {
-    return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
+    return expect.withMessage(msg).about(protos()).that(message);
   }
 
-  protected final void expectIsEqualToFailed() {
+  protected final void expectIsEqualToFailed(AssertionError failure) {
     expectFailureMatches(
+        failure,
         "Not true that messages compare equal\\.\\s*"
             + "(Differences were found:\\n.*|No differences were reported\\..*)");
   }
 
-  protected final void expectIsNotEqualToFailed() {
+  protected final void expectIsNotEqualToFailed(AssertionError failure) {
     expectFailureMatches(
+        failure,
         "Not true that messages compare not equal\\.\\s*"
             + "(Only ignorable differences were found:\\n.*|"
             + "No differences were found\\..*)");
   }
 
   /**
-   * Expects the current {@link ExpectFailure} failure message to match the provided regex, using
-   * {@code Pattern.DOTALL} to match newlines.
+   * Expects the {@link ExpectFailure} failure message to match the provided regex, using {@code
+   * Pattern.DOTALL} to match newlines.
    */
-  protected final void expectFailureMatches(String regex) {
-    expectThatFailure().hasMessageThat().matches(Pattern.compile(regex, Pattern.DOTALL));
-  }
-
-  /**
-   * Expects the current {@link ExpectFailure} failure message to NOT match the provided regex,
-   * using {@code Pattern.DOTALL} to match newlines.
-   */
-  protected final void expectNoRegex(Throwable t, String regex) {
-    expectThatFailure().hasMessageThat().doesNotMatch(Pattern.compile(regex, Pattern.DOTALL));
+  protected final void expectFailureMatches(AssertionError failure, String regex) {
+    expectThatFailure(failure).hasMessageThat().matches(Pattern.compile(regex, Pattern.DOTALL));
   }
 
   protected static final <T> ImmutableList<T> listOf(T... elements) {
