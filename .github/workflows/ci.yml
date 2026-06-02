@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: 'Build with JDK 26'
+    name: 'Build'
     runs-on: ubuntu-latest
     steps:
       # Cancel any previous runs for the same branch that are still running.
