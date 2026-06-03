@@ -45,7 +45,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   }
 
   @Override
-  protected TestMessage2 parse(String string) {
+  TestMessage2 parse(String string) {
     return (TestMessage2) super.parse(string);
   }
 

@@ -54,7 +54,7 @@ import org.junit.Rule;
 public class ProtoSubjectTestBase {
 
   // Type information for subclasses.
-  static enum TestType {
+  enum TestType {
     IMMUTABLE_PROTO2(TestMessage2.getDefaultInstance()),
     PROTO3(TestMessage3.getDefaultInstance());
 
@@ -64,11 +64,11 @@ public class ProtoSubjectTestBase {
       this.defaultInstance = defaultInstance;
     }
 
-    public Message defaultInstance() {
+    Message defaultInstance() {
       return defaultInstance;
     }
 
-    public boolean isProto3() {
+    boolean isProto3() {
       return this == PROTO3;
     }
   }
@@ -89,7 +89,7 @@ public class ProtoSubjectTestBase {
   private static final ExtensionRegistry extensionRegistry = getEmptyRegistry();
 
   // For Parameterized testing.
-  protected static Collection<Object[]> parameters() {
+  static Collection<Object[]> parameters() {
     ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
     for (TestType testType : TestType.values()) {
       builder.add(new Object[] {testType});
@@ -110,57 +110,56 @@ public class ProtoSubjectTestBase {
   }
 
   @CanIgnoreReturnValue
-  protected static final AssertionError expectFailure(
-      ProtoSubjectBuilderCallback assertionCallback) {
+  static AssertionError expectFailure(ProtoSubjectBuilderCallback assertionCallback) {
     return ExpectFailure.expectFailure(
         whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(protos())));
   }
 
-  protected final TruthFailureSubject expectThatFailure(AssertionError failure) {
+  final TruthFailureSubject expectThatFailure(AssertionError failure) {
     return expect.about(truthFailures()).that(failure);
   }
 
   private final Message defaultInstance;
   private final boolean isProto3;
 
-  protected ProtoSubjectTestBase(TestType testType) {
+  ProtoSubjectTestBase(TestType testType) {
     this.defaultInstance = testType.defaultInstance();
     this.isProto3 = testType.isProto3();
   }
 
-  protected final Message fromUnknownFields(UnknownFieldSet unknownFieldSet)
+  final Message fromUnknownFields(UnknownFieldSet unknownFieldSet)
       throws InvalidProtocolBufferException {
     return defaultInstance.getParserForType().parseFrom(unknownFieldSet.toByteArray());
   }
 
-  protected final String fullMessageName() {
+  final String fullMessageName() {
     return defaultInstance.getDescriptorForType().getFullName();
   }
 
-  protected final FieldDescriptor getFieldDescriptor(String fieldName) {
+  final FieldDescriptor getFieldDescriptor(String fieldName) {
     FieldDescriptor fieldDescriptor =
         defaultInstance.getDescriptorForType().findFieldByName(fieldName);
     checkArgument(fieldDescriptor != null, "No field named %s.", fieldName);
     return fieldDescriptor;
   }
 
-  protected final int getFieldNumber(String fieldName) {
+  final int getFieldNumber(String fieldName) {
     return getFieldDescriptor(fieldName).getNumber();
   }
 
-  protected final TypeRegistry getTypeRegistry() {
+  final TypeRegistry getTypeRegistry() {
     return typeRegistry;
   }
 
-  protected final ExtensionRegistry getExtensionRegistry() {
+  final ExtensionRegistry getExtensionRegistry() {
     return extensionRegistry;
   }
 
-  protected final Message clone(Message in) {
+  final Message clone(Message in) {
     return in.toBuilder().build();
   }
 
-  protected Message parse(String textProto) {
+  Message parse(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();
       PARSER.merge(textProto, builder);
@@ -170,7 +169,7 @@ public class ProtoSubjectTestBase {
     }
   }
 
-  protected final Message parsePartial(String textProto) {
+  final Message parsePartial(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();
       PARSER.merge(textProto, builder);
@@ -180,7 +179,7 @@ public class ProtoSubjectTestBase {
     }
   }
 
-  protected final boolean isProto3() {
+  final boolean isProto3() {
     return isProto3;
   }
 
@@ -190,39 +189,38 @@ public class ProtoSubjectTestBase {
    * <p>This method returns true for exactly one {@link TestType}, and false for all the others, and
    * so can be used to ensure tests are only run once.
    */
-  protected final boolean testIsRunOnce() {
+  final boolean testIsRunOnce() {
     return isProto3;
   }
 
-  protected final ProtoSubject expectThat(@Nullable Message message) {
+  final ProtoSubject expectThat(@Nullable Message message) {
     return expect.about(protos()).that(message);
   }
 
-  protected final <M extends Message> IterableOfProtosSubject<M> expectThat(Iterable<M> messages) {
+  final <M extends Message> IterableOfProtosSubject<M> expectThat(Iterable<M> messages) {
     return expect.about(protos()).that(messages);
   }
 
-  protected final <M extends Message> MapWithProtoValuesSubject<M> expectThat(Map<?, M> map) {
+  final <M extends Message> MapWithProtoValuesSubject<M> expectThat(Map<?, M> map) {
     return expect.about(protos()).that(map);
   }
 
-  protected final <M extends Message> MultimapWithProtoValuesSubject<M> expectThat(
-      Multimap<?, M> multimap) {
+  final <M extends Message> MultimapWithProtoValuesSubject<M> expectThat(Multimap<?, M> multimap) {
     return expect.about(protos()).that(multimap);
   }
 
-  protected final ProtoSubject expectThatWithMessage(String msg, @Nullable Message message) {
+  final ProtoSubject expectThatWithMessage(String msg, @Nullable Message message) {
     return expect.withMessage(msg).about(protos()).that(message);
   }
 
-  protected final void expectIsEqualToFailed(AssertionError failure) {
+  final void expectIsEqualToFailed(AssertionError failure) {
     expectFailureMatches(
         failure,
         "Not true that messages compare equal\\.\\s*"
             + "(Differences were found:\\n.*|No differences were reported\\..*)");
   }
 
-  protected final void expectIsNotEqualToFailed(AssertionError failure) {
+  final void expectIsNotEqualToFailed(AssertionError failure) {
     expectFailureMatches(
         failure,
         "Not true that messages compare not equal\\.\\s*"
@@ -234,20 +232,20 @@ public class ProtoSubjectTestBase {
    * Expects the {@link ExpectFailure} failure message to match the provided regex, using {@code
    * Pattern.DOTALL} to match newlines.
    */
-  protected final void expectFailureMatches(AssertionError failure, String regex) {
+  final void expectFailureMatches(AssertionError failure, String regex) {
     expectThatFailure(failure).hasMessageThat().matches(Pattern.compile(regex, Pattern.DOTALL));
   }
 
-  protected static final <T> ImmutableList<T> listOf(T... elements) {
+  static <T> ImmutableList<T> listOf(T... elements) {
     return ImmutableList.copyOf(elements);
   }
 
-  protected static final <T> T[] arrayOf(T... elements) {
+  static <T> T[] arrayOf(T... elements) {
     return elements;
   }
 
   @SuppressWarnings("unchecked")
-  protected static final <K, V> ImmutableMap<K, V> mapOf(K k0, V v0, Object... rest) {
+  static <K, V> ImmutableMap<K, V> mapOf(K k0, V v0, Object... rest) {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
 
     ImmutableMap.Builder<K, V> builder = new ImmutableMap.Builder<>();
@@ -259,7 +257,7 @@ public class ProtoSubjectTestBase {
   }
 
   @SuppressWarnings("unchecked")
-  protected static final <K, V> ImmutableMultimap<K, V> multimapOf(K k0, V v0, Object... rest) {
+  static <K, V> ImmutableMultimap<K, V> multimapOf(K k0, V v0, Object... rest) {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
 
     ImmutableMultimap.Builder<K, V> builder = new ImmutableMultimap.Builder<>();
