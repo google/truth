@@ -20,11 +20,8 @@ import static com.google.common.truth.extensions.re2j.Re2jSubjects.re2jString;
 
 import com.google.re2j.Pattern;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link Re2jSubjects}. */
-@RunWith(JUnit4.class)
 public class Re2jSubjectsTest {
   private static final String PATTERN_STR = "(?:hello )+world";
   private static final Pattern PATTERN = Pattern.compile(PATTERN_STR);

@@ -30,11 +30,8 @@ import static org.junit.Assert.assertThrows;
 import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link Correspondence}. */
-@RunWith(JUnit4.class)
 public final class CorrespondenceTest {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 

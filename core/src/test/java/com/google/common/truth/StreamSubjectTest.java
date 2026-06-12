@@ -25,11 +25,8 @@ import static java.util.Collections.singleton;
 
 import java.util.stream.Stream;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link StreamSubject}. */
-@RunWith(JUnit4.class)
 public final class StreamSubjectTest {
 
   @SuppressWarnings({"deprecation", "TruthSelfEquals"}) // test of a possibly mistaken call

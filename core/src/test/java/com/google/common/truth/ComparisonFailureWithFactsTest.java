@@ -30,11 +30,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Test for {@code ComparisonFailureWithFacts} in {@link Platform}. */
-@RunWith(JUnit4.class)
 public class ComparisonFailureWithFactsTest {
   @Test
   public void formatAllDifferent() {

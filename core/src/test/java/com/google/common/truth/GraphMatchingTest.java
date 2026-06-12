@@ -37,11 +37,8 @@ import java.util.Objects;
 import java.util.Random;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link GraphMatching}. */
-@RunWith(JUnit4.class)
 public final class GraphMatchingTest {
 
   @Test

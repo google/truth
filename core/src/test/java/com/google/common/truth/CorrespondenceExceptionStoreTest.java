@@ -20,8 +20,6 @@ import static org.junit.Assert.assertThrows;
 
 import com.google.common.collect.Iterables;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link Correspondence.ExceptionStore}.
@@ -29,7 +27,6 @@ import org.junit.runners.JUnit4;
  * <p>These should not be run under j2cl, because the descriptions don't include the expected stack
  * traces there.
  */
-@RunWith(JUnit4.class)
 public final class CorrespondenceExceptionStoreTest {
 
   @Test

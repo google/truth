@@ -26,11 +26,8 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link TruthFailureSubject}. */
-@RunWith(JUnit4.class)
 public class TruthFailureSubjectTest {
   // factKeys()
 

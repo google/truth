@@ -26,13 +26,10 @@ import com.google.common.collect.ImmutableSet;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Tests that {@code Truth.assertThat} methods match {@code StandardSubjectBuilder.that} methods.
  */
-@RunWith(JUnit4.class)
 public class TruthAssertThatTest {
   // Type.getTypeName() would obsolete this, but isn't available on the Android version we test on.
   private static String typeString(Type type) {

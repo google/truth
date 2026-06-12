@@ -28,15 +28,12 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Test to ensure that Truth.assertThat and ProtoTruth.assertThat can coexist while statically
  * imported. The tests themselves are simple and dumb, as what's really being tested here is whether
  * or not this file compiles.
  */
-@RunWith(JUnit4.class)
 public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public OverloadResolutionTest() {
     // We don't bother testing Proto3 because it's immaterial to this test, and we want to ensure

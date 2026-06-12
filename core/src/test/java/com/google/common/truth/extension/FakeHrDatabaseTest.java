@@ -20,10 +20,7 @@ import static com.google.common.truth.extension.EmployeeSubject.assertThat;
 
 import com.google.common.truth.extension.Employee.Location;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
 public final class FakeHrDatabaseTest {
 
   // Note: not real employee IDs :-)

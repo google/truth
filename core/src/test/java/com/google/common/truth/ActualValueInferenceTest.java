@@ -23,13 +23,10 @@ import static org.junit.runner.Description.createTestDescription;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
 
 /** Tests for {@link ActualValueInference}. */
 @GwtIncompatible // Inference doesn't work under GWT.
-@RunWith(JUnit4.class)
 /*
  * We declare a single `failure` variable in each method, and many methods assign to it multiple
  * times. We declare it without initializing it so that every assignment to it can look the same as

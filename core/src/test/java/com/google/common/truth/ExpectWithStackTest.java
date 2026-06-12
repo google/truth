@@ -24,12 +24,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
 
 /** Stack-trace tests for {@link Expect}. */
-@RunWith(JUnit4.class)
 public class ExpectWithStackTest {
   private final Expect expectWithTrace = Expect.create();
 

@@ -45,8 +45,6 @@ import com.google.common.truth.TestCorrespondences.MyRecord;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link IterableSubject} APIs that use {@link Correspondence}.
@@ -56,7 +54,6 @@ import org.junit.runners.JUnit4;
  * an {@link IterableSubject.UsingCorrespondence}. The test method names omit the {@code
  * comparingElementsUsing_} prefix for brevity.
  */
-@RunWith(JUnit4.class)
 public class IterableSubjectCorrespondenceTest {
 
   @Test

@@ -20,11 +20,8 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests of {@link ExpectFailure}'s Java 8 support. */
-@RunWith(JUnit4.class)
 public final class ExpectFailure8Test {
   @Test
   public void builtInSubject() {

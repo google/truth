@@ -36,11 +36,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link MapSubject}. */
-@RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
 @SuppressWarnings("TruthIncompatibleType")

@@ -22,12 +22,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
 
 /** Test that stack traces are included in the error message created by {@link Expect}. */
-@RunWith(JUnit4.class)
 public class ExpectFailureWithStackTraceTest {
   private static final String METHOD_NAME = "ExpectFailureWithStackTraceTest.expectTwoFailures";
 

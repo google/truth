@@ -27,11 +27,8 @@ import static org.junit.Assert.assertThrows;
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Pattern;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link StringSubject}. */
-@RunWith(JUnit4.class)
 public class StringSubjectTest {
 
   @Test

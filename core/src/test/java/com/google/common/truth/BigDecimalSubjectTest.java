@@ -23,11 +23,8 @@ import static java.math.BigDecimal.TEN;
 
 import java.math.BigDecimal;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link BigDecimalSubject}. */
-@RunWith(JUnit4.class)
 public class BigDecimalSubjectTest {
   @SuppressWarnings("TruthSelfEquals")
   @Test

@@ -24,11 +24,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link MultisetSubject}. */
-@RunWith(JUnit4.class)
 public class MultisetSubjectTest {
 
   @Test

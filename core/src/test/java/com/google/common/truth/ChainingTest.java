@@ -22,11 +22,8 @@ import static org.junit.Assert.assertThrows;
 
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for chained subjects (produced with {@link Subject#check(String, Object...)}, etc.). */
-@RunWith(JUnit4.class)
 public final class ChainingTest {
   private static final Throwable throwable = new Throwable("root");
 

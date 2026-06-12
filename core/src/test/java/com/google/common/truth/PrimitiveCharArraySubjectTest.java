@@ -22,11 +22,8 @@ import static com.google.common.truth.FailureAssertions.assertFailureValueIndexe
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link PrimitiveCharArraySubject}. */
-@RunWith(JUnit4.class)
 // We intentionally test mismatches.
 // TODO(cpovirk): Maybe suppress at a finer scope.
 @SuppressWarnings("TruthIncompatibleType")

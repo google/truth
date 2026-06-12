@@ -24,10 +24,7 @@ import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.common.truth.extension.Employee.Location;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
 public final class EmployeeSubjectTest {
 
   // Note: not real employee IDs :-)

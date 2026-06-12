@@ -26,11 +26,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link SubjectUtils}. */
-@RunWith(JUnit4.class)
 public class SubjectUtilsTest {
   @Test
   public void longNameOfBoxedPrimitive() {

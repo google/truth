@@ -21,11 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for comparisons between various integral types. */
-@RunWith(JUnit4.class)
 @SuppressWarnings("SelfAssertion")
 public class NumericComparisonTest {
 

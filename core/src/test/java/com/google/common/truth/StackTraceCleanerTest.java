@@ -22,9 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.Range;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
-import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
 
 /** Unit tests for {@link StackTraceCleaner}. */
@@ -42,7 +40,6 @@ import org.junit.runners.model.Statement;
  * Also note that j2cl includes some extra frames at the _top_, even beyond the ones that we try to
  * remove: b/71355096
  */
-@RunWith(JUnit4.class)
 public class StackTraceCleanerTest {
   @Test
   public void realWorld() {

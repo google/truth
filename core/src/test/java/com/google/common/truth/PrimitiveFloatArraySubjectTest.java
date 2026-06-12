@@ -33,11 +33,8 @@ import com.google.common.annotations.GwtIncompatible;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link PrimitiveFloatArraySubject}. */
-@RunWith(JUnit4.class)
 public class PrimitiveFloatArraySubjectTest {
   private static final float DEFAULT_TOLERANCE = 0.000005f;
 

@@ -22,11 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Optional;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link OptionalSubject}. */
-@RunWith(JUnit4.class)
 public class OptionalSubjectTest {
 
   @Test

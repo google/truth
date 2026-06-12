@@ -19,11 +19,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.file.Paths;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link PathSubject}. */
-@RunWith(JUnit4.class)
 public class PathSubjectTest {
   @Test
   public void basicEquality() {

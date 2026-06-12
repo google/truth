@@ -23,7 +23,6 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
@@ -31,7 +30,6 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.JUnit4;
 
 /** Tests for {@link ExpectFailure} not used as JUnit's TestRule. */
-@RunWith(JUnit4.class)
 public class ExpectFailureNonRuleTest {
 
   @Test

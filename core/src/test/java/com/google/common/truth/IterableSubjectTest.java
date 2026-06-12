@@ -34,14 +34,11 @@ import java.util.List;
 import java.util.TreeSet;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Tests for {@link IterableSubject} APIs, excluding those that use {@link Correspondence} (which
  * are tested in {@link IterableSubjectCorrespondenceTest}.
  */
-@RunWith(JUnit4.class)
 @SuppressWarnings({
   // "Iterable" is specific enough to establish that we're testing IterableSubject.
   "PreferredInterfaceType",

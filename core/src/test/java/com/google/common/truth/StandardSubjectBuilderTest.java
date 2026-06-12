@@ -20,11 +20,8 @@ import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link StandardSubjectBuilder}. */
-@RunWith(JUnit4.class)
 public final class StandardSubjectBuilderTest {
   @Test
   public void failNoMessage() {

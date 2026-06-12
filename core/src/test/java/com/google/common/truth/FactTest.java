@@ -30,11 +30,8 @@ import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link Fact}. */
-@RunWith(JUnit4.class)
 public class FactTest {
 
   private static final Joiner TEXT = Joiner.on("\n");

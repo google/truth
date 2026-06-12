@@ -49,11 +49,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link Subject}. */
-@RunWith(JUnit4.class)
 public class SubjectTest {
 
   @Test

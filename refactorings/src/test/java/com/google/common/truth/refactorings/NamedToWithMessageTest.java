@@ -19,10 +19,7 @@ package com.google.common.truth.refactorings;
 import com.google.errorprone.CompilationTestHelper;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
 public class NamedToWithMessageTest {
   private CompilationTestHelper compilationHelper;
 

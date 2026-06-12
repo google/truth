@@ -25,11 +25,8 @@ import com.google.common.annotations.GwtIncompatible;
 import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link IntStreamSubject}. */
-@RunWith(JUnit4.class)
 public final class IntStreamSubjectTest {
 
   @Test

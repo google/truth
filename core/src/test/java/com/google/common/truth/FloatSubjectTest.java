@@ -27,11 +27,8 @@ import static java.lang.Float.POSITIVE_INFINITY;
 import com.google.common.annotations.GwtIncompatible;
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /** Tests for {@link FloatSubject}. */
-@RunWith(JUnit4.class)
 public class FloatSubjectTest {
   private static final float NEARLY_MAX = 3.4028233E38f;
   private static final float NEGATIVE_NEARLY_MAX = -3.4028233E38f;
