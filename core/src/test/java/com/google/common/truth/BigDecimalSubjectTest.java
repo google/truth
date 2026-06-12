@@ -88,7 +88,6 @@ public class BigDecimalSubjectTest {
   public void isEqualToIgnoringScale_stringWithDecimals() {
     BigDecimal tenFour = new BigDecimal("10.4");
     assertThat(tenFour).isEqualToIgnoringScale("10.4");
-    assertThat(tenFour).isEqualToIgnoringScale("10.4");
     assertThat(tenFour).isEqualToIgnoringScale("10.40");
     assertThat(tenFour).isEqualToIgnoringScale("10.400");
     AssertionError e =
