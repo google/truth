@@ -299,7 +299,6 @@ There are four parts to the example:
 
     import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 
-    @RunWith(JUnit4.class)
     public final class EmployeeSubjectTest {
       private static final Employee KURT =
           Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false);
