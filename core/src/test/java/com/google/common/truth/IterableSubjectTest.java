@@ -1531,7 +1531,7 @@ public class IterableSubjectTest {
     }
   }
 
-  private static class Bar extends Foo {
+  private static final class Bar extends Foo {
     private Bar(int x) {
       super(x);
     }

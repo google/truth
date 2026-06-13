@@ -29,7 +29,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 
 /** Helper methods for working with Any protos. */
-class AnyUtils {
+final class AnyUtils {
   private static final FieldDescriptor TYPE_URL_FIELD_DESCRIPTOR =
       Any.getDescriptor().findFieldByNumber(Any.TYPE_URL_FIELD_NUMBER);
 

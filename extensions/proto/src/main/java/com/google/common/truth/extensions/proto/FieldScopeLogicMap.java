@@ -34,7 +34,7 @@ import com.google.protobuf.Descriptors.Descriptor;
  * with} operations are O(N), where N = number of mappings, so this class is intended only for small
  * numbers of entries.
  */
-class FieldScopeLogicMap<V> implements FieldScopeLogicContainer<FieldScopeLogicMap<V>> {
+final class FieldScopeLogicMap<V> implements FieldScopeLogicContainer<FieldScopeLogicMap<V>> {
 
   @AutoValue
   abstract static class Entry<V> {
