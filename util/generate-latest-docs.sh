@@ -43,7 +43,10 @@ api_version_dir="${target_dir}/gh-pages/${version_subdir}"
 git rm -rf ${api_version_dir} || true
 cp -ar ${target_dir}/reports/apidocs ${api_version_dir}
 git add -A -f ${api_version_dir}
-git commit -m "${commit_message}"
-git push -fq origin gh-pages > /dev/null
-
-echo -e "Published Javadoc to gh-pages.\n"
+if [ -n "$(git status --porcelain)" ]; then
+  git commit -m "${commit_message}"
+  git push -fq origin gh-pages > /dev/null
+  echo "Published Javadoc to gh-pages."
+else
+  echo "No changes to commit."
+fi
