@@ -629,8 +629,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
   // UsingCorrespondence Methods
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private MapSubject.UsingCorrespondence<M, M> usingCorrespondence(
-      Iterable<? extends M> expectedValues) {
+  private UsingCorrespondence<M, M> usingCorrespondence(Iterable<? extends M> expectedValues) {
     return comparingValuesUsing(
         config
             .withExpectedMessages(expectedValues)

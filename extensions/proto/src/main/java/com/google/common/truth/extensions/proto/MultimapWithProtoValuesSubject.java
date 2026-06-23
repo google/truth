@@ -658,8 +658,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
   // UsingCorrespondence Methods
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private MultimapSubject.UsingCorrespondence<M, M> usingCorrespondence(
-      Iterable<? extends M> expectedValues) {
+  private UsingCorrespondence<M, M> usingCorrespondence(Iterable<? extends M> expectedValues) {
     return comparingValuesUsing(
         config
             .withExpectedMessages(expectedValues)
