@@ -102,9 +102,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
         .that(((Multimap<Object, M>) actual).get(key));
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // MultimapWithProtoValuesFluentAssertion Configuration
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     return new MultimapWithProtoValuesFluentAssertionImpl<>(
@@ -654,9 +652,7 @@ public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapS
     return usingConfig(config.unpackingAnyUsing(typeRegistry, extensionRegistry));
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // UsingCorrespondence Methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private UsingCorrespondence<M, M> usingCorrespondence(Iterable<? extends M> expectedValues) {
     return comparingValuesUsing(

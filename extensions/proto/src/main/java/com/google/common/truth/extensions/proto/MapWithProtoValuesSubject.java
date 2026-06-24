@@ -77,9 +77,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     this.config = config;
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // MapWithProtoValuesFluentAssertion Configuration
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     return new MapWithProtoValuesFluentAssertionImpl<>(
@@ -625,9 +623,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     return usingConfig(config.unpackingAnyUsing(typeRegistry, extensionRegistry));
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // UsingCorrespondence Methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private UsingCorrespondence<M, M> usingCorrespondence(Iterable<? extends M> expectedValues) {
     return comparingValuesUsing(

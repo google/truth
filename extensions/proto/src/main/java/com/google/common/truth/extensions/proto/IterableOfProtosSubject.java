@@ -141,9 +141,7 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     return usingCorrespondence().displayingDiffsPairedBy(keyFunction);
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // ProtoFluentAssertion Configuration
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     return new IterableOfProtosFluentAssertionImpl<>(
@@ -709,9 +707,7 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
         "Protos do not implement Comparable, so you must supply a Comparator.");
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // UsingCorrespondence Methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   // A forwarding implementation of IterableSubject.UsingCorrespondence which passes the expected
   // protos to FluentEqualityConfig before comparing.  This is required to support

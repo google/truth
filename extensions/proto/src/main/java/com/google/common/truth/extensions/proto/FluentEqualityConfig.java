@@ -76,9 +76,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
                 }
               });
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Storage of AbstractProtoFluentEquals configuration data.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   abstract FieldScopeLogic ignoreFieldAbsenceScope();
 
@@ -112,9 +110,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     return usingCorrespondenceStringFunction().apply(descriptor);
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Mutators of FluentEqualityConfig configuration data.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   final FluentEqualityConfig ignoringFieldAbsence() {
     return toBuilder()
@@ -359,9 +355,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     compareFieldsScope().validate(rootDescriptor, FieldDescriptorValidator.ALLOW_ALL);
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Converters into comparison utilities.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   final ProtoTruthMessageDifferencer toMessageDifferencer(Descriptor descriptor) {
     checkState(hasExpectedMessages(), "withExpectedMessages() not called");
@@ -390,9 +384,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
         .printToString(reportMismatchesOnly());
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Builder methods.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   abstract Builder toBuilder();
 
