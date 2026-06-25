@@ -149,7 +149,7 @@ final class SubjectUtils {
     }
   }
 
-  private static final class NonHashingMultiset<E extends @Nullable Object> {
+  static final class NonHashingMultiset<E extends @Nullable Object> {
     private final Multiset<Wrapper<E>> contents = LinkedHashMultiset.create();
 
     private NonHashingMultiset() {}

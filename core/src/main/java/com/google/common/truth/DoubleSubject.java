@@ -82,7 +82,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
     }
   }
 
-  private interface DoubleComparer {
+  interface DoubleComparer {
     void compareAgainst(double other);
   }
 

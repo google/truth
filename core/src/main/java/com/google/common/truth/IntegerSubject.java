@@ -85,7 +85,7 @@ public class IntegerSubject extends ComparableSubject<Integer> {
     }
   }
 
-  private interface IntegerComparer {
+  interface IntegerComparer {
     void compareAgainst(int other);
   }
 

@@ -85,7 +85,7 @@ public class LongSubject extends ComparableSubject<Long> {
     }
   }
 
-  private interface LongComparer {
+  interface LongComparer {
     void compareAgainst(long other);
   }
 

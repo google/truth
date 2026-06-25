@@ -84,7 +84,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
     }
   }
 
-  private interface FloatComparer {
+  interface FloatComparer {
     void compareAgainst(float other);
   }
 
