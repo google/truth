@@ -98,8 +98,9 @@ public final class CorrespondenceExceptionStoreTest {
                 + "com.google.common.truth.TestCorrespondences\\$NullPointerExceptionFromWithin10Of"
                 // some whitespace:
                 + "\\s+"
-                // the start of a stack trace, with the correct class:
-                + "at com\\.google\\.common\\.truth\\.TestCorrespondences"
+                // the start of a stack trace, optionally with the module name and version,
+                // and the correct class:
+                + "at (?:[^/]+/)?com\\.google\\.common\\.truth\\.TestCorrespondences"
                 // the rest of the stack trace, which we don't validate (and may contain newlines):
                 + "(.|\\n)*"
                 // the expected separator
