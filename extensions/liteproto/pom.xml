@@ -29,10 +29,6 @@
       <artifactId>jspecify</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.auto.value</groupId>
-      <artifactId>auto-value-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
     </dependency>
@@ -41,6 +37,16 @@
       <artifactId>protobuf-lite</artifactId>
       <!-- protobuf-lite is not compatible with protobuf-java, so we mark it optional. -->
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value-annotations</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
