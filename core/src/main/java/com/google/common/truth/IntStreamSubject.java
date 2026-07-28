@@ -272,7 +272,7 @@ public final class IntStreamSubject extends Subject {
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
   private static final Ordered ALREADY_FAILED = () -> {};
 
-  // TODO: b/246961366 - Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  // TODO(b/246961366): Do we want to override + deprecate isEqualTo/isNotEqualTo?
 
   // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

@@ -277,7 +277,7 @@ public class ComparisonFailureWithFactsTest {
         (ComparisonFailure) makeComparisonFailure(messages, facts, expected, actual, cause);
 
     ComparisonFailure reserializedFailure = reserialize(original);
-    // TODO: b/491194734 - Remove this redundant cast once Kotlin header compilation permits.
+    // TODO(b/491194734): Remove this redundant cast once Kotlin header compilation permits.
     ErrorWithFacts reserialized = (ErrorWithFacts) ((AssertionError) reserializedFailure);
     assertThat(reserializedFailure).hasMessageThat().isEqualTo(original.getMessage());
     assertThat(reserializedFailure).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());

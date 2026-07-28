@@ -623,7 +623,7 @@ public class MultimapSubject extends Subject {
      * Checks that the actual multimap contains an entry with the given key and a value that
      * corresponds to the given value.
      */
-    @SuppressWarnings("nullness") // TODO: b/423853632 - Remove after checker is fixed.
+    @SuppressWarnings("nullness") // TODO(b/423853632): Remove after checker is fixed.
     public void containsEntry(@Nullable Object key, E value) {
       Entry<Object, E> entry = immutableEntry(key, value);
       if (actual == null) {

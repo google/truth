@@ -508,7 +508,7 @@ final class SubjectUtils {
     return expected == null ? asList((E) null) : asList(expected);
   }
 
-  // TODO: b/316358623 - Inline this helper method after fixing our nullness checker to not need it.
+  // TODO(b/316358623): Inline this helper method after fixing our nullness checker to not need it.
   @SuppressWarnings("nullness") // the aforementioned checker bug
   static <E extends @Nullable Object> List<E> asList(E... a) {
     return Arrays.asList(a);

@@ -410,7 +410,7 @@ public final class CorrespondenceTest {
 
   @Test
   /*
-   * TODO: b/136037484 - Make tolerance() return false instead of throwing? Declare it with
+   * TODO(b/136037484): Make tolerance() return false instead of throwing? Declare it with
    * @Nullable types even though it throws?
    */
   @J2ktIncompatible

@@ -1248,7 +1248,7 @@ public class IterableSubjectTest {
   }
 
   @Test
-  @J2ktIncompatible // TODO: b/420703524 - Detect the Kotlin/Native default toString() output
+  @J2ktIncompatible // TODO(b/420703524): Detect the Kotlin/Native default toString() output
   public void withNoToStringOverride() {
     Iterable<Integer> iterable = () -> Iterators.forArray(1, 2, 3);
 
