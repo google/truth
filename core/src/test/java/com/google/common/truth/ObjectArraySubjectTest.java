@@ -172,6 +172,16 @@ public class ObjectArraySubjectTest {
     assertFailureValueIndexed(e, "but was", 1, "1");
   }
 
+  @SuppressWarnings("TruthIncompatibleType")
+  @Test
+  public void isEqualTo_fail_differentArrayType() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isEqualTo(new int[] {}));
+    assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 1, "int[]");
+    assertFailureValueIndexed(e, "but was", 1, "Object[]");
+  }
+
   @Test
   public void isEqualTo_fail_notAnArray() {
     expectFailure(whenTesting -> whenTesting.that(array("A", 5L)).isEqualTo(new Object()));

@@ -57,12 +57,17 @@ public class PrimitiveCharArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_fail_differentKindOfArray() {
+  public void isEqualTo_fail_differentArrayType() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array('a', 'q')).isEqualTo(new int[] {}));
     assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
     assertFailureValueIndexed(e, "expected", 1, "int[]");
     assertFailureValueIndexed(e, "but was", 1, "char[]");
+  }
+
+  @Test
+  public void isEqualTo_fail_notAnArray() {
+    expectFailure(whenTesting -> whenTesting.that(array('a', 'q')).isEqualTo(new Object()));
   }
 
   @Test

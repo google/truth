@@ -106,6 +106,17 @@ public class PrimitiveFloatArraySubjectTest {
     assertFailureValue(e, "but was", "[0.0]");
   }
 
+  @SuppressWarnings("TruthIncompatibleType")
+  @Test
+  public void isEqualTo_withoutToleranceParameter_fail_differentArrayType() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(array(2.2f, 3.3f, 4.4f)).isEqualTo(new int[] {}));
+    assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 1, "int[]");
+    assertFailureValueIndexed(e, "but was", 1, "float[]");
+  }
+
   @Test
   public void isEqualTo_withoutToleranceParameter_fail_notAnArray() {
     expectFailure(whenTesting -> whenTesting.that(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object()));

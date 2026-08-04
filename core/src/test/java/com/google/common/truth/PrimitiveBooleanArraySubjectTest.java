@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
+import static com.google.common.truth.FailureAssertions.assertFailureValueIndexed;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -49,6 +50,17 @@ public class PrimitiveBooleanArraySubjectTest {
             whenTesting ->
                 whenTesting.that(array(true, false, true)).isEqualTo(array(false, true, true)));
     assertFailureValue(e, "differs at index", "[0]");
+  }
+
+  @SuppressWarnings("TruthIncompatibleType")
+  @Test
+  public void isEqualTo_fail_differentArrayType() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(array(true, false, true)).isEqualTo(new int[] {}));
+    assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed(e, "expected", 1, "int[]");
+    assertFailureValueIndexed(e, "but was", 1, "boolean[]");
   }
 
   @Test

@@ -57,12 +57,17 @@ public class PrimitiveLongArraySubjectTest {
   }
 
   @Test
-  public void isEqualTo_fail_notAnArray() {
+  public void isEqualTo_fail_differentArrayType() {
     AssertionError e =
         expectFailure(whenTesting -> whenTesting.that(array(2, 3, 4)).isEqualTo(new int[] {}));
     assertFailureKeys(e, "expected", "but was", "wrong type", "expected", "but was");
     assertFailureValueIndexed(e, "expected", 1, "int[]");
     assertFailureValueIndexed(e, "but was", 1, "long[]");
+  }
+
+  @Test
+  public void isEqualTo_fail_notAnArray() {
+    expectFailure(whenTesting -> whenTesting.that(array(2, 3, 4)).isEqualTo(new Object()));
   }
 
   @Test
