@@ -28,6 +28,6 @@ Read more at [the main website](https://truth.dev).
 [ci-shield]: https://github.com/google/truth/workflows/CI/badge.svg?branch=master
 [ci-link]: https://github.com/google/truth/actions
 [maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png
-[maven-link]: https://search.maven.org/artifact/com.google.truth/truth
+[maven-link]: https://central.sonatype.com/artifact/com.google.truth/truth
 [stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-google‐truth-5555ff.png?style=flat
 [stackoverflow-link]: https://stackoverflow.com/questions/tagged/google-truth
