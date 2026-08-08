@@ -179,11 +179,11 @@ public class ExpectTest {
   public void bash() throws Exception {
     Runnable task = () -> expect.that(3).isEqualTo(4);
     List<Future<?>> results = new ArrayList<>();
-    ExecutorService executor = newFixedThreadPool(10);
-    for (int i = 0; i < 1000; i++) {
-      results.add(executor.submit(task));
+    try (ExecutorService executor = newFixedThreadPool(10)) {
+      for (int i = 0; i < 1000; i++) {
+        results.add(executor.submit(task));
+      }
     }
-    executor.shutdown();
     for (Future<?> result : results) {
       result.get();
     }
@@ -192,33 +192,33 @@ public class ExpectTest {
 
   @Test
   public void failWhenCallingThatAfterTest() {
-    ExecutorService executor = newSingleThreadExecutor();
-    taskToAwait =
-        executor.submit(
-            () -> {
-              awaitUninterruptibly(testMethodComplete);
-              assertThrows(IllegalStateException.class, () -> expect.that(3));
-            });
-    executor.shutdown();
+    try (ExecutorService executor = newSingleThreadExecutor()) {
+      taskToAwait =
+          executor.submit(
+              () -> {
+                awaitUninterruptibly(testMethodComplete);
+                assertThrows(IllegalStateException.class, () -> expect.that(3));
+              });
+    }
   }
 
   @Test
   public void failWhenCallingFailingAssertionMethodAfterTest() {
-    ExecutorService executor = newSingleThreadExecutor();
-    /*
-     * We wouldn't expect people to do this exactly. The point is that, if someone were to call
-     * expect.that(3).isEqualTo(4), we would always either fail the test or throw an
-     * IllegalStateException, not record a "failure" that we never read.
-     */
-    IntegerSubject expectThat3 = expect.that(3);
-    taskToAwait =
-        executor.submit(
-            () -> {
-              awaitUninterruptibly(testMethodComplete);
-              IllegalStateException expected =
-                  assertThrows(IllegalStateException.class, () -> expectThat3.isEqualTo(4));
-              assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
-            });
-    executor.shutdown();
+    try (ExecutorService executor = newSingleThreadExecutor()) {
+      /*
+       * We wouldn't expect people to do this exactly. The point is that, if someone were to call
+       * expect.that(3).isEqualTo(4), we would always either fail the test or throw an
+       * IllegalStateException, not record a "failure" that we never read.
+       */
+      IntegerSubject expectThat3 = expect.that(3);
+      taskToAwait =
+          executor.submit(
+              () -> {
+                awaitUninterruptibly(testMethodComplete);
+                IllegalStateException expected =
+                    assertThrows(IllegalStateException.class, () -> expectThat3.isEqualTo(4));
+                assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
+              });
+    }
   }
 }
