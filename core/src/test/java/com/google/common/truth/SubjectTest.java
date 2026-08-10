@@ -237,11 +237,12 @@ public class SubjectTest {
   @Test
   public void isSameInstanceAsFailureWithDifferentTypesAndSameToString() {
     AssertionError e =
-        expectFailure(whenTesting -> whenTesting.that("true").isSameInstanceAs(true));
+        expectFailure(
+            whenTesting -> whenTesting.that("true").isSameInstanceAs(new StringBuilder("true")));
     assertFailureKeys(
         e, "expected specific instance", "an instance of", "but was", "an instance of");
     assertFailureValue(e, "expected specific instance", "true");
-    assertFailureValueIndexed(e, "an instance of", 0, "Boolean");
+    assertFailureValueIndexed(e, "an instance of", 0, "StringBuilder");
     assertFailureValue(e, "but was", "(non-equal value with same string representation)");
     assertFailureValueIndexed(e, "an instance of", 1, "String");
   }
@@ -289,7 +290,7 @@ public class SubjectTest {
   @Test
   @SuppressWarnings("AssertSameIncompatible") // Intentional for testing.
   public void isNotSameInstanceAsWithDifferentTypesAndSameToString() {
-    assertThat("true").isNotSameInstanceAs(true);
+    assertThat("true").isNotSameInstanceAs(new StringBuilder("true"));
   }
 
   @Test
