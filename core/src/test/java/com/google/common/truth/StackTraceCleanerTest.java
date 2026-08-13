@@ -406,6 +406,17 @@ public class StackTraceCleanerTest {
         .isEqualTo(createStackTrace("com.example.Foo"));
   }
 
+  @Test
+  public void infiniteCauseChainsAreHandled() {
+    InfiniteCauseChainThrowable infiniteCauseChainThrowable =
+        new InfiniteCauseChainThrowable("com.example.Foo", "org.junit.FilterMe");
+
+    cleanStackTrace(infiniteCauseChainThrowable);
+
+    assertThat(infiniteCauseChainThrowable.getStackTrace())
+        .isEqualTo(createStackTrace("com.example.Foo"));
+  }
+
   private static Throwable createThrowableWithStackTrace(String... classNames) {
     return createThrowableWithStackTrace(/* cause= */ null, classNames);
   }
@@ -453,6 +464,19 @@ public class StackTraceCleanerTest {
     @Override
     public synchronized Throwable getCause() {
       return this;
+    }
+  }
+
+  private static class InfiniteCauseChainThrowable extends Exception {
+    InfiniteCauseChainThrowable(String... classNames) {
+      setStackTrace(createStackTrace(classNames));
+    }
+
+    InfiniteCauseChainThrowable() {}
+
+    @Override
+    public synchronized Throwable getCause() {
+      return new InfiniteCauseChainThrowable();
     }
   }
 }

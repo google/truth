@@ -37,6 +37,13 @@ final class StackTraceCleaner {
   static final String CLEANER_LINK = "https://goo.gl/aH3UyP";
 
   /**
+   * Upper bound on the number of related {@link Throwable Throwables} whose stack traces will be
+   * cleaned. Prevents infinite loops from broken {@link Throwable#getCause()} implementations that
+   * return a new instance on each call.
+   */
+  private static final int MAX_RELATED_THROWABLES = 1000;
+
+  /**
    * <b>Call {@link Platform#cleanStackTrace} rather than calling this directly.</b>
    *
    * <p>Cleans the stack trace on the given {@link Throwable}, replacing the original stack trace
@@ -147,11 +154,16 @@ final class StackTraceCleaner {
     throwable.setStackTrace(result);
 
     // Recurse on any related Throwables that are attached to this one
-    if (throwable.getCause() != null) {
+    if (throwable.getCause() != null && seenThrowables.size() < MAX_RELATED_THROWABLES) {
       new StackTraceCleaner(throwable.getCause()).clean(seenThrowables);
     }
-    for (Throwable suppressed : throwable.getSuppressed()) {
-      new StackTraceCleaner(suppressed).clean(seenThrowables);
+    if (seenThrowables.size() < MAX_RELATED_THROWABLES) {
+      for (Throwable suppressed : throwable.getSuppressed()) {
+        if (seenThrowables.size() >= MAX_RELATED_THROWABLES) {
+          break;
+        }
+        new StackTraceCleaner(suppressed).clean(seenThrowables);
+      }
     }
   }
 
