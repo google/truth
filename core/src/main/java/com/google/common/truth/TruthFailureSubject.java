@@ -145,7 +145,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
           fact("but contained multiple", factsWithName));
       return ignoreCheck().that("");
     }
-    if (index != null && index > factsWithName.size()) {
+    if (index != null && index >= factsWithName.size()) {
       failWithoutActual(
           fact("for key", key),
           fact("index too high", index),
