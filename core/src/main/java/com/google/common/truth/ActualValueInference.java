@@ -119,10 +119,6 @@ final class ActualValueInference {
        */
       // TODO(cpovirk): Log a warning?
       return null;
-    } catch (SecurityException e) {
-      // Inside Google, some tests run under a security manager that forbids filesystem access.
-      // TODO(cpovirk): Log a warning?
-      return null;
     } finally {
       closeQuietly(stream);
     }
