@@ -9,8 +9,8 @@ Truth makes your [test assertions] and [failure messages] more readable.
 [Similar][comparison] to [AssertJ], it [natively supports][known_types] many JDK
 and [Guava] types, and it is [extensible][extension] to others.
 
-Truth is owned and maintained by the [Guava] team. It is used in the majority
-of the tests in Google’s own codebase.
+Truth is owned and maintained by the [Guava] team. It is used in the majority of
+the tests in Google’s own codebase.
 
 Read more at [the main website](https://truth.dev).
 

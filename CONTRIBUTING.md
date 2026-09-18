@@ -10,8 +10,8 @@ Agreement. This is not a copyright **assignment**, it simply gives Google
 permission to use and redistribute your contributions as part of the project.
 
 When submitting a pull request, if you have not already signed the
-[Contributor License Agreement (CLA)][CLA], then a bot will remind you.
-Code cannot even be evaluated without this step.
+[Contributor License Agreement (CLA)][CLA], then a bot will remind you. Code
+cannot even be evaluated without this step.
 
 ## Submitting a patch
 
