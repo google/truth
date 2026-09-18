@@ -98,9 +98,9 @@ available shortcuts, see [this FAQ entry][shortcuts].
 
 ## Writing your own custom subject
 
-For an example of how to support custom types in Truth, please see the [employee
-example]. The rest of this doc will walk through each of the files, step by
-step.
+For an example of how to support custom types in Truth, please see the
+[employee example]. The rest of this doc will walk through each of the files,
+step by step.
 
 There are four parts to the example:
 

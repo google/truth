@@ -35,7 +35,7 @@ Each type parameter has one purpose:
 
 This proposal (eventually, a few pages from now...) is to remove those type
 parameters and so, necessarily, to remove the 2 methods that use them. (OK, it's
-not _strictly_ necessary to remove the 2 methods, but we'll discuss that later.)
+not *strictly* necessary to remove the 2 methods, but we'll discuss that later.)
 
 ### Self-type parameters make subclassing hard
 
@@ -59,13 +59,13 @@ At best, you can declare a factory that accepts any `Throwable` (which might or
 might not be what you want) and returns a plain `ThrowableSubject` (unlikely to
 be what you want). Both of these are problems that we have inside Truth, and so
 do at least some other users. (And likely some other users wanted to make this
-work but couldn't figure it out: The users who _are_ defining such a factory are
+work but couldn't figure it out: The users who *are* defining such a factory are
 mostly doing so because I personally edited their code to define it.) Note that
 defining a factory and casting isn't a convenient solution for users[^2], as any
 non-`assert_()` users of the subject (like `check()` or `expectFailure()`) have
 to ensure they pass the right argument type and cast the result.
 
-I _think_ we could half solve (b) by loosening the generics of `Subject.Factory`
+I *think* we could half solve (b) by loosening the generics of `Subject.Factory`
 from:
 
 ```java
@@ -91,7 +91,7 @@ class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
     extends Subject<S, T>
 ```
 
-This is the most flexible option (arguably, the _correct_ option for extensible
+This is the most flexible option (arguably, the *correct* option for extensible
 subjects), but:
 
 a. It's a mouthful. And keep in mind that subjects may have their own type
@@ -161,7 +161,7 @@ are other edge cases) possible to import a new `assertThat` method without
 breaking existing code, since `assertThat(SubFoo)` is likely to expose all the
 same assertions as `assertThat(Foo)`.
 
-(It is still reasonable for some subjects to _choose_ not to extend an existing
+(It is still reasonable for some subjects to *choose* not to extend an existing
 subject type, perhaps to limit the number of assertions they expose to a more
 tractable set. (For example, ProtoTruth doesn't want to expose the no-arg
 `isInOrder`, since proto classes don't define a natural order.) I'd just like
@@ -213,7 +213,7 @@ About half(!) of custom assertion methods omit it, and so do some assertions in
 Truth itself. The usual cause is a call to the no-arg check() method. These
 should someday be fixed, but I have automation for only about half the work, and
 we may need to add new APIs to support some callers, so the rest won't happen
-anytime soon. (Other assertions drop _all_ context, but that is easier to fix.)
+anytime soon. (Other assertions drop *all* context, but that is easier to fix.)
 
 Also note that, for most subjects that have subclasses, `named` doesn't return
 the right type on the subclasses, thanks to the generics issues described above.
@@ -233,7 +233,7 @@ Users would use `assertWithMessage` (or `withMessage`) instead.
             `assertThat(string).named(...).contains(...)`, only things like
             `assertThat(string).named(...).isEqualTo(...)`.
         *   We could then "fix" that by overriding `named` in all our `Subject`
-            subclasses, but it seems very unlikely that most _custom_ subjects
+            subclasses, but it seems very unlikely that most *custom* subjects
             would do that (since presumably they don't view `named` as an
             essential feature).
         *   We could try to force custom subjects to do it by making `named` be
@@ -306,7 +306,7 @@ Users would use `assertWithMessage` (or `withMessage`) instead.
 *   ~ The policy for when to include `named` in the failure message has changed
     over time and may be confusing.
     *   The old `fail*` methods mostly included it, including (perhaps
-        surprisingly) `failWithoutActual`/`failWithoutSubject` but _not_
+        surprisingly) `failWithoutActual`/`failWithoutSubject` but *not*
         (probably _un_surprisingly but still likely to bite someone)
         `failWithRawMessage`. (`failWithRawMessage` used to be another very
         common case in which `named` was ignored.) However, we changed
@@ -338,7 +338,7 @@ Users would use `assertWithMessage` (or `withMessage`) instead.
 *   ~ AssertJ has a method on its `Subject`-like class like this.
     *   Though it's displayed slightly more like our `withMessage` (which is a
         method on `StandardSubjectBuilder`, not on `Subject`) than our `named`.
-        (Their withFailMessage _replaces_ the failure message, rather than
+        (Their withFailMessage *replaces* the failure message, rather than
         adding to it.)
     *   \- So, if we leave it out, this may slightly complicate migration from
         AssertJ to Truth.
@@ -463,21 +463,21 @@ hierarchy to declare a `private` field named `actual`.)
             *   And an override makes `actual` visible to users of the subject
                 in the same package.
         *   I don't think anyone really wants this; the value of `actual` is
-            primarily as a convenient way to return a _typed_ value.
+            primarily as a convenient way to return a *typed* value.
             *   (This does save a field, if anyone cares about that. But Truth
                 already does more inefficient things than have multiple `actual`
                 fields.)
             *   We could look into how many subclasses actually need the typed
                 actual value, not just `Object`. We suspect that most do.
-        *   Another note: Removing _only one_ type parameter from `Subject` is
-            harder than removing _both_.
+        *   Another note: Removing *only one* type parameter from `Subject` is
+            harder than removing *both*.
             *   That's because removing one would have to be done atomically,
                 while removing both can be done by gradually making all subjects
                 extend raw `Subject` and later removing the type parameters.
             *   So, if we want to remove `named` and the pseudo-self-type
                 parameter, then it's simplest to remove `actual` and its type
                 parameter, too.
-            *   If not for that, I'd _consider_ keeping this method and type
+            *   If not for that, I'd *consider* keeping this method and type
                 parameter in place (along with loosening the type parameters of
                 `Subject.Factory`, as discussed above).
 *   \+ It removes one of the subclass-facing methods from the crowded `Subject`
@@ -594,7 +594,7 @@ as discussed above.)
 To re-reiterate: This is the primary goal of all the proposals in this doc.
 
 *   \+ Self-type parameters make subclassing hard.
-    *   Removing the type parameters also addresses the issue that _actual_-type
+    *   Removing the type parameters also addresses the issue that *actual*-type
         parameters make subclassing hard, too, though that one could be solved
         in other ways.
     *   (Subclassing difficulties could be particularly bad if we ever explore
@@ -610,7 +610,7 @@ To re-reiterate: This is the primary goal of all the proposals in this doc.
         which users have told us is more complex than Truth.
 *   \+ Opens the door to re-adding element-type parameters to `IterableSubject`,
     etc.
-    *   (Adding a type parameter _now_, when we already have type parameters, is
+    *   (Adding a type parameter *now*, when we already have type parameters, is
         hard, as discussed above. Plus, 3 type parameters (maybe more for types
         like `MultimapSubject` and `TableSubject`) looks especially scary,
         particularly when they don't map directly to the type parameters of the
@@ -711,15 +711,13 @@ pressing issues).
 [^1]: "Avoid needing subclassing" might not be the best way to put this. The
     point is that we can declare a method that returns <code>S</code>, and we
     need to implement it only a single time in <code>Subject</code> itself.
-
 [^2]: self-nitpicking: OK, it's also the type of the constructor parameter that
     subclasses call to pass that actual value to `Subject`. However, `Subject`
     uses the actual value only for assertions like `isNotNull()`, where it
     doesn't need to know that it's specifically a `T`. The `T` type
     specifically is in service of `actual()`, which is in service of
     subclasses.
-
-[^3]: It turns out that a full (OK, _almost_ full) solution does exist. It
+[^3]: It turns out that a full (OK, *almost* full) solution does exist. It
     hadn't occurred to me, but some users found it. The solution is to use
     <code>CustomSubjectBuilder</code>. This lets you force the input to be of
     whatever type you want and lets you return whatever subject type you want.
@@ -752,7 +750,6 @@ pressing issues).
     I am simultaneously horrified that this is necessary, impressed that some
     people found it, and tickled that `CustomSubjectBuilder` ended up
     satisfying this unforeseen use case.
-
 [^4]: You could also make <code>ViewSubject</code> the abstract type. Then you'd
     create a private <code>ConcreteViewSubject</code> subtype and a factory
     for the subtype. I <em>think</em> this will work, but you'll have to

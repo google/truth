@@ -51,7 +51,7 @@ with a static import (because `Assert` declares a method named `assertThat`).
 This is an
 [anti-pattern](https://errorprone.info/bugpattern/ExtendingJUnitAssert) anyways.
 
-## Referencing a Truth subject directly is _generally_ an anti-pattern {#subject-references}
+## Referencing a Truth subject directly is *generally* an anti-pattern {#subject-references}
 
 If you find yourself referencing a Truth subject type, there's a good chance
 that there's a cleaner way to write your code. For example, we've often see
@@ -116,7 +116,7 @@ including a failure message or configuring parameters on a subject (e.g.
 
 Still, there are advantages to direct assertions over methods that return a
 `Subject` -- and over helper methods that create a `Subject` and perform
-assertions _without_ returning it. Here are some advantages of direct assertions
+assertions *without* returning it. Here are some advantages of direct assertions
 over various kinds of wrapping:
 
 -   Truth can more often generate a useful "value of" line.
@@ -142,11 +142,11 @@ over various kinds of wrapping:
 
 ## What's the difference between `containsAtLeast` and `containsExactly` for iterables? {#exactly}
 
-`containsAtLeast` asserts that the iterable contains _at least_ the expected
+`containsAtLeast` asserts that the iterable contains *at least* the expected
 elements.
 
 `containsExactly` asserts that the iterable contains all of the expected
-elements __and nothing else__.
+elements **and nothing else**.
 
 For example:
 
@@ -203,14 +203,15 @@ Here's another example of two ways to write an assertion:
 ```java
 assertThat(ImmutableList.of("red", "white", "blue")).contains(user.getFavoriteColor()); // BAD
 ```
+
 ```java
 assertThat(user.getFavoriteColor()).isAnyOf("red", "white", "blue");                    // GOOD
 ```
 
 You should always use the latter instead of the former.
 
-Tip: Any time you see a *literal value* or *constant* inside the `assertThat` call,
-you should stop and try to write the *inverse assertion*.
+Tip: Any time you see a *literal value* or *constant* inside the `assertThat`
+call, you should stop and try to write the *inverse assertion*.
 
 ## How do I compare floating point numbers with Truth? {#floating-point}
 
@@ -257,8 +258,9 @@ import static com.google.common.truth.extension.EmployeeSubject.assertThat;
 assertThat(kurt).hasLocation(NYC);
 ```
 
-**Custom message only:** Use `assertWithMessage`. As you'll see later, `assertWithMessage` is the entry
-point to use almost any time you want a custom message.
+**Custom message only:** Use `assertWithMessage`. As you'll see later,
+`assertWithMessage` is the entry point to use almost any time you want a custom
+message.
 
 ```java
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -268,9 +270,9 @@ assertWithMessage("findClosestMatch should have found user with given username")
     .isEqualTo(kurt);
 ```
 
-**The general case:** Once you've learned the common cases above, the easiest way to learn the rest is
-to learn the full call chain. Even shortcuts like `assertThat` are implemented
-using that chain. It looks like this:
+**The general case:** Once you've learned the common cases above, the easiest
+way to learn the rest is to learn the full call chain. Even shortcuts like
+`assertThat` are implemented using that chain. It looks like this:
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.employees;
@@ -282,21 +284,25 @@ expect // set what to do upon failure (that is, the FailureStrategy)
     .hasUsername("kak");
 ```
 
-If you're curious why we chose that order, you can read [this design
-doc](subject_builder_design). But most users will just be interested in the
-shortcuts:
+If you're curious why we chose that order, you can read
+[this design doc](subject_builder_design). But most users will just be
+interested in the shortcuts:
 
-**Custom message and extension `Subject`:** `assertWithMessage(...).about(...).that(...)`
+**Custom message and extension `Subject`:**
+`assertWithMessage(...).about(...).that(...)`
 
 **Custom failure behavior:** `expect.that(...)`
 
 For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
-**Custom failure behavior and custom message:** `expect.withMessage(...).that(...)`
+**Custom failure behavior and custom message:**
+`expect.withMessage(...).that(...)`
 
-**Custom failure behavior and extension `Subject`:** `expect.about(...).that(...)`
+**Custom failure behavior and extension `Subject`:**
+`expect.about(...).that(...)`
 
-**Custom `Subject` that doesn't expose an `assertThat` shortcut:** `assertAbout(...).that(...)`
+**Custom `Subject` that doesn't expose an `assertThat` shortcut:**
+`assertAbout(...).that(...)`
 
 ## Any other questions?
 

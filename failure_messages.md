@@ -217,8 +217,8 @@ that Truth is displaying only the begining of it. We suggest:
 expected to start with: abc
 ```
 
-Additionally, negative assertions seem to read better with "expected _not to
-be_..." than just "expected _not_...."
+Additionally, negative assertions seem to read better with "expected *not to
+be*..." than just "expected *not*...."
 
 ### "expected to be empty" vs. "expected an empty string"
 
@@ -231,9 +231,9 @@ assertThat(someInt).isEmpty();
 ```
 
 But such a call wouldn't compile. Thus, failure messages shouldn't emphasize the
-_type_ of value that was expected so much as the _properties_ of the value.
+*type* of value that was expected so much as the *properties* of the value.
 
-(It may still be useful to _mention_ the type, as in "expected string to be
+(It may still be useful to *mention* the type, as in "expected string to be
 empty." We don't have a recommendation for whether to prefer this or "expected
 to be empty.")
 

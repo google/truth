@@ -86,13 +86,13 @@ Support will not exist for:
 By default, the extension is fairly strict and requires you to explicitly state
 your test assumptions. It will:
 
-*   _not ignore_ field absence; to change this behavior, use:
+*   *not ignore* field absence; to change this behavior, use:
     `ignoringFieldAbsence()`
-*   _not ignore_ repeated field order; to change this behavior, use:
+*   *not ignore* repeated field order; to change this behavior, use:
     `ignoringRepeatedFieldOrder()`
-*   _not report_ mismatches only; to change this behavior, use:
+*   *not report* mismatches only; to change this behavior, use:
     `reportingMismatchesOnly()`
-*   _use exact equality_ for floating-point fields; to change this behavior,
+*   *use exact equality* for floating-point fields; to change this behavior,
     use: `usingDoubleTolerance` and/or `usingFloatTolerance`
 *   check all fields; to change this behavior, use a combination of:
     *   `ignoringFields(int...)`

@@ -86,7 +86,6 @@ an error smaller than the tolerance.
     the result, and only risk a false failure if the
     relative numerical errors are magnified by a factor of
     ~10^6.
-
 [^why-float-tolerance]: For `float` the error is at most 1 part in ~10^7. By
     using a tolerance of 1 part in 10^5 you risk a false
     pass if a bug introduces an error into the 5th
@@ -125,16 +124,13 @@ of `0.0` and do *not* consider each of the values `POSITIVE_INFINITY`,
 itself.[^infinity-philosophy] You should treat these as special cases and use
 the dedicated methods (where applicable) or exact equality for such values.
 
-[^infinity-philosophy]: Philosophical aside: Infinity has [complicated
-    mathematical
-    properties](https://en.wikipedia.org/wiki/Infinity#Mathematics)
-    and cannot be treated as a regular number in arithmetic.
-    For example, `1.0 / 0.0` and `2.0 / 0.0` are both
-    `POSITIVE_INFINITY`: the question of whether they are
-    "approximately equal" is debatable, at best. In Truth,
-    we take the approach that the safest thing is to
-    consider them not to be. The same applies even more
-    clearly to `NaN`.
+[^infinity-philosophy]: Philosophical aside: Infinity has
+    [complicated mathematical properties](https://en.wikipedia.org/wiki/Infinity#Mathematics)
+    and cannot be treated as a regular number in arithmetic. For example, `1.0 /
+    0.0` and `2.0 / 0.0` are both `POSITIVE_INFINITY`: the question of whether
+    they are "approximately equal" is debatable, at best. In Truth, we take the
+    approach that the safest thing is to consider them not to be. The same
+    applies even more clearly to `NaN`.
 
 ### Special-valued assertions about `double` values
 

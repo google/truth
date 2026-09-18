@@ -293,8 +293,8 @@ assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
 ```
 
 This looks like it tests that each call to `next()` returns a different `long`.
-However, it actually tests that each call returns a `long` _that autoboxes to a
-distinct instance of `Long`_. Under a typical implementation of Java, this test
+However, it actually tests that each call returns a `long` *that autoboxes to a
+distinct instance of `Long`*. Under a typical implementation of Java, this test
 would pass even if `next()` were implemented as `return 12345;` because Java
 will create a new `Long` instance after each invocation.
 
@@ -305,7 +305,7 @@ assertThat(primaryColors).containsAll(RED, YELLOW, BLUE);
 ```
 
 This looks like it tests that the primary colors are defined to be red, yellow,
-and blue. However, it actually tests that the primary colors _include_ red,
+and blue. However, it actually tests that the primary colors *include* red,
 yellow, and blue, along with possibly other colors.
 
 Truth reduces the chance of this bug by naming its method "containsAtLeast."
@@ -343,7 +343,7 @@ assertThat(defaults).has(new Condition<>(x -> x instanceof String, "a string"));
 ```
 
 This looks like it tests that the `defaults` array contains a string. However,
-it actually tests that `defaults` is _itself_ a string.
+it actually tests that `defaults` is *itself* a string.
 
 Truth avoids this problem by omitting support for `Condition`-style assertions
 (except by using `Correspondence`, which is exposed only for assertions on

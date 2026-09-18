@@ -27,8 +27,8 @@ actually returned by the code under test), checking that it contains (or,
 occasionally, does not contain) certain expected elements of type `E`.
 
 You use a `Correspondence` by passing it into a method such as
-[`comparingElementsUsing`][iterablesubject-comparingelementsusing],
-as shown in the [examples below](#iterable).
+[`comparingElementsUsing`][iterablesubject-comparingelementsusing], as shown in
+the [examples below](#iterable).
 
 Here's an example correspondence between strings, which tests whether the actual
 strings contain the expected substrings:

@@ -64,8 +64,8 @@ assertWithMessage("query result should include skip-level employees")
 
 ## Solution: How to declare custom `that` methods
 
-Rather than create a `Subject.Factory` as described in step 2 of [the simple
-pattern](extension), do the following:
+Rather than create a `Subject.Factory` as described in step 2 of
+[the simple pattern](extension), do the following:
 
 1.  Declare a subclass of `CustomSubjectBuilder`:
 
