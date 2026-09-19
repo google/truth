@@ -110,6 +110,19 @@ public class StringSubjectTest {
   }
 
   @Test
+  public void containsAllOf() {
+    assertThat("abc").containsAllOf("a", "c", "b");
+  }
+
+  @Test
+  public void containsAllOfFail() {
+    AssertionError e =
+        expectFailure(whenTesting -> whenTesting.that("abc").containsAllOf("a", "-", "b", "d"));
+    assertFailureValue(e, "expected to contain all of", "[a, -, b, d]");
+    assertFailureValue(e, "missing", "[-, d]");
+  }
+
+  @Test
   public void doesNotContain() {
     assertThat("abc").doesNotContain("d");
   }
@@ -181,6 +194,7 @@ public class StringSubjectTest {
   @Test
   public void emptyStringTests() {
     assertThat("").contains("");
+    assertThat("").containsAllOf("");
     assertThat("").startsWith("");
     assertThat("").endsWith("");
     assertThat("a").contains("");
@@ -546,6 +560,21 @@ public class StringSubjectTest {
 
     assertFailureValue(e, "expected a string that contains", "d");
     assertThat(e).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void containsAllOfIgnoringCase() {
+    assertThat("AbCd").ignoringCase().containsAllOf("a", "c", "b");
+  }
+
+  @Test
+  public void containsAllOfIgnoringCaseFail() {
+    AssertionError e =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that("AbC").ignoringCase().containsAllOf("a", "-", "b", "d"));
+    assertFailureValue(e, "expected to contain all of", "[a, -, b, d]");
+    assertFailureValue(e, "missing", "[-, d]");
   }
 
   @Test
