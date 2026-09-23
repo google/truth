@@ -21,6 +21,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.collect.ImmutableSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
@@ -82,6 +83,27 @@ public class StringSubject extends ComparableSubject<String> {
       failWithActual("expected a string that contains", string);
     } else if (!actual.contains(string)) {
       failWithActual("expected to contain", string);
+    }
+  }
+
+  /** Checks that the actual value contains the given sequences. */
+  public void containsAllOf(@Nullable CharSequence... strings) {
+    checkNotNull(strings);
+    ImmutableSet<String> expected = ImmutableSet.copyOf(strings);
+    checkArgument(expected.size() == strings.length, "duplicate strings in expected");
+    if (actual == null) {
+      failWithActual("expected a string that contains all of", expected);
+      return;
+    }
+    List<String> missing = new ArrayList<>();
+    for (String string : expected) {
+      if (!actual.contains(string)) {
+        missing.add(string);
+      }
+    }
+    if (!missing.isEmpty()) {
+      failWithoutActual(
+          fact("expected to contain all of", expected), butWas(), fact("missing", missing));
     }
   }
 
@@ -316,6 +338,33 @@ public class StringSubject extends ComparableSubject<String> {
       } else if (!containsIgnoreCase(actual, expected)) {
         failWithoutActual(
             fact("expected to contain", expected), butWas(), simpleFact("(case is ignored)"));
+      }
+    }
+
+    /** Checks that the actual value contains the given sequences. */
+    public void containsAllOf(@Nullable CharSequence... strings) {
+      checkNotNull(strings);
+      ImmutableSet<String> expected = ImmutableSet.copyOf(strings);
+      checkArgument(expected.size() == strings.length, "duplicate strings in expected");
+      if (actual == null) {
+        failWithoutActual(
+            fact("expected a string that contains all of", expected),
+            butWas(),
+            simpleFact("(case is ignored)"));
+        return;
+      }
+      List<String> missing = new ArrayList<>();
+      for (String string : expected) {
+        if (!containsIgnoreCase(actual, string)) {
+          missing.add(string);
+        }
+      }
+      if (!missing.isEmpty()) {
+        failWithoutActual(
+            fact("expected to contain all of", expected),
+            butWas(),
+            fact("missing", missing),
+            simpleFact("(case is ignored)"));
       }
     }
 
