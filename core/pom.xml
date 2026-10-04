@@ -5,10 +5,13 @@
   <parent>
     <groupId>com.google.truth</groupId>
     <artifactId>truth-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>999.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>truth</artifactId>
   <name>Truth Core</name>
+  <properties>
+    <test.add.exports></test.add.exports>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -128,6 +131,9 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>${test.add.exports}</argLine>
+        </configuration>
         <executions>
           <execution>
             <id>default-test</id>
@@ -263,6 +269,42 @@
     </plugins>
   </reporting>
   <profiles>
+    <profile>
+      <id>java9-plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <!--
+          For tests of the sample Employee extension, which would otherwise fail:
+          java.lang.reflect.InaccessibleObjectException: Unable to make public void com.google.common.truth.extension.EmployeeSubjectTest.username() accessible: module com.google.truth does not "exports com.google.common.truth.extension" to module junit
+        -->
+        <test.add.exports>--add-exports com.google.truth/com.google.common.truth.extension=junit,ALL-UNNAMED</test.add.exports>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>compile-java9</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>9</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>false</multiReleaseOutput>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>java8</id>
       <activation>
