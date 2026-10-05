@@ -25,10 +25,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: 'Set up JDK 26 for compilation'
+      - name: 'Set up JDK 27 for compilation'
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          java-version: 26
+          java-version: 27
           distribution: 'temurin'
           cache: 'maven'
       - name: 'Install'
@@ -90,10 +90,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: 'Set up JDK 26'
+      - name: 'Set up JDK 27'
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          java-version: 26
+          java-version: 27
           distribution: 'temurin'
           cache: 'maven'
           server-id: central
@@ -117,10 +117,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: 'Set up JDK 26'
+      - name: 'Set up JDK 27'
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          java-version: 26
+          java-version: 27
           distribution: 'temurin'
           cache: 'maven'
       - name: 'Generate latest docs'
