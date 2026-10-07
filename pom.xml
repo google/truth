@@ -249,8 +249,8 @@
             <additionalOptions>
               <additionalOption>-Xdoclint:-html ${conditionalJavadoc9PlusOptions}</additionalOption>
             </additionalOptions>
-            <doctitle>Truth ${project.version}</doctitle>
-            <windowtitle>Truth ${project.version}</windowtitle>
+            <doctitle>Truth API</doctitle>
+            <windowtitle>Truth API</windowtitle>
             <quiet>true</quiet>
             <notimestamp>true</notimestamp>
             <encoding>UTF-8</encoding>
