@@ -46,12 +46,10 @@ public class TruthFailureSubjectTest {
     AssertionError e =
         expectFailure(
             whenTesting ->
-                whenTesting
-                    .that(failure(fact("foo", "the foo")))
-                    .factKeys()
-                    .containsExactly("bar"));
-    Truth.assertThat(e).hasMessageThat().contains("value of: failure.factKeys()");
-    // TODO(cpovirk): Switch to using fact-based assertions once IterableSubject uses them.
+                whenTesting.that(failure(fact("foo", "the foo"))).factKeys().contains("bar"));
+    assertFailureValue(e, "value of", "failure.factKeys()");
+    assertFailureValue(e, "expected to contain", "bar");
+    assertFailureValue(e, "but was", "[foo]");
   }
 
   // factValue(String)
