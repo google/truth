@@ -180,6 +180,17 @@ public class TruthFailureSubjectTest {
   }
 
   @Test
+  public void factValueIntFailIndexEqualsCount() {
+    AssertionError e =
+        expectFailure(
+            whenTesting -> whenTesting.that(failure(fact("foo", "the foo"))).factValue("foo", 1));
+    assertFailureKeys(e, "for key", "index too high", "fact count was");
+    assertFailureValue(e, "for key", "foo");
+    assertFailureValue(e, "index too high", "1");
+    assertFailureValue(e, "fact count was", "1");
+  }
+
+  @Test
   public void factValueIntFailNoValue() {
     AssertionError e =
         expectFailure(
