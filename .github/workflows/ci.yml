@@ -26,7 +26,7 @@ jobs:
         with:
           persist-credentials: false
       - name: 'Set up JDK 27 for compilation'
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
         with:
           java-version: 27
           distribution: 'temurin'
@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: mvn -B -P!standard-with-extra-repos javadoc:aggregate -U
       - name: 'Upload build artifacts'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: truth-jars
           path: |
@@ -59,13 +59,13 @@ jobs:
         with:
           persist-credentials: false
       - name: 'Set up JDK ${{ matrix.java }} for testing'
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
           cache: 'maven'
       - name: 'Download build artifacts'
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: truth-jars
       - name: 'Unpack artifacts'
@@ -91,7 +91,7 @@ jobs:
         with:
           persist-credentials: false
       - name: 'Set up JDK 27'
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
         with:
           java-version: 27
           distribution: 'temurin'
@@ -118,7 +118,7 @@ jobs:
         with:
           persist-credentials: false
       - name: 'Set up JDK 27'
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
         with:
           java-version: 27
           distribution: 'temurin'
