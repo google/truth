@@ -177,6 +177,42 @@
           </execution>
         </executions>
       </plugin>
+      <!--
+        Our main and test dependencies use guava-android, while guava-gwt exists
+        only in the -jre flavor. When GWT 2.12+'s compiler compiles guava-gwt,
+        it resolves some internal types against the .class files on the
+        classpath and fails if it finds guava-android's .class files instead of
+        guava-jre's (e.g., in AbstractMapBasedMultiset). Unpacking guava-jre
+        into its own directory and registering it as a test resource during
+        pre-integration-test (after regular test resources, unit tests, and
+        Animal Sniffer have already run) puts guava-jre's .class files ahead of
+        guava-android on the gwt:test classpath without polluting
+        target/test-classes for future non-clean builds.
+      -->
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.11.0</version>
+        <executions>
+          <execution>
+            <id>unpack-guava-jre-for-gwt</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>${guava.jre.version}</version>
+                  <outputDirectory>${project.build.directory}/gwt-test-classes</outputDirectory>
+                  <overWrite>true</overWrite>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <!-- We need to strip "@Nullable" from the sources that we hand to GWT:
            b/183648616. To do that, we have to make a copy of the original
            source directory and add that directory as a Maven source root. But
@@ -204,6 +240,20 @@
               </sources>
             </configuration>
           </execution>
+          <execution>
+            <id>add-gwt-test-classes</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/gwt-test-classes</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -217,6 +267,7 @@
             <configuration>
               <target name="copy-gwt-resources">
                 <delete dir="${project.build.directory}/gwt-sources" quiet="true" />
+                <delete dir="${project.build.directory}/gwt-test-classes" quiet="true" />
 
                 <copy toDir="${project.build.directory}/gwt-sources">
                   <fileset dir="${project.basedir}/src/main/java">
@@ -271,6 +322,24 @@
       <properties>
         <javadoc.param>-Xdoclint:none</javadoc.param>
       </properties>
+    </profile>
+    <profile>
+      <id>skip-gwt-test-under-java8</id>
+      <activation>
+        <!-- GWT 2.12+ requires Java 11+. -->
+        <jdk>(,11)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>gwt-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
