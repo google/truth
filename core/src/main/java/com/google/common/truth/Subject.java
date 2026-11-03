@@ -137,6 +137,11 @@ public class Subject {
    *       {@link Double}. (This allows {@code assertThat(someDouble).isEqualTo(0)} to pass.)
    * </ul>
    *
+   * <p>The array comparison applies when the values under test are arrays. For lists containing
+   * arrays, this method follows {@link List#equals}, which compares array elements by identity.
+   * For example, two distinct {@code int[]} arrays with the same contents compare equal on their
+   * own, but singleton lists containing those arrays do not.
+   *
    * <p><b>Note:</b> This method does not test the {@link Object#equals} implementation itself; it
    * <i>assumes</i> that method is functioning correctly according to its contract. Testing an
    * {@code equals} implementation requires a utility such as <a
