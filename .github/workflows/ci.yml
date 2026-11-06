@@ -80,31 +80,6 @@ jobs:
         shell: bash
         run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -Dmaven.main.skip=true
 
-  publish_snapshot:
-    name: 'Publish snapshot'
-    needs: [build, test]
-    if: github.event_name == 'push' && github.repository == 'google/truth'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Check out repository'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - name: 'Set up JDK 27'
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
-        with:
-          java-version: 27
-          distribution: 'temurin'
-          cache: 'maven'
-          server-id: central
-          server-username: CI_DEPLOY_USERNAME
-          server-password: CI_DEPLOY_PASSWORD
-      - name: 'Publish'
-        env:
-          CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
-          CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
-        run: mvn -B clean deploy -DskipTests=true
-
   generate_docs:
     permissions:
       contents: write
