@@ -958,7 +958,7 @@ public class IterableSubject extends Subject {
     }
     List<@Nullable Object> nonIterables = new ArrayList<>();
     for (Object element : iterable) {
-      if (!(element instanceof Iterable<?>)) {
+      if (!(element instanceof Iterable)) {
         nonIterables.add(element);
       }
     }

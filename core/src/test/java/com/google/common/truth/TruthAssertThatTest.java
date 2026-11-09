@@ -33,7 +33,7 @@ import org.junit.Test;
 public class TruthAssertThatTest {
   // Type.getTypeName() would obsolete this, but isn't available on the Android version we test on.
   private static String typeString(Type type) {
-    return type instanceof Class<?> ? ((Class<?>) type).getName() : type.toString();
+    return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
   }
 
   private static String methodSignature(Method input) {
