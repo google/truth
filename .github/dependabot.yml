@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 7
+      default-days: 14
     groups:
       dependencies:
         applies-to: version-updates
@@ -16,7 +16,7 @@ updates:
     schedule:
       interval: "monthly"
     cooldown:
-      default-days: 7
+      default-days: 14
     groups:
       github-actions:
         applies-to: version-updates
