@@ -53,9 +53,8 @@ public class PrimitiveByteArraySubjectTest {
   @Test
   public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0)));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0)));
     assertFailureKeys(e, "expected", "but was", "expected", "but was");
     assertFailureValueIndexed(e, "expected", 0, "7B00");
     assertFailureValueIndexed(e, "but was", 0, "007B");

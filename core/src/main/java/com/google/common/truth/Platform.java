@@ -318,24 +318,23 @@ final class Platform {
 
   // Not using lambda here because of wrong nullability type inference in this case.
   private static final Supplier<@Nullable Class<?>> closedRangeClassIfAvailable =
-      Suppliers.<@Nullable Class<?>>memoize(
-          () -> {
-            try {
-              return Class.forName("kotlin.ranges.ClosedRange");
-              /*
-               * TODO(cpovirk): Consider looking up the Method we'll need here, too: If it's not
-               * present (maybe because Proguard stripped it, similar to cl/462826082), then we
-               * don't want our caller to continue on to call kotlinRangeContains, since it won't
-               * be able to give an answer about what ClosedRange.contains will return.
-               * (Alternatively, we could make kotlinRangeContains contain its own fallback to
-               * Iterables.contains. Conceivably its first fallback could even be to try reading
-               * `start` and `endInclusive` from the ClosedRange instance, but even then, we'd
-               * want to check in advance whether we're able to access those.)
-               */
-            } catch (ClassNotFoundException notAvailable) {
-              return null;
-            }
-          });
+      Suppliers.<@Nullable Class<?>>memoize(() -> {
+        try {
+          return Class.forName("kotlin.ranges.ClosedRange");
+          /*
+           * TODO(cpovirk): Consider looking up the Method we'll need here, too: If it's not
+           * present (maybe because Proguard stripped it, similar to cl/462826082), then we
+           * don't want our caller to continue on to call kotlinRangeContains, since it won't
+           * be able to give an answer about what ClosedRange.contains will return.
+           * (Alternatively, we could make kotlinRangeContains contain its own fallback to
+           * Iterables.contains. Conceivably its first fallback could even be to try reading
+           * `start` and `endInclusive` from the ClosedRange instance, but even then, we'd
+           * want to check in advance whether we're able to access those.)
+           */
+        } catch (ClassNotFoundException notAvailable) {
+          return null;
+        }
+      });
 
   static boolean kotlinRangeContains(Iterable<?> haystack, @Nullable Object needle) {
     try {
@@ -355,16 +354,15 @@ final class Platform {
   }
 
   private static final Supplier<Method> closedRangeContainsMethod =
-      memoize(
-          () -> {
-            try {
-              return checkNotNull(closedRangeClassIfAvailable.get())
-                  .getMethod("contains", Comparable.class);
-            } catch (NoSuchMethodException e) {
-              // That method exists. (But see the discussion at closedRangeClassIfAvailable above.)
-              throw newLinkageError(e);
-            }
-          });
+      memoize(() -> {
+        try {
+          return checkNotNull(closedRangeClassIfAvailable.get())
+              .getMethod("contains", Comparable.class);
+        } catch (NoSuchMethodException e) {
+          // That method exists. (But see the discussion at closedRangeClassIfAvailable above.)
+          throw newLinkageError(e);
+        }
+      });
 
   static boolean classMetadataUnsupported() {
     // https://github.com/google/truth/issues/198

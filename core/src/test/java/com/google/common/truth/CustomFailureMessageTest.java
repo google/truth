@@ -30,9 +30,8 @@ public class CustomFailureMessageTest {
   @Test
   public void assertWithMessageThat() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.withMessage("This is a custom message").that(false).isTrue());
+        expectFailure(whenTesting ->
+            whenTesting.withMessage("This is a custom message").that(false).isTrue());
     assertThat(e).hasMessageThat().startsWith("This is a custom message\n");
   }
 
@@ -55,12 +54,8 @@ public class CustomFailureMessageTest {
   @Test
   public void assertWithMessageThat_withPlaceholders() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .withMessage("This is a %s %s", "custom", "message")
-                    .that(false)
-                    .isTrue());
+        expectFailure(whenTesting ->
+            whenTesting.withMessage("This is a %s %s", "custom", "message").that(false).isTrue());
     assertThat(e).hasMessageThat().startsWith("This is a custom message\n");
   }
 

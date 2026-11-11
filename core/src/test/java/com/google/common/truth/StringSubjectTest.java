@@ -329,9 +329,8 @@ public class StringSubjectTest {
   @GwtIncompatible("Pattern")
   public void doesNotMatchPatternFailNull() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((String) null).doesNotMatch(Pattern.compile(".*aaa.*")));
+        expectFailure(whenTesting ->
+            whenTesting.that((String) null).doesNotMatch(Pattern.compile(".*aaa.*")));
     assertFailureValue(e, "expected a string that does not match", ".*aaa.*");
   }
 
@@ -417,9 +416,8 @@ public class StringSubjectTest {
   @GwtIncompatible("Pattern")
   public void doesNotContainMatchPatternFailNull() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((String) null).doesNotContainMatch(Pattern.compile(".b.")));
+        expectFailure(whenTesting ->
+            whenTesting.that((String) null).doesNotContainMatch(Pattern.compile(".b.")));
     assertFailureValue(e, "expected a string that does not contain a match for", ".b.");
   }
 

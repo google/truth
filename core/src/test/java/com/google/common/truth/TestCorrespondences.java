@@ -240,11 +240,10 @@ final class TestCorrespondences {
                 return actualRecord != null && recordsAreCloseEnough(actualRecord, e);
               },
               "parses to a record that " + RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
-          .formattingDiffsUsing(
-              (a, e) -> {
-                MyRecord actualRecord = MyRecord.parse(a);
-                return actualRecord != null ? formatRecordDiff(actualRecord, e) : null;
-              });
+          .formattingDiffsUsing((a, e) -> {
+            MyRecord actualRecord = MyRecord.parse(a);
+            return actualRecord != null ? formatRecordDiff(actualRecord, e) : null;
+          });
 
   private static boolean recordsAreCloseEnough(
       @Nullable MyRecord actual, @Nullable MyRecord expected) {

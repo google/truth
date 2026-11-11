@@ -213,11 +213,10 @@ public class SubjectTest {
   @Test
   public void isSameInstanceAsFailureWithComparableObjects_nonString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(UnsignedInteger.valueOf(42))
-                    .isSameInstanceAs(UnsignedInteger.valueOf(42)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(UnsignedInteger.valueOf(42))
+                .isSameInstanceAs(UnsignedInteger.valueOf(42)));
     assertFailureKeys(e, "expected specific instance", "but was");
     assertFailureValue(e, "expected specific instance", "42");
     assertFailureValue(
@@ -313,9 +312,8 @@ public class SubjectTest {
 
   @Test
   public void isNullWhenSubjectForbidsIsEqualToFail() {
-    expectFailure(
-        whenTesting ->
-            whenTesting.about(objectsForbiddingEqualityCheck()).that(new Object()).isNull());
+    expectFailure(whenTesting ->
+        whenTesting.about(objectsForbiddingEqualityCheck()).that(new Object()).isNull());
   }
 
   @Test
@@ -815,9 +813,8 @@ public class SubjectTest {
   })
   public void disambiguationWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(new StringBuilder("foo")).isEqualTo(new StringBuilder("foo")));
+        expectFailure(whenTesting ->
+            whenTesting.that(new StringBuilder("foo")).isEqualTo(new StringBuilder("foo")));
     assertFailureKeys(e, "expected", "but was");
     assertFailureValue(e, "expected", "foo");
     assertFailureValue(

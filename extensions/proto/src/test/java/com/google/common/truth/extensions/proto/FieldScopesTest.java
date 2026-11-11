@@ -86,12 +86,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .ignoringFieldScope(FieldScopes.all())
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .ignoringFieldScope(FieldScopes.all())
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_int");
     expectThatFailure(failure).hasMessageThat().contains("ignored: r_string");
@@ -106,12 +105,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).withPartialScope(FieldScopes.none()).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .withPartialScope(FieldScopes.none())
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .withPartialScope(FieldScopes.none())
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_int");
     expectThatFailure(failure).hasMessageThat().contains("ignored: r_string");
@@ -131,12 +129,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).withPartialScope(FieldScopes.none()).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .withPartialScope(FieldScopes.none())
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .withPartialScope(FieldScopes.none())
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_int");
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_any_message");
@@ -152,24 +149,22 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .isEqualTo(ignoringFieldMessage);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ignoringFieldDiffMessage)
-                    .ignoringFields(goodFieldNumber)
-                    .isEqualTo(ignoringFieldMessage));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ignoringFieldDiffMessage)
+                .ignoringFields(goodFieldNumber)
+                .isEqualTo(ignoringFieldMessage));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("modified: r_string[0]: \"foo\" -> \"bar\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ignoringFieldDiffMessage)
-                    .ignoringFields(badFieldNumber)
-                    .isNotEqualTo(ignoringFieldMessage));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ignoringFieldDiffMessage)
+                .ignoringFields(badFieldNumber)
+                .isNotEqualTo(ignoringFieldMessage));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: r_string");
   }
@@ -189,16 +184,14 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).ignoringFields(badFieldNumber).isEqualTo(diffMessage);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFields(goodFieldNumber).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFields(goodFieldNumber).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("deleted: o_any_message");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFields(badFieldNumber).isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFields(badFieldNumber).isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_any_message");
   }
@@ -319,16 +312,14 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(eqMessage3).ignoringFields(fieldNumber).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFields(fieldNumber).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFields(fieldNumber).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("modified: o_int: 1 -> 2");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(eqMessage3).ignoringFields(fieldNumber).isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(eqMessage3).ignoringFields(fieldNumber).isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_sub_test_message");
   }
@@ -350,16 +341,14 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(eqMessage).withPartialScope(partialScope).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage1).withPartialScope(partialScope).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage1).withPartialScope(partialScope).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("modified: o_int: 1 -> 2");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage2).withPartialScope(partialScope).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage2).withPartialScope(partialScope).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
@@ -399,24 +388,22 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage1)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .withPartialScope(partialScope)
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage1)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .withPartialScope(partialScope)
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("modified: o_int: 1 -> 2");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage2)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .withPartialScope(partialScope)
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage2)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .withPartialScope(partialScope)
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
@@ -558,18 +545,16 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(eqMessage).withPartialScope(fieldScope).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage4).withPartialScope(fieldScope).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage4).withPartialScope(fieldScope).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("modified: r_sub_test_message[0].r_string[0]: \"bar\" -> \"999999\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_sub_test_message.r_string");
   }
@@ -622,12 +607,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().contains("\"2\" -> \"3\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("1 -> 4");
     expectThatFailure(failure).hasMessageThat().contains("\"1\" -> \"4\"");
@@ -635,12 +619,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().doesNotContain("\"2\" -> \"3\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(eqMessage)
-                    .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(eqMessage)
+                .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_test_message.r_string");
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_sub_test_message.o_int");
@@ -662,28 +645,24 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     expectThat(message1).comparingExpectedFieldsOnly().isEqualTo(eqMessage1);
     expectThat(message2).comparingExpectedFieldsOnly().isEqualTo(eqMessage2);
-    expectFailure(
-        whenTesting ->
-            whenTesting.that(message1).comparingExpectedFieldsOnly().isEqualTo(diffMessage1));
-    expectFailure(
-        whenTesting ->
-            whenTesting.that(message2).comparingExpectedFieldsOnly().isEqualTo(diffMessage2));
+    expectFailure(whenTesting ->
+        whenTesting.that(message1).comparingExpectedFieldsOnly().isEqualTo(diffMessage1));
+    expectFailure(whenTesting ->
+        whenTesting.that(message2).comparingExpectedFieldsOnly().isEqualTo(diffMessage2));
 
     expectThat(listOf(message1, message2))
         .comparingExpectedFieldsOnly()
         .containsExactly(eqMessage1, eqMessage2);
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(listOf(message1, message2))
-                .comparingExpectedFieldsOnly()
-                .containsExactly(diffMessage1, eqMessage2));
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(listOf(message1, message2))
-                .comparingExpectedFieldsOnly()
-                .containsExactly(eqMessage1, diffMessage2));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(listOf(message1, message2))
+            .comparingExpectedFieldsOnly()
+            .containsExactly(diffMessage1, eqMessage2));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(listOf(message1, message2))
+            .comparingExpectedFieldsOnly()
+            .containsExactly(eqMessage1, diffMessage2));
   }
 
   @Test
@@ -824,12 +803,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().contains("\"2\" -> \"3\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("1 -> 4");
     expectThatFailure(failure).hasMessageThat().contains("\"1\" -> \"4\"");
@@ -837,12 +815,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().doesNotContain("\"2\" -> \"3\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(eqMessage)
-                    .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(eqMessage)
+                .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().doesNotContain("2 -> 3");
     expectThatFailure(failure).hasMessageThat().doesNotContain("\"2\" -> \"3\"");
@@ -874,12 +851,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .withPartialScope(FieldScopes.allowingFields(fieldNumber))
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .withPartialScope(FieldScopes.allowingFields(fieldNumber))
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("modified: o_int: 1 -> 2");
     expectThatFailure(failure)
@@ -887,12 +863,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .contains("modified: r_test_message[0].o_int: 2 -> 1");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(eqMessage)
-                    .withPartialScope(FieldScopes.allowingFields(fieldNumber))
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(eqMessage)
+                .withPartialScope(FieldScopes.allowingFields(fieldNumber))
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: r_test_message[0].r_string");
   }
@@ -911,17 +886,15 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(eqMessage).withPartialScope(fieldScope).isEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).withPartialScope(fieldScope).isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).withPartialScope(fieldScope).isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("modified: o_int: 1 -> 2");
     expectThatFailure(failure).hasMessageThat().contains("modified: r_string[0]: \"x\" -> \"y\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_enum");
     expectThatFailure(failure).hasMessageThat().contains("ignored: o_sub_test_message");
@@ -1044,12 +1017,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .containsExactly(eqMessage1, eqMessage2);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(listOf(message1, message2))
-                    .withPartialScope(FieldScopes.fromSetFields(messages))
-                    .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(listOf(message1, message2))
+                .withPartialScope(FieldScopes.fromSetFields(messages))
+                .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2));
     expectThatFailure(failure)
         .factValue("testing whether")
         .contains(
@@ -1061,14 +1033,13 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                 + ".isEqualTo(target)");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(listOf(message1, message2))
-                    .withPartialScope(
-                        FieldScopes.fromSetFields(
-                            parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
-                    .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(listOf(message1, message2))
+                .withPartialScope(
+                    FieldScopes.fromSetFields(
+                        parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
+                .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2));
     expectThatFailure(failure)
         .factValue("testing whether")
         .contains(
@@ -1098,19 +1069,17 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .withPartialScope(FieldScopes.fromSetFields(messages))
         .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
 
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(listOf(message1, message2))
-                .withPartialScope(FieldScopes.fromSetFields(ImmutableList.<Message>of()))
-                .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(listOf(message1, message2))
+            .withPartialScope(FieldScopes.fromSetFields(ImmutableList.<Message>of()))
+            .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2));
 
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(listOf(message1, message2))
-                .withPartialScope(FieldScopes.fromSetFields(messages))
-                .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(listOf(message1, message2))
+            .withPartialScope(FieldScopes.fromSetFields(messages))
+            .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2));
   }
 
   @Test
@@ -1177,13 +1146,11 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .ignoringFieldScope(FieldScopes.fromSetFields(parse("o_int: 1"), parse("o_enum: TWO")))
         .containsExactly(diffMessage1);
 
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(listOf(message))
-                .ignoringFieldScope(
-                    FieldScopes.fromSetFields(parse("o_int: 1"), parse("o_enum: TWO")))
-                .containsExactly(diffMessage2));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(listOf(message))
+            .ignoringFieldScope(FieldScopes.fromSetFields(parse("o_int: 1"), parse("o_enum: TWO")))
+            .containsExactly(diffMessage2));
   }
 
   @Test

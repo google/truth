@@ -124,12 +124,11 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void isNotEqualTo_withoutToleranceParameter_failEquals() {
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f))
-                .isNotEqualTo(
-                    array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f)));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f))
+            .isNotEqualTo(
+                array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f)));
   }
 
   @Test
@@ -197,12 +196,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_contains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, INTOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(2.0f));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, INTOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(2.0f));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", Float.toString(2.0f));
     assertFailureValue(
@@ -223,12 +221,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_contains_failureWithInfinity() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, POSITIVE_INFINITY, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(POSITIVE_INFINITY));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, POSITIVE_INFINITY, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(POSITIVE_INFINITY));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "Infinity");
     assertFailureValue(e, "but was", "[" + 1.1f + ", Infinity, " + 3.3f + "]");
@@ -237,12 +234,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_contains_failureWithNaN() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, NaN, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(NaN));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, NaN, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(NaN));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "NaN");
     assertFailureValue(e, "but was", "[" + 1.1f + ", NaN, " + 3.3f + "]");
@@ -294,9 +290,8 @@ public class PrimitiveFloatArraySubjectTest {
   public void usingTolerance_contains_nullExpected() {
     float[] actual = array(1.0f, 2.0f, 3.0f);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(actual).usingTolerance(DEFAULT_TOLERANCE).contains(null));
+        expectFailure(whenTesting ->
+            whenTesting.that(actual).usingTolerance(DEFAULT_TOLERANCE).contains(null));
     assertFailureKeys(
         e,
         "value of",
@@ -334,12 +329,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsAtLeast_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAtLeast(array(2.2f, 99.99f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAtLeast(array(2.2f, 99.99f)));
     assertFailureKeys(
         e,
         "value of",
@@ -362,13 +356,12 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsAtLeast_primitiveFloatArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAtLeast(array(2.2f, 1.1f))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAtLeast(array(2.2f, 1.1f))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -390,12 +383,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsAnyOf_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAnyOf(array(99.99f, 999.999f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAnyOf(array(99.99f, 999.999f)));
     assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
     assertFailureValue(e, "expected to contain any of", "[" + 99.99f + ", " + 999.999f + "]");
   }
@@ -410,12 +402,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsExactly_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsExactly(array(2.2f, 1.1f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsExactly(array(2.2f, 1.1f)));
     assertFailureKeys(
         e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", Float.toString(3.3f));
@@ -432,13 +423,12 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsExactly_primitiveFloatArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsExactly(array(2.2f, 1.1f, 3.3f))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsExactly(array(2.2f, 1.1f, 3.3f))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -459,12 +449,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_containsNoneOf_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsNoneOf(array(99.99f, 2.2f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, TOLERABLE_2POINT2, 3.3f))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsNoneOf(array(99.99f, 2.2f)));
     assertFailureKeys(
         e,
         "value of",
@@ -487,12 +476,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_contains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, JUST_OVER_2POINT2, 3.3f))
-                    .usingExactEquality()
-                    .contains(2.2f));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, JUST_OVER_2POINT2, 3.3f))
+                .usingExactEquality()
+                .contains(2.2f));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", Float.toString(2.2f));
     assertFailureValue(e, "testing whether", "actual element is exactly equal to expected element");
@@ -737,9 +725,8 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", Float.toString(0.0f));
   }
@@ -772,12 +759,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsAtLeast_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsAtLeast(array(2.2f, 99.99f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsAtLeast(array(2.2f, 99.99f)));
     assertFailureKeys(
         e,
         "value of",
@@ -800,13 +786,12 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsAtLeast_primitiveFloatArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsAtLeast(array(2.2f, 1.1f))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsAtLeast(array(2.2f, 1.1f))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -826,12 +811,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsAnyOf_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsAnyOf(array(99.99f, 999.999f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsAnyOf(array(99.99f, 999.999f)));
     assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
   }
 
@@ -845,12 +829,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsExactly_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsExactly(array(2.2f, 1.1f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsExactly(array(2.2f, 1.1f)));
     assertFailureKeys(
         e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", Float.toString(3.3f));
@@ -867,13 +850,12 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsExactly_primitiveFloatArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsExactly(array(2.2f, 1.1f, 3.3f))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsExactly(array(2.2f, 1.1f, 3.3f))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -894,12 +876,11 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingExactEquality_containsNoneOf_primitiveFloatArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1f, 2.2f, 3.3f))
-                    .usingExactEquality()
-                    .containsNoneOf(array(99.99f, 2.2f)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1f, 2.2f, 3.3f))
+                .usingExactEquality()
+                .containsNoneOf(array(99.99f, 2.2f)));
     assertFailureKeys(
         e,
         "value of",

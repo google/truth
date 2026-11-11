@@ -89,11 +89,10 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
 
     // r_string is matched, so the 'Full diff' contains extra information.
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(parse("o_int: 3 r_string: 'abc'"))
-                    .isEqualTo(parse("o_int: 4 r_string: 'abc'")));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(parse("o_int: 3 r_string: 'abc'"))
+                .isEqualTo(parse("o_int: 4 r_string: 'abc'")));
     expectThatFailure(failure).hasMessageThat().contains("Full diff");
   }
 
@@ -131,9 +130,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     }
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("matched: o_int: 3");
     if (!isProto3()) {
@@ -156,9 +154,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().contains("added: o_any_message:");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("matched: o_int: 3");
     expectThatFailure(failure).hasMessageThat().contains("matched: o_any_message");
@@ -182,12 +179,11 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
         .isEqualTo(message);
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(emptyMessage)
-                    .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(emptyMessage)
+                .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("deleted: o_sub_test_message");
 
@@ -259,9 +255,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().contains("deleted: 99[0]: 42");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
   }
 
@@ -309,9 +304,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .contains("modified: r_string[1]: \"bar\" -> \"foo\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(eqMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(eqMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
@@ -321,9 +315,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .contains("moved: r_string[1] -> r_string[0]: \"bar\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringRepeatedFieldOrder().isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringRepeatedFieldOrder().isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("matched: r_string[0]: \"foo\"");
     expectThatFailure(failure)
@@ -356,12 +349,11 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     // per-test basis, and not especially maintainable.  We should make the tests consistent
     // according to some reasonable rule in this regard.
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffSubMessage)
-                    .ignoringRepeatedFieldOrderOfFieldDescriptors(rootMessageRepeatedfield)
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffSubMessage)
+                .ignoringRepeatedFieldOrderOfFieldDescriptors(rootMessageRepeatedfield)
+                .isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure)
         .hasMessageThat()
@@ -592,12 +584,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(narrowMessage).comparingExpectedFieldsOnly().isNotEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(message)
-                    .comparingExpectedFieldsOnly()
-                    .isNotEqualTo(narrowMessage));
+        expectFailure(whenTesting ->
+            whenTesting.that(message).comparingExpectedFieldsOnly().isNotEqualTo(narrowMessage));
     expectThatFailure(failure).hasMessageThat().contains("ignored: r_string");
   }
 
@@ -611,23 +599,15 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).ignoringExtraRepeatedFieldElements().isNotEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(eqMessage)
-                    .ignoringExtraRepeatedFieldElements()
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(eqMessage).ignoringExtraRepeatedFieldElements().isNotEqualTo(message));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("ignored: r_string[?] -> r_string[1]: \"foobar\"");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .ignoringExtraRepeatedFieldElements()
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringExtraRepeatedFieldElements().isEqualTo(message));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("out_of_order: r_string[1] -> r_string[0]: \"bar\"");
@@ -652,13 +632,12 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .isNotEqualTo(message);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .ignoringExtraRepeatedFieldElements()
-                    .ignoringRepeatedFieldOrder()
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .ignoringExtraRepeatedFieldElements()
+                .ignoringRepeatedFieldOrder()
+                .isEqualTo(message));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("moved: r_string[0] -> r_string[1]: \"foo\"");
@@ -757,12 +736,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(message).ignoringExtraRepeatedFieldElements().isNotEqualTo(emptyMessage);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .ignoringExtraRepeatedFieldElements()
-                    .isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringExtraRepeatedFieldElements().isEqualTo(message));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains("matched: test_message_map[\"foo\"].o_int: 2");
@@ -783,9 +758,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThatFailure(failure).hasMessageThat().contains("not_bar");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).reportingMismatchesOnly().isEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).reportingMismatchesOnly().isEqualTo(message));
     expectIsEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().doesNotContain("foo");
     expectThatFailure(failure).hasMessageThat().contains("bar");
@@ -798,22 +772,20 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message diffMessage = parse("o_int: 33 r_string: \"bar\" r_string: \"foo\"");
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting.that(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().contains("33");
     expectThatFailure(failure).hasMessageThat().contains("foo");
     expectThatFailure(failure).hasMessageThat().contains("bar");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(diffMessage)
-                    .ignoringRepeatedFieldOrder()
-                    .reportingMismatchesOnly()
-                    .isNotEqualTo(message));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(diffMessage)
+                .ignoringRepeatedFieldOrder()
+                .reportingMismatchesOnly()
+                .isNotEqualTo(message));
     expectIsNotEqualToFailed(failure);
     expectThatFailure(failure).hasMessageThat().doesNotContain("33");
     expectThatFailure(failure).hasMessageThat().doesNotContain("foo");
@@ -832,11 +804,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .hasAllRequiredFields();
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(parsePartial("o_required_string_message: {}"))
-                    .hasAllRequiredFields());
+        expectFailure(whenTesting ->
+            whenTesting.that(parsePartial("o_required_string_message: {}")).hasAllRequiredFields());
     expectThatFailure(failure)
         .factKeys()
         .containsExactly(
@@ -846,12 +815,10 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .isEqualTo("[o_required_string_message.required_string]");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(
-                        parsePartial("r_required_string_message: {} r_required_string_message: {}"))
-                    .hasAllRequiredFields());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(parsePartial("r_required_string_message: {} r_required_string_message: {}"))
+                .hasAllRequiredFields());
     expectThatFailure(failure)
         .factKeys()
         .containsExactly(
@@ -875,24 +842,22 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message msgWithoutAny = parse("o_int: 42");
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(msgWithAny)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .isEqualTo(msgWithoutAny));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(msgWithAny)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .isEqualTo(msgWithoutAny));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains(
             "added: o_any_message: \n" + "[" + typeUrl + "] {\n" + "  r_string: \"foo\"\n" + "}\n");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(msgWithoutAny)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .isEqualTo(msgWithAny));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(msgWithoutAny)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .isEqualTo(msgWithAny));
     expectThatFailure(failure)
         .hasMessageThat()
         .contains(
@@ -931,13 +896,12 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
                 + fooSubMessage);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(msgWithFooBar)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .ignoringRepeatedFieldOrder()
-                    .isEqualTo(msgWithBazFoo));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(msgWithFooBar)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .ignoringRepeatedFieldOrder()
+                .isEqualTo(msgWithBazFoo));
 
     expectThatFailure(failure)
         .hasMessageThat()
@@ -977,12 +941,11 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .isNotEqualTo(diffMessage);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(message)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .isEqualTo(diffMessage));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(message)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .isEqualTo(diffMessage));
     expectThatFailure(failure).hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure(failure)
         .hasMessageThat()
@@ -1007,22 +970,20 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .isNotEqualTo(messageWithAny);
 
     AssertionError failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(messageWithAny)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .isEqualTo(messageWithEmptyAny));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(messageWithAny)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .isEqualTo(messageWithEmptyAny));
     expectThatFailure(failure).hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure(failure).hasMessageThat().contains("modified: o_any_message.value");
 
     failure =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(messageWithEmptyAny)
-                    .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
-                    .isEqualTo(messageWithAny));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(messageWithEmptyAny)
+                .unpackingAnyUsing(getTypeRegistry(), getExtensionRegistry())
+                .isEqualTo(messageWithAny));
     expectThatFailure(failure).hasMessageThat().contains("modified: o_any_message.type_url");
     expectThatFailure(failure).hasMessageThat().contains("modified: o_any_message.value");
   }

@@ -52,9 +52,8 @@ public class ThrowableSubjectTest {
 
   @Test
   public void hasMessageThat_messageHasNullMessage_failure() {
-    expectFailure(
-        whenTesting ->
-            whenTesting.that(new NullPointerException("message")).hasMessageThat().isNull());
+    expectFailure(whenTesting ->
+        whenTesting.that(new NullPointerException("message")).hasMessageThat().isNull());
   }
 
   @Test
@@ -106,9 +105,8 @@ public class ThrowableSubjectTest {
   public void hasCauseThat_message_failure() {
     Exception actual = new Exception("foobar", new IOException("barfoo"));
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(actual).hasCauseThat().hasMessageThat().isEqualTo("message"));
+        expectFailure(whenTesting ->
+            whenTesting.that(actual).hasCauseThat().hasMessageThat().isEqualTo("message"));
     assertFailureValue(e, "value of", "throwable.getCause().getMessage()");
     assertErrorHasActualAsCause(actual, e);
   }
@@ -117,9 +115,8 @@ public class ThrowableSubjectTest {
   public void hasCauseThat_instanceOf_failure() {
     Exception actual = new Exception("foobar", new IOException("barfoo"));
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(actual).hasCauseThat().isInstanceOf(RuntimeException.class));
+        expectFailure(whenTesting ->
+            whenTesting.that(actual).hasCauseThat().isInstanceOf(RuntimeException.class));
     assertFailureValue(e, "value of", "throwable.getCause()");
     assertErrorHasActualAsCause(actual, e);
   }
@@ -148,14 +145,13 @@ public class ThrowableSubjectTest {
     Exception actual =
         new Exception("foobar", new RuntimeException("barfoo", new IOException("buzz")));
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .hasCauseThat()
-                    .hasCauseThat()
-                    .hasMessageThat()
-                    .isEqualTo("message"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .hasCauseThat()
+                .hasCauseThat()
+                .hasMessageThat()
+                .isEqualTo("message"));
     assertFailureValue(e, "value of", "throwable.getCause().getCause().getMessage()");
     assertErrorHasActualAsCause(actual, e);
   }

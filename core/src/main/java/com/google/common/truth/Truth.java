@@ -78,10 +78,9 @@ public final class Truth {
 
   @SuppressWarnings("ConstantCaseForConstants") // Despite the "Builder" name, it's not mutable.
   private static final StandardSubjectBuilder ASSERT =
-      StandardSubjectBuilder.forCustomFailureStrategy(
-          failure -> {
-            throw failure;
-          });
+      StandardSubjectBuilder.forCustomFailureStrategy(failure -> {
+        throw failure;
+      });
 
   /**
    * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will

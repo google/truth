@@ -110,9 +110,8 @@ public class BigDecimalSubjectTest {
   @Test
   public void isEqualToIgnoringScale_nullExpected() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(new BigDecimal("3.4")).isEqualToIgnoringScale((BigDecimal) null));
+        expectFailure(whenTesting ->
+            whenTesting.that(new BigDecimal("3.4")).isEqualToIgnoringScale((BigDecimal) null));
     assertFailureKeys(e, "expected", "but was");
     assertFailureValue(e, "expected", "null");
     assertFailureValue(e, "but was", "3.4");

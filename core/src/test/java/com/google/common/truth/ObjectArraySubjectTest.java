@@ -138,22 +138,18 @@ public class ObjectArraySubjectTest {
   @Test
   public void isEqualTo_fail_unequalOrderingMultiDimensional_00() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new Object[][] {{"A"}, {5L}})
-                    .isEqualTo(new Object[][] {{5L}, {"A"}}));
+        expectFailure(whenTesting ->
+            whenTesting.that(new Object[][] {{"A"}, {5L}}).isEqualTo(new Object[][] {{5L}, {"A"}}));
     assertFailureValue(e, "differs at index", "[0][0]");
   }
 
   @Test
   public void isEqualTo_fail_unequalOrderingMultiDimensional_01() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new Object[][] {{"A", "B"}, {5L}})
-                    .isEqualTo(new Object[][] {{"A"}, {5L}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new Object[][] {{"A", "B"}, {5L}})
+                .isEqualTo(new Object[][] {{"A"}, {5L}}));
     assertFailureValue(e, "wrong length for index", "[0]");
     assertFailureValueIndexed(e, "expected", 1, "1");
     assertFailureValueIndexed(e, "but was", 1, "2");
@@ -162,11 +158,10 @@ public class ObjectArraySubjectTest {
   @Test
   public void isEqualTo_fail_unequalOrderingMultiDimensional_11() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new Object[][] {{"A"}, {5L}})
-                    .isEqualTo(new Object[][] {{"A"}, {5L, 6L}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new Object[][] {{"A"}, {5L}})
+                .isEqualTo(new Object[][] {{"A"}, {5L, 6L}}));
     assertFailureValue(e, "wrong length for index", "[1]");
     assertFailureValueIndexed(e, "expected", 1, "2");
     assertFailureValueIndexed(e, "but was", 1, "1");
@@ -213,11 +208,10 @@ public class ObjectArraySubjectTest {
   @Test
   public void isNotEqualTo_failEqualsMultiDimensional() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new Object[][] {{"A"}, {5L}})
-                    .isNotEqualTo(new Object[][] {{"A"}, {5L}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new Object[][] {{"A"}, {5L}})
+                .isNotEqualTo(new Object[][] {{"A"}, {5L}}));
     assertFailureValue(e, "expected not to be", "[[A], [5]]");
   }
 
@@ -264,9 +258,8 @@ public class ObjectArraySubjectTest {
   @Test
   public void stringArrayIsEqualTo_fail_unequalLengthMultiDimensional() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}}));
+        expectFailure(whenTesting ->
+            whenTesting.that(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}}));
     assertFailureKeys(e, "expected", "but was", "wrong length", "expected", "but was");
     assertFailureValueIndexed(e, "expected", 1, "1");
     assertFailureValueIndexed(e, "but was", 1, "2");
@@ -282,22 +275,20 @@ public class ObjectArraySubjectTest {
   @Test
   public void stringArrayIsEqualTo_fail_unequalOrderingMultiDimensional() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new String[][] {{"A"}, {"B"}})
-                    .isEqualTo(new String[][] {{"B"}, {"A"}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new String[][] {{"A"}, {"B"}})
+                .isEqualTo(new String[][] {{"B"}, {"A"}}));
     assertFailureValue(e, "differs at index", "[0][0]");
   }
 
   @Test
   public void setArrayIsEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(ImmutableSet.of("A"), ImmutableSet.of("B")))
-                    .isEqualTo(array(ImmutableSet.of("B"), ImmutableSet.of("A"))));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(ImmutableSet.of("A"), ImmutableSet.of("B")))
+                .isEqualTo(array(ImmutableSet.of("B"), ImmutableSet.of("A"))));
     assertFailureValue(e, "differs at index", "[0]");
     // Maybe one day:
     // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
@@ -312,11 +303,10 @@ public class ObjectArraySubjectTest {
   @Test
   public void primitiveMultiDimensionalArrayIsEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
-                    .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+                .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}}));
     assertFailureValue(e, "wrong length for index", "[2]");
     assertFailureValueIndexed(e, "expected", 1, "4");
     assertFailureValueIndexed(e, "but was", 1, "3");
@@ -330,21 +320,19 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void primitiveMultiDimensionalArrayIsNotEqualTo_fail_equal() {
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
-                .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}}));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+            .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}}));
   }
 
   @Test
   public void boxedAndUnboxed() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new Object[] {new int[] {0}})
-                    .isEqualTo(new Object[] {new Integer[] {0}}));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new Object[] {new int[] {0}})
+                .isEqualTo(new Object[] {new Integer[] {0}}));
     assertFailureValue(e, "wrong type for index", "[0]");
     assertFailureValueIndexed(e, "expected", 1, "Object[]");
     assertFailureValueIndexed(e, "but was", 1, "int[]");

@@ -44,9 +44,8 @@ public class TruthFailureSubjectTest {
   @Test
   public void factKeysFail() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(failure(fact("foo", "the foo"))).factKeys().contains("bar"));
+        expectFailure(whenTesting ->
+            whenTesting.that(failure(fact("foo", "the foo"))).factKeys().contains("bar"));
     assertFailureValue(e, "value of", "failure.factKeys()");
     assertFailureValue(e, "expected to contain", "bar");
     assertFailureValue(e, "but was", "[foo]");
@@ -62,12 +61,11 @@ public class TruthFailureSubjectTest {
   @Test
   public void factValueFailWrongValue() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(failure(fact("foo", "the foo")))
-                    .factValue("foo")
-                    .isEqualTo("the bar"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(failure(fact("foo", "the foo")))
+                .factValue("foo")
+                .isEqualTo("the bar"));
     assertFailureValue(e, "value of", "failure.factValue(foo)");
   }
 
@@ -84,11 +82,10 @@ public class TruthFailureSubjectTest {
   @Test
   public void factValueFailMultipleKeys() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(failure(fact("foo", "the foo"), fact("foo", "the other foo")))
-                    .factValue("foo"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(failure(fact("foo", "the foo"), fact("foo", "the other foo")))
+                .factValue("foo"));
     assertFailureKeys(e, "expected to contain a single fact with key", "but contained multiple");
     assertFailureValue(e, "expected to contain a single fact with key", "foo");
     assertFailureValue(e, "but contained multiple", "[foo: the foo, foo: the other foo]");
@@ -147,12 +144,11 @@ public class TruthFailureSubjectTest {
   @Test
   public void factValueIntFailWrongValue() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(failure(fact("foo", "the foo")))
-                    .factValue("foo", 0)
-                    .isEqualTo("the bar"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(failure(fact("foo", "the foo")))
+                .factValue("foo", 0)
+                .isEqualTo("the bar"));
     assertFailureValue(e, "value of", "failure.factValue(foo, 0)");
   }
 

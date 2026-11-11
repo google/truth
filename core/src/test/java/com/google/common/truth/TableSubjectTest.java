@@ -170,9 +170,8 @@ public class TableSubjectTest {
   @Test
   public void doesNotContainOnNullTable() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((Table<?, ?, ?>) null).doesNotContain("row", "otherCol"));
+        expectFailure(whenTesting ->
+            whenTesting.that((Table<?, ?, ?>) null).doesNotContain("row", "otherCol"));
     assertThat(e)
         .factKeys()
         .containsExactly(
@@ -214,9 +213,8 @@ public class TableSubjectTest {
   @Test
   public void containsCellOnNullTable() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((Table<?, ?, ?>) null).containsCell("row", "col", "val"));
+        expectFailure(whenTesting ->
+            whenTesting.that((Table<?, ?, ?>) null).containsCell("row", "col", "val"));
     assertFailureKeys(
         e,
         "expected a table that contains the given cell",
@@ -266,9 +264,8 @@ public class TableSubjectTest {
   @Test
   public void doesNotContainCellOnNullTable() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((Table<?, ?, ?>) null).doesNotContainCell("row", "col", "val"));
+        expectFailure(whenTesting ->
+            whenTesting.that((Table<?, ?, ?>) null).doesNotContainCell("row", "col", "val"));
     assertFailureKeys(
         e,
         "expected a table that does not contain the given cell",

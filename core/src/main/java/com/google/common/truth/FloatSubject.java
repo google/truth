@@ -111,43 +111,42 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isWithin(float tolerance) {
-    return TolerantFloatComparison.comparing(
-        other -> {
-          if (!Float.isFinite(tolerance)) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because tolerance was not"
-                        + " finite"),
-                numericFact("expected", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (Float.compare(tolerance, 0.0f) < 0) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because tolerance was negative"),
-                numericFact("expected", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (!Float.isFinite(other)) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because expected value was not"
-                        + " finite"),
-                numericFact("expected", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (actual == null || !Float.isFinite(actual)) {
-            failWithoutActual(
-                numericFact("expected a finite value near", other),
-                numericFact("but was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (!equalWithinTolerance(actual, other, tolerance)) {
-            failWithoutActual(
-                numericFact("expected", other),
-                numericFact("but was", actual),
-                numericFact("outside tolerance", tolerance));
-          }
-        });
+    return TolerantFloatComparison.comparing(other -> {
+      if (!Float.isFinite(tolerance)) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because tolerance was not"
+                    + " finite"),
+            numericFact("expected", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (Float.compare(tolerance, 0.0f) < 0) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because tolerance was negative"),
+            numericFact("expected", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (!Float.isFinite(other)) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because expected value was not"
+                    + " finite"),
+            numericFact("expected", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (actual == null || !Float.isFinite(actual)) {
+        failWithoutActual(
+            numericFact("expected a finite value near", other),
+            numericFact("but was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (!equalWithinTolerance(actual, other, tolerance)) {
+        failWithoutActual(
+            numericFact("expected", other),
+            numericFact("but was", actual),
+            numericFact("outside tolerance", tolerance));
+      }
+    });
   }
 
   /**
@@ -171,43 +170,42 @@ public final class FloatSubject extends ComparableSubject<Float> {
    *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(float tolerance) {
-    return TolerantFloatComparison.comparing(
-        other -> {
-          if (!Float.isFinite(tolerance)) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because tolerance was not"
-                        + " finite"),
-                numericFact("expected not to be", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (Float.compare(tolerance, 0.0f) < 0) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because tolerance was negative"),
-                numericFact("expected not to be", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (!Float.isFinite(other)) {
-            failWithoutActual(
-                simpleFact(
-                    "could not perform approximate-equality check because expected value was not"
-                        + " finite"),
-                numericFact("expected not to be", other),
-                numericFact("was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (actual == null || !Float.isFinite(actual)) {
-            failWithoutActual(
-                numericFact("expected a finite value that is not near", other),
-                numericFact("but was", actual),
-                numericFact("tolerance", tolerance));
-          } else if (!notEqualWithinTolerance(actual, other, tolerance)) {
-            failWithoutActual(
-                numericFact("expected not to be", other),
-                numericFact("but was", actual),
-                numericFact("within tolerance", tolerance));
-          }
-        });
+    return TolerantFloatComparison.comparing(other -> {
+      if (!Float.isFinite(tolerance)) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because tolerance was not"
+                    + " finite"),
+            numericFact("expected not to be", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (Float.compare(tolerance, 0.0f) < 0) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because tolerance was negative"),
+            numericFact("expected not to be", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (!Float.isFinite(other)) {
+        failWithoutActual(
+            simpleFact(
+                "could not perform approximate-equality check because expected value was not"
+                    + " finite"),
+            numericFact("expected not to be", other),
+            numericFact("was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (actual == null || !Float.isFinite(actual)) {
+        failWithoutActual(
+            numericFact("expected a finite value that is not near", other),
+            numericFact("but was", actual),
+            numericFact("tolerance", tolerance));
+      } else if (!notEqualWithinTolerance(actual, other, tolerance)) {
+        failWithoutActual(
+            numericFact("expected not to be", other),
+            numericFact("but was", actual),
+            numericFact("within tolerance", tolerance));
+      }
+    });
   }
 
   /**

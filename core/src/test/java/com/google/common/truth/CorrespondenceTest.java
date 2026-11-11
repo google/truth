@@ -87,12 +87,11 @@ public final class CorrespondenceTest {
   @Test
   public void from_viaIterableSubjectContainsExactly_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of("foot", "barn", "gallon"))
-                    .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-                    .containsExactly("foo", "bar"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of("foot", "barn", "gallon"))
+                .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+                .containsExactly("foo", "bar"));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "gallon");
     assertFailureValue(e, "testing whether", "actual element starts with expected element");
@@ -101,12 +100,11 @@ public final class CorrespondenceTest {
   @Test
   public void from_viaIterableSubjectContainsExactly_null() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(asList("foot", "barn", null))
-                    .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-                    .containsExactly("foo", "bar"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(asList("foot", "barn", null))
+                .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+                .containsExactly("foo", "bar"));
     assertFailureKeys(
         e,
         "unexpected (1)",
@@ -181,12 +179,11 @@ public final class CorrespondenceTest {
   @Test
   public void transforming_actual_viaIterableSubjectContainsExactly_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of("feet", "barns", "gallons"))
-                    .comparingElementsUsing(LENGTHS)
-                    .containsExactly(4, 5));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of("feet", "barns", "gallons"))
+                .comparingElementsUsing(LENGTHS)
+                .containsExactly(4, 5));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "gallons");
     assertFailureValue(e, "testing whether", "actual element has a length of expected element");
@@ -195,12 +192,11 @@ public final class CorrespondenceTest {
   @Test
   public void transforming_actual_viaIterableSubjectContainsExactly_nullActual() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(asList("feet", "barns", null))
-                    .comparingElementsUsing(LENGTHS)
-                    .containsExactly(4, 5));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(asList("feet", "barns", null))
+                .comparingElementsUsing(LENGTHS)
+                .containsExactly(4, 5));
     assertFailureKeys(
         e,
         "unexpected (1)",
@@ -287,12 +283,11 @@ public final class CorrespondenceTest {
   @Test
   public void transforming_both_viaIterableSubjectContainsExactly_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
-                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-                    .containsExactly("abcdefg:hij", "abcd:efghij"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
+                .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                .containsExactly("abcdefg:hij", "abcd:efghij"));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "web-app");
     assertFailureValue(
@@ -304,12 +299,11 @@ public final class CorrespondenceTest {
   @Test
   public void transforming_both_viaIterableSubjectContainsExactly_nullActual() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(asList("mailing-list", "chat-room", null))
-                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-                    .containsExactly("abcdefg:hij", "abcd:efghij"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(asList("mailing-list", "chat-room", null))
+                .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                .containsExactly("abcdefg:hij", "abcd:efghij"));
     assertFailureKeys(
         e,
         "unexpected (1)",
@@ -328,12 +322,11 @@ public final class CorrespondenceTest {
   @Test
   public void transforming_both_viaIterableSubjectContainsExactly_nullExpected() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of("mailing-list", "chat-room"))
-                    .comparingElementsUsing(HYPHENS_MATCH_COLONS)
-                    .containsExactly("abcdefg:hij", "abcd:efghij", null));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of("mailing-list", "chat-room"))
+                .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+                .containsExactly("abcdefg:hij", "abcd:efghij", null));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -446,12 +439,11 @@ public final class CorrespondenceTest {
   @Test
   public void tolerance_viaIterableSubjectContains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of(1.02, 2.04, 3.08))
-                    .comparingElementsUsing(tolerance(0.05))
-                    .contains(3.01));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of(1.02, 2.04, 3.08))
+                .comparingElementsUsing(tolerance(0.05))
+                .contains(3.01));
     assertFailureKeys(e, "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "3.01");
     assertFailureValue(
@@ -496,12 +488,11 @@ public final class CorrespondenceTest {
   @Test
   public void equality_viaIterableSubjectContains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of(1.01, 2.02, 3.03))
-                    .comparingElementsUsing(equality())
-                    .contains(2.0));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of(1.01, 2.02, 3.03))
+                .comparingElementsUsing(equality())
+                .contains(2.0));
     // N.B. No "testing whether" fact:
     assertFailureKeys(e, "expected to contain", "but was");
   }
@@ -544,12 +535,11 @@ public final class CorrespondenceTest {
   @Test
   public void formattingDiffsUsing_viaIterableSubjectContainsExactly_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableList.of("feet", "gallons"))
-                    .comparingElementsUsing(LENGTHS_WITH_DIFF)
-                    .containsExactly(4, 5));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableList.of("feet", "gallons"))
+                .comparingElementsUsing(LENGTHS_WITH_DIFF)
+                .containsExactly(4, 5));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -568,12 +558,11 @@ public final class CorrespondenceTest {
   @Test
   public void formattingDiffsUsing_viaIterableSubjectContainsExactly_nullActual() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(asList("feet", null))
-                    .comparingElementsUsing(LENGTHS_WITH_DIFF)
-                    .containsExactly(4, 5));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(asList("feet", null))
+                .comparingElementsUsing(LENGTHS_WITH_DIFF)
+                .containsExactly(4, 5));
     assertFailureKeys(
         e,
         "missing (1)",

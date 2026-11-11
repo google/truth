@@ -142,11 +142,10 @@ public class MultimapSubjectTest {
   @Test
   public void isEqualTo_failsWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableListMultimap.of(1, "a", 1, "b", 2, "c"))
-                    .isEqualTo(ImmutableListMultimap.of(1L, "a", 1L, "b", 2L, "c")));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableListMultimap.of(1, "a", 1, "b", 2, "c"))
+                .isEqualTo(ImmutableListMultimap.of(1L, "a", 1L, "b", 2L, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<Long, String>)");
     assertFailureValue(e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<Integer, String>)");
@@ -270,13 +269,11 @@ public class MultimapSubjectTest {
   @Test
   public void containsKey_failsWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(
-                        ImmutableMultimap.of(
-                            1L, "value1a", 1L, "value1b", 2L, "value2", "1", "value3"))
-                    .containsKey(1));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(
+                    ImmutableMultimap.of(1L, "value1a", 1L, "value1b", 2L, "value2", "1", "value3"))
+                .containsKey(1));
     assertFailureKeys(
         e,
         "value of",
@@ -429,17 +426,11 @@ public class MultimapSubjectTest {
   @Test
   public void containsEntry_failsWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(
-                        ImmutableMultimap.builder()
-                            .put(1, "1")
-                            .put(1, 1L)
-                            .put(1L, 1)
-                            .put(2, 3)
-                            .build())
-                    .containsEntry(1, 1));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(
+                    ImmutableMultimap.builder().put(1, "1").put(1, 1L).put(1L, 1).put(2, 3).build())
+                .containsEntry(1, 1));
     assertFailureKeys(
         e,
         "expected to contain entry",
@@ -478,9 +469,8 @@ public class MultimapSubjectTest {
   @Test
   public void doesNotContainEntryOnNullMultimap() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that((Multimap<?, ?>) null).doesNotContainEntry("kurt", "kluever"));
+        expectFailure(whenTesting ->
+            whenTesting.that((Multimap<?, ?>) null).doesNotContainEntry("kurt", "kluever"));
     assertFailureKeys(e, "expected a multimap that does not contain entry", "but was");
   }
 
@@ -520,9 +510,8 @@ public class MultimapSubjectTest {
     assertThat(actual).containsExactly().inOrder();
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(ImmutableMultimap.of(42, "Answer", 42, "6x7")).containsExactly());
+        expectFailure(whenTesting ->
+            whenTesting.that(ImmutableMultimap.of(42, "Answer", 42, "6x7")).containsExactly());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
@@ -639,9 +628,8 @@ public class MultimapSubjectTest {
   @Test
   public void containsExactlyFailureWithEmptyStringExtra() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(ImmutableMultimap.of("a", "", "", "")).containsExactly("a", ""));
+        expectFailure(whenTesting ->
+            whenTesting.that(ImmutableMultimap.of("a", "", "", "")).containsExactly("a", ""));
     assertFailureKeys(e, "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "unexpected", "{\"\" (empty String)=[\"\" (empty String)]}");
     assertFailureValue(e, "expected", "{a=[\"\" (empty String)]}");
@@ -651,9 +639,8 @@ public class MultimapSubjectTest {
   @Test
   public void containsExactlyFailureWithEmptyStringBoth() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(ImmutableMultimap.of("a", "")).containsExactly("", "a"));
+        expectFailure(whenTesting ->
+            whenTesting.that(ImmutableMultimap.of("a", "")).containsExactly("", "a"));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "missing", "{\"\" (empty String)=[a]}");
     assertFailureValue(e, "unexpected", "{a=[\"\" (empty String)]}");
@@ -749,11 +736,10 @@ public class MultimapSubjectTest {
     actual.remove(4, "five");
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
     assertFailureKeys(e, "missing", "---", "expected", "but was");
     assertFailureValue(e, "missing", "{3=[six], 4=[five]}");
     assertFailureValue(e, "expected", "{3=[one, six, two], 4=[five, four]}");
@@ -769,11 +755,10 @@ public class MultimapSubjectTest {
     actual.put(5, "eight");
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
     assertFailureKeys(e, "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "unexpected", "{4=[nine], 5=[eight]}");
   }
@@ -789,11 +774,10 @@ public class MultimapSubjectTest {
     actual.put(5, "eight");
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "missing", "{3=[six], 4=[five]}");
     assertFailureValue(e, "unexpected", "{4=[nine], 5=[eight]}");
@@ -836,12 +820,11 @@ public class MultimapSubjectTest {
 
     assertThat(actual).containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one")
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one")
+                .inOrder());
     assertFailureKeys(
         e,
         "contents match, but order was wrong",
@@ -860,12 +843,11 @@ public class MultimapSubjectTest {
 
     assertThat(actual).containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four")
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four")
+                .inOrder());
     assertFailureKeys(
         e,
         "contents match, but order was wrong",
@@ -879,11 +861,10 @@ public class MultimapSubjectTest {
   @Test
   public void containsExactlyEntriesIn_homogeneousMultimap_failsWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
-                    .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c")));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
+                .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(e, "missing", "[1=a, 1=b, 2=c] (Map.Entry<Long, String>)");
     assertFailureValue(e, "unexpected", "[1=a, 1=b, 2=c] (Map.Entry<Integer, String>)");
@@ -892,11 +873,10 @@ public class MultimapSubjectTest {
   @Test
   public void containsExactlyEntriesIn_heterogeneousMultimap_failsWithSameToString() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableMultimap.of(1, "a", 1, "b", 2L, "c"))
-                    .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2, "c")));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableMultimap.of(1, "a", 1, "b", 2L, "c"))
+                .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2, "c")));
     assertFailureKeys(e, "missing", "unexpected", "---", "expected", "but was");
     assertFailureValue(
         e,
@@ -994,9 +974,8 @@ public class MultimapSubjectTest {
   @Test
   public void containsAtLeastFailureWithEmptyStringMissing() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(ImmutableMultimap.of("key", "value")).containsAtLeast("", "a"));
+        expectFailure(whenTesting ->
+            whenTesting.that(ImmutableMultimap.of("key", "value")).containsAtLeast("", "a"));
     assertFailureKeys(e, "missing", "---", "expected to contain at least", "but was");
     assertFailureValue(e, "missing", "{\"\" (empty String)=[a]}");
   }
@@ -1093,11 +1072,10 @@ public class MultimapSubjectTest {
     actual.put(3, "nine");
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsAtLeast(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsAtLeast(3, "one", 3, "six", 3, "two", 4, "five", 4, "four"));
     assertFailureKeys(e, "missing", "---", "expected to contain at least", "but was");
     assertFailureValue(e, "missing", "{3=[six], 4=[five]}");
   }
@@ -1116,9 +1094,8 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(3, "one", 3, "two", 4, "five", 4, "five");
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(actual).containsAtLeast(3, "one", 3, "one", 3, "one", 4, "five"));
+        expectFailure(whenTesting ->
+            whenTesting.that(actual).containsAtLeast(3, "one", 3, "one", 3, "one", 4, "five"));
     assertFailureKeys(e, "missing", "---", "expected to contain at least", "but was");
     assertFailureValue(e, "missing", "{3=[one [2 copies]]}");
   }
@@ -1138,12 +1115,11 @@ public class MultimapSubjectTest {
 
     assertThat(actual).containsAtLeast(4, "four", 3, "six", 3, "two", 3, "one");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsAtLeast(4, "four", 3, "six", 3, "two", 3, "one")
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsAtLeast(4, "four", 3, "six", 3, "two", 3, "one")
+                .inOrder());
     assertFailureKeys(
         e,
         "contents match, but order was wrong",
@@ -1164,12 +1140,11 @@ public class MultimapSubjectTest {
 
     assertThat(actual).containsAtLeast(3, "two", 3, "one", 4, "five", 4, "four");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .containsAtLeast(3, "two", 3, "one", 4, "five", 4, "four")
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .containsAtLeast(3, "two", 3, "one", 4, "five", 4, "four")
+                .inOrder());
     assertFailureKeys(
         e,
         "contents match, but order was wrong",
@@ -1194,12 +1169,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsEntry("def", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsEntry("def", 123));
     assertFailureKeys(
         e,
         "expected to contain entry",
@@ -1218,12 +1192,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsEntry("xyz", 789));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsEntry("xyz", 789));
     assertFailureKeys(
         e,
         "expected to contain entry",
@@ -1239,12 +1212,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsEntry("xyz", 321));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsEntry("xyz", 321));
     assertFailureKeys(
         e, "expected to contain entry", "testing whether", "but did not", "full contents");
   }
@@ -1257,12 +1229,11 @@ public class MultimapSubjectTest {
     actual.put(2, "deux");
     actual.put(2, null);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .containsEntry(2, "ZWEI"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .containsEntry(2, "ZWEI"));
     // The test fails because the expected key doesn't have a match for the expected value. We are
     // bound also to hit a NPE from compare(null, ZWEI) along the way, and should also report that.
     assertFailureKeys(
@@ -1287,12 +1258,11 @@ public class MultimapSubjectTest {
     actual.put(3, null);
     actual.put(3, "zwei");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .containsEntry(2, "ZWEI"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .containsEntry(2, "ZWEI"));
     // The test fails and does not contain the expected key, but does contain the expected value
     // we the wrong key. We are bound also to hit a NPE from compare(null, ZWEI) along the way, and
     // should also report that.
@@ -1318,12 +1288,11 @@ public class MultimapSubjectTest {
     actual.put(2, null);
     actual.put(2, "zwei");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .containsEntry(2, "ZWEI"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .containsEntry(2, "ZWEI"));
     // The multimap does contain the expected entry, but no reasonable implementation could find
     // it without hitting the NPE from compare(null, ZWEI) first, so we are contractually required
     // to fail.
@@ -1346,12 +1315,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Object> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", 789);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsEntry("def", 789));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsEntry("def", 789));
     assertFailureKeys(
         e,
         "expected to contain entry",
@@ -1398,12 +1366,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .doesNotContainEntry("def", 789));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .doesNotContainEntry("def", 789));
     assertFailureKeys(
         e,
         "expected not to contain entry",
@@ -1424,12 +1391,11 @@ public class MultimapSubjectTest {
     actual.put(2, null);
     actual.put(2, "zwei");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .doesNotContainEntry(2, "ZWEI"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .doesNotContainEntry(2, "ZWEI"));
     // The test fails because it does contain the expected entry. We are bound to also hit the NPE
     // from compare(null, ZWEI) along the way, and should also report that.
     assertFailureKeys(
@@ -1453,12 +1419,11 @@ public class MultimapSubjectTest {
     actual.put(2, "deux");
     actual.put(2, null);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .doesNotContainEntry(2, "ZWEI"));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .doesNotContainEntry(2, "ZWEI"));
     // The test would pass if compare(null, ZWEI) returned false. But it actually throws NPE, and
     // we are bound to hit that, so we are contractually required to fail.
     assertFailureKeys(
@@ -1479,12 +1444,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Object> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", 789);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .doesNotContainEntry("def", 789));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .doesNotContainEntry("def", 789));
     assertFailureKeys(
         e,
         "one or more exceptions were thrown while comparing values",
@@ -1516,12 +1480,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected));
     assertFailureKeys(e, "missing (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "missing (1)", "abc=123");
     // TODO(b/69154276): Address the fact that we show "expected" as a list of entries and "but was"
@@ -1542,12 +1505,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 64);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "abc=+123");
   }
@@ -1559,12 +1521,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 128, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected));
     assertFailureKeys(
         e,
         "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
@@ -1591,12 +1552,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<Integer, String> expected =
         ImmutableListMultimap.of(1, "ONE", 2, "TWO", 2, "DEUX", 2, "ZWEI");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .containsExactlyEntriesIn(expected));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -1627,12 +1587,11 @@ public class MultimapSubjectTest {
     expected.put(2, "DEUX");
     expected.put(2, null);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+                .containsExactlyEntriesIn(expected));
     // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
     // mapping between actual and expected entries where they all correspond. However, no
     // reasonable implementation would find that mapping without hitting the (null, "TWO") case
@@ -1657,12 +1616,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -1698,13 +1656,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected)
+                .inOrder());
     assertFailureKeys(
         e, "contents match, but order was wrong", "expected", "testing whether", "but was");
     assertFailureValue(e, "expected", "[def=64, def=64, def=128, abc=123]");
@@ -1717,13 +1674,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("abc", 123, "def", 64, "def", 128, "def", 64);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactlyEntriesIn(expected)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactlyEntriesIn(expected)
+                .inOrder());
     assertFailureKeys(
         e, "contents match, but order was wrong", "expected", "testing whether", "but was");
     assertFailureValue(e, "expected", "[abc=123, def=64, def=128, def=64]");
@@ -1742,12 +1698,11 @@ public class MultimapSubjectTest {
         .inOrder();
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(ImmutableListMultimap.of("abc", "+123"))
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(ImmutableListMultimap.of("abc", "+123"))
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly());
     assertFailureKeys(e, "expected to be empty", "but was");
   }
 
@@ -1765,12 +1720,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123));
     assertFailureKeys(e, "missing (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "missing (1)", "abc=123");
   }
@@ -1780,12 +1734,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("def", 64, "def", 128, "def", 64));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("def", 64, "def", 128, "def", 64));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "abc=+123");
   }
@@ -1795,12 +1748,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("def", 64, "def", 128, "def", 128, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("def", 64, "def", 128, "def", 128, "abc", 123));
     assertFailureKeys(
         e,
         "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
@@ -1822,12 +1774,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Object> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -1868,13 +1819,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
+                .inOrder());
     assertFailureKeys(
         e, "contents match, but order was wrong", "expected", "testing whether", "but was");
     assertFailureValue(e, "expected", "[def=64, def=64, def=128, abc=123]");
@@ -1885,13 +1835,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
+                .inOrder());
     assertFailureKeys(
         e, "contents match, but order was wrong", "expected", "testing whether", "but was");
     assertFailureValue(e, "expected", "[abc=123, def=64, def=128, def=64]");
@@ -1915,12 +1864,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeastEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeastEntriesIn(expected));
     assertFailureKeys(
         e, "missing (1)", "---", "expected to contain at least", "testing whether", "but was");
     assertFailureValue(e, "missing (1)", "abc=123");
@@ -1933,12 +1881,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 128, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeastEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeastEntriesIn(expected));
     assertFailureKeys(
         e,
         "in an assertion requiring a 1:1 mapping between the expected and a subset of the actual"
@@ -1963,12 +1910,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<Integer, String> expected =
         ImmutableListMultimap.of(1, "ONE", 2, "TWO", 2, "DEUX");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
-                    .containsAtLeastEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+                .containsAtLeastEntriesIn(expected));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -1997,12 +1943,11 @@ public class MultimapSubjectTest {
     expected.put(2, "DEUX");
     expected.put(2, null);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
-                    .containsAtLeastEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+                .containsAtLeastEntriesIn(expected));
     // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
     // mapping between actual and expected entries where they all correspond. However, no
     // reasonable implementation would find that mapping without hitting the (null, "TWO") case
@@ -2028,12 +1973,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeastEntriesIn(expected));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeastEntriesIn(expected));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -2069,13 +2013,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeastEntriesIn(expected)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeastEntriesIn(expected)
+                .inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",
@@ -2094,13 +2037,12 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("abc", 123, "def", 64, "def", 128, "def", 64);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeastEntriesIn(expected)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeastEntriesIn(expected)
+                .inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",
@@ -2126,12 +2068,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("def", "+64", "def", "0x40", "m", "+1", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeast("def", 64, "def", 128, "def", 64, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeast("def", 64, "def", 128, "def", 64, "abc", 123));
     assertFailureKeys(
         e, "missing (1)", "---", "expected to contain at least", "testing whether", "but was");
     assertFailureValue(e, "missing (1)", "abc=123");
@@ -2143,12 +2084,11 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(
             "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeast("def", 64, "def", 128, "def", 128, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeast("def", 64, "def", 128, "def", 128, "abc", 123));
     assertFailureKeys(
         e,
         "in an assertion requiring a 1:1 mapping between the expected and a subset of the actual"
@@ -2168,12 +2108,11 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, Object> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", 999, "m", "+1");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeast("def", 64, "def", 123, "def", 64, "abc", 123));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeast("def", 64, "def", 123, "def", 64, "abc", 123));
     assertFailureKeys(
         e,
         "missing (1)",
@@ -2205,13 +2144,12 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(
             "abc", "+123", "def", "+64", "def", "0x40", "m", "+1", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeast("def", 64, "def", 64, "def", 128, "abc", 123)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeast("def", 64, "def", 64, "def", 128, "abc", 123)
+                .inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",
@@ -2228,13 +2166,12 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(
             "abc", "+123", "m", "+1", "def", "+64", "def", "0x40", "def", "+128");
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(actual)
-                    .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-                    .containsAtLeast("abc", 123, "def", 64, "def", 128, "def", 64)
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(actual)
+                .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+                .containsAtLeast("abc", 123, "def", 64, "def", 128, "def", 64)
+                .inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",

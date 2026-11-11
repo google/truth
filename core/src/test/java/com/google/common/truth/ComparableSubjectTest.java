@@ -76,11 +76,10 @@ public class ComparableSubjectTest {
         .isEquivalentAccordingToCompareTo(new StringComparedByLength("xyz"));
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(new StringComparedByLength("abc"))
-                    .isEquivalentAccordingToCompareTo(new StringComparedByLength("abcd")));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(new StringComparedByLength("abc"))
+                .isEquivalentAccordingToCompareTo(new StringComparedByLength("abcd")));
     assertFailureValue(e, "expected value that sorts equal to", "abcd");
   }
 

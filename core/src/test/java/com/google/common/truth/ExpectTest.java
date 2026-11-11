@@ -194,11 +194,10 @@ public class ExpectTest {
   public void failWhenCallingThatAfterTest() {
     ExecutorService executor = newSingleThreadExecutor();
     taskToAwait =
-        executor.submit(
-            () -> {
-              awaitUninterruptibly(testMethodComplete);
-              assertThrows(IllegalStateException.class, () -> expect.that(3));
-            });
+        executor.submit(() -> {
+          awaitUninterruptibly(testMethodComplete);
+          assertThrows(IllegalStateException.class, () -> expect.that(3));
+        });
     executor.shutdown();
   }
 
@@ -212,13 +211,12 @@ public class ExpectTest {
      */
     IntegerSubject expectThat3 = expect.that(3);
     taskToAwait =
-        executor.submit(
-            () -> {
-              awaitUninterruptibly(testMethodComplete);
-              IllegalStateException expected =
-                  assertThrows(IllegalStateException.class, () -> expectThat3.isEqualTo(4));
-              assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
-            });
+        executor.submit(() -> {
+          awaitUninterruptibly(testMethodComplete);
+          IllegalStateException expected =
+              assertThrows(IllegalStateException.class, () -> expectThat3.isEqualTo(4));
+          assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
+        });
     executor.shutdown();
   }
 }

@@ -126,21 +126,18 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void isNotEqualTo_withoutToleranceParameter_failEquals() {
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
-                .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY)));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
+            .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY)));
   }
 
   @Test
   public void isNotEqualTo_withoutToleranceParameter_naN_plusZero_failEquals() {
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
-                .isNotEqualTo(
-                    array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0)));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
+            .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0)));
   }
 
   @Test
@@ -186,12 +183,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_contains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, INTOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(2.2));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, INTOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(2.2));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "value of", "array.asList()");
     assertFailureValue(e, "expected to contain", "2.2");
@@ -205,12 +201,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_contains_failureWithInfinity() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, POSITIVE_INFINITY, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(POSITIVE_INFINITY));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, POSITIVE_INFINITY, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(POSITIVE_INFINITY));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "Infinity");
     assertFailureValue(e, "but was", "[1.1, Infinity, 3.3]");
@@ -219,12 +214,8 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_contains_failureWithNaN() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, NaN, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(NaN));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, NaN, 3.3)).usingTolerance(DEFAULT_TOLERANCE).contains(NaN));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "NaN");
     assertFailureValue(e, "but was", "[1.1, NaN, 3.3]");
@@ -272,12 +263,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @J2ktIncompatible // nullness type error
   public void usingTolerance_contains_nullExpected() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .contains(null));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .contains(null));
     assertFailureKeys(
         e,
         "value of",
@@ -315,12 +305,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsAtLeast_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAtLeast(array(2.2, 99.99)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAtLeast(array(2.2, 99.99)));
     assertFailureKeys(
         e,
         "value of",
@@ -343,13 +332,12 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAtLeast(array(2.2, 1.1))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAtLeast(array(2.2, 1.1))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -370,12 +358,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsAnyOf_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsAnyOf(array(99.99, 999.999)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsAnyOf(array(99.99, 999.999)));
     assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
     assertFailureValue(e, "expected to contain any of", "[99.99, 999.999]");
   }
@@ -390,12 +377,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsExactly(array(2.2, 1.1)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsExactly(array(2.2, 1.1)));
     assertFailureKeys(
         e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "3.3");
@@ -412,13 +398,12 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsExactly(array(2.2, 1.1, 3.3))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsExactly(array(2.2, 1.1, 3.3))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -439,12 +424,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_containsNoneOf_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, TOLERABLE_2POINT2, 3.3))
-                    .usingTolerance(DEFAULT_TOLERANCE)
-                    .containsNoneOf(array(99.99, 2.2)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+                .usingTolerance(DEFAULT_TOLERANCE)
+                .containsNoneOf(array(99.99, 2.2)));
     assertFailureKeys(
         e,
         "value of",
@@ -467,9 +451,8 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_contains_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     assertFailureValue(e, "expected to contain", "2.2");
     assertFailureValue(e, "testing whether", "actual element is exactly equal to expected element");
@@ -492,9 +475,8 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingExactEquality_contains_otherTypes_longOutOfRange() {
     long expected = (1L << 53) + 1L;
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
         e,
         "value of",
@@ -520,9 +502,8 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingExactEquality_contains_otherTypes_bigIntegerNotSupported() {
     BigInteger expected = BigInteger.valueOf(2);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
         e,
         "value of",
@@ -547,9 +528,8 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingExactEquality_contains_otherTypes_bigDecimalNotSupported() {
     BigDecimal expected = BigDecimal.valueOf(2.0);
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected));
     assertFailureKeys(
         e,
         "value of",
@@ -583,9 +563,8 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0));
     assertFailureKeys(e, "value of", "expected to contain", "testing whether", "but was");
     /*
      * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
@@ -600,9 +579,8 @@ public class PrimitiveDoubleArraySubjectTest {
   @J2ktIncompatible // nullness type error
   public void usingExactEquality_contains_nullExpected() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null));
     assertFailureKeys(
         e,
         "value of",
@@ -625,12 +603,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsAtLeast_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsAtLeast(array(2.2, 99.99)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsAtLeast(array(2.2, 99.99)));
     assertFailureKeys(
         e,
         "value of",
@@ -653,13 +630,12 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsAtLeast(array(2.2, 1.1))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsAtLeast(array(2.2, 1.1))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -678,12 +654,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsAnyOf_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsAnyOf(array(99.99, 999.999)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsAnyOf(array(99.99, 999.999)));
     assertFailureKeys(e, "value of", "expected to contain any of", "testing whether", "but was");
   }
 
@@ -695,12 +670,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsExactly(array(2.2, 1.1)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsExactly(array(2.2, 1.1)));
     assertFailureKeys(
         e, "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
     assertFailureValue(e, "unexpected (1)", "3.3");
@@ -717,13 +691,12 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_inOrder_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsExactly(array(2.2, 1.1, 3.3))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsExactly(array(2.2, 1.1, 3.3))
+                .inOrder());
     assertFailureKeys(
         e,
         "value of",
@@ -742,12 +715,11 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingExactEquality_containsNoneOf_primitiveDoubleArray_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(array(1.1, 2.2, 3.3))
-                    .usingExactEquality()
-                    .containsNoneOf(array(99.99, 2.2)));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(array(1.1, 2.2, 3.3))
+                .usingExactEquality()
+                .containsNoneOf(array(99.99, 2.2)));
     assertFailureKeys(
         e,
         "value of",
@@ -764,11 +736,10 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void smallDifferenceInLongRepresentation() {
-    expectFailure(
-        whenTesting ->
-            whenTesting
-                .that(array(-4.4501477170144023E-308))
-                .isEqualTo(array(-4.450147717014402E-308)));
+    expectFailure(whenTesting ->
+        whenTesting
+            .that(array(-4.4501477170144023E-308))
+            .isEqualTo(array(-4.450147717014402E-308)));
   }
 
   @Test

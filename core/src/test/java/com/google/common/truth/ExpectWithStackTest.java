@@ -34,11 +34,10 @@ public class ExpectWithStackTest {
 
   @Test
   public void expectTrace_simpleCase() {
-    verifyAssertionError.setErrorVerifier(
-        expected -> {
-          assertThat(expected.getStackTrace()).hasLength(0);
-          assertThat(expected).hasMessageThat().startsWith("3 expectations failed:");
-        });
+    verifyAssertionError.setErrorVerifier(expected -> {
+      assertThat(expected.getStackTrace()).hasLength(0);
+      assertThat(expected).hasMessageThat().startsWith("3 expectations failed:");
+    });
 
     expectWithTrace.that(true).isFalse();
     expectWithTrace.that("Hello").isNull();
@@ -47,14 +46,13 @@ public class ExpectWithStackTest {
 
   @Test
   public void expectTrace_loop() {
-    verifyAssertionError.setErrorVerifier(
-        expected -> {
-          assertThat(expected.getStackTrace()).hasLength(0);
-          assertThat(expected).hasMessageThat().startsWith("4 expectations failed:");
-          assertWithMessage("test method name should only show up once with following omitted")
-              .that(expected.getMessage().split("expectTrace_loop"))
-              .hasLength(2);
-        });
+    verifyAssertionError.setErrorVerifier(expected -> {
+      assertThat(expected.getStackTrace()).hasLength(0);
+      assertThat(expected).hasMessageThat().startsWith("4 expectations failed:");
+      assertWithMessage("test method name should only show up once with following omitted")
+          .that(expected.getMessage().split("expectTrace_loop"))
+          .hasLength(2);
+    });
 
     for (int i = 0; i < 4; i++) {
       expectWithTrace.that(true).isFalse();
@@ -63,11 +61,10 @@ public class ExpectWithStackTest {
 
   @Test
   public void expectTrace_callerException() {
-    verifyAssertionError.setErrorVerifier(
-        expected -> {
-          assertThat(expected.getStackTrace()).hasLength(0);
-          assertThat(expected).hasMessageThat().startsWith("2 expectations failed:");
-        });
+    verifyAssertionError.setErrorVerifier(expected -> {
+      assertThat(expected.getStackTrace()).hasLength(0);
+      assertThat(expected).hasMessageThat().startsWith("2 expectations failed:");
+    });
 
     expectWithTrace.that(true).isFalse();
     expectWithTrace
@@ -77,11 +74,10 @@ public class ExpectWithStackTest {
 
   @Test
   public void expectTrace_onlyCallerException() {
-    verifyAssertionError.setErrorVerifier(
-        expected ->
-            assertWithMessage("Should throw exception as it is if only caller exception")
-                .that(expected.getStackTrace().length)
-                .isAtLeast(2));
+    verifyAssertionError.setErrorVerifier(expected ->
+        assertWithMessage("Should throw exception as it is if only caller exception")
+            .that(expected.getStackTrace().length)
+            .isAtLeast(2));
 
     expectWithTrace
         .that(alwaysFailWithCause(getFirstException("First", getSecondException("Second", null))))

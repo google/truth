@@ -179,9 +179,8 @@ public final class IntStreamSubjectTest {
   @Test
   public void containsAtLeast_inOrder_fails() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(IntStream.of(42, 43)).containsAtLeast(43, 42).inOrder());
+        expectFailure(whenTesting ->
+            whenTesting.that(IntStream.of(42, 43)).containsAtLeast(43, 42).inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",
@@ -197,9 +196,8 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void containsAtLeastElementsIn_fails() {
-    expectFailure(
-        whenTesting ->
-            whenTesting.that(IntStream.of(42, 43)).containsAtLeastElementsIn(asList(42, 43, 44)));
+    expectFailure(whenTesting ->
+        whenTesting.that(IntStream.of(42, 43)).containsAtLeastElementsIn(asList(42, 43, 44)));
   }
 
   @Test
@@ -210,12 +208,11 @@ public final class IntStreamSubjectTest {
   @Test
   public void containsAtLeastElementsIn_inOrder_fails() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(IntStream.of(42, 43))
-                    .containsAtLeastElementsIn(asList(43, 42))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(IntStream.of(42, 43))
+                .containsAtLeastElementsIn(asList(43, 42))
+                .inOrder());
     assertFailureKeys(
         e,
         "required elements were all found, but order was wrong",
@@ -267,9 +264,8 @@ public final class IntStreamSubjectTest {
   @Test
   public void containsExactly_inOrder_fails() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(IntStream.of(42, 43)).containsExactly(43, 42).inOrder());
+        expectFailure(whenTesting ->
+            whenTesting.that(IntStream.of(42, 43)).containsExactly(43, 42).inOrder());
     assertFailureKeys(e, "contents match, but order was wrong", "expected", "but was");
     assertFailureValue(e, "expected", "[43, 42]");
   }
@@ -283,9 +279,8 @@ public final class IntStreamSubjectTest {
   @Test
   public void containsExactlyElementsIn_fails() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(IntStream.of(42, 43)).containsExactlyElementsIn(asList(42)));
+        expectFailure(whenTesting ->
+            whenTesting.that(IntStream.of(42, 43)).containsExactlyElementsIn(asList(42)));
     assertFailureKeys(e, "unexpected (1)", "---", "expected", "but was");
     assertFailureValue(e, "expected", "[42]");
   }
@@ -298,12 +293,11 @@ public final class IntStreamSubjectTest {
   @Test
   public void containsExactlyElementsIn_inOrder_fails() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(IntStream.of(42, 43))
-                    .containsExactlyElementsIn(asList(43, 42))
-                    .inOrder());
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(IntStream.of(42, 43))
+                .containsExactlyElementsIn(asList(43, 42))
+                .inOrder());
     assertFailureKeys(e, "contents match, but order was wrong", "expected", "but was");
     assertFailureValue(e, "expected", "[43, 42]");
   }

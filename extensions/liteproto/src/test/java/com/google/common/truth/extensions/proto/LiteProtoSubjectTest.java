@@ -178,31 +178,28 @@ public class LiteProtoSubjectTest {
   @Test
   public void isEqualTo_failure() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(config.nonEmptyMessage())
-                    .isEqualTo(config.nonEmptyMessageOfOtherValue()));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(config.nonEmptyMessage())
+                .isEqualTo(config.nonEmptyMessageOfOtherValue()));
     expectRegex(e, ".*expected:.*\"foo\".*");
     expectNoRegex(e, ".*but was:.*\"foo\".*");
 
     e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(config.nonEmptyMessage())
-                    .isEqualTo(config.nonEmptyMessageOfOtherType()));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(config.nonEmptyMessage())
+                .isEqualTo(config.nonEmptyMessageOfOtherType()));
     assertThat(e)
         .factKeys()
         .containsExactly("expected", "an instance of", "but was", "an instance of")
         .inOrder();
 
     e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(config.nonEmptyMessage())
-                    .isNotEqualTo(config.equivalentNonEmptyMessage()));
+        expectFailure(whenTesting ->
+            whenTesting
+                .that(config.nonEmptyMessage())
+                .isNotEqualTo(config.equivalentNonEmptyMessage()));
     expectRegex(
         e,
         String.format(
@@ -222,11 +219,8 @@ public class LiteProtoSubjectTest {
     }
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(config.messageWithoutRequiredFields().get())
-                    .hasAllRequiredFields());
+        expectFailure(whenTesting ->
+            whenTesting.that(config.messageWithoutRequiredFields().get()).hasAllRequiredFields());
     expectRegex(
         e,
         "expected to have all required fields set\\s*but was: .*\\(Lite runtime could not"
@@ -254,9 +248,8 @@ public class LiteProtoSubjectTest {
             + "It has set values\\.");
 
     e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(config.defaultInstance()).isNotEqualToDefaultInstance());
+        expectFailure(whenTesting ->
+            whenTesting.that(config.defaultInstance()).isNotEqualToDefaultInstance());
     expectRegex(
         e,
         String.format(
@@ -277,16 +270,14 @@ public class LiteProtoSubjectTest {
     int size = config.nonEmptyMessage().getSerializedSize();
 
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(config.nonEmptyMessage()).serializedSize().isGreaterThan(size));
+        expectFailure(whenTesting ->
+            whenTesting.that(config.nonEmptyMessage()).serializedSize().isGreaterThan(size));
     assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
     assertThat(e).factValue("liteProto was").containsMatch("optional_int:\\s*3");
 
     e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(config.defaultInstance()).serializedSize().isGreaterThan(0));
+        expectFailure(whenTesting ->
+            whenTesting.that(config.defaultInstance()).serializedSize().isGreaterThan(0));
     assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
     assertThat(e).factValue("liteProto was").contains("[empty proto]");
   }

@@ -52,9 +52,8 @@ public final class ActualValueInferenceTest {
     assertThat(e).factValue("value of").isEqualTo("instanceOneArg(...)");
 
     e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(new ActualValueInferenceTest().instanceOneArg(0)).isEqualTo("b"));
+        expectFailure(whenTesting ->
+            whenTesting.that(new ActualValueInferenceTest().instanceOneArg(0)).isEqualTo("b"));
     assertThat(e).factValue("value of").isEqualTo("instanceOneArg(...)");
   }
 
@@ -115,11 +114,10 @@ public final class ActualValueInferenceTest {
     AssertionError e;
 
     e =
-        expectFailure(
-            whenTesting -> {
-              String s = staticNoArg();
-              whenTesting.that(s).isEqualTo("b");
-            });
+        expectFailure(whenTesting -> {
+          String s = staticNoArg();
+          whenTesting.that(s).isEqualTo("b");
+        });
     assertThat(e).factValue("value of").isEqualTo("staticNoArg()");
   }
 
@@ -159,12 +157,11 @@ public final class ActualValueInferenceTest {
     AssertionError e;
 
     e =
-        expectFailure(
-            whenTesting -> {
-              for (int i = 0; i < 1; i++) {
-                whenTesting.that(staticNoArg()).isEqualTo("b");
-              }
-            });
+        expectFailure(whenTesting -> {
+          for (int i = 0; i < 1; i++) {
+            whenTesting.that(staticNoArg()).isEqualTo("b");
+          }
+        });
     /*
      * It would be nice for inference to work on this simple loop, but loops can be much more
      * complex, so for now, we're conservative.
@@ -177,16 +174,15 @@ public final class ActualValueInferenceTest {
     AssertionError e;
 
     e =
-        expectFailure(
-            whenTesting -> {
-              String s;
-              try {
-                s = staticNoArg();
-              } catch (RuntimeException exception) {
-                s = instanceNoArg();
-              }
-              whenTesting.that(s).isEqualTo("b");
-            });
+        expectFailure(whenTesting -> {
+          String s;
+          try {
+            s = staticNoArg();
+          } catch (RuntimeException exception) {
+            s = instanceNoArg();
+          }
+          whenTesting.that(s).isEqualTo("b");
+        });
     assertThat(e).factKeys().doesNotContain("value of");
   }
 

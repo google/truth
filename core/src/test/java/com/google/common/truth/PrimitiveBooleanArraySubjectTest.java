@@ -46,9 +46,8 @@ public class PrimitiveBooleanArraySubjectTest {
   @Test
   public void isEqualTo_fail_unequalOrdering() {
     AssertionError e =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(array(true, false, true)).isEqualTo(array(false, true, true)));
+        expectFailure(whenTesting ->
+            whenTesting.that(array(true, false, true)).isEqualTo(array(false, true, true)));
     assertFailureValue(e, "differs at index", "[0]");
   }
 
