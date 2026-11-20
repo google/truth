@@ -33,13 +33,26 @@ the [examples below](#iterable).
 Here's an example correspondence between strings, which tests whether the actual
 strings contain the expected substrings:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 private static final Correspondence<String, String> CONTAINS_SUBSTRING =
     Correspondence.from(String::contains, "contains");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+private val CONTAINS_SUBSTRING: Correspondence<String, String> =
+  Correspondence.from(String::contains, "contains")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Here's an example correspondence between strings and integers, which tests
 whether the string parses as the integer:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 class ThisTest {
@@ -61,6 +74,30 @@ class ThisTest {
   // ...tests using STRING_PARSES_TO_INTEGER...
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+class ThisTest {
+  // ...tests using STRING_PARSES_TO_INTEGER...
+
+  companion object {
+    private val STRING_PARSES_TO_INTEGER: Correspondence<String?, Int?> =
+      Correspondence.from(::stringParsesToInteger, "parses to")
+
+    private fun stringParsesToInteger(actual: String?, expected: Int?): Boolean {
+      if (actual == null) {
+        return expected == null
+      }
+      try {
+        return Integer.decode(actual) == expected
+      } catch (_: NumberFormatException) {
+        return false
+      }
+    }
+  }
+}
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 The most general factory method for `Correspondence` instances is
 [`Correspondence.from`][correspondence-from]. Other factory methods are
@@ -70,10 +107,20 @@ elements for equality after some transformation. Here's an example
 correspondence between instances of some `MyRecord` class and integers, which
 tests whether calling `getId` on the record returns the integer:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 private static final Correspondence<MyRecord, Integer> RECORD_HAS_ID =
     Correspondence.transforming(MyRecord::getId, "has an ID of");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+private val RECORD_HAS_ID: Correspondence<MyRecord, Int> =
+  Correspondence.transforming({ it.id }, "has an ID of")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 You may want to think about handling of null elements. In the examples above,
 `STRING_PARSES_TO_INTEGER` has explicit null handling such that a null actual
@@ -82,6 +129,9 @@ and any test which sees a null string will fail.
 
 ## Iterable Example {#iterable}
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 Iterable<String> actual = ImmutableList.of("+64", "+128", "+256", "0x80");
 assertThat(actual)
@@ -89,6 +139,16 @@ assertThat(actual)
     .containsExactly(64, 128, 256, 128)
     .inOrder();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val actual: Iterable<String> = listOf("+64", "+128", "+256", "0x80")
+assertThat(actual)
+  .comparingElementsUsing(STRING_PARSES_TO_INTEGER)
+  .containsExactly(64, 128, 256, 128)
+  .inOrder()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Map Example {#map}
 
@@ -96,18 +156,33 @@ N.B. The `Correspondence` applies to the values, not the keys, of the map. You
 should almost always make assertions using equality of map keys, since equality
 semantics are used for lookups.
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 Map<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
 assertThat(actual)
     .comparingValuesUsing(STRING_PARSES_TO_INTEGER)
     .containsExactly("def", 456, "abc", 123);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val actual = mapOf("abc" to "123", "def" to "456")
+assertThat(actual)
+  .comparingValuesUsing(STRING_PARSES_TO_INTEGER)
+  .containsExactly("def", 456, "abc", 123)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Multimap Example {#multimap}
 
 N.B. The `Correspondence` applies to the values, not the keys, of the multimap.
 You should almost always make assertions using equality of multimap keys, since
 equality semantics are used for lookups.
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 Multimap<String, String> actual =
@@ -116,6 +191,16 @@ assertThat(actual)
     .comparingValuesUsing(STRING_PARSES_TO_INTEGER)
     .containsEntry("def", 789);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val actual: Multimap<String, String> =
+  ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789")
+assertThat(actual)
+  .comparingValuesUsing(STRING_PARSES_TO_INTEGER)
+  .containsEntry("def", 789)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Getting better failure messages
 
@@ -134,12 +219,24 @@ making an assertion about an `Iterable<MyRecord>` using a `Correspondence`
 called `RECORD_EQUIVALENCE`, and the expected records have unique IDs returned
 by a `getId()` method, then you could write this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualRecords)
     .comparingElementsUsing(RECORD_EQUIVALENCE)
     .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualRecords)
+  .comparingElementsUsing(RECORD_EQUIVALENCE)
+  .displayingDiffsPairedBy { it?.id }
+  .containsExactlyElementsIn(expectedRecords)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If this assertion fails, the failure message will pair up any missing and
 unexpected elements by their IDs. For example, it might tell you that the actual
@@ -164,6 +261,9 @@ using the [`formattingDiffsUsing`][correspondence-formatting-diffs].
 
 Here's an example correspondence between `MyRecord` instances:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 class RecordTestHelper {
 
@@ -179,6 +279,24 @@ class RecordTestHelper {
   }
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+object RecordTestHelper {
+  val RECORD_EQUIVALENCE: Correspondence<MyRecord?, MyRecord?> =
+    Correspondence.from(::recordsEquivalent, "is equivalent to")
+      .formattingDiffsUsing(::formatRecordDiff)
+
+  fun recordsEquivalent(actual: MyRecord?, expected: MyRecord?): Boolean {
+    // code to check whether records should be considered equivalent for testing purposes
+  }
+
+  fun formatRecordDiff(actual: MyRecord?, expected: MyRecord?): String? {
+    // code to format the diff between the records
+  }
+}
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 When you do this, Fuzzy Truth will include these formatted diffs in failure
 messages whenever it can usefully do so. For example, when an assertion about a
@@ -194,12 +312,24 @@ for comparisons (i.e. making the same assertion as you would get with non-Fuzzy
 Truth) by using a method such as
 [`formattingDiffsUsing`][iterablesubject-formattingdiffsusing]. For example:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualRecords)
     .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff)
     .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualRecords)
+  .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff)
+  .displayingDiffsPairedBy { it?.id }
+  .containsExactlyElementsIn(expectedRecords)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Protocol buffers
 

@@ -57,6 +57,9 @@ If you find yourself referencing a Truth subject type, there's a good chance
 that there's a cleaner way to write your code. For example, we've often see
 folks write test helper methods like this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 // Please don't do this!
 private static BooleanSubject assertThatBooleanWpcs(
@@ -66,19 +69,51 @@ private static BooleanSubject assertThatBooleanWpcs(
           /* channel */ null, key, /* inherit */ true, /* useDefault */ false));
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+// Please don't do this!
+private fun assertThatBooleanWpcs(
+  webProperty: WebProperty,
+  key: WebPropertyChannelSetting.Key,
+): BooleanSubject =
+  assertThat(
+    webProperty.getBooleanWebPropertyChannelSetting(
+      /* channel= */ null,
+      key,
+      /* inherit= */ true,
+      /* useDefault= */ false,
+    )
+  )
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Then in their tests, they call their helper method and chain `.isTrue()` or
 `.isFalse()` onto the end of it. E.g.,
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 // Please don't do this!
 assertThatBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING).isTrue();
 assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+// Please don't do this!
+assertThatBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING).isTrue()
+assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 **In general, please avoid helper methods that return Truth subjects.**
 
 Instead, return the *object under test* from your helper method:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 private static boolean getBooleanWpcs(
@@ -87,16 +122,44 @@ private static boolean getBooleanWpcs(
       /* channel */ null, key, /* inherit */ true, /* useDefault */ false);
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+private fun getBooleanWpcs(
+  webProperty: WebProperty,
+  key: WebPropertyChannelSetting.Key,
+): Boolean =
+  webProperty.getBooleanWebPropertyChannelSetting(
+    /* channel= */ null,
+    key,
+    /* inherit= */ true,
+    /* useDefault= */ false,
+  )
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ...and then in your tests, call your helper method inside `assertThat(...)`:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)).isTrue();
 assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)).isFalse();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)).isTrue()
+assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)).isFalse()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ...or even go one step further and extract the *object-under-test* into a local
 variable:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 boolean generalCategoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING);
@@ -105,6 +168,17 @@ assertThat(generalCategoryFilter).isTrue();
 boolean categoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING);
 assertThat(categoryFilter).isFalse();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val generalCategoryFilter =
+  getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)
+assertThat(generalCategoryFilter).isTrue()
+
+val categoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)
+assertThat(categoryFilter).isFalse()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 A tell-tale sign of this anti-pattern is if a Truth subject type is directly
 imported (e.g., `import com.google.common.truth.BooleanSubject`). Instead of
@@ -150,6 +224,9 @@ elements **and nothing else**.
 
 For example:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 ImmutableList<String> abc = ImmutableList.of("a", "b", "c");
 
@@ -159,10 +236,25 @@ assertThat(abc).containsExactly("a", "b", "c"); // passes
 assertThat(abc).containsAtLeast("a", "b");      // passes
 assertThat(abc).containsExactly("a", "b");      // fails
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val abc = listOf("a", "b", "c")
+
+assertThat(abc).containsAtLeast("a", "b", "c") // passes
+assertThat(abc).containsExactly("a", "b", "c") // passes
+
+assertThat(abc).containsAtLeast("a", "b")      // passes
+assertThat(abc).containsExactly("a", "b")      // fails
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Also note that both of the methods are *order-independent assertions*. If you
 want order to be checked, you must chain `.inOrder()` onto the end of your
 assertion. For example:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 ImmutableList<String> abc = ImmutableList.of("a", "b", "c");
@@ -175,38 +267,98 @@ assertThat(abc).containsAtLeast("a", "b").inOrder();      // passes
 assertThat(abc).containsAtLeast("c", "a", "b").inOrder(); // fails
 assertThat(abc).containsExactly("c", "a", "b").inOrder(); // fails
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val abc = listOf("a", "b", "c")
+
+assertThat(abc).containsAtLeast("c", "a", "b")           // passes
+assertThat(abc).containsExactly("c", "a", "b")           // passes
+
+assertThat(abc).containsAtLeast("a", "b").inOrder()      // passes
+
+assertThat(abc).containsAtLeast("c", "a", "b").inOrder() // fails
+assertThat(abc).containsExactly("c", "a", "b").inOrder() // fails
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Does it matter if I write `assertThat(a).isEqualTo(b)` or `assertThat(b).isEqualTo(a)`? {#order}
 
 Yes! Truth's error messages will make more sense if you always use this pattern:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualValue).isEqualTo(expectedValue);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualValue).isEqualTo(expectedValue)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 In most cases, the **actual value** will be a call to the *code under test* and
 the **expected value** will be a *literal value* or a *constant*. For example:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(user.getId()).isEqualTo(42);      // literal value
 assertThat(user.getId()).isEqualTo(USER_ID); // constant value
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(user.id).isEqualTo(42)      // literal value
+assertThat(user.id).isEqualTo(USER_ID) // constant value
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Please **do not** write the above assertion as
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(42).isEqualTo(user.getId())
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(42).isEqualTo(user.id)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Here's another example of two ways to write an assertion:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(ImmutableList.of("red", "white", "blue")).contains(user.getFavoriteColor()); // BAD
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(listOf("red", "white", "blue")).contains(user.favoriteColor) // BAD
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(user.getFavoriteColor()).isAnyOf("red", "white", "blue");                    // GOOD
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(user.favoriteColor).isAnyOf("red", "white", "blue")          // GOOD
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 You should always use the latter instead of the former.
 
@@ -217,9 +369,18 @@ call, you should stop and try to write the *inverse assertion*.
 
 See the [floating point comparisons](floating_point). For example:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualDouble).isWithin(tolerance).of(expectedDouble);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualDouble).isWithin(tolerance).of(expectedDouble)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## How do I assert on the contents of an `Iterable` using something other than equality of the elements? {#fuzzy}
 
@@ -242,25 +403,50 @@ general case, and finally the less common shortcuts.
 **No custom parameters:** The simplest case is an assertion with no custom
 message on a type that Truth supports natively. There, you can use `assertThat`:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.Truth.assertThat;
 ...
 assertThat(usernames).containsExactly("kak");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Truth.assertThat
+...
+assertThat(usernames).containsExactly("kak")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 **Extension `Subject` only:** most [external `Subject` types](extension) provide
 an `assertThat` overload you can import (and one should be
 [added](extension#writing-your-own-truth-extension) if it's missing):
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.assertThat;
 ...
 assertThat(kurt).hasLocation(NYC);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extension.EmployeeSubject.Companion.assertThat
+...
+assertThat(kurt).hasLocation(NYC)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 **Custom message only:** Use `assertWithMessage`. As you'll see later,
 `assertWithMessage` is the entry point to use almost any time you want a custom
 message.
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -269,10 +455,23 @@ assertWithMessage("findClosestMatch should have found user with given username")
     .that(db.findClosestMatch("kak"))
     .isEqualTo(kurt);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Truth.assertWithMessage
+...
+assertWithMessage("findClosestMatch should have found user with given username")
+  .that(db.findClosestMatch("kak"))
+  .isEqualTo(kurt)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 **The general case:** Once you've learned the common cases above, the easiest
 way to learn the rest is to learn the full call chain. Even shortcuts like
 `assertThat` are implemented using that chain. It looks like this:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.employees;
@@ -283,6 +482,18 @@ expect // set what to do upon failure (that is, the FailureStrategy)
     .that(db.findClosestMatch("kak")) // set the actual value under test
     .hasUsername("kak");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extension.EmployeeSubject.Companion.employees
+...
+expect // set what to do upon failure (that is, the FailureStrategy)
+  .withMessage("findClosestMatch should have found user with given username") // set message
+  .about(employees()) // set the type of value to test. The parameter is a Subject.Factory
+  .that(db.findClosestMatch("kak")) // set the actual value under test
+  .hasUsername("kak")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If you're curious why we chose that order, you can read
 [this design doc](subject_builder_design). But most users will just be

@@ -59,18 +59,36 @@ Each extension is packaged separately so you can include only what you need.
 
 For example:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extensions.proto.ProtoTruth.assertThat
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 It's fine to also statically import `Truth.assertThat` in the same file, as the
 methods have different signatures.
 
 ### 3. Write a test assertion using the static import
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(protoBuilder).hasAllRequiredFields();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(protoBuilder).hasAllRequiredFields()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If you need to set a failure message or use a different [`FailureStrategy`],
 you'll instead need to find the extension's [`Subject.Factory`]. For an
@@ -78,6 +96,9 @@ extension named `FooSubject`, the factory is usually `FooSubject.foos()`. In the
 case of the Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use
 the [`expect`] `FailureStrategy` and provide an additional message in a check
 about Protocol Buffers, you would write:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
@@ -91,6 +112,21 @@ expect
     .that(myBuilder)
     .hasAllRequiredFields();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Expect
+import com.google.common.truth.extensions.proto.ProtoTruth.protos
+...
+@get:Rule val expect = Expect.create()
+...
+expect
+  .withMessage("fields not copied from input %s", input)
+  .about(protos())
+  .that(myBuilder)
+  .hasAllRequiredFields()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 But in most cases you'll use shortcuts, either `assertThat(...)` or
 `assertWithMessage(...).about(...).that(...)`. For more information about the
@@ -119,9 +155,20 @@ There are four parts to the example:
     1.  Every custom subject must extend [`Subject`] or one of its subclasses.
         Your class definition will usually look like this:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public final class EmployeeSubject extends Subject {...}
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        class EmployeeSubject
+        private constructor(metadata: FailureMetadata, private val actual: Employee?) :
+          Subject(metadata, actual) { ... }
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         The class must be accessible to the tests that will use it. Typically
         that means making it `public`.
@@ -137,11 +184,23 @@ There are four parts to the example:
     2.  A subject also needs to define a [`Subject.Factory`], exposed through a
         static method. The definition is usually boilerplate:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public static Factory<EmployeeSubject, Employee> employees() {
           return EmployeeSubject::new;
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        companion object {
+          @JvmStatic
+          fun employees(): Factory<EmployeeSubject, Employee> = Factory(::EmployeeSubject)
+        }
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         Like your `Subject` class itself, this static method must be accessible
         to the tests that will use it―typically, `public`.
@@ -154,6 +213,9 @@ There are four parts to the example:
         perform all the operations that they expect of a built-in `Subject`
         type. For example, they can set a failure message:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         import static com.google.common.truth.extension.EmployeeSubject.employees;
         ...
@@ -162,6 +224,17 @@ There are four parts to the example:
             .that(db.findClosestMatch("kak"))
             .hasUsername("kak");
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        import com.google.common.truth.extension.EmployeeSubject.Companion.employees
+        ...
+        assertWithMessage("findClosestMatch should have found user with given username")
+          .about(employees())
+          .that(db.findClosestMatch("kak"))
+          .hasUsername("kak")
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         But users won't need those operations most of the time, so offer them a
         shortcut:
@@ -169,11 +242,27 @@ There are four parts to the example:
     3.  For users' convenience, define a static `assertThat(Employee)` shortcut
         method:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public static EmployeeSubject assertThat(@Nullable Employee actual) {
           return assertAbout(employees()).that(actual);
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        companion object {
+          @JvmStatic
+          fun assertThat(actual: Employee?): EmployeeSubject =
+            assertAbout(employees()).that(actual)
+
+          @JvmStatic
+          fun employees(): Factory<EmployeeSubject, Employee> = Factory(::EmployeeSubject)
+        }
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         Like your `Subject`, your `assertThat` method must be accessible to the
         tests that will use it―typically, `public`.
@@ -199,6 +288,9 @@ There are four parts to the example:
         a reference to the instance, and pass both to the superclass
         constructor:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         @Nullable private final Employee actual;
 
@@ -207,6 +299,14 @@ There are four parts to the example:
           this.actual = actual;
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        class EmployeeSubject
+        private constructor(metadata: FailureMetadata, private val actual: Employee?) :
+          Subject(metadata, actual)
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         If your `Subject` is `final`, the constructor can be `private`. But even
         if you want an extensible `Subject`, there's no reason for the
@@ -225,11 +325,22 @@ There are four parts to the example:
         existing assertion. To do so, use `Subject.check(...)`, which preserves
         the caller-specified `FailureStrategy` and other context. For example:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public void hasName(String name) {
           check("name()").that(actual.name()).isEqualTo(name);
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        fun hasName(name: String) {
+          check("name()").that(actual!!.name()).isEqualTo(name)
+        }
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         This gives Truth enough information to construct a failure message like:
 
@@ -245,6 +356,9 @@ There are four parts to the example:
         other approach -- manually perform your check and report a failure. For
         example:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public void isCeo() {
           if (!actual.isCeo()) {
@@ -252,6 +366,16 @@ There are four parts to the example:
           }
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        fun isCeo() {
+          if (!actual!!.isCeo) {
+            failWithActual(simpleFact("expected to be CEO"))
+          }
+        }
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         This lets Truth produce a failure message like:
 
@@ -275,22 +399,43 @@ There are four parts to the example:
         value of `employee.name()`. To create such "chained" subjects, use
         `Subject.check(...)`, as above, and return the `Subject` you create:
 
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
         ```java
         public StringSubject name() {
           return check("name()").that(actual.name());
         }
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        fun name(): StringSubject = check("name()").that(actual!!.name())
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
         Now callers can write:
+
+        <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+        <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
         ```java
         assertThat(kak).name().matches("Kurt .*Kluever");
         ```
+        {: .c-codeselector__code .c-codeselector__code_java }
+
+        ```kotlin
+        assertThat(kak).name().matches("Kurt .*Kluever")
+        ```
+        {: .c-codeselector__code .c-codeselector__code_kotlin }
 
 3.  [`EmployeeSubjectTest.java`]
 
     This is a test of the subject, which tests that its assertions pass when
     they should and fail when they should:
+
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
     ```java
     import static com.google.common.truth.ExpectFailure.expectFailureAbout;
@@ -315,6 +460,32 @@ There are four parts to the example:
       }
     }
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.ExpectFailure.expectFailureAbout
+    import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback
+    import com.google.common.truth.extension.EmployeeSubject.Companion.assertThat
+    import com.google.common.truth.extension.EmployeeSubject.Companion.employees
+
+    class EmployeeSubjectTest {
+      @Test
+      fun id() {
+        assertThat(KURT).hasId(37802)
+        expectFailure { whenTesting -> whenTesting.that(KURT).hasId(12345) }
+      }
+      ...
+      private fun expectFailure(
+        callback: SimpleSubjectBuilderCallback<EmployeeSubject, Employee>
+      ): AssertionError = expectFailureAbout(employees(), callback)
+
+      companion object {
+        private val KURT =
+          Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false)
+      }
+    }
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     Testing that assertions pass is easy: Just make assertions with your
     `assertThat` method.
@@ -326,11 +497,22 @@ There are four parts to the example:
     If you want to test more thoroughly, `expectFailure` returns an
     `AssertionError`, so you can write:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     import static com.google.common.truth.ExpectFailure.assertThat;
 
     assertThat(failure).factValue("value of").isEqualTo("employee.username()");
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.ExpectFailure.assertThat
+
+    assertThat(failure).factValue("value of").isEqualTo("employee.username()")
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     `ExpectFailure` also provides an API for users who can't use lambdas. See
     its docs for details.
@@ -341,12 +523,25 @@ There are four parts to the example:
     subject. The important thing to note is that you import both
     `Truth.assertThat` and `EmployeeSubject.assertThat`:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     import static com.google.common.truth.Truth.assertThat;
     import static com.google.common.truth.extension.EmployeeSubject.assertThat;
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.Truth.assertThat
+    import com.google.common.truth.extension.EmployeeSubject.Companion.assertThat
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     You can use your subject alongside the core Truth subjects:
+
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
     ```java
     // "normal" Truth
@@ -356,6 +551,17 @@ There are four parts to the example:
     db.relocate(KURT.id(), MTV);
     assertThat(db.get(KURT.id())).hasLocation(MTV);
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    // "normal" Truth
+    assertThat(db.get(SUNDAR.id())).isNull()
+
+    // uses the custom EmployeeSubject
+    db.relocate(KURT.id(), MTV)
+    assertThat(db.get(KURT.id())).hasLocation(MTV)
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
 <!-- References -->
 

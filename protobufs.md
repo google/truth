@@ -37,9 +37,18 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
 
 1.  Add a static import:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.extensions.proto.ProtoTruth.assertThat
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     NOTE: `ProtoTruth.assertThat` and `Truth.assertThat` can both be statically
     imported in the same file. Java handles overloaded static imports much like
@@ -47,11 +56,30 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
 
 1.  Assert away!
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     MyProto expected = MyProto.newBuilder().addBar(3).addBar(5).setFoo("qux").build();
     MyProto actual =   MyProto.newBuilder().addBar(5).addBar(3).setFoo("quizzux").build();
     assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected);
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    val expected = myProto {
+      bar += 3
+      bar += 5
+      foo = "qux"
+    }
+    val actual = myProto {
+      bar += 5
+      bar += 3
+      foo = "quizzux"
+    }
+    assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     This assertion yields the following failure message:
 
@@ -114,11 +142,22 @@ tell ProtoTruth about it. For example, if you have a proto called `MyRecord`,
 and you're making an assertion about an `Iterable<MyRecord>`, and the expected
 records have unique values of an `id` field, then you could write this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualRecordProtos)
     .displayingDiffsPairedBy(MyRecord::getId)
     .containsExactlyElementsIn(expectedRecords);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualRecordProtos)
+  .displayingDiffsPairedBy { it.id }
+  .containsExactlyElementsIn(expectedRecords)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If this assertion fails, the failure message will pair up any missing and
 unexpected elements by their IDs. For example, it might tell you that the actual
@@ -165,9 +204,18 @@ doing dynamic comparisons. To use lite protos with proto truth:
 
 1.  Add a static import:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
 1.  And assert away!
 

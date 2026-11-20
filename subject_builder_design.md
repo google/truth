@@ -13,19 +13,39 @@ refer to [the main usage docs](index), [the FAQ](faq) (including
 
 Most Truth assertions use one of its `assertThat` methods:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(colors).containsExactly(RED, GREEN, BLUE);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(colors).containsExactly(RED, GREEN, BLUE)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Each `assertThat` method returns a [`Subject`]―here, an [`IterableSubject`]. So
 you could imagine this `assertThat` method has an implementation like the
 following:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 public static IterableSubject assertThat(Iterable<?> actual) {
   return new IterableSubject(actual);
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+@JvmStatic
+fun assertThat(actual: Iterable<*>?): IterableSubject =
+  IterableSubject(actual)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 The static method is a cleaner API: It lets users write `assertThat(...)` rather
 than `new IterableSubject(...)`, `new StringSubject(...)`, etc. But there is
@@ -39,6 +59,9 @@ doesn't just delegate to the constructor; it also fills in sensible defaults for
 the constructor's other parameters. You could imagine that its implementation
 looks like this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 public static IterableSubject assertThat(Iterable<?> actual) {
   return new IterableSubject(        // kind of Subject to create
@@ -47,9 +70,24 @@ public static IterableSubject assertThat(Iterable<?> actual) {
       "");                           // default message
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+@JvmStatic
+fun assertThat(actual: Iterable<*>?): IterableSubject =
+  IterableSubject(                 // kind of Subject to create
+    actual,                        // value under test
+    throwAssertionErrorStrategy(), // default FailureStrategy
+    "",                            // default message
+  )
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This raises a question: How do callers specify values other than the defaults?
 The answer is that they use Truth's full `Subject`-builder chain:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 expect                                                        // FailureStrategy
@@ -58,6 +96,16 @@ expect                                                        // FailureStrategy
     .that(db.get(KURT.id())                                   // value under test
     .hasLocation(MTV);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+expect                                                        // FailureStrategy
+  .withMessage("relocate call did not update location")       // message
+  .about(employees())                                         // kind of Subject to create
+  .that(db.get(KURT.id()))                                    // value under test
+  .hasLocation(MTV)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 And in fact, even [`assertThat`] is implemented with such a call chain, not with
 my hypothetical direct call to [the constructor][`IterableSubject`] (a
@@ -88,20 +136,42 @@ special API for assertions with no custom message. That API is likely to be
 verbose and to require parameters, which IDEs don't autocomplete as well as they
 do with chained method calls:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 withoutMessage(assert_())
     .that(kurt)
     .hasLocation(MTV);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+withoutMessage(assert_())
+  .that(kurt)
+  .hasLocation(MTV)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 The alternative is to make `assert_()` itself work not just as a parameter but
 also as a way of starting the chain:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assert_()
     .that(kurt)
     .hasLocation(MTV);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assert_()
+  .that(kurt)
+  .hasLocation(MTV)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 But if we go that far, it's probably clearest to make it start the chain in all
 cases, rather than serve as both a parameter and a standalone entry point.

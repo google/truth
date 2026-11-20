@@ -136,12 +136,25 @@ The main downside of this pattern is that the keys can sometimes be long.
 
 Some assertion methods test a specific part of the original object. For example:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(list).hasSize(5);
 assertThat(optional).hasValue("foo");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(list).hasSize(5)
+assertThat(optional).hasValue("foo")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 These methods should delegate to a `Subject` for the derived property:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 public void hasSize(int size) {
@@ -154,6 +167,20 @@ public void hasValue(Object value) {
   check("get()").that(actual.get()).isEqualTo(value);
 }
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+fun hasSize(size: Int) {
+  // ... check that the actual value isn't null ...
+  check("size()").that(actual!!.size).isEqualTo(size)
+}
+
+fun hasValue(value: Any?) {
+  // ... check that the actual value isn't null, check isPresent() ...
+  check("get()").that(actual!!.get()).isEqualTo(value)
+}
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Such code produces messages like:
 
@@ -226,9 +253,18 @@ Most `Subject` implementations requre a certain kind of object -- in this
 example, a string. Saying "expected an empty string" suggests that the test had
 the ability to pass a non-string to the assertion, such as:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(someInt).isEmpty();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(someInt).isEmpty()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 But such a call wouldn't compile. Thus, failure messages shouldn't emphasize the
 *type* of value that was expected so much as the *properties* of the value.

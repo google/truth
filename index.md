@@ -7,9 +7,18 @@ title: Truth - Fluent assertions for Java and Android
 
 Truth is a library for performing assertions in tests:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(notificationText).contains("testuser@google.com");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(notificationText).contains("testuser@google.com")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Truth is owned and maintained by the [Guava] team. It is used in the majority
 of the tests in Google’s own codebase.
@@ -19,19 +28,42 @@ of the tests in Google’s own codebase.
 In other words, why depend on a new library when you can use the methods built
 into your testing framework, like `assertEquals`?
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertEquals(
     ImmutableMultiset.of("guava", "dagger", "truth", "auto", "caliper"),
     HashMultiset.create(projectsByTeam().get("corelibs")));
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertEquals(
+  ImmutableMultiset.of("guava", "dagger", "truth", "auto", "caliper"),
+  HashMultiset.create(projectsByTeam()["corelibs"]),
+)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Here’s the equivalent using Truth:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 assertThat(projectsByTeam())
     .valuesForKey("corelibs")
     .containsExactly("guava", "dagger", "truth", "auto", "caliper");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(projectsByTeam())
+  .valuesForKey("corelibs")
+  .containsExactly("guava", "dagger", "truth", "auto", "caliper")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 -   The Truth code is faster to type, especially with autocompletion.
 -   The Truth code is easier to read:
@@ -155,12 +187,25 @@ checks for many kinds of bugs, including some we've seen in usages of Truth.
 
 ## 2. Add static imports for Truth’s entry points:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## 3. Write a test assertion:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 String string = "awesome";
@@ -174,6 +219,21 @@ assertThat(googleColors)
     .containsExactly(BLUE, RED, YELLOW, BLUE, GREEN, RED)
     .inOrder();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val string = "awesome"
+assertThat(string).startsWith("awe")
+assertWithMessage("Without me, it's just aweso")
+  .that(string)
+  .contains("me")
+
+val googleColors: Iterable<Color> = googleLogo.colors
+assertThat(googleColors)
+  .containsExactly(BLUE, RED, YELLOW, BLUE, GREEN, RED)
+  .inOrder()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If you’re using an IDE with autocompletion, it will suggest a list of assertions
 you can make about the given type. If not, consult the [API docs]. For example,

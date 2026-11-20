@@ -26,6 +26,9 @@ Another case addresses a problem that's less severe but more common: what to do
 when your library defines multiple `Subject` classes. The usual solution is to
 declare a `Subject.Factory` for each:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.employees;
 import static com.google.common.truth.extension.TeamSubject.teams;
@@ -40,11 +43,31 @@ assertWithMessage("query result should include skip-level employees")
     .that(javaTeam)
     .hasMember(kurt);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extension.EmployeeSubject.Companion.employees
+import com.google.common.truth.extension.TeamSubject.Companion.teams
+…
+assertWithMessage("converter should look up username")
+  .about(employees())
+  .that(kurt)
+  .hasUsername("kak")
+…
+assertWithMessage("query result should include skip-level employees")
+  .about(teams())
+  .that(javaTeam)
+  .hasMember(kurt)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 But this forces some users to import multiple factories. And it adds noise to
 the assertion calls: Why draw readers' attention to the fact that the first
 assertion is about an `Employee` and the second is about a `Team`? We'd like to
 be able to write:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.extension.HumanResourcesTruth.humanResources;
@@ -59,6 +82,22 @@ assertWithMessage("query result should include skip-level employees")
     .that(javaTeam)
     .hasMember(kurt);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extension.HumanResourcesTruth.humanResources
+…
+assertWithMessage("converter should look up username")
+  .about(humanResources())
+  .that(kurt)
+  .hasUsername("kak")
+…
+assertWithMessage("query result should include skip-level employees")
+  .about(humanResources())
+  .that(javaTeam)
+  .hasMember(kurt)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 <!-- TODO(cpovirk): How do we feel about a multi-argument `that` method? -->
 
@@ -69,9 +108,19 @@ Rather than create a `Subject.Factory` as described in step 2 of
 
 1.  Declare a subclass of `CustomSubjectBuilder`:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     public final class ProtoSubjectBuilder extends CustomSubjectBuilder {…}
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    class ProtoSubjectBuilder internal constructor(metadata: FailureMetadata) :
+      CustomSubjectBuilder(metadata) { … }
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     The class must be accessible to the tests that will use it―usually `public`.
 
@@ -84,16 +133,29 @@ Rather than create a `Subject.Factory` as described in step 2 of
 
 1.  Declare a constructor that takes a `FailureMetadata`:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
       ProtoSubjectBuilder(FailureMetadata metadata) {
         super(metadata);
       }
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    class ProtoSubjectBuilder internal constructor(metadata: FailureMetadata) :
+      CustomSubjectBuilder(metadata)
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     The constructor need not be visible to users. They will create instances
     through a factory you'll create.
 
 1.  Declare one or more `that` methods:
+
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
     ```java
       public <M extends Message> IterableOfProtosSubject<M> that(
@@ -101,6 +163,13 @@ Rather than create a `Subject.Factory` as described in step 2 of
         return new IterableOfProtosSubject<>(metadata(), actual);
       }
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+      fun <M : Message> that(actual: Iterable<M>?): IterableOfProtosSubject<M> =
+        IterableOfProtosSubject(metadata(), actual)
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     The methods must be accessible to the tests that will use them―usually
     `public`.
@@ -111,11 +180,24 @@ Rather than create a `Subject.Factory` as described in step 2 of
 1.  Declare a static factory method that returns a
     [`CustomSubjectBuilder.Factory`].
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     public static CustomSubjectBuilder.Factory<ProtoSubjectBuilder> iterablesOfProtos() {
       return ProtoSubjectBuilder::new;
     }
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    companion object {
+      @JvmStatic
+      fun iterablesOfProtos(): CustomSubjectBuilder.Factory<ProtoSubjectBuilder> =
+        CustomSubjectBuilder.Factory(::ProtoSubjectBuilder)
+    }
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     The `CustomSubjectBuilder.Factory` should usually be implemented with a
     method reference, as shown above. Even if it's not, your method should
@@ -139,6 +221,9 @@ Rather than create a `Subject.Factory` as described in step 2 of
     Now users can treat your `CustomSubjectBuilder.Factory` just like a
     `Subject.Factory`:
 
+    <div class="c-codeselector__button c-codeselector__button_java">Java</div>
+    <div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
     ```java
     import static com.google.common.truth.extension.proto.ProtoTruth.protos;
     …
@@ -147,6 +232,17 @@ Rather than create a `Subject.Factory` as described in step 2 of
         .that(parser.parse(bytesWithMultipleValues))
         .isEqualTo(expected);
     ```
+    {: .c-codeselector__code .c-codeselector__code_java }
+
+    ```kotlin
+    import com.google.common.truth.extension.proto.ProtoTruth.protos
+    …
+    assertWithMessage("parser should have used last of multiple values")
+      .about(protos())
+      .that(parser.parse(bytesWithMultipleValues))
+      .isEqualTo(expected)
+    ```
+    {: .c-codeselector__code .c-codeselector__code_kotlin }
 
     (But, as with the `Subject.Factory` approach, most users will use your
     `assertThat` shortcut instead.)

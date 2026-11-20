@@ -33,9 +33,18 @@ Truth report the original stack traces, set the system property
 
 To disable the feature for the current process:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 System.setProperty("com.google.common.truth.disable_stack_trace_cleaning", "true");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+System.setProperty("com.google.common.truth.disable_stack_trace_cleaning", "true")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 <!-- References -->
 

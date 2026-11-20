@@ -8,16 +8,34 @@ title: Truth vs. AssertJ and Hamcrest
 Truth is similar to [AssertJ]. An assertion written with either library looks
 like this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(notificationText).contains("testuser@google.com");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(notificationText).contains("testuser@google.com")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Truth differs significantly from [Hamcrest]. An assertion written with Hamcrest
 looks like this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(notificationText, containsString("testuser@google.com"));
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(notificationText, containsString("testuser@google.com"))
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ## Why create Truth when AssertJ already exists?
 
@@ -252,6 +270,9 @@ fortunate to have the tools to search our codebase and run other teams' tests.
 Based on our experiences, we present some AssertJ puzzlers, which we have
 designed Truth to avoid:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
 assertThat(primaryColors).containsAll(RED, YELLOW, BLUE);
@@ -261,6 +282,18 @@ assertThat(event.getText())
     .contains("2 suggestions");
 assertThat(defaults).has(new Condition<>(x -> x instanceof String, "a string"));
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next())
+assertThat(primaryColors).containsAll(RED, YELLOW, BLUE)
+assertThat(Longs.tryParse(s)).isEqualTo(parsedValues[s])
+assertThat(event.text)
+  .usingComparator(compareBy(Any::toString))
+  .contains("2 suggestions")
+assertThat(defaults).has(Condition({ it is String }, "a string"))
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Each of these behaves differently than the reader might expect. See if you can
 figure them out, and then have a look at
@@ -288,9 +321,18 @@ reference) and an `actual` field, it is usually less. Also, Truth supplies
 (If you want to try to figure these out on your own, head back up to view
 [the puzzlers without the answers](#puzzlers).)
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next())
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This looks like it tests that each call to `next()` returns a different `long`.
 However, it actually tests that each call returns a `long` *that autoboxes to a
@@ -300,9 +342,18 @@ will create a new `Long` instance after each invocation.
 
 Truth reduces the chance of this bug by naming its method "isNotSameInstanceAs."
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(primaryColors).containsAll(RED, YELLOW, BLUE);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(primaryColors).containsAll(RED, YELLOW, BLUE)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This looks like it tests that the primary colors are defined to be red, yellow,
 and blue. However, it actually tests that the primary colors *include* red,
@@ -310,9 +361,18 @@ yellow, and blue, along with possibly other colors.
 
 Truth reduces the chance of this bug by naming its method "containsAtLeast."
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(Longs.tryParse(s)).isEqualTo(parsedValues.get(s));
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(Longs.tryParse(s)).isEqualTo(parsedValues[s])
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This looks like it tests that the given string parses to the expected value.
 However, if `parsedValues` is a `Map<String, Integer>` (perhaps because it's
@@ -322,11 +382,22 @@ because a `Long` is not equal to an `Integer`.
 Truth reduces the chance of type-mismatch bugs by treating a `Long` as equal to
 its equivalent `Integer`.
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(event.getText())
     .usingComparator(comparing(Object::toString))
     .contains("2 suggestions");
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(event.text)
+  .usingComparator(compareBy(Any::toString))
+  .contains("2 suggestions")
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This looks like it tests that the `List<CharSequence>` returned by `getText()`
 contains an element with content "2 suggestions." However, the `Comparator`
@@ -338,9 +409,18 @@ methods that operate on individual elements, AssertJ has a separate method,
 Truth avoids this problem by not permitting arbitrary assertions with a
 `Comparator`.
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(defaults).has(new Condition<>(x -> x instanceof String, "a string"));
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(defaults).has(Condition({ it is String }, "a string"))
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 This looks like it tests that the `defaults` array contains a string. However,
 it actually tests that `defaults` is *itself* a string.

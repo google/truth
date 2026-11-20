@@ -29,6 +29,9 @@ googleAnalyticsId: G-ZNXX4CJW8S
 plugins:
   - jekyll-redirect-from
 
+enableCodeSelector: true
+defaultCodeLanguage: "java"
+
 nav:
   - item:
       name: Home

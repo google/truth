@@ -14,16 +14,29 @@ over the course of a test method, rather than failing fast.
 
 Suppose the assert phase of your test method has the lines
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
     assertThat(result.getFoo()).isEqualTo(3);
     assertThat(result.isBar()).isTrue();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+    assertThat(result.foo).isEqualTo(3)
+    assertThat(result.isBar).isTrue()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If either condition is false, the test method will fail. However, if *both*
 conditions are false, only the first violation will be reported, because Truth
 "fails fast".
 
 With `Expect`, the code looks like this:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
   @Rule public final Expect expect = Expect.create();
@@ -33,6 +46,17 @@ With `Expect`, the code looks like this:
     expect.that(result.getFoo()).isEqualTo(3);
     expect.that(result.isBar()).isTrue();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+  @get:Rule val expect = Expect.create()
+
+  ...
+
+    expect.that(result.foo).isEqualTo(3)
+    expect.that(result.isBar).isTrue()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If a check fails, the `Expect` rule retains the failure message and continues.
 The test method will then fail with a message that includes all the individual
@@ -61,11 +85,22 @@ Expect rule.
 If you use [Truth extensions] such as [`ProtoTruth`], `expect.that()` needs to
 know about the subject to provide the same methods:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 expect.about(protos()).that(myProto).isEqualToDefaultInstance();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extensions.proto.ProtoTruth.protos
+
+expect.about(protos()).that(myProto).isEqualToDefaultInstance()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 [Truth]: https://truth.dev
 [Truth extensions]: https://truth.dev/extension

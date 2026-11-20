@@ -101,10 +101,20 @@ there are equivalents for `float`/`Float`.
 
 ### Exact assertions about `double` values
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 Cuboid cuboid = Cuboid.ofDimensions(1.2, 3.4, 5.6);
 assertThat(cuboid.getWidth()).isEqualTo(3.4);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val cuboid = Cuboid.ofDimensions(1.2, 3.4, 5.6)
+assertThat(cuboid.width).isEqualTo(3.4)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Note: All the exact assertions define equality like `Double.equals` does: each
 of the values `POSITIVE_INFINITY`, `NEGATIVE_INFINITY`, and `NaN` is equal to
@@ -113,10 +123,20 @@ where the code under test is meant to pass values through without touching them.
 
 ### Approximate assertions about `double` values
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 Cuboid cuboid = Cuboid.ofDimensions(1.2, 3.4, 5.6);
 assertThat(cuboid.getVolume()).isWithin(1.0e-10).of(1.2 * 3.4 * 5.6);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val cuboid = Cuboid.ofDimensions(1.2, 3.4, 5.6)
+assertThat(cuboid.volume).isWithin(1.0e-10).of(1.2 * 3.4 * 5.6)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Note: All the approximate assertions consider `-0.0` to be within any tolerance
 of `0.0` and do *not* consider each of the values `POSITIVE_INFINITY`,
@@ -134,13 +154,27 @@ the dedicated methods (where applicable) or exact equality for such values.
 
 ### Special-valued assertions about `double` values
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(reciprocal(0.0)).isPositiveInfinity();
 assertThat(ratio(0.0, 0.0)).isNaN();
 assertThat(randomFiniteDouble()).isFinite();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(reciprocal(0.0)).isPositiveInfinity()
+assertThat(ratio(0.0, 0.0)).isNaN()
+assertThat(randomFiniteDouble()).isFinite()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ### Exact assertions about `double[]` values
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 double[] original = {1.1, 2.2, 3.3};
@@ -153,8 +187,25 @@ assertThat(original)
     .containsExactly(1.1, 2.2, 3.3)
     .inOrder();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val original = doubleArrayOf(1.1, 2.2, 3.3)
+val shuffled = shuffler.shuffledCopy(original)
+// Assert that shuffled contains the same elements as original in any order:
+assertThat(shuffled).usingExactEquality().containsExactly(1.1, 2.2, 3.3)
+// Assert that calling shuffledCopy did not modify original:
+assertThat(original)
+  .usingExactEquality()
+  .containsExactly(1.1, 2.2, 3.3)
+  .inOrder()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ### Approximate assertions about `double[]` values
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 double[] original = {1.1, 2.2, 3.3};
@@ -164,11 +215,25 @@ assertThat(squares)
     .containsExactly(1.21, 4.84, 10.89)
     .inOrder();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val original = doubleArrayOf(1.1, 2.2, 3.3)
+val squares = squareArrayValues(original)
+assertThat(squares)
+  .usingTolerance(1.0e-10)
+  .containsExactly(1.21, 4.84, 10.89)
+  .inOrder()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ### Assertions about `Iterable<Double>` values
 
 Exact equality is the default, you can just proceed like any other `Iterable`.
 For approximate equality:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 List<Double> original = ImmutableList.of(1.1, 2.2, 3.3);
@@ -178,32 +243,78 @@ assertThat(squares)
     .containsExactly(1.21, 4.84, 10.89)
     .inOrder();
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val original = listOf(1.1, 2.2, 3.3)
+val squares = squareListValues(original)
+assertThat(squares)
+  .comparingElementsUsing(tolerance(1.0e-10))
+  .containsExactly(1.21, 4.84, 10.89)
+  .inOrder()
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 where the `tolerance` method is imported as:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.Correspondence.tolerance;
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Correspondence.tolerance
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ### Assertions about `Map<?, Double>` or `Multimap<?, Double>` values
 
 Exact equality is the default, you can just proceed like any other `Map` or
 `Multimap`. For approximate equality:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 Map<String, Double> scoresById = scorer.getScoresOutOfTenById();
-assertThat(scores)
+assertThat(scoresById)
     .comparingValuesUsing(tolerance(1.0e-10))
     .containsExactly(
         "good-thing", 9.6,
         "bad-thing", 1.3333333333);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+val scoresById: Map<String, Double> = scorer.scoresOutOfTenById
+assertThat(scoresById)
+  .comparingValuesUsing(tolerance(1.0e-10))
+  .containsExactly(
+    "good-thing",
+    9.6,
+    "bad-thing",
+    1.3333333333,
+  )
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 where the `tolerance` method is imported as:
+
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
 
 ```java
 import static com.google.common.truth.Correspondence.tolerance;
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.Correspondence.tolerance
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 Note that there is no facility for doing approximate equality of map keys: since
 lookups will always be done using exact equality (by the definition of `Map`)
@@ -221,6 +332,9 @@ you don't want to.
 `Iterables`, `Maps`, and `Multimaps` also have equivalent tolerance methods for
 protocol buffer values within the containers (not keys!).
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
@@ -237,6 +351,26 @@ assertThat(mapOfProtos)
         "high",
         MyProto.newBuilder().setScore(156.17).build());
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+import com.google.common.truth.extensions.proto.ProtoTruth.assertThat
+
+...
+
+assertThat(actualProto)
+  .usingDoubleTolerance(1.0e-10)
+  .isEqualTo(myProto { score = 1.023 })
+assertThat(mapOfProtos)
+  .usingDoubleTolerance(1.0e-10)
+  .containsExactly(
+    "low",
+    myProto { score = 0.001 },
+    "high",
+    myProto { score = 156.17 },
+  )
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 ### Assertions about other data structures with `double` properties
 
@@ -245,6 +379,9 @@ example, suppose that `Report` is a value type and you want to use approximate
 equality for its `score` property and regular equality for all it's other
 properties. Assuming a proto-like API you could write this:
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualReport.getScore())
     .isWithin(1.0e-10)
@@ -252,6 +389,16 @@ assertThat(actualReport.getScore())
 assertThat(actualReport.toBuilder().clearScore().build())
     .isEqualTo(expectedReport.toBuilder().clearScore().build());
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualReport.score)
+  .isWithin(1.0e-10)
+  .of(expectedReport.score)
+assertThat(actualReport.toBuilder().clearScore().build())
+  .isEqualTo(expectedReport.toBuilder().clearScore().build())
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 If you do this quite a bit, you might want to write a helper method. If you do
 it a lot, you might want to write a [custom subject](extension.md).
@@ -260,11 +407,22 @@ it a lot, you might want to write a [custom subject](extension.md).
 
 Write your own `Correspondence` implementation and use [Fuzzy Truth](fuzzy.md).
 
+<div class="c-codeselector__button c-codeselector__button_java">Java</div>
+<div class="c-codeselector__button c-codeselector__button_kotlin">Kotlin</div>
+
 ```java
 assertThat(actualReports)
     .comparingElementsUsing(REPORT_CORRESPONDENCE)
     .containsExactlyElementsIn(expectedReports);
 ```
+{: .c-codeselector__code .c-codeselector__code_java }
+
+```kotlin
+assertThat(actualReports)
+  .comparingElementsUsing(REPORT_CORRESPONDENCE)
+  .containsExactlyElementsIn(expectedReports)
+```
+{: .c-codeselector__code .c-codeselector__code_kotlin }
 
 <!-- References -->
 
