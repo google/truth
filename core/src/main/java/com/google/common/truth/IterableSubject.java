@@ -90,6 +90,7 @@ import org.jspecify.annotations.Nullable;
 // Some builder calls need to be separate, so let's keep them all separate.
 @SuppressWarnings("BuilderCollapser")
 // Can't be final since MultisetSubject and SortedSetSubject extend it
+
 public class IterableSubject extends Subject {
 
   private final @Nullable Iterable<?> actual;

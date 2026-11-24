@@ -36,6 +36,7 @@ import org.junit.AssumptionViolatedException;
  * }
  * }</pre>
  */
+
 @com.google.common.annotations.GwtIncompatible("JUnit4")
 public final class TruthJUnit {
   @SuppressWarnings("ConstantCaseForConstants") // Despite the "Builder" name, it's not mutable.

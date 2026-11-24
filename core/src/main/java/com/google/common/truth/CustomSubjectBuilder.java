@@ -18,7 +18,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-
 /**
  * In a fluent assertion chain, exposes one or more "custom" {@code that} methods, which accept a
  * value under test and return a {@link Subject}.

@@ -19,7 +19,6 @@ package com.google.common.truth;
 import static java.lang.Double.isFinite;
 import static java.lang.Math.abs;
 
-
 /** Math utilities to be shared by numeric subjects. */
 final class MathUtil {
   private MathUtil() {}

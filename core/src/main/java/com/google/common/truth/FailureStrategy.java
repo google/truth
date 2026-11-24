@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-
 /**
  * Defines what to do when a check fails.
  *
