@@ -298,7 +298,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <version>1.28</version>
+          <version>1.29.1</version>
           <configuration>
             <annotations>com.google.common.truth.IgnoreJRERequirement</annotations>
             <signature>
