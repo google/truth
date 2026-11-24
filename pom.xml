@@ -41,6 +41,9 @@
 
     <!-- Default to no additional options (for Java 8). Overridden by a profile. -->
     <conditionalJavadoc9PlusOptions></conditionalJavadoc9PlusOptions>
+
+    <!-- Overridden in child POMs so that this points to the repository root in every module that uses it. -->
+    <repo.root>${project.basedir}</repo.root>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -206,6 +209,15 @@
     <url>scm:git:git@github.com:google/truth.git</url>
   </scm>
   <build>
+    <resources>
+      <resource>
+        <directory>${repo.root}</directory>
+        <includes>
+          <include>LICENSE</include>
+        </includes>
+        <targetPath>META-INF</targetPath>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -257,14 +269,14 @@
             <encoding>UTF-8</encoding>
             <docencoding>UTF-8</docencoding>
             <charset>UTF-8</charset>
-            <overview>overview.html</overview>
+            <overview>${repo.root}/overview.html</overview>
             <detectJavaApiLink>false</detectJavaApiLink>
             <offlineLinks>
               <!-- We use offlineLink here for reasons discussed in the Guava pom.xml. -->
-            <offlineLink>
-              <url>https://javadoc.io/doc/com.google.j2objc/j2objc-annotations/latest/</url>
-              <location>${project.basedir}/javadoc-link/j2objc-annotations</location>
-            </offlineLink>
+              <offlineLink>
+                <url>https://javadoc.io/doc/com.google.j2objc/j2objc-annotations/latest/</url>
+                <location>${repo.root}/javadoc-link/j2objc-annotations</location>
+              </offlineLink>
             </offlineLinks>
             <links>
               <link>https://guava.dev/releases/snapshot-jre/api/docs</link>

@@ -23,4 +23,8 @@
     <module>liteproto</module>
     <module>proto</module>
   </modules>
+  <properties>
+    <!-- Evaluated in child modules (one level below this parent POM), so this points to the repository root. -->
+    <repo.root>${project.basedir}/../..</repo.root>
+  </properties>
 </project>
