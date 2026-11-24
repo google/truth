@@ -26,7 +26,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@IgnoreJRERequirement
 public final class OptionalLongSubject extends Subject {
   private final @Nullable OptionalLong actual;
 

@@ -26,7 +26,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @since 1.3.0 (previously part of {@code truth-java8-extension})
  */
-@IgnoreJRERequirement
 public final class OptionalSubject extends Subject {
   @SuppressWarnings("NullableOptional") // Truth always accepts nulls, no matter the type
   private final @Nullable Optional<?> actual;

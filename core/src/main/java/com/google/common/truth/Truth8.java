@@ -76,6 +76,7 @@ public final class Truth8 {
     return Truth.assertThat(actual);
   }
 
+  @IgnoreJRERequirement
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible

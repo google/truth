@@ -368,6 +368,7 @@ public final class Truth {
    *
    * @since 1.4.0 (present in {@link Truth8} since before 1.0)
    */
+  @IgnoreJRERequirement
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible

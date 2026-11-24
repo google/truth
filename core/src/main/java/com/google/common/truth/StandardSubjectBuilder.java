@@ -282,6 +282,7 @@ public class StandardSubjectBuilder {
    * @since 1.4.0 (with access to {@link PathSubject} previously part of {@code
    *     truth-java8-extension})
    */
+  @IgnoreJRERequirement
   @GwtIncompatible
   @J2ObjCIncompatible
   @J2ktIncompatible
